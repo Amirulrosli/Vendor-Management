@@ -26,12 +26,16 @@ export class AddVendorComponent implements OnInit {
   ngOnInit(): void {
     this.date = new Date();
     var human1={
+      rid:"v_01_110099a",
       name:"kania",
       IC_Number:109909,
       email: "fyp1assi@gmail.com",
       latest_Payment_Date: this.date,
       latest_Payment: 24,
-      overdue: 90
+      overdue: false,
+      slot: "b-03",
+      slot_Price: 4,
+      phone: 8613135,
     };
     this.profile.create(human1).subscribe(resp=> {
       console.log(resp)
