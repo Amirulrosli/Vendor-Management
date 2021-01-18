@@ -11,22 +11,26 @@ import { profileService } from '../services/profile.service';
 export class AddVendorComponent implements OnInit {
   close: any;
   opened = true
+  date: any;
 
   
 
   constructor(private router: Router,
     private profile : profileService
     ) { 
+
+
     this.close = false;
   }
 
   ngOnInit(): void {
+    this.date = new Date();
     var human1={
-      id:4,
       name:"kania",
       IC_Number:109909,
       email: "fyp1assi@gmail.com",
-      latest_Payment: "24/2/2020",
+      latest_Payment_Date: this.date,
+      latest_Payment: 24,
       overdue: 90
     };
     this.profile.create(human1).subscribe(resp=> {

@@ -2,20 +2,20 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/profiles"
+const baseURL="http://localhost:3000/api/payments"
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class profileService {
+export class paymentService {
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-    findOne(id): Observable <any> {
-        return this.http.get(`${baseURL}/${id}`)
+    findOne(rid): Observable <any> {
+        return this.http.get(`${baseURL}/${rid}`)
     }
 
     create(data): Observable<any> {
@@ -35,7 +35,7 @@ export class profileService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    findByIC(IC): Observable<any> {
-        return this.http.get(`${baseURL}?IC_Number=${IC}`)
+    findByRid(rid): Observable<any> {
+        return this.http.get(`${baseURL}?rid=${rid}`)
     }
 }

@@ -46,7 +46,7 @@ export class DahsboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.profiles.getAll().subscribe(array=> {
+    this.profiles.findAll().subscribe(array=> {
       this.retrieveData = array
       this.retrieveDataLength = this.retrieveData.length;
       console.log(this.retrieveDataLength)
