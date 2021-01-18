@@ -1,0 +1,35 @@
+mat-sidenav {
+    background-color: rgb(124, 57, 179);
+    width: 100px;
+}
+
+.search-card{
+    background-color: white;
+    margin-top: 20px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: purple !important;
+  }
+
+  form{
+      margin: 0 auto;
+      mat-label{
+          color: black;
+      }
+
+      input{
+          background: rgba(128, 128, 128, 0.158);
+          box-shadow: none;
+          height: 38px;
+          width: 50%;
+          border: none;
+          border-radius: 5px;
+          padding-left: 5px;
+          margin-bottom: 20px;
+      }
+
+      
+  }
+
+  
