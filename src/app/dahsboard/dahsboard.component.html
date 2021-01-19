@@ -37,6 +37,7 @@
         <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
         <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
         <span class="titleTxt">Dashboard</span>
+        <mat-icon class="notification">notifications</mat-icon>
 
       </mat-toolbar>
  
@@ -52,11 +53,11 @@
           
             <ng-container  matColumnDef="IC_Number">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
-                <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.id}}</mat-cell>
+                <mat-cell *matCellDef="let element" >{{element.IC_Number}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.name}}</mat-cell>
+                <mat-cell *matCellDef="let element" >{{element.name}}</mat-cell>
             </ng-container>
             <!-- <ng-container matColumnDef="gender">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
@@ -64,7 +65,7 @@
           </ng-container> -->
             <ng-container matColumnDef="email">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="goToDetails(element.id)" >{{element.email}}</mat-cell>
+                <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
             </ng-container>
     
             <!-- <ng-container matColumnDef="dob">
@@ -73,15 +74,15 @@
             </ng-container> -->
             <ng-container matColumnDef="phone">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</mat-header-cell>
-                <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.latest_Payment}}</mat-cell>
+                <mat-cell *matCellDef="let element" >{{element.latest_Payment}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="latest_Payment">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Latest Payment</mat-header-cell>
-                <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.latest_Payment}}</mat-cell>
+                <mat-cell *matCellDef="let element" >{{element.latest_Payment}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="overdue">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
-                <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.overdue}}</mat-cell>
+                <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
             </ng-container>
             <!-- <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
