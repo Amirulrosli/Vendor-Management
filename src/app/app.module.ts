@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DahsboardComponent } from './dahsboard/dahsboard.component';
 import { MaterialModule } from './material/material.model'
-import {FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 
 import { HttpClientModule } from '@angular/common/http'
@@ -27,7 +27,8 @@ import { AddPaymentComponent } from './add-payment/add-payment.component';
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
     
   ],
 

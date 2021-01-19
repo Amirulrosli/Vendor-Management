@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getMaxListeners } from 'process';
 import { profileService } from '../services/profile.service';
@@ -14,6 +15,7 @@ export class AddVendorComponent implements OnInit {
   opened = true
   date: any;
   value: any;
+  registrationForm: FormGroup
   
   
 
@@ -48,6 +50,7 @@ export class AddVendorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.date = new Date();
     // let newDate = this.datePipe.transform(this.date,'dd-MM-yyyy')
     // var human1={
