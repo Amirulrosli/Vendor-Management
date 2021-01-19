@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getMaxListeners } from 'process';
 import { profileService } from '../services/profile.service';
@@ -16,12 +16,47 @@ export class AddVendorComponent implements OnInit {
   date: any;
   value: any;
   registrationForm: FormGroup
+
+  public errorMessages = {
+    name: [
+      { type: 'required', message: 'Name is required' },
+      { type: 'maxlength', message: 'Name cant be longer than 100 characters' }
+    ],
+    email: [
+      { type: 'required', message: 'Email is required' },
+      { type: 'pattern', message: 'Please enter a valid email address' }
+    ],
+    phone: [
+      { type: 'required', message: 'Phone number is required' },
+      { type: 'pattern', message: 'Please enter a valid phone number' },
+      { type: 'maxlength', message: 'Invalid Phone Number, Phone Number cannot be more than 7 number (BN)' },
+      { type: 'minlength', message: 'Invalid Phone Number, Phone Number cannot be less than 7 number (BN)' }
+    ],
+    IC_Number: [
+      { type: 'required', message: 'Identification number is required' },
+      { type: 'pattern', message: 'Please enter a valid IC number' },
+      { type: 'maxlength', message: 'Please enter 6 number for the Identification number' },
+      { type: 'minlength', message: 'Please enter 6 number for the Identification number' }
+    ],
+
+    rent_Date: [
+      { type: 'required', message: 'Date of registration is required' },
+    ],
+
+    forIC: [
+
+      { type: 'required', message: 'First two number is required' }
+
+    ]
+    
+  };
   
   
 
   constructor(private router: Router,
     private profile : profileService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private formbuilder: FormBuilder
     ) { 
 
     this.value = [
@@ -50,6 +85,15 @@ export class AddVendorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.registrationForm = this.formbuilder.group({
+      name: ['',[Validators.required,Validators.maxLength(100)]],
+      forIC: ['',[Validators.required]],
+      IC_Number:['',[Validators.required], Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)],
+      email: ['',[Validators.required]],
+      phone:['',[Validators.required], Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')],
+      rent_Date: ['',[Validators.required]]
+    })
 
     this.date = new Date();
     // let newDate = this.datePipe.transform(this.date,'dd-MM-yyyy')

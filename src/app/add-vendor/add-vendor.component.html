@@ -46,33 +46,62 @@
                 <mat-label>Vendor Name:</mat-label>                    
                 <br>
                 <input formControlName="name" type="text" placeholder="Enter Name.."/>
+                
+                <div *ngFor="let error of errorMessages.name">
+                    <ng-container *ngIf="registrationForm.controls['name']?.hasError(error.type)">
+                      <small class="error-message">{{error.message}}</small>
+                    </ng-container>
+                </div>
                 <br>
-
                 <mat-label>IC Number:</mat-label>
                 <br>
 
-                <select formControlName="IC" class="selection" name="IC" placeholder="No.">
+                <select formControlName="forIC" class="selection" name="IC" placeholder="No.">
                     <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
                 </select>
 
                 <mat-label class="IC-Dash">-</mat-label>
 
                 <input formControlName="IC_Number" style="width: 88%;" type="text" placeholder="Enter IC Number"/>
+                
+                <div *ngFor="let error of errorMessages.IC_Number">
+                    <ng-container *ngIf="registrationForm.controls['IC_Number']?.hasError(error.type)">
+                      <small class="error-message">{{error.message}}</small>
+                    </ng-container>
+                </div>
                 <br>
                 <mat-label>Email Address:</mat-label>
                 <br>
 
                 <input formControlName="email" type="email" placeholder="Enter Email Address"/>
+                
+                <div *ngFor="let error of errorMessages.email">
+                    <ng-container *ngIf="registrationForm.controls['email']?.hasError(error.type)">
+                      <small class="error-message">{{error.message}}</small>
+                    </ng-container>
+                </div>
                 <br>
                 <mat-label>Phone Number:</mat-label>
                 <br>
 
                 <input formControlName="phone" type="number" placeholder="phone no.">
+                
+                <div *ngFor="let error of errorMessages.phone">
+                    <ng-container *ngIf="registrationForm.controls['phone']?.hasError(error.type)">
+                      <small class="error-message">{{error.message}}</small>
+                    </ng-container>
+                </div>
                 <br>
                 <mat-label>Registration Date:</mat-label>
                 <br>
 
                 <input type="date" formControlName="rent_Date" placeholder="Enter Date">
+                
+                <div *ngFor="let error of errorMessages.rent_Date">
+                    <ng-container *ngIf="registrationForm.controls['rent_Date']?.hasError(error.type)">
+                      <small class="error-message">{{error.message}}</small>
+                    </ng-container>
+                </div>
                 <br>
 
                 <button mat-raised-button class="submitBtn" (click)="submit()">Submit</button>
