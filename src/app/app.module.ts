@@ -9,6 +9,7 @@ import { MaterialModule } from './material/material.model'
 import {FormsModule } from '@angular/forms';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { HttpClientModule } from '@angular/common/http'
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +25,9 @@ import { HttpClientModule } from '@angular/common/http'
     HttpClientModule
     
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
   ],

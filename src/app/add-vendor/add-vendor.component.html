@@ -35,22 +35,38 @@
         <mat-card class="search-card">
             <form>
 
-                <mat-label>Name:</mat-label>
+                <mat-label>Vendor Name:</mat-label>                    
                 <br>
                 <input type="text" placeholder="Enter Name.."/>
                 <br>
+
                 <mat-label>IC Number:</mat-label>
                 <br>
+
+                <select class="selection" name="IC" placeholder="No.">
+                    <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
+                </select>
+
+                <mat-label class="IC-Dash">-</mat-label>
+
                 <input type="text" placeholder="Enter IC Number"/>
                 <br>
                 <mat-label>Email Address:</mat-label>
                 <br>
-                <input type="text" placeholder="Enter Email Address"/>
+
+                <input type="email" placeholder="Enter Email Address"/>
                 <br>
                 <mat-label>Phone Number:</mat-label>
                 <br>
+
                 <input type="number" placeholder="phone no.">
                 <br>
+                <mat-label>Registration Date:</mat-label>
+                <br>
+
+                <input type="date" placeholder="Enter Date">
+                <br>
+
                 <button mat-raised-button color="primary" (click)="submit()">Submit</button>
             </form>
 
