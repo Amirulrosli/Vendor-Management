@@ -6,13 +6,13 @@
         </div>
 
         <div class="nav-icon" routerLink="/add-vendor">
-            <mat-icon class="active">add_box</mat-icon>
-            <mat-label class="active">AddVendor</mat-label>
+            <mat-icon>add_box</mat-icon>
+            <mat-label>AddVendor</mat-label>
         </div>
 
         <div class="nav-icon" routerLink="/add-payment">
-            <mat-icon>attach_money</mat-icon>
-            <mat-label>AddPayment</mat-label>
+            <mat-icon class="active">attach_money</mat-icon>
+            <mat-label class="active">Payment</mat-label>
         </div>
 
         <div class="nav-icon">
@@ -35,23 +35,24 @@
         <mat-card class="search-card">
             <form>
 
-                <mat-label>Name:</mat-label>
+                <mat-label>Vendor Name:</mat-label>
                 <br>
                 <input type="text" placeholder="Enter Name.."/>
                 <br>
-                <mat-label>IC Number:</mat-label>
+                <mat-label>Payment Date:</mat-label>
                 <br>
-                <input type="text" placeholder="Enter IC Number"/>
+                <input type="date"/>
                 <br>
-                <mat-label>Email Address:</mat-label>
+                <mat-label>Slot Number:</mat-label>
                 <br>
-                <input type="text" placeholder="Enter Email Address"/>
+                <input type="range"/>
                 <br>
-                <mat-label>Phone Number:</mat-label>
+                <mat-label>Price:</mat-label>
                 <br>
-                <input type="number" placeholder="phone no.">
+                <input type="number" value="0" onchange="setTwoNumberDecimal"/>
+                <!-- <input type="text"(blur)="transformAmount($event)" [(ngModel)]="formattedAmount"  /> -->
                 <br>
-                <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+                <button mat-raised-button color="primary" (click)="submit()" class="submitBtn">Submit</button>
             </form>
 
             <mat-form-field appearance="fill">
@@ -95,3 +96,4 @@
         
     </mat-sidenav-content>
     </mat-sidenav-container>
+

@@ -8,12 +8,17 @@ import { DahsboardComponent } from './dahsboard/dahsboard.component';
 import { MaterialModule } from './material/material.model'
 import {FormsModule } from '@angular/forms';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
+import { AddPaymentComponent } from './add-payment/add-payment.component'
+
+import { CommonModule, CurrencyPipe} from '@angular/common';
+
 @NgModule({
   declarations: [
     AppComponent,
     DahsboardComponent,
-    AddVendorComponent
+    AddVendorComponent,
+    AddPaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +29,7 @@ import { HttpClientModule } from '@angular/common/http'
     HttpClientModule
     
   ],
-  providers: [],
+  providers: [CurrencyPipe],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
   ],
