@@ -8,13 +8,22 @@ import { DahsboardComponent } from './dahsboard/dahsboard.component';
 import { MaterialModule } from './material/material.model'
 import {FormsModule } from '@angular/forms';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
+<<<<<<< HEAD
 import { HttpClientModule } from '@angular/common/http'
 import { DatePipe } from '@angular/common';
+=======
+import { HttpClientModule } from '@angular/common/http';
+import { AddPaymentComponent } from './add-payment/add-payment.component'
+
+import { CommonModule, CurrencyPipe} from '@angular/common';
+
+>>>>>>> b7cb65ddf23c3b8234752b678aa3110b96da0447
 @NgModule({
   declarations: [
     AppComponent,
     DahsboardComponent,
-    AddVendorComponent
+    AddVendorComponent,
+    AddPaymentComponent
   ],
   imports: [
     BrowserModule,
@@ -25,9 +34,13 @@ import { DatePipe } from '@angular/common';
     HttpClientModule
     
   ],
+<<<<<<< HEAD
   providers: [
     DatePipe
   ],
+=======
+  providers: [CurrencyPipe],
+>>>>>>> b7cb65ddf23c3b8234752b678aa3110b96da0447
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
   ],
