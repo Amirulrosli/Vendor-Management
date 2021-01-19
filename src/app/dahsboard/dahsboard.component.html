@@ -32,13 +32,14 @@
     <mat-sidenav-content style="background-color:white">
         
 
-      <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon style="color: purple">close</mat-icon></mat-button>
-      <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon style="color: purple">menu</mat-icon></mat-button>
-      <div class="title">
-        <h1>Web-Based Vendor Management System</h1>
-        <p>The best platform for vendor management</p>
-      </div>  
-     
+      <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+
+        <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
+        <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
+        <span class="titleTxt">VMS</span>
+
+      </mat-toolbar>
+ 
       <mat-card class="search-card">
           <form>
               <mat-form-field style="color: rgb(124, 57, 179);">

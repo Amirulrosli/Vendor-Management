@@ -2,7 +2,7 @@ mat-sidenav-container{
     height: 100%
 }
 
-mat-sidenav, mat-sidenav-content{
+mat-sidenav{
     padding:16px;
 }
 
@@ -14,6 +14,8 @@ mat-sidenav {
 .search-card{
     width: 45%;
     background-color: white;
+    margin-left: 20px;
+    margin-top: 10px;
 
 
 }
@@ -71,6 +73,17 @@ mat-form-field.mat-form-field{
       cursor: pointer;
   }
 
+//   mat-table{
+//       margin-left: 60px;
+//       margin-right: 60px;
+//   }
+
+  div.mat-elevation-z8{
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+
  mat-header-cell{
      color:rgb(95, 30, 148);
      background-color: white;
@@ -92,8 +105,11 @@ mat-form-field.mat-form-field{
     background-color:  purple;
  }
  mat-paginator{
-    background-color: rgb(179, 96, 247);
+    background-color: rgb(124, 57, 179);
     color: white;
+    // margin-left: 60px;
+    // margin-right: 60px;
+
  }
 
  .title{
@@ -116,4 +132,8 @@ mat-form-field.mat-form-field{
  form{
      padding: 0;
  }
+
+ .titleTxt{
+    margin-left: 40px;
+}
 

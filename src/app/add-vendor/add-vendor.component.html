@@ -29,8 +29,15 @@
 
     </mat-sidenav>
     <mat-sidenav-content style="background-color:white">
-        <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon style="color: purple">close</mat-icon></mat-button>
-        <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon style="color: purple">menu</mat-icon></mat-button>
+
+        <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+
+            <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
+            <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
+            <span class="titleTxt">VMS</span>
+
+        </mat-toolbar>
+     
 
         <mat-card class="search-card">
             <form>
@@ -49,7 +56,7 @@
 
                 <mat-label class="IC-Dash">-</mat-label>
 
-                <input type="text" placeholder="Enter IC Number"/>
+                <input style="width: 88%;" type="text" placeholder="Enter IC Number"/>
                 <br>
                 <mat-label>Email Address:</mat-label>
                 <br>
@@ -67,7 +74,7 @@
                 <input type="date" placeholder="Enter Date">
                 <br>
 
-                <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+                <button mat-raised-button class="submitBtn" (click)="submit()">Submit</button>
             </form>
 
             <mat-form-field appearance="fill">

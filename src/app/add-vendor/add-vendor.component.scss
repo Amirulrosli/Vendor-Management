@@ -26,7 +26,7 @@ mat-sidenav {
           background: rgba(128, 128, 128, 0.158);
           box-shadow: none;
           height: 38px;
-          width: 50%;
+          width: 100%;
           border: none;
           border-radius: 5px;
           padding-left: 5px;
@@ -51,5 +51,23 @@ mat-sidenav {
       margin-right: 5px;
       margin-left: 5px;
   }
+
+  .submitBtn{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    height: 40px;
+    background-color: rgb(105, 2, 173);
+}
+
+.titleTxt{
+    margin-left: 40px;
+}
+
+.toggle{
+    color: white !important;
+}
+
 
   

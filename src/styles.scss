@@ -11,7 +11,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     height: 100%
 }
 
-mat-sidenav, mat-sidenav-content{
+.mat-toolbar{
+    background-color: rgb(88, 0, 146);
+}
+
+mat-sidenav{
     padding:16px;
 }
 
@@ -46,4 +50,6 @@ mat-sidenav {
 
   .toggle{
       cursor: pointer;
+      color: white;
   }
+
