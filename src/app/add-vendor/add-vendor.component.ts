@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getMaxListeners } from 'process';
+import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 
 @Component({
@@ -47,7 +48,18 @@ export class AddVendorComponent implements OnInit {
 
       { type: 'required', message: 'First two number is required' }
 
-    ]
+    ],
+
+    slot: [
+
+      { type: 'required', message: 'Slot is required' }
+
+    ],
+    slotprice: [
+
+      { type: 'required', message: 'Slot price is required' }
+
+    ],
     
   };
   
@@ -56,7 +68,7 @@ export class AddVendorComponent implements OnInit {
   constructor(private router: Router,
     private profile : profileService,
     private datePipe: DatePipe,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
     ) { 
 
     this.value = [
@@ -89,11 +101,15 @@ export class AddVendorComponent implements OnInit {
     this.registrationForm = this.formbuilder.group({
       name: ['',[Validators.required,Validators.maxLength(100)]],
       forIC: ['',[Validators.required]],
-      IC_Number:['',[Validators.required], Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)],
+      IC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
       email: ['',[Validators.required]],
-      phone:['',[Validators.required], Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')],
-      rent_Date: ['',[Validators.required]]
+      phone:['',[Validators.required]],
+      rent_Date: ['',[Validators.required]],
+      slot:['',[Validators.required]],
+      slotprice:['',[Validators.required]]
     })
+
+    //, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'
 
     this.date = new Date();
     // let newDate = this.datePipe.transform(this.date,'dd-MM-yyyy')
@@ -130,8 +146,55 @@ export class AddVendorComponent implements OnInit {
     this.close = true;
   }
 
-  submit(){
+  async submit(){
+
+    if(!this.registrationForm.valid){
+      return;
+    } else {
+      const name = this.registrationForm.value.name;
+      const email = this.registrationForm.value.email;
+      const rent_Date = this.registrationForm.value.email;
+      const phone = this.registrationForm.value.phone;
+      const next_IC = this.registrationForm.value.IC_Number;
+      const forIC = this.registrationForm.value.forIC;
+      const IC_Number = forIC+""+next_IC;
+      const slot_Price = this.registrationForm.value.slotprice;
+      const slot = this.registrationForm.value.slot;
+
+      var profileModel = {
+        name: name,
+        email: email,
+        rent_Date: rent_Date,
+        phone: phone,
+        IC_Number: IC_Number,
+        slot_Price: slot_Price,
+        slot: slot
+      }
+
+      await this.profile.create(profileModel).subscribe(data=> {
+        console.log(data)  
+      },
+      error=> {
+        console.log(error)
+      }
+      )
+
+    }
     console.log("submit")
   }
+
+  // async showAlert(header:string, message:string){
+  //   const alert = await this.alert.create({
+
+  //     header,
+  //     message,
+  //     buttons: ["Ok"]
+
+  //   })
+
+  //   await alert.present()
+    
+
+  // }
 
 }
