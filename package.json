@@ -23,6 +23,7 @@
     "@angular/router": "~11.0.9",
     "@jaspero/ng-alerts": "^0.1.2",
     "rxjs": "~6.6.0",
+    "sweetalert2": "^10.13.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

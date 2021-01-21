@@ -45,7 +45,7 @@
 
                 <mat-label>Vendor Name:</mat-label>                    
                 <br>
-                <input formControlName="name" type="text" placeholder="Enter Name.."/>
+                <input #name formControlName="name" type="text" placeholder="Enter Name.."/>
                 
                 <div *ngFor="let error of errorMessages.name">
                     <ng-container *ngIf="registrationForm.controls['name']?.hasError(error.type)">

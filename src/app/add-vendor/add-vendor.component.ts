@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getMaxListeners } from 'process';
+import { alertService } from '../services/Alert.service';
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 
@@ -16,7 +17,16 @@ export class AddVendorComponent implements OnInit {
   opened = true
   date: any;
   value: any;
-  registrationForm: FormGroup
+  registrationForm: FormGroup;
+  name:any;
+  email:any;
+  phone:any;
+  IC_Number: any;
+  rent_Date: any;
+  forIC: any;
+  slot: any;
+  slotprice: any;
+
 
   public errorMessages = {
     name: [
@@ -69,6 +79,7 @@ export class AddVendorComponent implements OnInit {
     private profile : profileService,
     private datePipe: DatePipe,
     private formbuilder: FormBuilder,
+    private alert: alertService
     ) { 
 
     this.value = [
@@ -153,7 +164,7 @@ export class AddVendorComponent implements OnInit {
     } else {
       const name = this.registrationForm.value.name;
       const email = this.registrationForm.value.email;
-      const rent_Date = this.registrationForm.value.email;
+      const rent_Date = this.registrationForm.value.rent_Date;
       const phone = this.registrationForm.value.phone;
       const next_IC = this.registrationForm.value.IC_Number;
       const forIC = this.registrationForm.value.forIC;
@@ -173,6 +184,16 @@ export class AddVendorComponent implements OnInit {
 
       await this.profile.create(profileModel).subscribe(data=> {
         console.log(data)  
+        this.name="";
+        this.email="";
+        this.phone="";
+        this.IC_Number="";
+        this.rent_Date="";
+        this.forIC="";
+        this.slot="";
+        this.slotprice="";
+        this.registrationForm.reset();
+        this.alert.successNotification();
       },
       error=> {
         console.log(error)
