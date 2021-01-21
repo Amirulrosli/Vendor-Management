@@ -39,32 +39,36 @@
         </mat-toolbar>
      
         <mat-card class="search-card">
-            <form >
+            
 
-                <mat-label>Vendor Name:</mat-label>
+                <mat-label class="mat-label-form">IC number:</mat-label>
                 <br>
-                <input type="text" placeholder="Enter Name.."/>
+
+                <select [(ngModel)]="selectField" placeholder="Select IC Number" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
+                    <option *ngFor="let data of retrieveData" value="{{data.id}}">{{data.IC_Number}}</option>
+                </select>
                 <br>
-                <mat-label>Payment Date:</mat-label>
+
+                <mat-label class="mat-label-form"> Vendor Name:</mat-label>
                 <br>
-                <input type="date"/>
+                <!-- <input type="text" placeholder="Enter Name.."/> -->
+                <input [(ngModel)]="vendorField" style="color: black; font-weight: 500; font-size: 20px; margin-top: 5px;"value="{{list.name}}" disabled/>
                 <br>
-                <mat-label>Slot Number:</mat-label>
+                <mat-label class="mat-label-form">Payment Date:</mat-label>
                 <br>
-                <input placeholder="Slot No." type="text"/>
+                <input [(ngModel)]="dateField" type="date"/>
                 <br>
-                <mat-label>Price:</mat-label>
+                <mat-label class="mat-label-form">Slot Number:</mat-label>
                 <br>
-                <input type="number" value="0" onchange="setTwoNumberDecimal"/>
+                <input [(ngModel)]="slotField" placeholder="Slot No." value="{{list.slot}}" type="text" disabled/>
+                <br>
+                <mat-label class="mat-label-form">Price:</mat-label>
+                <br>
+                <input [(ngModel)]="priceField" type="number" value="0"/>
                 <!-- <input type="text"(blur)="transformAmount($event)" [(ngModel)]="formattedAmount"  /> -->
                 <br>
-                <button mat-raised-button color="primary" (click)="submit()" class="submitBtn">Submit</button>
-            </form>
-
-            <mat-form-field appearance="fill">
-                <mat-label>Input</mat-label>
-                <input matInput>
-              </mat-form-field>
+                <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Submit</button>
+            
         </mat-card>
        
 
