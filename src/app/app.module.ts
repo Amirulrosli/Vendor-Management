@@ -12,7 +12,8 @@ import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { HttpClientModule } from '@angular/common/http'
 import { DatePipe } from '@angular/common';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
-
+import { alertService } from './services/Alert.service';
+ 
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AddPaymentComponent } from './add-payment/add-payment.component';
   ],
 
   providers: [
-    DatePipe
+    DatePipe,
+    alertService
   ],
 
   schemas: [

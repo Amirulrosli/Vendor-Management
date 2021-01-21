@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { getMaxListeners } from 'process';
+import { alertService } from '../services/Alert.service';
+import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 
 @Component({
@@ -15,13 +17,69 @@ export class AddVendorComponent implements OnInit {
   opened = true
   date: any;
   value: any;
-  registrationForm: FormGroup
+  registrationForm: FormGroup;
+  name:any;
+  email:any;
+  phone:any;
+  IC_Number: any;
+  rent_Date: any;
+  forIC: any;
+  slot: any;
+  slotprice: any;
+
+
+  public errorMessages = {
+    name: [
+      { type: 'required', message: 'Name is required' },
+      { type: 'maxlength', message: 'Name cant be longer than 100 characters' }
+    ],
+    email: [
+      { type: 'required', message: 'Email is required' },
+      { type: 'pattern', message: 'Please enter a valid email address' }
+    ],
+    phone: [
+      { type: 'required', message: 'Phone number is required' },
+      { type: 'pattern', message: 'Please enter a valid phone number' },
+      { type: 'maxlength', message: 'Invalid Phone Number, Phone Number cannot be more than 7 number (BN)' },
+      { type: 'minlength', message: 'Invalid Phone Number, Phone Number cannot be less than 7 number (BN)' }
+    ],
+    IC_Number: [
+      { type: 'required', message: 'Identification number is required' },
+      { type: 'pattern', message: 'Please enter a valid IC number' },
+      { type: 'maxlength', message: 'Please enter 6 number for the Identification number' },
+      { type: 'minlength', message: 'Please enter 6 number for the Identification number' }
+    ],
+
+    rent_Date: [
+      { type: 'required', message: 'Date of registration is required' },
+    ],
+
+    forIC: [
+
+      { type: 'required', message: 'First two number is required' }
+
+    ],
+
+    slot: [
+
+      { type: 'required', message: 'Slot is required' }
+
+    ],
+    slotprice: [
+
+      { type: 'required', message: 'Slot price is required' }
+
+    ],
+    
+  };
   
   
 
   constructor(private router: Router,
     private profile : profileService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private formbuilder: FormBuilder,
+    private alert: alertService
     ) { 
 
     this.value = [
@@ -50,6 +108,19 @@ export class AddVendorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.registrationForm = this.formbuilder.group({
+      name: ['',[Validators.required,Validators.maxLength(100)]],
+      forIC: ['',[Validators.required]],
+      IC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
+      email: ['',[Validators.required]],
+      phone:['',[Validators.required]],
+      rent_Date: ['',[Validators.required]],
+      slot:['',[Validators.required]],
+      slotprice:['',[Validators.required]]
+    })
+
+    //, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'
 
     this.date = new Date();
     // let newDate = this.datePipe.transform(this.date,'dd-MM-yyyy')
@@ -86,8 +157,65 @@ export class AddVendorComponent implements OnInit {
     this.close = true;
   }
 
-  submit(){
+  async submit(){
+
+    if(!this.registrationForm.valid){
+      return;
+    } else {
+      const name = this.registrationForm.value.name;
+      const email = this.registrationForm.value.email;
+      const rent_Date = this.registrationForm.value.rent_Date;
+      const phone = this.registrationForm.value.phone;
+      const next_IC = this.registrationForm.value.IC_Number;
+      const forIC = this.registrationForm.value.forIC;
+      const IC_Number = forIC+""+next_IC;
+      const slot_Price = this.registrationForm.value.slotprice;
+      const slot = this.registrationForm.value.slot;
+
+      var profileModel = {
+        name: name,
+        email: email,
+        rent_Date: rent_Date,
+        phone: phone,
+        IC_Number: IC_Number,
+        slot_Price: slot_Price,
+        slot: slot
+      }
+
+      await this.profile.create(profileModel).subscribe(data=> {
+        console.log(data)  
+        this.name="";
+        this.email="";
+        this.phone="";
+        this.IC_Number="";
+        this.rent_Date="";
+        this.forIC="";
+        this.slot="";
+        this.slotprice="";
+        this.registrationForm.reset();
+        this.alert.successNotification();
+      },
+      error=> {
+        console.log(error)
+      }
+      )
+
+    }
     console.log("submit")
   }
+
+  // async showAlert(header:string, message:string){
+  //   const alert = await this.alert.create({
+
+  //     header,
+  //     message,
+  //     buttons: ["Ok"]
+
+  //   })
+
+  //   await alert.present()
+    
+
+  // }
 
 }
