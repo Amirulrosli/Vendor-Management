@@ -5,8 +5,10 @@ import { profileService } from '../services/profile.service';
 import { paymentService } from '../services/payment.service';
 // import { Profile } from '../services/Profile.model';
 // import { identifierModuleUrl } from '@angular/compiler';
-
+import { alertService } from '../services/Alert.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+
+
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 
@@ -29,10 +31,15 @@ export class AddPaymentComponent implements OnInit {
 
   info;
 
+  new_Date:Date;
+
   dateField:Date;
   priceField;
   slotField;
   vendorField;
+
+  formStatus: boolean ;
+
   
 
   list: any = []
@@ -43,7 +50,7 @@ export class AddPaymentComponent implements OnInit {
     private router: Router,
     private profile : profileService,
     private payment: paymentService,
-    private _snackBar: MatSnackBar
+    private alert: alertService,
     
     // private currencyPipe : CurrencyPipe
   ) {
@@ -91,39 +98,90 @@ export class AddPaymentComponent implements OnInit {
     this.close = true;
   }
 
-  submit(){
-    // this.date = new Date(this.dateField.setMonth(this.dateField.getMonth()+1));
-    // var newDate2 = new Date();
-    // console.log(newDate2)
+  addMonths(date, months) {
+    var d = date.getDate();
+    date.setMonth(date.getMonth() + +months);
+    if (date.getDate() != d) {
+      date.setDate(0);
+    }
+    return date;
+}
 
-    //need to parse date, date returns as a string.
+  submit(){
+    this.formStatus = true;
+  
+
+    var dueDate = this.addMonths(new Date (this.dateField),1);
+    console.log(dueDate);
+
 
     this.info = {
       payment_Date: this.dateField, 
-      due_Date: new Date(),  //change to calculation of next 30days
+      due_Date: dueDate,  //change to calculation of next 30days
       email: this.list.email,
       send_Email: false,
       rid: this.list.rid
     }
 
-    this.payment.create(this.info).subscribe(array => {
-      console.log(array);
+    //validation
+    if(this.selectField == null){
+      this.formStatus = false;
+      Swal.fire('Error', 'Please select an IC number!', 'error')
 
-      this.dateField=undefined;
-      this.selectField = "";
-      this.slotField = "";
-      this.priceField = undefined;
-      this.vendorField = "";
+    }
 
-      Swal.fire('Hi', 'We have been informed!', 'success')
-      // this._snackBar.open("Data updated", "OK", {
-      //   duration: 10000,
-      // });
+    if(this.dateField == null){
+      this.formStatus = false;
+      Swal.fire('Error', 'Please enter a valid date!', 'error')
 
-    },error => {
-      console.log(error + "salah bui")
-    });
+    }
+
+    if(this.priceField == null){
+      this.formStatus = false;
+      Swal.fire('Error', 'Please enter a price!', 'error')
+
+    }
+
+    if(this.priceField == null && this.dateField == null && this.selectField == null){
+      this.formStatus = false;
+      this.failed()
+    }
+
+    // if (this.formStatus = false) {
+    //   this.failed()
+    // }
+    
+    if(this.formStatus == true){
+      this.payment.create(this.info).subscribe(array => {
+        console.log(array);
+  
+        this.dateField=undefined;
+        this.selectField = "";
+        this.slotField = "";
+        this.priceField = undefined;
+        this.vendorField = "";
+  
+        // Swal.fire('Hi', 'We have been informed!', 'success')
+        this.alert.successNotification();
+        
+  
+      },error => {
+        console.log(error + "salah bui")
+      });
+    }
+    
+    
+
+    
   }
+
+  failed(){
+    
+    Swal.fire('Error', 'Please complete all of the fields!', 'error')
+
+  }
+
+ 
 
   // select(id){
   //   this.list = this.retrieveData[id];
