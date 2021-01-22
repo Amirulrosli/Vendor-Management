@@ -6,6 +6,7 @@ import { getMaxListeners } from 'process';
 import { alertService } from '../services/Alert.service';
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
   selector: 'app-add-vendor',
@@ -26,7 +27,7 @@ export class AddVendorComponent implements OnInit {
   forIC: any;
   slot: any;
   slotprice: any;
-
+  ICData: any;
 
   public errorMessages = {
     name: [
@@ -159,49 +160,77 @@ export class AddVendorComponent implements OnInit {
 
   async submit(){
 
+    
+
     if(!this.registrationForm.valid){
+      Swal.fire("Unsuccessful","Please Check and try again!",'error')
       return;
     } else {
+
+
       const name = this.registrationForm.value.name;
       const email = this.registrationForm.value.email;
       const rent_Date = this.registrationForm.value.rent_Date;
       const phone = this.registrationForm.value.phone;
       const next_IC = this.registrationForm.value.IC_Number;
       const forIC = this.registrationForm.value.forIC;
-      const IC_Number = forIC+""+next_IC;
+      const IC_Number = forIC+"-"+next_IC;
       const slot_Price = this.registrationForm.value.slotprice;
       const slot = this.registrationForm.value.slot;
 
-      var profileModel = {
-        name: name,
-        email: email,
-        rent_Date: rent_Date,
-        phone: phone,
-        IC_Number: IC_Number,
-        slot_Price: slot_Price,
-        slot: slot
-      }
+      this.profile.findByIC(IC_Number).subscribe(async data=> {
+        console.log(data)
+        this.ICData = data;
 
-      await this.profile.create(profileModel).subscribe(data=> {
-        console.log(data)  
-        this.name="";
-        this.email="";
-        this.phone="";
-        this.IC_Number="";
-        this.rent_Date="";
-        this.forIC="";
-        this.slot="";
-        this.slotprice="";
-        this.registrationForm.reset();
-        this.alert.successNotification();
-      },
-      error=> {
-        console.log(error)
-      }
-      )
+        if (this.ICData.length == 0) {
 
+          var profileModel = {
+            name: name,
+            email: email,
+            rent_Date: rent_Date,
+            phone: phone,
+            IC_Number: IC_Number,
+            slot_Price: slot_Price,
+            slot: slot
+          }
+        
+    
+        await this.profile.create(profileModel).subscribe(data=> {
+          console.log(data)  
+          this.name="";
+          this.email="";
+          this.phone="";
+          this.IC_Number="";
+          this.rent_Date="";
+          this.forIC="";
+          this.slot="";
+          this.slotprice="";
+          this.registrationForm.reset();
+          Swal.fire('Success','Data have been saved','success')
+        },
+        error=> {
+          console.log(error)
+          Swal.fire('Please try again','Cannot Create vendor, Please Try Again!','error')
+        })
+
+        } else {
+
+          Swal.fire('Please try again!','IC Number is already existed','error')
+          return;
+
+        }
+        
+      }, async err=> {
+
+      
+
+      });
+
+      
+      
+      
     }
-    console.log("submit")
+   
   }
 
   // async showAlert(header:string, message:string){

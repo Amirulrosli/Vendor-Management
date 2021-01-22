@@ -8,6 +8,10 @@ export class alertService {
       successNotification(){
         Swal.fire('Hi', 'We have been informed!', 'success')
       }
+
+      failedNotification(){
+        Swal.fire('Failed','Please check and try again','error')
+      }
       
       alertConfirmation(){
         Swal.fire({

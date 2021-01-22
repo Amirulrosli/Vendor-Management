@@ -36,6 +36,6 @@ export class profileService {
     }
 
     findByIC(IC): Observable<any> {
-        return this.http.get(`${baseURL}?IC_Number=${IC}`)
+        return this.http.get(`${baseURL}/IC/${IC}`)
     }
 }
