@@ -52,7 +52,7 @@
                 <mat-label class="mat-label-form"> Vendor Name:</mat-label>
                 <br>
                 <!-- <input type="text" placeholder="Enter Name.."/> -->
-                <input [(ngModel)]="vendorField" style="color: black; font-weight: 500; font-size: 20px; margin-top: 5px;"value="{{list.name}}" disabled/>
+                <input [(ngModel)]="vendorField" placeholder="vendor name" style="color: black; font-weight: 500; font-size: 20px; margin-top: 5px;"value="{{list.name}}" disabled/>
                 <br>
                 <mat-label class="mat-label-form">Payment Date:</mat-label>
                 <br>
@@ -64,7 +64,7 @@
                 <br>
                 <mat-label class="mat-label-form">Price:</mat-label>
                 <br>
-                <input [(ngModel)]="priceField" type="number" value="0"/>
+                <input placeholder="$" [(ngModel)]="priceField" type="number"/>
                 <!-- <input type="text"(blur)="transformAmount($event)" [(ngModel)]="formattedAmount"  /> -->
                 <br>
                 <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Submit</button>

@@ -24,7 +24,7 @@ export class profileService {
     }
 
     update(id,data): Observable<any> {
-        return this.http.post(`${baseURL}/${id}`,data)
+        return this.http.put(`${baseURL}/update/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -40,6 +40,6 @@ export class profileService {
     }
 
     updateLatestPayment(id, data): Observable<any> {
-        return this.http.post(`${baseURL}/${id}`,data)
+        return this.http.put(`${baseURL}/${id}`,data)
     }
 }

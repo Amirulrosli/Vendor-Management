@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { DatePipe } from '@angular/common';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { alertService } from './services/Alert.service';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
  
 
 @NgModule({
@@ -20,7 +21,8 @@ import { alertService } from './services/Alert.service';
     AppComponent,
     DahsboardComponent,
     AddVendorComponent,
-    AddPaymentComponent
+    AddPaymentComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -100,6 +100,8 @@ export class AddPaymentComponent implements OnInit {
 
   submit(){
     this.formStatus = true;
+
+    console.log(this.priceField)
   
     //add one month to date
     var dueDate = this.addMonths(new Date (this.dateField),1);
@@ -109,7 +111,8 @@ export class AddPaymentComponent implements OnInit {
       due_Date: dueDate,  
       email: this.list.email,
       send_Email: false,
-      rid: this.list.rid
+      rid: this.list.rid,
+      price: this.priceField
     }
 
     this.lastPayment ={
@@ -117,6 +120,8 @@ export class AddPaymentComponent implements OnInit {
     }
 
     this.list.latest_Payment_Date = this.dateField;
+    this.list.latest_Payment = this.priceField;
+ 
 
     //validation
     if(this.selectField == null){

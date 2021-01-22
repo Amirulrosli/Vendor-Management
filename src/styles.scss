@@ -59,3 +59,9 @@ mat-sidenav {
       cursor: pointer;
   }
 
+  .custom-modalbox {
+    mat-dialog-container {
+        background-color: white;
+    }
+}
+

@@ -43,7 +43,7 @@
  
       <mat-card class="search-card">
         <div class="search-bar">
-          <input type="Text" placeholder="Search for IC"/>
+          <input [(ngModel)]="searchKey" (keyup)="applyFilter()" type="Text" placeholder="Search for IC"/>
           <button mat-raised-button class="submitBtn">Search</button>
         </div>
       </mat-card>

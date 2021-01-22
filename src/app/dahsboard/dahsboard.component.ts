@@ -1,9 +1,11 @@
 import { isEmptyExpression } from '@angular/compiler';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 
@@ -18,6 +20,7 @@ export class DahsboardComponent implements OnInit {
   retrieveData:any;
   retrieveDataLength:any;
   list:Profile[];
+  searchKey: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -38,7 +41,8 @@ export class DahsboardComponent implements OnInit {
   
   constructor(
     private router: Router,
-    private profiles: profileService
+    private profiles: profileService,
+    private dialog: MatDialog
   ) { 
 
     this.close = false;
@@ -83,6 +87,10 @@ export class DahsboardComponent implements OnInit {
     this.close = true;
   }
 
+  applyFilter(){
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
   onDelete(id){
     console.log(id)
 
@@ -93,6 +101,20 @@ export class DahsboardComponent implements OnInit {
     },err=> {
       console.log(err)
     })
+  }
+
+  onEdit(data){
+
+    this.dialog.open(EditProfileComponent, {
+      width: "800px",
+      height: "90%",
+      panelClass:'custom-modalbox',
+      data: {
+
+        dataKey: data
+      }
+    });
+
   }
 
 
