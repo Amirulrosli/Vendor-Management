@@ -38,4 +38,8 @@ export class profileService {
     findByIC(IC): Observable<any> {
         return this.http.get(`${baseURL}/IC/${IC}`)
     }
+
+    updateLatestPayment(id, data): Observable<any> {
+        return this.http.post(`${baseURL}/${id}`,data)
+    }
 }

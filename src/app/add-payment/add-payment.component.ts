@@ -1,15 +1,9 @@
-// import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { profileService } from '../services/profile.service';
 import { paymentService } from '../services/payment.service';
-// import { Profile } from '../services/Profile.model';
-// import { identifierModuleUrl } from '@angular/compiler';
 import { alertService } from '../services/Alert.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
-
-import {MatSnackBar} from '@angular/material/snack-bar';
 
 
 
@@ -30,6 +24,7 @@ export class AddPaymentComponent implements OnInit {
   selectField;
 
   info;
+  lastPayment;
 
   new_Date:Date;
 
@@ -73,14 +68,10 @@ export class AddPaymentComponent implements OnInit {
       
       
       console.log(array)
-      // this.list = array.map(item => {
-      //   console.log(item)
-      // })
+      
       
     })
 
-    // var newDate2 = new Date();
-    // console.log(newDate2)
   }
 
   
@@ -110,18 +101,22 @@ export class AddPaymentComponent implements OnInit {
   submit(){
     this.formStatus = true;
   
-
+    //add one month to date
     var dueDate = this.addMonths(new Date (this.dateField),1);
-    console.log(dueDate);
-
-
+    
     this.info = {
       payment_Date: this.dateField, 
-      due_Date: dueDate,  //change to calculation of next 30days
+      due_Date: dueDate,  
       email: this.list.email,
       send_Email: false,
       rid: this.list.rid
     }
+
+    this.lastPayment ={
+      latest_Payment_Date: this.dateField
+    }
+
+    this.list.latest_Payment_Date = this.dateField;
 
     //validation
     if(this.selectField == null){
@@ -146,12 +141,14 @@ export class AddPaymentComponent implements OnInit {
       this.formStatus = false;
       this.failed()
     }
-
-    // if (this.formStatus = false) {
-    //   this.failed()
-    // }
     
     if(this.formStatus == true){
+
+       //update latest payment
+       this.profile.update(this.list.id,this.list).subscribe(array =>{
+        console.log(array)
+      })
+
       this.payment.create(this.info).subscribe(array => {
         console.log(array);
   
@@ -160,8 +157,11 @@ export class AddPaymentComponent implements OnInit {
         this.slotField = "";
         this.priceField = undefined;
         this.vendorField = "";
+
+        console.log(this.list.id)
+     
   
-        // Swal.fire('Hi', 'We have been informed!', 'success')
+      
         this.alert.successNotification();
         
   
