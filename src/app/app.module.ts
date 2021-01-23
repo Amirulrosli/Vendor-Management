@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { alertService } from './services/Alert.service';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
  
 
 @NgModule({
@@ -22,7 +23,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     DahsboardComponent,
     AddVendorComponent,
     AddPaymentComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    VendorProfileComponent
   ],
   imports: [
     BrowserModule,

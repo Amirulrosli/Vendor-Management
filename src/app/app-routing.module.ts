@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { DahsboardComponent } from "./dahsboard/dahsboard.component"
+import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 const routes: Routes = [
   {
     path: 'dashboard', component: DahsboardComponent
@@ -12,6 +13,8 @@ const routes: Routes = [
   },
   {
     path: 'add-payment', component: AddPaymentComponent
+  },{
+    path: 'vendor-profile/:rid', component: VendorProfileComponent
   }
 ];
 
@@ -24,5 +27,6 @@ export const routingComponents =
 [
   DahsboardComponent,
   AddVendorComponent,
-  AddPaymentComponent
+  AddPaymentComponent,
+  VendorProfileComponent
 ]

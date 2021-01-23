@@ -1,9 +1,8 @@
-
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="side" [(opened)]="opened">
         <div class="nav-icon" tappable (click)="goToDashboard()">
-        <mat-icon class="active">dashboard</mat-icon>
-        <mat-label class="active">Dashboard</mat-label>
+        <mat-icon>dashboard</mat-icon>
+        <mat-label>Dashboard</mat-label>
         </div>
 
         <div class="nav-icon" routerLink="/add-vendor">
@@ -12,8 +11,8 @@
         </div>
 
         <div class="nav-icon" routerLink="/add-payment">
-            <mat-icon>attach_money</mat-icon>
-            <mat-label>Payment</mat-label>
+            <mat-icon class="active">attach_money</mat-icon>
+            <mat-label class="active">Payment</mat-label>
         </div>
 
         <div class="nav-icon">
@@ -30,34 +29,34 @@
 
     </mat-sidenav>
     <mat-sidenav-content style="background-color:white">
-        
+        <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
 
-      <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+            <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
+            <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
+            <span class="titleTxt">Add Payment</span>
+            <mat-icon class="notification">notifications</mat-icon>
 
-        <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
-        <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
-        <span class="titleTxt">Dashboard</span>
-        <mat-icon class="notification">notifications</mat-icon>
+        </mat-toolbar>
 
-      </mat-toolbar>
- 
-      <mat-card class="search-card">
-        <div class="search-bar">
-          <input [(ngModel)]="searchKey" (keyup)="applyFilter()" type="Text" placeholder="Search for IC"/>
-          <button mat-raised-button class="submitBtn">Search</button>
+        <div class="divDesign" *ngIf="list!==undefined">
+            
+            <mat-icon class="accountIcon">account_circle</mat-icon>
+            <br>
+            <h2 style="text-align: center; margin-top: 100px;">{{list.name}}</h2>
+
+
         </div>
-      </mat-card>
 
-      <div class ="mat-elevation-z8" style="margin-top: 20px;">
+         <div class ="mat-elevation-z8" style="margin-top: 20px;">
         <mat-table [dataSource]="listData" matSort>
           
             <ng-container  matColumnDef="IC_Number">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
-                <mat-cell *matCellDef="let element" >{{element.IC_Number}}</mat-cell>
+                <!-- <mat-cell *matCellDef="let element" >{{element.IC_Number}}</mat-cell> -->
             </ng-container>
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                <mat-cell *matCellDef="let element" >{{element.name}}</mat-cell>
+                <!-- <mat-cell *matCellDef="let element" >{{element.name}}</mat-cell> -->
             </ng-container>
             <!-- <ng-container matColumnDef="gender">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
@@ -65,7 +64,7 @@
           </ng-container> -->
             <ng-container matColumnDef="email">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
-                <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
+                <!-- <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell> -->
             </ng-container>
     
             <!-- <ng-container matColumnDef="dob">
@@ -74,15 +73,15 @@
             </ng-container> -->
             <ng-container matColumnDef="phone">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</mat-header-cell>
-                <mat-cell *matCellDef="let element" >{{element.phone}}</mat-cell>
+                <!-- <mat-cell *matCellDef="let element" >{{element.phone}}</mat-cell> -->
             </ng-container>
             <ng-container matColumnDef="latest_Payment">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Latest Payment</mat-header-cell>
-                <mat-cell *matCellDef="let element" >{{element.latest_Payment}}</mat-cell>
+                <!-- <mat-cell *matCellDef="let element" >{{element.latest_Payment}}</mat-cell> -->
             </ng-container>
             <ng-container matColumnDef="overdue">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
-                <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
+                <!-- <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell> -->
             </ng-container>
             <!-- <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
@@ -110,13 +109,46 @@
                 </mat-footer-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="viewing(row.rid)"></mat-row>
+              <!-- <mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="viewing(row.id)"></mat-row> -->
               <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
             </mat-table>
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
           </div>
+     
+        <mat-card class="search-card" *ngIf="list!==undefined">
+            
 
-          <!-- routerLink="/vendor-profile/row.id" -->
+                <!-- <mat-label class="mat-label-form">IC number:</mat-label> -->
+                <br>
+
+                <!-- <select [(ngModel)]="selectField" placeholder="Select IC Number" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
+                    <option *ngFor="let data of retrieveData" value="{{data.id}}">{{data.IC_Number}}</option>
+                </select> -->
+                <br>
+
+                <!-- <mat-label class="mat-label-form"> Vendor Name:</mat-label> -->
+                <br>
+                <p style="color: black; text-align: center;">{{list.IC_Number}}</p>
+                <!-- <input type="text" placeholder="Enter Name.."/> -->
+                <!-- <input [(ngModel)]="vendorField" placeholder="vendor name" style="color: black; font-weight: 500; font-size: 20px; margin-top: 5px;"value="{{list.name}}" disabled/> -->
+                <br>
+                <!-- <mat-label class="mat-label-form">Payment Date:</mat-label> -->
+                <br>
+                <!-- <input [(ngModel)]="dateField" type="date"/> -->
+                <br>
+                <!-- <mat-label class="mat-label-form">Slot Number:</mat-label> -->
+                <br>
+                <!-- <input [(ngModel)]="slotField" placeholder="Slot No." value="{{list.slot}}" type="text" disabled/> -->
+                <br>
+                <!-- <mat-label class="mat-label-form">Price:</mat-label> -->
+                <br>
+                <!-- <input placeholder="$" [(ngModel)]="priceField" type="number"/> -->
+                <!-- <input type="text"(blur)="transformAmount($event)" [(ngModel)]="formattedAmount"  /> -->
+                <br>
+                <!-- <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Submit</button> -->
+            
+        </mat-card>
+       
 
 
 
@@ -142,6 +174,14 @@
 
 
 
+
+
+
+
+
+
+
+        
     </mat-sidenav-content>
-  
-  </mat-sidenav-container>
+    </mat-sidenav-container>
+
