@@ -36,6 +36,6 @@ export class paymentService {
     }
 
     findByRid(rid): Observable<any> {
-        return this.http.get(`${baseURL}?rid=${rid}`)
+        return this.http.get(`${baseURL}/rid/${rid}`)
     }
 }

@@ -42,4 +42,8 @@ export class profileService {
     updateLatestPayment(id, data): Observable<any> {
         return this.http.put(`${baseURL}/${id}`,data)
     }
+
+    findByRid(rid): Observable<any> {
+        return this.http.get(`${baseURL}/rid/${rid}`)
+    }
 }

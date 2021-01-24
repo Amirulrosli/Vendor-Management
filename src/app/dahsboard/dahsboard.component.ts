@@ -112,6 +112,11 @@ export class DahsboardComponent implements OnInit {
     })
   }
 
+  viewing(id){
+    this.router.navigate(["vendor-profile/"+id])
+    console.log(id)
+  }
+
   onEdit(data){
 
     this.dialog.open(EditProfileComponent, {

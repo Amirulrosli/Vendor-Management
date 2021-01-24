@@ -16,6 +16,8 @@ import { alertService } from './services/Alert.service';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import {MatSlidePanelModule} from 'ngx-mat-slide-panel';
 import { NotificationComponent } from './notification/notification.component'
+import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
+ 
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { NotificationComponent } from './notification/notification.component'
     AddVendorComponent,
     AddPaymentComponent,
     EditProfileComponent,
-    NotificationComponent
+    NotificationComponent,
+    VendorProfileComponent
   ],
   imports: [
     BrowserModule,
