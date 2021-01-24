@@ -10,6 +10,8 @@ import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 import { NotificationComponent } from '../notification/notification.component';
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-dahsboard',
@@ -45,7 +47,9 @@ export class DahsboardComponent implements OnInit {
     private router: Router,
     private profiles: profileService,
     private dialog: MatDialog,
-    private slidePanel: MatSlidePanel
+    private slidePanel: MatSlidePanel,
+    private datePipe: DatePipe
+
   ) { 
 
     this.close = false;
@@ -65,6 +69,17 @@ export class DahsboardComponent implements OnInit {
           ...item as Profile
         }
       });
+
+      for (let i = 0; i<this.list.length;i++){
+        const paymentOldDate = this.list[i].latest_Payment_Date;
+        // const dueOldDate = this.paymentList[i].due_Date;
+
+        let payment = this.datePipe.transform(paymentOldDate,'dd-MM-yyyy')
+        // let due = this.datePipe.transform(dueOldDate,'dd-MM-yyyy')
+
+        this.list[i].latest_Payment_Date = payment;
+        // this.paymentList[i].due_Date = due;
+      }
 
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;

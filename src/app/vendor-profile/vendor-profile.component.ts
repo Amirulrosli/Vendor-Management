@@ -39,10 +39,10 @@ export class VendorProfileComponent implements OnInit {
    displayedColumns: string[] = [
 
     'payment_Date',
-    'due_Date',
+    // 'due_Date',
     'price',
-    'send_Email',
-    'email'
+    // 'send_Email',
+    // 'email'
   
   ];
 
@@ -104,6 +104,8 @@ export class VendorProfileComponent implements OnInit {
     this.profiles.findByRid(this.id).subscribe(array=> {
       this.retrieveData = array
       this.username = this.retrieveData[0].name;
+      this.slot = this.retrieveData[0].slot
+      this.email = this.retrieveData[0].email
       console.log(this.username)
       console.log(this.retrieveData)
     })
