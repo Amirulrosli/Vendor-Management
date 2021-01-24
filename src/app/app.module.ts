@@ -14,7 +14,8 @@ import { DatePipe } from '@angular/common';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { alertService } from './services/Alert.service';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
- 
+import {MatSlidePanelModule} from 'ngx-mat-slide-panel';
+import { NotificationComponent } from './notification/notification.component'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     DahsboardComponent,
     AddVendorComponent,
     AddPaymentComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     MaterialModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSlidePanelModule
     
   ],
 
