@@ -46,4 +46,5 @@ export class profileService {
     findByRid(rid): Observable<any> {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
+    
 }

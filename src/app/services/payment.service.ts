@@ -35,7 +35,7 @@ export class paymentService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    findByRid(rid): Observable<any> {
+    findAllbyRID(rid): Observable<any> {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 }

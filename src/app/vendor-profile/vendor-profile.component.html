@@ -41,21 +41,26 @@
         <div class="divDesign" *ngIf="list!==undefined">
             
             <mat-icon class="accountIcon">account_circle</mat-icon>
+
             <br>
-            <h2 style="text-align: center; margin-top: 100px;">{{list.name}}</h2>
+            <h2 style="text-align: center; margin-top: 150px; font-size: 50px;" >McDonalds Inc.</h2>
 
 
         </div>
 
+        <h1 style="color: #580092; text-align: center; margin-top: 40px; font-size: 40px; margin-bottom: 40px;">Payment History</h1>
+
          <div class ="mat-elevation-z8" style="margin-top: 20px;">
+
+       
         <mat-table [dataSource]="listData" matSort>
           
-            <ng-container  matColumnDef="IC_Number">
-                <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
+            <ng-container  matColumnDef="payment_Date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
                 <!-- <mat-cell *matCellDef="let element" >{{element.IC_Number}}</mat-cell> -->
             </ng-container>
-            <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+            <ng-container matColumnDef="due_Date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
                 <!-- <mat-cell *matCellDef="let element" >{{element.name}}</mat-cell> -->
             </ng-container>
             <!-- <ng-container matColumnDef="gender">
@@ -115,39 +120,6 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
           </div>
      
-        <mat-card class="search-card" *ngIf="list!==undefined">
-            
-
-                <!-- <mat-label class="mat-label-form">IC number:</mat-label> -->
-                <br>
-
-                <!-- <select [(ngModel)]="selectField" placeholder="Select IC Number" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
-                    <option *ngFor="let data of retrieveData" value="{{data.id}}">{{data.IC_Number}}</option>
-                </select> -->
-                <br>
-
-                <!-- <mat-label class="mat-label-form"> Vendor Name:</mat-label> -->
-                <br>
-                <p style="color: black; text-align: center;">{{list.IC_Number}}</p>
-                <!-- <input type="text" placeholder="Enter Name.."/> -->
-                <!-- <input [(ngModel)]="vendorField" placeholder="vendor name" style="color: black; font-weight: 500; font-size: 20px; margin-top: 5px;"value="{{list.name}}" disabled/> -->
-                <br>
-                <!-- <mat-label class="mat-label-form">Payment Date:</mat-label> -->
-                <br>
-                <!-- <input [(ngModel)]="dateField" type="date"/> -->
-                <br>
-                <!-- <mat-label class="mat-label-form">Slot Number:</mat-label> -->
-                <br>
-                <!-- <input [(ngModel)]="slotField" placeholder="Slot No." value="{{list.slot}}" type="text" disabled/> -->
-                <br>
-                <!-- <mat-label class="mat-label-form">Price:</mat-label> -->
-                <br>
-                <!-- <input placeholder="$" [(ngModel)]="priceField" type="number"/> -->
-                <!-- <input type="text"(blur)="transformAmount($event)" [(ngModel)]="formattedAmount"  /> -->
-                <br>
-                <!-- <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Submit</button> -->
-            
-        </mat-card>
        
 
 

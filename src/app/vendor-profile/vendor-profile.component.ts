@@ -36,12 +36,14 @@ export class VendorProfileComponent implements OnInit {
   opened = true
   nameField;
 
+  paraName;
+
   listData: MatTableDataSource<any>;
 
-   displayedColumns: string[] = [
+  displayedColumns: string[] = [
   
-    'IC_Number',
-    'name',
+    'payment_Date',
+    'due_Date'
   
   ];
 
@@ -63,21 +65,25 @@ export class VendorProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.payment.findByRid(this.id).subscribe(paymentArray => {
+    this.payment.findAllbyRID(this.id).subscribe(paymentArray => {
       this.paymentHistory = paymentArray
-      console.log(paymentArray)
+      console.log(this.paymentHistory)
     })
 
     
     this.profiles.findByRid(this.id).subscribe(array=> {
-      this.retrieveData = array
+      // this.retrieveData = array
       // this.retrieveDataLength = this.retrieveData.length;
       // console.log(this.retrieveDataLength)
       console.log(array)
+      // console.log(this.retrieveData.name)
+
+      // this.paraName = "fuck"
 
       this.list = array
     
       console.log(this.list)
+      
       // this.list = array.map(item=> {
       //   console.log(item)
       //   return{
