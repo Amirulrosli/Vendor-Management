@@ -189,7 +189,7 @@ export class AddVendorComponent implements OnInit {
             rent_Date: rent_Date,
             phone: phone,
             IC_Number: IC_Number,
-            slot_Price: slot_Price,
+            price: slot_Price,
             slot: slot
           }
         
