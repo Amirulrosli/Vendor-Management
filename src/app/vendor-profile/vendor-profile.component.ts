@@ -7,6 +7,8 @@ import { profileService } from '../services/profile.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { paymentService } from '../services/payment.service';
+import { Payment } from '../services/Payment.model';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-vendor-profile',
@@ -18,32 +20,29 @@ export class VendorProfileComponent implements OnInit {
   
 
   id;
+  username: any;
+  slot:any;
+  email:any;
   retrieveData:any;
   paymentHistory:any;
+  paymentList: Payment[];
+  paymentData: any;
   retrieveDataLength:any;
   list:any[];
-  searchKey: any;
+  close;
+  opened = true
   
-
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  dateField:Date;
-  priceField;
-  slotField;
-  vendorField;
-  close;
-  opened = true
-  nameField;
 
-  paraName;
+   displayedColumns: string[] = [
 
-  listData: MatTableDataSource<any>;
-
-  displayedColumns: string[] = [
-  
     'payment_Date',
-    'due_Date'
+    'due_Date',
+    'price',
+    'send_Email',
+    'email'
   
   ];
 
@@ -54,49 +53,59 @@ export class VendorProfileComponent implements OnInit {
     private router: Router,
     private profiles: profileService,
     private route: ActivatedRoute,
-    private payment: paymentService
+    private payment: paymentService,
+    private datePipe: DatePipe
 
   ) {
     const compId = this.route.snapshot.paramMap.get('rid')
     this.id = compId
     this.close = false;
-    console.log(this.id)
+
    }
 
   ngOnInit(): void {
 
-    this.payment.findAllbyRID(this.id).subscribe(paymentArray => {
-      this.paymentHistory = paymentArray
-      console.log(this.paymentHistory)
-    })
+    this.payment.findByRid(this.id).subscribe(data => {
+      this.paymentHistory = data;
+ 
+
+      this.paymentList = this.paymentHistory.map(item=> {
+        return{
+          id: item.id,
+          ...item as Payment
+        }
+      });
+
+
+      console.log(this.paymentList)
+
+      for (let i = 0; i<this.paymentList.length;i++){
+        const paymentOldDate = this.paymentList[i].payment_Date;
+        const dueOldDate = this.paymentList[i].due_Date;
+
+        let payment = this.datePipe.transform(paymentOldDate,'dd-MM-yyyy')
+        let due = this.datePipe.transform(dueOldDate,'dd-MM-yyyy')
+
+        this.paymentList[i].payment_Date = payment;
+        this.paymentList[i].due_Date = due;
+      }
+
+   
+
+      this.paymentData = new MatTableDataSource(this.paymentList);
+      this.paymentData.sort = this.sort;
+      this.paymentData.paginator = this.paginator;
+
+
+
+    });
 
     
     this.profiles.findByRid(this.id).subscribe(array=> {
-      // this.retrieveData = array
-      // this.retrieveDataLength = this.retrieveData.length;
-      // console.log(this.retrieveDataLength)
-      console.log(array)
-      // console.log(this.retrieveData.name)
-
-      // this.paraName = "fuck"
-
-      this.list = array
-    
-      console.log(this.list)
-      
-      // this.list = array.map(item=> {
-      //   console.log(item)
-      //   return{
-      //     rid: item.this.rid,
-      //     ...item as Profile
-      //   }
-      // });
-
-      this.listData = new MatTableDataSource(this.list);
-      this.listData.sort = this.sort;
-      this.listData.paginator = this.paginator;
-
-
+      this.retrieveData = array
+      this.username = this.retrieveData[0].name;
+      console.log(this.username)
+      console.log(this.retrieveData)
     })
 
   }

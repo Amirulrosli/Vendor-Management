@@ -4,6 +4,7 @@ import { profileService } from '../services/profile.service';
 import { paymentService } from '../services/payment.service';
 import { alertService } from '../services/Alert.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -46,7 +47,7 @@ export class AddPaymentComponent implements OnInit {
     private profile : profileService,
     private payment: paymentService,
     private alert: alertService,
-    
+    private datePipe: DatePipe
     // private currencyPipe : CurrencyPipe
   ) {
     this.close = false;
@@ -105,6 +106,9 @@ export class AddPaymentComponent implements OnInit {
   
     //add one month to date
     var dueDate = this.addMonths(new Date (this.dateField),1);
+    let latest_dueDate = this.datePipe.transform(dueDate, 'dd-MM-yyyy')
+
+
     
     this.info = {
       payment_Date: this.dateField, 

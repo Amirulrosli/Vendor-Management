@@ -5,7 +5,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import { NotificationComponent } from '../notification/notification.component';
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 
@@ -42,7 +44,8 @@ export class DahsboardComponent implements OnInit {
   constructor(
     private router: Router,
     private profiles: profileService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private slidePanel: MatSlidePanel
   ) { 
 
     this.close = false;
@@ -81,6 +84,12 @@ export class DahsboardComponent implements OnInit {
 
   openNav(){
     this.close = false;
+  }
+
+  openNotification(){
+    this.slidePanel.open(NotificationComponent, {
+      slideFrom:'right'
+    })
   }
 
   closeNav(){

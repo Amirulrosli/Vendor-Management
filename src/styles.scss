@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~ngx-mat-slide-panel/src/lib/mat-slide-panel-theme.scss';
+ 
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -63,5 +66,12 @@ mat-sidenav {
     mat-dialog-container {
         background-color: white;
     }
+}
+
+
+mat-slide-panel-container{
+    background-color: white;
+    width: 300px;
+    padding: 0;
 }
 
