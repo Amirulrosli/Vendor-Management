@@ -74,7 +74,7 @@ export class VendorProfileComponent implements OnInit {
 
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
-      this.nextDate = this.paymentHistory[0].due_Date
+      this.nextDate = this.retrieveData[0].latest_Due_Date
       this.nextPayment = this.datePipe.transform(this.nextDate,'MM/dd/yyyy') 
 
       this.dateToday = new Date()
