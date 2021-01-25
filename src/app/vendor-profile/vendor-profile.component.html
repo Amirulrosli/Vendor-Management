@@ -53,93 +53,126 @@
 
         </div>
 
-        <div class="titles">
+        <!-- <div class="titles">Vendor Details</div> -->
+ 
+        <!-- <mat-card class="search-card titles">
             <h1>Vendor Details</h1>
             <p>Contact No:</p>
             <p>IC No:</p>
             <p>Slot:</p>
             <br>
-            <p>Your next Payment will be: {{nextPayment}}</p>
-            <p>Overdue: {{overdueDays}} days</p>
+        </mat-card> -->
+
+        
+       
+
+        <!-- <br>
+        <br>
+        <br> -->
+
+    
+           
+    
+
+
+        
+
+        <!-- <div style="float: left;"> <h1 class="titles">Payment History</h1></div>
+        <div style="float: right;"><h1 class="titles" >Vendor Details</h1></div> -->
+        
+        <div style="float: left; width: 50%;">
+            <h1 class="titles">Payment History</h1>
+            <div class ="mat-elevation-z8" >
+
+           
             
+                <mat-table [dataSource]="paymentData" matSort>
+                  
+                    <ng-container  matColumnDef="payment_Date">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
+                        <mat-cell *matCellDef="let element" >{{element.payment_Date}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="due_Date">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
+                        <mat-cell *matCellDef="let element" >{{element.due_Date}}</mat-cell>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="gender">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
+                      <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
+                  </ng-container> -->
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
+                        <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
+                    </ng-container>
+            
+                    <!-- <ng-container matColumnDef="dob">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Date of Birth</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.dob}}</mat-cell>
+                    </ng-container> -->
+                    <ng-container matColumnDef="price">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</mat-header-cell>
+                        <mat-cell *matCellDef="let element" >${{element.price}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="send_Email">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Send</mat-header-cell>
+                        <mat-cell *matCellDef="let element" >{{element.send_Email}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="overdue">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
+                        <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="id">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+                  </ng-container> -->
+            
+            
+            
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <button mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
+                       
+                         
+                          <button mat-icon-button color="warn" (click)="onDelete(row.id)"><mat-icon>delete</mat-icon></button>
+                        
+                        </mat-cell>
+            
+                        
+                      </ng-container>
+            
+                      <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                          No data available.
+                        </mat-footer-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="viewing(row.rid)"></mat-row>
+                      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
+                    </mat-table>
 
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+                  </div>
         </div>
 
+        <div style="float: right; width: 50%;">
 
-        <div class="titles">
-            <h1 >Payment History</h1>
+            <h1 class="titles">Vendor Details</h1>
+
+            <mat-card class="divCard">
+                <p>Next Payment will be on: {{nextPayment}}</p>
+                <p>Overdue: {{finalOverdue}} days</p>
+            </mat-card>
+
+
         </div>
+       
 
-        
 
-        <div class ="mat-elevation-z8" style="margin-top: 20px;">
-            <mat-table [dataSource]="paymentData" matSort>
               
-                <ng-container  matColumnDef="payment_Date">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.payment_Date}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="due_Date">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.due_Date}}</mat-cell>
-                </ng-container>
-                <!-- <ng-container matColumnDef="gender">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
-                  <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
-              </ng-container> -->
-                <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
-                </ng-container>
-        
-                <!-- <ng-container matColumnDef="dob">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Date of Birth</mat-header-cell>
-                    <mat-cell *matCellDef="let element">{{element.dob}}</mat-cell>
-                </ng-container> -->
-                <ng-container matColumnDef="price">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >${{element.price}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="send_Email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Send</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.send_Email}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="overdue">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
-                </ng-container>
-                <!-- <ng-container matColumnDef="id">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
-                  <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
-              </ng-container> -->
-        
-        
-        
-                <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      <button mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
-                   
-                     
-                      <button mat-icon-button color="warn" (click)="onDelete(row.id)"><mat-icon>delete</mat-icon></button>
-                    
-                    </mat-cell>
-        
-                    
-                  </ng-container>
-        
-                  <ng-container matColumnDef="noData">
-                    <mat-footer-cell *matFooterCellDef colspan="6">
-                      No data available.
-                    </mat-footer-cell>
-                  </ng-container>
-                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="viewing(row.rid)"></mat-row>
-                  <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
-                </mat-table>
-                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
-              </div>
 
+
+              
       
      
        

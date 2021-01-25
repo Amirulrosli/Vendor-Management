@@ -38,6 +38,8 @@ export class VendorProfileComponent implements OnInit {
   latestPaymentDate:any;
   today;
   overdueDays;
+  overdue;
+  finalOverdue;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -74,17 +76,7 @@ export class VendorProfileComponent implements OnInit {
 
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
-      this.nextDate = this.retrieveData[0].latest_Due_Date
-      this.nextPayment = this.datePipe.transform(this.nextDate,'MM/dd/yyyy') 
-
-      this.dateToday = new Date()
-      this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')
-
-      var parsedNextDate = parseDate(this.nextPayment)
-      var parsedToday = parseDate(this.today)
-
-      console.log("today: "+ parsedToday)
-      console.log("latest Payment Date: " + parsedNextDate)
+     
 
 
       // function parseDate(input) {
@@ -92,17 +84,12 @@ export class VendorProfileComponent implements OnInit {
       //   // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
       //   return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
       // }
-      function parseDate(str) {
-        var mdy = str.split('/');
-        return new Date(mdy[2], mdy[0]-1, mdy[1]);
-    }
+     
 
 
 
       
-      var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
-      this.overdueDays = overdueTime / (1000 * 3600 * 24);
-      console.log(this.overdueDays);
+     
  
 
       this.paymentList = this.paymentHistory.map(item=> {
@@ -145,6 +132,38 @@ export class VendorProfileComponent implements OnInit {
       this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
       console.log(this.username)
       console.log(this.retrieveData)
+
+      //overdue days
+      this.nextDate = this.retrieveData[0].latest_Due_Date
+      this.nextPayment = this.datePipe.transform(this.nextDate,'MM/dd/yyyy') 
+
+      this.dateToday = new Date()
+      this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')
+
+      var parsedNextDate = parseDate(this.nextPayment)
+      var parsedToday = parseDate(this.today)
+
+      console.log("today: "+ parsedToday)
+      console.log("latest Payment Date: " + parsedNextDate)
+
+      var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
+      this.overdueDays = overdueTime / (1000 * 3600 * 24);
+      this.overdue = this.overdueDays
+      var noOverdue = this.overdueDays - this.overdue
+      this.finalOverdue = this.overdue
+      
+
+      if(this.overdueDays < 0){
+        this.finalOverdue = noOverdue;
+        console.log(this.finalOverdue);
+      }
+
+      //parse to date
+      function parseDate(str) {
+        var mdy = str.split('/');
+        return new Date(mdy[2], mdy[0]-1, mdy[1]);
+    }
+
     })
 
   }
