@@ -30,7 +30,9 @@ export class VendorProfileComponent implements OnInit {
   retrieveDataLength:any;
   list:any[];
   close;
-  opened = true
+  opened = false
+
+  nextPaymenet: any;
   
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -39,10 +41,10 @@ export class VendorProfileComponent implements OnInit {
    displayedColumns: string[] = [
 
     'payment_Date',
-    // 'due_Date',
+    'due_Date',
     'price',
-    // 'send_Email',
-    // 'email'
+    'send_Email',
+    'email'
   
   ];
 
@@ -59,7 +61,7 @@ export class VendorProfileComponent implements OnInit {
   ) {
     const compId = this.route.snapshot.paramMap.get('rid')
     this.id = compId
-    this.close = false;
+    this.close = true;
 
    }
 

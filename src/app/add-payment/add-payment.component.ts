@@ -111,7 +111,7 @@ export class AddPaymentComponent implements OnInit {
 
     
     this.info = {
-      payment_Date: this.dateField, 
+      Payment_Date: this.dateField, 
       due_Date: dueDate,  
       email: this.list.email,
       send_Email: false,
