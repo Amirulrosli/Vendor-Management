@@ -32,8 +32,13 @@ export class VendorProfileComponent implements OnInit {
   close;
   opened = false
 
-  nextPaymenet: any;
-  
+  nextPayment: any;
+  nextDate:any;
+  dateToday;
+  latestPaymentDate:any;
+  today;
+  overdueDays;
+
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -69,6 +74,35 @@ export class VendorProfileComponent implements OnInit {
 
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
+      this.nextDate = this.paymentHistory[0].due_Date
+      this.nextPayment = this.datePipe.transform(this.nextDate,'MM/dd/yyyy') 
+
+      this.dateToday = new Date()
+      this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')
+
+      var parsedNextDate = parseDate(this.nextPayment)
+      var parsedToday = parseDate(this.today)
+
+      console.log("today: "+ parsedToday)
+      console.log("latest Payment Date: " + parsedNextDate)
+
+
+      // function parseDate(input) {
+      //   var parts = input.match(/(\d+)/g);
+      //   // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+      //   return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
+      // }
+      function parseDate(str) {
+        var mdy = str.split('/');
+        return new Date(mdy[2], mdy[0]-1, mdy[1]);
+    }
+
+
+
+      
+      var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
+      this.overdueDays = overdueTime / (1000 * 3600 * 24);
+      console.log(this.overdueDays);
  
 
       this.paymentList = this.paymentHistory.map(item=> {
@@ -108,6 +142,7 @@ export class VendorProfileComponent implements OnInit {
       this.username = this.retrieveData[0].name;
       this.slot = this.retrieveData[0].slot
       this.email = this.retrieveData[0].email
+      this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
       console.log(this.username)
       console.log(this.retrieveData)
     })

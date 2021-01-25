@@ -132,7 +132,7 @@ onChange(deviceValue) {
 
 
     this.info = {
-      Payment_Date: this.dateField, 
+      payment_Date: this.dateField, 
       due_Date: dueDate,  
       email: this.list.email,
       send_Email: false,
