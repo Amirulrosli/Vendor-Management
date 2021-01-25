@@ -17,6 +17,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import {MatSlidePanelModule} from 'ngx-mat-slide-panel';
 import { NotificationComponent } from './notification/notification.component'
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
  
 
 @NgModule({
@@ -37,7 +39,8 @@ import { VendorProfileComponent } from './vendor-profile/vendor-profile.componen
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    MatSlidePanelModule
+    MatSlidePanelModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     
   ],
 
