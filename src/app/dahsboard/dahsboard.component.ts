@@ -11,7 +11,7 @@ import { NotificationComponent } from '../notification/notification.component';
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 import { DatePipe } from '@angular/common';
-
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
   selector: 'app-dahsboard',
@@ -118,13 +118,39 @@ export class DahsboardComponent implements OnInit {
   onDelete(id){
     console.log(id)
 
-    this.profiles.delete(id).subscribe(resp=> {
-      console.log(resp)
-      this.ngOnInit()
-      
-    },err=> {
-      console.log(err)
-    })
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This process is irreversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+
+    }).then((result) => {
+
+      if (result.value) {
+        this.profiles.delete(id).subscribe(resp=> {
+          Swal.fire(
+            'Removed!',
+            'Vendor Profile removed successfully.',
+            'success'
+          )
+          this.ngOnInit()
+          
+        },err=> {
+          console.log(err)
+        });
+
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Vendor Profile is still in our database.)',
+          'error'
+        )
+      }
+    });
+
   }
 
   viewing(id){
