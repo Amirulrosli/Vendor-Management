@@ -23,22 +23,16 @@ export class AddPaymentComponent implements OnInit {
   id;
   value;
   selectField;
-
   info;
   lastPayment;
-
   new_Date:Date;
-
   dateField:Date;
   priceField;
   slotField;
   vendorField;
-
   formStatus: boolean ;
-
-  
-
-  list: any = []
+  list: any = [];
+  userData: any;
 
   // formattedAmount;
 
@@ -99,17 +93,44 @@ export class AddPaymentComponent implements OnInit {
     return date;
 }
 
+
+
+onChange(deviceValue) {
+  this.profile.findOne(deviceValue).subscribe(array =>{
+    console.log(array)
+    this.list = array;
+  })
+}
+
   submit(){
     this.formStatus = true;
-
-    console.log(this.priceField)
   
     //add one month to date
     var dueDate = this.addMonths(new Date (this.dateField),1);
-    let latest_dueDate = this.datePipe.transform(dueDate, 'dd-MM-yyyy')
+    let latest_dueDate = this.datePipe.transform(dueDate, 'dd-MM-yyyy');
 
 
-    
+    // try{
+
+    //   this.payment.findByRid(this.list.rid).subscribe(data=> {
+        
+    //     this.userData = data;
+
+
+    //     for(let i = 0; i<this.userData.length;i++){
+        
+    //       const day = this.list.latest_Payment_Date
+          
+
+    //     }
+    //   })
+
+    // } catch (err){
+
+    // }
+
+
+
     this.info = {
       payment_Date: this.dateField, 
       due_Date: dueDate,  
@@ -125,6 +146,8 @@ export class AddPaymentComponent implements OnInit {
 
     this.list.latest_Payment_Date = this.dateField;
     this.list.latest_Payment = this.priceField;
+
+ 
  
 
     //validation
@@ -134,19 +157,19 @@ export class AddPaymentComponent implements OnInit {
 
     }
 
-    if(this.dateField == null){
+    else if(this.dateField == null){
       this.formStatus = false;
       Swal.fire('Error', 'Please enter a valid date!', 'error')
 
     }
 
-    if(this.priceField == null){
+    else if(this.priceField == null){
       this.formStatus = false;
       Swal.fire('Error', 'Please enter a price!', 'error')
 
     }
 
-    if(this.priceField == null && this.dateField == null && this.selectField == null){
+    else if(this.priceField == null && this.dateField == null && this.selectField == null){
       this.formStatus = false;
       this.failed()
     }
@@ -204,12 +227,6 @@ export class AddPaymentComponent implements OnInit {
 //     console.log(deviceValue);
 // }
 
-onChange(deviceValue) {
-  this.profile.findOne(deviceValue).subscribe(array =>{
-    console.log(array)
-    this.list = array;
-  })
-}
 
 
 }
