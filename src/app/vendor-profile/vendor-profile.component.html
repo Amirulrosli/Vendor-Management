@@ -38,14 +38,59 @@
 
         </mat-toolbar>
 
-        <div class="divDesign" *ngIf="retrieveData!==undefined">
-            
-            <mat-icon class="accountIcon">account_circle</mat-icon>
+        <div class="divDesign"  *ngIf="retrieveData!==undefined">
 
-            <br>
-            <h2 style="text-align: center; color: white; margin-top:100px; font-size: 40px;">{{username}}</h2>
+            <!-- <div style=" width: 10%; float: left; height: 100%; display: inline-flexbox; position: relative;  flex-flow: column;;">
+                <mat-icon class="accountIcon">account_circle</mat-icon>
+
+            
+            </div>
+            <div style=" height: 100%; display: inline-flexbox; float: left; width: 50%; position: fixed;">
+                <p style="text-align: center; color: #580092; margin-top:100px; font-size: 40px; ">{{username}}</p>
+                <p style="color: #580092; display: block; text-align: center;">shit</p>
+
+            </div> -->
+            
+            
+
+            <!-- <br> -->
             <!-- <h3 style="text-align: center;">slot: {{slot}}</h3> -->
-            <h3 style="text-align: center;">{{email}}</h3>
+            <!-- <h3 style="text-align: center;">{{email}}</h3> -->
+
+            <div class="user-image">
+                <mat-icon class="accountIcon">account_circle</mat-icon>
+            </div>
+
+            <div class="user-data">
+                <h2 style="font-size: 45px;">{{username}}</h2>
+                <!-- <span class="post-label">Admin</span>
+                <span class="post-label">Speaker</span>
+                <span class="post-label">AMA</span> -->
+                <p style="font-size: 25px;">{{email}}<br>
+                
+                </p>
+                <br>
+                <button mat-raised-button style="background-color: rgb(124, 57, 179);">Update Info</button>
+            </div>
+
+            <div class="user-data2">
+                <!-- <h2 style="font-size: 45px;">{{username}}</h2> -->
+                <!-- <span class="post-label">Admin</span>
+                <span class="post-label">Speaker</span>
+                <span class="post-label">AMA</span> -->
+                <!-- <p style="font-size: 25px;">Overdue: <br> 
+                </p> -->
+                <span style="font-size: 25px; color: red; float: right; margin-left: 5px; margin-right: 2px;">{{finalOverdue}}</span>
+                <span style="font-size: 15px; float: right;">Overdue:  </span>
+                
+                <br>
+                <span style="float: right; margin-right: 5px;">Next Payment Date: </span>
+                <br>
+                <p style="font-size: 25px; float: right;">{{nextPay}}</p>
+                <!-- <button mat-raised-button style="background-color: rgb(124, 57, 179);">Update Info</button> -->
+            </div>
+
+
 
 
             
@@ -80,7 +125,7 @@
         <!-- <div style="float: left;"> <h1 class="titles">Payment History</h1></div>
         <div style="float: right;"><h1 class="titles" >Vendor Details</h1></div> -->
         
-        <div style="float: left; width: 50%;">
+        <div style="float: left; width: 60%;">
             <h1 class="titles">Payment History</h1>
             <div class ="mat-elevation-z8" >
 
@@ -155,14 +200,16 @@
                   </div>
         </div>
 
-        <div style="float: right; width: 50%;">
+        <div style="float: right; width: 40%; ">
 
             <h1 class="titles">Vendor Details</h1>
 
-            <mat-card class="divCard">
-                <p>Next Payment will be on: {{nextPayment}}</p>
-                <p>Overdue: {{finalOverdue}} days</p>
-            </mat-card>
+            <div class="divCard">
+              <div class="bottomBorder" ><p>Vendor Slot: <span style="color: black;">{{slot}} </span></p> </div>  
+              <div class="bottomBorder" ><p>Ic Number: <span style="color: black;">{{vendorIC}} </span></p> </div>
+              <div class="bottomBorder" ><p>Phone No: <span style="color: black;">{{phoneNo}} </span></p></div> 
+              <div class="bottomBorder" ><p>Vendor ID: <span style="color: black;">{{vendorID}} </span></p></div>
+            </div>
 
 
         </div>

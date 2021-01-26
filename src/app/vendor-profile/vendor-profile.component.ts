@@ -40,6 +40,10 @@ export class VendorProfileComponent implements OnInit {
   overdueDays;
   overdue;
   finalOverdue;
+  nextPay:any;
+  vendorIC;
+  phoneNo;
+  vendorID;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -129,6 +133,9 @@ export class VendorProfileComponent implements OnInit {
       this.username = this.retrieveData[0].name;
       this.slot = this.retrieveData[0].slot
       this.email = this.retrieveData[0].email
+      this.vendorIC = this.retrieveData[0].IC_Number
+      this.phoneNo = this.retrieveData[0].phone
+      this.vendorID = this.id
       this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
       console.log(this.username)
       console.log(this.retrieveData)
@@ -136,6 +143,7 @@ export class VendorProfileComponent implements OnInit {
       //overdue days
       this.nextDate = this.retrieveData[0].latest_Due_Date
       this.nextPayment = this.datePipe.transform(this.nextDate,'MM/dd/yyyy') 
+      this.nextPay = this.datePipe.transform(this.nextPayment, 'dd LLLL yyyy')
 
       this.dateToday = new Date()
       this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')

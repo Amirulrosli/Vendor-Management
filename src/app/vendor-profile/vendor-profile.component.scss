@@ -16,14 +16,14 @@ mat-sidenav {
 }
 
 .divCard{
-  color: #580092;
+  color: #919191;
   background-color: white;
   width:90% ;
-  height: 100px;
+  height: auto;
   float: right;
-  margin-right: 20px;
-  margin-top: 20px;
-  font-size: 20px;
+  margin-right: 40px;
+  // margin-top: 20px;
+  font-size: 18px;
   // margin-bottom: 100px;
   // margin-right: auto;
 }
@@ -107,17 +107,20 @@ mat-sidenav {
     height: 260px;
     width: 100%;
     background-color:  #580092;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-  
+    // border-bottom-style: solid;
+    // border-bottom-color: #580092;  
   }
 
   .accountIcon{
-   display: block;
+   display: inline;
    align-items: center;
-   font-size: 140px;
-   margin-right: 50%;
-   margin-left: 45%;
+   font-size: 200px;
+   color: #ffffff;
+   margin-top: 20px;
+   margin-left: 20px;
+   position: fixed;
+   margin-right: 20px;
+
   }
 
 
@@ -126,7 +129,7 @@ mat-sidenav {
     width: 90%;
     float: left;
     margin-left: 20px;
-    margin-top: 10px;
+    margin-top: 5px;
     // height: 90px;
   }
 
@@ -164,6 +167,42 @@ mat-sidenav {
    margin-left: 20px;
    margin-right: 20px;
    margin-top: 30px;
+  //  font-weight: 600;
+  font-size: 30px;
  }
+
+ .user-image{
+  float: left;
+  position: relative;
+  
+  width: 15%;
+  height: 100%;
+}
+
+.user-data{
+  color: #ffffff;
+  float: left;
+  width: 30%;
+  padding-left: 27px;
+  margin-top: 60px;
+  height: 80%;
+}
+
+.user-data2{
+  color: #ffffff;
+  float: right;
+  width: 15%;
+  // padding-left: 27px;
+  margin-top: 190px;
+  margin-right: 20px;
+  height: 10%;
+}
+
+.bottomBorder{
+  border-bottom-color:#919191 ; 
+  border-bottom-style: solid;
+  margin-bottom: 10px;
+  border-bottom-width: thin;
+}
 
   
