@@ -4,6 +4,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { profileService } from '../services/profile.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-profile',
@@ -67,7 +68,8 @@ export class EditProfileComponent implements OnInit {
   private formbuilder: FormBuilder,
   private dialog: MatDialog,
   private profile: profileService,
-  private notification: notificationService
+  private notification: notificationService,
+  private location: Location
   ) {
 
     this.value = [
@@ -218,9 +220,10 @@ export class EditProfileComponent implements OnInit {
 
 
 
-  async saveData(profileModel){
+  saveData(profileModel){
     var date = new Date();
-    await this.profile.update(this.data.dataKey.id,profileModel).subscribe(data=> {
+    console.log(profileModel)
+  this.profile.update(this.data.dataKey.id,profileModel).subscribe(data=> {
 
           const notify = {
         rid: this.data.dataKey.rid,
@@ -241,6 +244,7 @@ export class EditProfileComponent implements OnInit {
       this.registrationForm.reset();
       Swal.fire('Success','Data have been saved','success')
       this.dialog.closeAll();
+      
     },
     error=> {
       console.log(error)

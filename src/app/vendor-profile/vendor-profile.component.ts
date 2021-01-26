@@ -92,6 +92,11 @@ export class VendorProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.notifyNumber();
+    this.refreshData();
+
+  }
+
+  refreshData(){
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
      
@@ -175,7 +180,6 @@ export class VendorProfileComponent implements OnInit {
     }
 
     })
-
   }
 
   onEdit(){
@@ -188,6 +192,8 @@ export class VendorProfileComponent implements OnInit {
 
         dataKey: this.retrieveData[0]
       }
+    }).afterClosed().subscribe(result=> {
+      this.refreshData();
     });
 
   }

@@ -13,6 +13,7 @@ import { profileService } from '../services/profile.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 @Component({
@@ -54,17 +55,24 @@ export class DahsboardComponent implements OnInit {
     private slidePanel: MatSlidePanel,
     private datePipe: DatePipe,
     private notification: notificationService,
- 
+    private changeDetectorRefs: ChangeDetectorRef
 
   ) { 
 
     this.close = false;
   }
 
+
+
   ngOnInit(): void {
 
 
     this.notifyNumber();
+    this.refreshData();
+
+  }
+
+  refreshData(){
 
     console.log(this.notification.notifyData);
     this.profiles.findAll().subscribe(array=> {
@@ -94,11 +102,9 @@ export class DahsboardComponent implements OnInit {
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
-
+      this.changeDetectorRefs.detectChanges();
 
     })
-
-
 
   }
 
@@ -170,15 +176,25 @@ export class DahsboardComponent implements OnInit {
 
   onEdit(data){
 
-    this.dialog.open(EditProfileComponent, {
-      width: "800px",
-      height: "90%",
-      panelClass:'custom-modalbox',
-      data: {
+    this.profiles.findOne(data.id).subscribe(resp=> {
+      console.log(resp)
 
-        dataKey: data
-      }
+      this.dialog.open(EditProfileComponent, {
+        width: "800px",
+        height: "90%",
+        panelClass:'custom-modalbox',
+        data: {
+  
+          dataKey: resp
+        }
+      }).afterClosed().subscribe(result => {
+        this.refreshData();
+      });
+    }, error=> {
+      console.log(error)
     });
+
+    
 
   }
 

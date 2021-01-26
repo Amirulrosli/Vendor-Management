@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { SwPush } from '@angular/service-worker';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from './notification/notification.component';
@@ -15,10 +16,27 @@ export class AppComponent implements OnInit {
   opened = true;
   private readonly publicKey = 'BGYsR3C0xWYaSS6tswNBz4mfFzVUzhjnfQWBD1zbaSqJlM8rRlcP2NVNM0bAJpZ-mUj_5LrAmEEai7UMII5xYZk';
   notifyData: any;
+  mySubscription: any;
   constructor(private swPush: SwPush, 
     private notification: notificationService,
-    private slidePanel: MatSlidePanel){}
+    private slidePanel: MatSlidePanel,
+    private router: Router
+    ){
 
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.mySubscription = this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+           // Trick the Router into believing it's last link wasn't previously loaded
+           this.router.navigated = false;
+        }
+      }); 
+    }
+
+    ngOnDestroy(){
+      if (this.mySubscription) {
+        this.mySubscription.unsubscribe();
+      }
+    }
 
   ngOnInit(){
 
