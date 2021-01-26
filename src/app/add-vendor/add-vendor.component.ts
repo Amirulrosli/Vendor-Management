@@ -6,6 +6,10 @@ import { alertService } from '../services/Alert.service';
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { notificationService } from '../services/notification.service';
+import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import { NotificationComponent } from '../notification/notification.component';
+
 
 @Component({
   selector: 'app-add-vendor',
@@ -27,6 +31,8 @@ export class AddVendorComponent implements OnInit {
   slot: any;
   slotprice: any;
   ICData: any;
+  notifyNo: any;
+  notifyData:any;
 
   public errorMessages = {
     name: [
@@ -79,7 +85,10 @@ export class AddVendorComponent implements OnInit {
     private profile : profileService,
     private datePipe: DatePipe,
     private formbuilder: FormBuilder,
-    private alert: alertService
+    private alert: alertService,
+    private notification: notificationService,
+    private slidePanel: MatSlidePanel
+
     ) { 
 
     this.value = [
@@ -109,6 +118,8 @@ export class AddVendorComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.notifyNumber();
+    
     this.registrationForm = this.formbuilder.group({
       name: ['',[Validators.required,Validators.maxLength(100)]],
       forIC: ['',[Validators.required]],
@@ -155,6 +166,12 @@ export class AddVendorComponent implements OnInit {
 
   closeNav(){
     this.close = true;
+  }
+
+  openNotification(){
+    this.slidePanel.open(NotificationComponent, {
+      slideFrom:'right'
+    })
   }
 
   async submit(){
@@ -230,6 +247,14 @@ export class AddVendorComponent implements OnInit {
       
     }
    
+  }
+
+  
+  public notifyNumber(){
+    this.notification.findByView().subscribe(data=> {
+        this.notifyData = data;
+        this.notifyNo = this.notifyData.length;
+    })
   }
 
   // async showAlert(header:string, message:string){

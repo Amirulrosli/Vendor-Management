@@ -19,6 +19,7 @@ import { NotificationComponent } from './notification/notification.component'
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+
  
 
 @NgModule({
@@ -46,7 +47,8 @@ import { environment } from '../environments/environment';
 
   providers: [
     DatePipe,
-    alertService
+    alertService,
+  
   ],
 
   schemas: [

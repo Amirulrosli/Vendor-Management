@@ -65,7 +65,7 @@ export class EditProfileComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
   private formbuilder: FormBuilder,
   private dialog: MatDialog,
-  private profile: profileService
+  private profile: profileService,
   ) {
 
     this.value = [

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
+import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import { NotificationComponent } from './notification/notification.component';
+import { notificationService } from './services/notification.service';
 // import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
@@ -11,13 +14,16 @@ export class AppComponent implements OnInit {
   title = 'vendorManagement';
   opened = true;
   private readonly publicKey = 'BGYsR3C0xWYaSS6tswNBz4mfFzVUzhjnfQWBD1zbaSqJlM8rRlcP2NVNM0bAJpZ-mUj_5LrAmEEai7UMII5xYZk';
-
-  constructor(private swPush: SwPush){}
+  notifyData: any;
+  constructor(private swPush: SwPush, 
+    private notification: notificationService,
+    private slidePanel: MatSlidePanel){}
 
 
   ngOnInit(){
 
     this.pushSubscription();
+    
 
   }
 
@@ -42,6 +48,20 @@ export class AppComponent implements OnInit {
       console.log(err)
     })
 
+  }
+
+  public notifyNumber(){
+    this.notification.findByView().subscribe(data=> {
+        this.notifyData = data;
+        console.log(this.notifyData)
+        return this.notifyData.length;
+    })
+  }
+
+  openNotification(){
+    this.slidePanel.open(NotificationComponent, {
+      slideFrom:'right'
+    })
   }
   
 

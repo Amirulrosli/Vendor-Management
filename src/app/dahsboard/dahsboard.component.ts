@@ -12,6 +12,8 @@ import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { notificationService } from '../services/notification.service';
+
 
 @Component({
   selector: 'app-dahsboard',
@@ -25,6 +27,8 @@ export class DahsboardComponent implements OnInit {
   retrieveDataLength:any;
   list:Profile[];
   searchKey: any;
+  notifyNo: any;
+  notifyData:any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -48,7 +52,9 @@ export class DahsboardComponent implements OnInit {
     private profiles: profileService,
     private dialog: MatDialog,
     private slidePanel: MatSlidePanel,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private notification: notificationService,
+ 
 
   ) { 
 
@@ -57,6 +63,10 @@ export class DahsboardComponent implements OnInit {
 
   ngOnInit(): void {
 
+
+    this.notifyNumber();
+
+    console.log(this.notification.notifyData);
     this.profiles.findAll().subscribe(array=> {
       this.retrieveData = array
       this.retrieveDataLength = this.retrieveData.length;
@@ -170,6 +180,13 @@ export class DahsboardComponent implements OnInit {
       }
     });
 
+  }
+
+  public notifyNumber(){
+    this.notification.findByView().subscribe(data=> {
+        this.notifyData = data;
+        this.notifyNo = this.notifyData.length;
+    })
   }
 
 
