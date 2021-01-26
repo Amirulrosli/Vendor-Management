@@ -40,54 +40,25 @@
 
         <div class="divDesign"  *ngIf="retrieveData!==undefined">
 
-            <!-- <div style=" width: 10%; float: left; height: 100%; display: inline-flexbox; position: relative;  flex-flow: column;;">
-                <mat-icon class="accountIcon">account_circle</mat-icon>
-
-            
-            </div>
-            <div style=" height: 100%; display: inline-flexbox; float: left; width: 50%; position: fixed;">
-                <p style="text-align: center; color: #580092; margin-top:100px; font-size: 40px; ">{{username}}</p>
-                <p style="color: #580092; display: block; text-align: center;">shit</p>
-
-            </div> -->
-            
-            
-
-            <!-- <br> -->
-            <!-- <h3 style="text-align: center;">slot: {{slot}}</h3> -->
-            <!-- <h3 style="text-align: center;">{{email}}</h3> -->
-
             <div class="user-image">
                 <mat-icon class="accountIcon">account_circle</mat-icon>
             </div>
 
             <div class="user-data">
                 <h2 style="font-size: 45px;">{{username}}</h2>
-                <!-- <span class="post-label">Admin</span>
-                <span class="post-label">Speaker</span>
-                <span class="post-label">AMA</span> -->
-                <p style="font-size: 25px;">{{email}}<br>
-                
+                <p style="font-size: 25px;">{{email}}<br> 
                 </p>
                 <br>
-                <button mat-raised-button style="background-color: rgb(124, 57, 179);">Update Info</button>
+                <button mat-raised-button style="background-color: rgb(124, 57, 179);" (click)="onEdit()">Update Info</button>
             </div>
 
             <div class="user-data2">
-                <!-- <h2 style="font-size: 45px;">{{username}}</h2> -->
-                <!-- <span class="post-label">Admin</span>
-                <span class="post-label">Speaker</span>
-                <span class="post-label">AMA</span> -->
-                <!-- <p style="font-size: 25px;">Overdue: <br> 
-                </p> -->
                 <span style="font-size: 25px; color: red; float: right; margin-left: 5px; margin-right: 2px;">{{finalOverdue}}</span>
                 <span style="font-size: 15px; float: right;">Overdue:  </span>
-                
                 <br>
                 <span style="float: right; margin-right: 5px;">Next Payment Date: </span>
                 <br>
                 <p style="font-size: 25px; float: right;">{{nextPay}}</p>
-                <!-- <button mat-raised-button style="background-color: rgb(124, 57, 179);">Update Info</button> -->
             </div>
 
 
@@ -98,33 +69,11 @@
 
         </div>
 
-        <!-- <div class="titles">Vendor Details</div> -->
- 
-        <!-- <mat-card class="search-card titles">
-            <h1>Vendor Details</h1>
-            <p>Contact No:</p>
-            <p>IC No:</p>
-            <p>Slot:</p>
-            <br>
-        </mat-card> -->
-
-        
-       
-
-        <!-- <br>
-        <br>
-        <br> -->
 
     
            
     
 
-
-        
-
-        <!-- <div style="float: left;"> <h1 class="titles">Payment History</h1></div>
-        <div style="float: right;"><h1 class="titles" >Vendor Details</h1></div> -->
-        
         <div style="float: left; width: 60%;">
             <h1 class="titles">Payment History</h1>
             <div class ="mat-elevation-z8" >
@@ -141,19 +90,10 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
                         <mat-cell *matCellDef="let element" >{{element.due_Date}}</mat-cell>
                     </ng-container>
-                    <!-- <ng-container matColumnDef="gender">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
-                      <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
-                  </ng-container> -->
                     <ng-container matColumnDef="email">
                         <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
                         <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
                     </ng-container>
-            
-                    <!-- <ng-container matColumnDef="dob">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Date of Birth</mat-header-cell>
-                        <mat-cell *matCellDef="let element">{{element.dob}}</mat-cell>
-                    </ng-container> -->
                     <ng-container matColumnDef="price">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</mat-header-cell>
                         <mat-cell *matCellDef="let element" >${{element.price}}</mat-cell>
@@ -166,14 +106,10 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
                         <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
                     </ng-container>
-                    <!-- <ng-container matColumnDef="id">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
-                      <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
-                  </ng-container> -->
+        
             
             
-            
-                    <ng-container matColumnDef="actions">
+                    <!-- <ng-container matColumnDef="actions">
                         <mat-header-cell *matHeaderCellDef></mat-header-cell>
                         <mat-cell *matCellDef="let row">
                           <button mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
@@ -185,7 +121,7 @@
             
                         
                       </ng-container>
-            
+             -->
                       <ng-container matColumnDef="noData">
                         <mat-footer-cell *matFooterCellDef colspan="6">
                           No data available.

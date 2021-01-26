@@ -9,6 +9,10 @@ import { MatSort } from '@angular/material/sort';
 import { paymentService } from '../services/payment.service';
 import { Payment } from '../services/Payment.model';
 import { DatePipe } from '@angular/common';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import { MatDialog } from '@angular/material/dialog';
+
+
 
 @Component({
   selector: 'app-vendor-profile',
@@ -67,7 +71,9 @@ export class VendorProfileComponent implements OnInit {
     private profiles: profileService,
     private route: ActivatedRoute,
     private payment: paymentService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dialog: MatDialog,
+
 
   ) {
     const compId = this.route.snapshot.paramMap.get('rid')
@@ -80,19 +86,6 @@ export class VendorProfileComponent implements OnInit {
 
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
-     
-
-
-      // function parseDate(input) {
-      //   var parts = input.match(/(\d+)/g);
-      //   // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
-      //   return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
-      // }
-     
-
-
-
-      
      
  
 
@@ -173,6 +166,20 @@ export class VendorProfileComponent implements OnInit {
     }
 
     })
+
+  }
+
+  onEdit(){
+
+    this.dialog.open(EditProfileComponent, {
+      width: "800px",
+      height: "90%",
+      panelClass:'custom-modalbox',
+      data: {
+
+        dataKey: this.id
+      }
+    });
 
   }
 
