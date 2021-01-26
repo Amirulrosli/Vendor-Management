@@ -2,20 +2,23 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/payments"
+const baseURL="http://localhost:3000/api/notifications"
+
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class paymentService {
+export class notificationService {
+
+    public notifyData:any;
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-    findOne(rid): Observable <any> {
-        return this.http.get(`${baseURL}/${rid}`)
+    findOne(id): Observable <any> {
+        return this.http.get(`${baseURL}/${id}`)
     }
 
     create(data): Observable<any> {
@@ -24,7 +27,7 @@ export class paymentService {
     }
 
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/${id}`,data)
+        return this.http.put(`${baseURL}/update/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -38,4 +41,9 @@ export class paymentService {
     findByRid(rid): Observable<any> {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
+
+    findByView(): Observable<any>{
+        return this.http.get(`${baseURL}/view`)
+    }
+
 }

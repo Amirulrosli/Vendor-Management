@@ -21,6 +21,7 @@ import * as Material13 from '@angular/material/sort'
 import * as Material14 from '@angular/material/paginator'
 import * as Material15 from '@angular/material/dialog'
 import {MatCardModule} from '@angular/material/card';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { MatButtonToggleModule} from '@angular/material/button-toggle'
 
 @NgModule({
@@ -41,6 +42,7 @@ import { MatButtonToggleModule} from '@angular/material/button-toggle'
     MatSidenavModule,
     MatListModule,
     MatSnackBarModule,
+    MatExpansionModule,
     Material11.MatTableModule,
     Material12.MatIconModule,
     Material13.MatSortModule,
@@ -62,6 +64,7 @@ import { MatButtonToggleModule} from '@angular/material/button-toggle'
     MatNativeDateModule,
     MatButtonToggleModule,
     MatListModule,
+    MatExpansionModule,
     MatButtonModule,
     MatSnackBarModule,
     Material11.MatTableModule,

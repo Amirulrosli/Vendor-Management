@@ -1,0 +1,46 @@
+<mat-sidenav-container>
+    <mat-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content style="background-color:white">
+        
+
+      <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+
+        <mat-button *ngIf="close==false" class="toggle" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
+        <mat-button *ngIf="close==true" class="back" (click)="back()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
+        <span class="titleTxt">Notification</span>
+        <mat-icon class="notification" (click)="openNotification()">notifications</mat-icon>
+        <p class="no-number" style="color:white;" >{{notifyNo}}</p>
+
+      </mat-toolbar>
+
+
+      <mat-accordion *ngIf="listData.length!==0">
+  
+        <mat-expansion-panel *ngFor="let data of listData; let i = index" >
+          <mat-expansion-panel-header style="height: 80px;">  
+            <mat-panel-title>
+              {{data.title}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{data.date}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+      
+          <mat-panel-description style="color:white;">
+    
+            {{data.description}}
+    
+          </mat-panel-description>
+          <br>
+          <mat-panel-description style="color:white;">
+    
+            {{data.date}}
+    
+          </mat-panel-description>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+
+      </mat-sidenav-content>
+    </mat-sidenav-container>

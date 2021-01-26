@@ -38,6 +38,7 @@
         <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
         <span class="titleTxt">Dashboard</span>
         <mat-icon class="notification" (click)="openNotification()">notifications</mat-icon>
+        <p class="no-number" style="color:white;" >{{notifyNo}}</p>
 
       </mat-toolbar>
  
@@ -77,12 +78,12 @@
                 <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.phone}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="latest_Payment">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Latest Payment Date</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.latest_Payment_Date}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</mat-header-cell>
+                <mat-cell *matCellDef="let element" >{{element.latest_Payment_Date}}</mat-cell>
             </ng-container>
-            <ng-container matColumnDef="overdue">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)">{{element.overdue}}</mat-cell>
+            <ng-container matColumnDef="slot">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Slot No.</mat-header-cell>
+                <mat-cell *matCellDef="let element" >{{element.slot}}</mat-cell>
             </ng-container>
             <!-- <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>

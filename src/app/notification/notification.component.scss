@@ -1,3 +1,24 @@
 mat-slide-panel-container{
     background-color: white;
 }
+
+mat-expansion-panel{
+    background: rgb(124, 57, 179);
+    margin-top: 10px;
+}
+
+.close{
+    position: absolute;
+    right: 15px;
+    top: 5px;
+
+}
+
+.no-message{
+    color: rgb(155, 155, 155);
+    text-align: center;
+//     display: block;
+//     margin-left: auto;
+    // margin-right: auto;
+}
+

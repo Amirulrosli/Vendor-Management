@@ -19,6 +19,8 @@ import { NotificationComponent } from './notification/notification.component'
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AllNotificationComponent } from './all-notification/all-notification.component';
+
  
 
 @NgModule({
@@ -29,7 +31,8 @@ import { environment } from '../environments/environment';
     AddPaymentComponent,
     EditProfileComponent,
     NotificationComponent,
-    VendorProfileComponent
+    VendorProfileComponent,
+    AllNotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { environment } from '../environments/environment';
 
   providers: [
     DatePipe,
-    alertService
+    alertService,
+  
   ],
 
   schemas: [

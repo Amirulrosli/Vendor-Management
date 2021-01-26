@@ -5,6 +5,9 @@ import { paymentService } from '../services/payment.service';
 import { alertService } from '../services/Alert.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { DatePipe } from '@angular/common';
+import { notificationService } from '../services/notification.service';
+import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import { NotificationComponent } from '../notification/notification.component';
 
 
 
@@ -33,16 +36,19 @@ export class AddPaymentComponent implements OnInit {
   formStatus: boolean ;
   list: any = [];
   userData: any;
+  notifyNo: any;
+  notifyData:any;
 
-  // formattedAmount;
+  
 
   constructor(
     private router: Router,
     private profile : profileService,
     private payment: paymentService,
     private alert: alertService,
-    private datePipe: DatePipe
-    // private currencyPipe : CurrencyPipe
+    private datePipe: DatePipe,
+    private notification: notificationService,
+    private slidePanel: MatSlidePanel
   ) {
     this.close = false;
 
@@ -51,13 +57,10 @@ export class AddPaymentComponent implements OnInit {
     
    }
 
-//    transformAmount(element){
-//     this.formattedAmount = this.currencyPipe.transform(this.formattedAmount, '$');
 
-//     element.target.value = this.formattedAmount;
-// }
 
   ngOnInit(): void {
+    this.notifyNumber();
     this.profile.findAll().subscribe(array => {
       this.retrieveData = array
       
@@ -82,6 +85,12 @@ export class AddPaymentComponent implements OnInit {
 
   closeNav(){
     this.close = true;
+  }
+
+  openNotification(){
+    this.slidePanel.open(NotificationComponent, {
+      slideFrom:'right'
+    })
   }
 
   addMonths(date, months) {
@@ -346,6 +355,14 @@ compareData(dueDate){
     
     Swal.fire('Error', 'Please complete all of the fields!', 'error')
 
+  }
+
+    
+  public notifyNumber(){
+    this.notification.findByView().subscribe(data=> {
+        this.notifyData = data;
+        this.notifyNo = this.notifyData.length;
+    })
   }
 
  
