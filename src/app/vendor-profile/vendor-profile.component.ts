@@ -11,6 +11,9 @@ import { Payment } from '../services/Payment.model';
 import { DatePipe } from '@angular/common';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 import { MatDialog } from '@angular/material/dialog';
+import { notificationService } from '../services/notification.service';
+import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import { NotificationComponent } from '../notification/notification.component';
 
 
 
@@ -48,6 +51,9 @@ export class VendorProfileComponent implements OnInit {
   vendorIC;
   phoneNo;
   vendorID;
+  notifyData: any;
+  notifyNo: any;
+  price: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -73,6 +79,8 @@ export class VendorProfileComponent implements OnInit {
     private payment: paymentService,
     private datePipe: DatePipe,
     private dialog: MatDialog,
+    private notification: notificationService,
+    private slidePanel: MatSlidePanel
 
 
   ) {
@@ -83,7 +91,7 @@ export class VendorProfileComponent implements OnInit {
    }
 
   ngOnInit(): void {
-
+    this.notifyNumber();
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
      
@@ -125,6 +133,7 @@ export class VendorProfileComponent implements OnInit {
       this.retrieveData = array
       this.username = this.retrieveData[0].name;
       this.slot = this.retrieveData[0].slot
+      this.price = this.retrieveData[0].slot_Price;
       this.email = this.retrieveData[0].email
       this.vendorIC = this.retrieveData[0].IC_Number
       this.phoneNo = this.retrieveData[0].phone
@@ -177,7 +186,7 @@ export class VendorProfileComponent implements OnInit {
       panelClass:'custom-modalbox',
       data: {
 
-        dataKey: this.id
+        dataKey: this.retrieveData[0]
       }
     });
 
@@ -196,6 +205,19 @@ export class VendorProfileComponent implements OnInit {
 
   closeNav(){
     this.close = true;
+  }
+
+  public notifyNumber(){
+    this.notification.findByView().subscribe(data=> {
+        this.notifyData = data;
+        this.notifyNo = this.notifyData.length;
+    })
+  }
+
+  openNotification(){
+    this.slidePanel.open(NotificationComponent, {
+      slideFrom:'right'
+    })
   }
 
 }

@@ -34,7 +34,8 @@
             <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt"></span>
-            <mat-icon class="notification">notifications</mat-icon>
+            <mat-icon class="notification"(click)="openNotification()">notifications</mat-icon>
+            <p class="no-number" style="color:white;" >{{notifyNo}}</p>
 
         </mat-toolbar>
 
@@ -45,11 +46,11 @@
             </div>
 
             <div class="user-data">
-                <h2 style="font-size: 45px;">{{username}}</h2>
-                <p style="font-size: 25px;">{{email}}<br> 
+                <h2 style="font-size: 40px;">{{username}}</h2>
+                <p style="font-size: 20px;">{{email}}<br> 
                 </p>
                 <br>
-                <button mat-raised-button style="background-color: rgb(124, 57, 179);" (click)="onEdit()">Update Info</button>
+                <button class="button-1" mat-raised-button (click)="onEdit()">Update Profile</button>
             </div>
 
             <div class="user-data2">
@@ -58,10 +59,26 @@
                 <br>
                 <span style="float: right; margin-right: 5px;">Next Payment Date: </span>
                 <br>
-                <p style="font-size: 25px; float: right;">{{nextPay}}</p>
+                <p style="font-size: 18px; float: right; color:rgb(0, 255, 0);">{{nextPay}}</p>
             </div>
 
-
+          
+                <mat-card class="statCard-1" style="background-color: white;">
+                    <div class="stat">
+                        <p class="head-1">Slot Price</p>
+                        <p>${{price}}</p>
+                    </div>
+                    <div class="stat">
+                        <p class="head-1">Slot</p>
+                        <p>{{slot}}</p>
+                        
+                    </div>
+                    <div class="stat" style="border:none !important;">
+                        <p class="head-1">Overdue</p>
+                        <p>{{finalOverdue}}</p>
+                    </div>
+                </mat-card>
+            
 
 
             
@@ -74,7 +91,7 @@
            
     
 
-        <div style="float: left; width: 60%;">
+        <div style="position:absolute; left:1px; width: 60%;">
             <h1 class="titles">Payment History</h1>
             <div class ="mat-elevation-z8" >
 
@@ -136,7 +153,7 @@
                   </div>
         </div>
 
-        <div style="float: right; width: 40%; ">
+        <div style="position: absolute; right: 1px; width: 40%; ">
 
             <h1 class="titles">Vendor Details</h1>
 

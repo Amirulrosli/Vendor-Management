@@ -106,7 +106,7 @@ mat-sidenav {
   .divDesign{
     height: 260px;
     width: 100%;
-    background-color:  #580092;
+    background-image: linear-gradient(to bottom right,#580092,purple); 
     // border-bottom-style: solid;
     // border-bottom-color: #580092;  
   }
@@ -168,7 +168,7 @@ mat-sidenav {
    margin-right: 20px;
    margin-top: 30px;
   //  font-weight: 600;
-  font-size: 30px;
+  font-size: 20px;
  }
 
  .user-image{
@@ -181,21 +181,27 @@ mat-sidenav {
 
 .user-data{
   color: #ffffff;
-  float: left;
-  width: 30%;
-  padding-left: 27px;
-  margin-top: 60px;
-  height: 80%;
+  position: absolute;
+  left:250px;
+  top:120px;
+  // float: left;
+  // width: 30%;
+  // padding-left: 27px;
+  // margin-top: 60px;
+  // height: 80%;
 }
 
 .user-data2{
   color: #ffffff;
-  float: right;
-  width: 15%;
-  // padding-left: 27px;
-  margin-top: 190px;
-  margin-right: 20px;
-  height: 10%;
+  position: absolute;
+  top: 250px;
+  right: 10px;
+  // float: right;
+  // width: 15%;
+  // // padding-left: 27px;
+  // margin-top: 190px;
+  // margin-right: 20px;
+  // height: 10%;
 }
 
 .bottomBorder{
@@ -205,4 +211,39 @@ mat-sidenav {
   border-bottom-width: thin;
 }
 
+.statCard-1{
+  background-color: white;
+  width: 300px;
+  height: 50px;
+  position: absolute;
+  right: 30px;
+  top: 18%;
+  box-shadow: 1px 3px  rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-wrap: wrap;
+
+
+}
+
+.mat-toolbar{
+  background-image: linear-gradient(to right,#580092,purple); 
+}
+.button-1{
+  background-color: rgb(194, 0, 194);
+}
+
+.stat{
+  margin: 0 auto;
+
+  color: black;
+  flex: 8%;
+  border-right: 1px solid rgba(0, 0, 0, 0.231);
+
+  p{
+    text-align: center;
+  }
+  .head-1{
+    color: purple;
+  }
+}
   
