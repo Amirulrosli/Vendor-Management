@@ -1,0 +1,46 @@
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+        <div class="nav-icon" tappable (click)="goToDashboard()">
+        <mat-icon class="active">dashboard</mat-icon>
+        <mat-label class="active">Dashboard</mat-label>
+        </div>
+
+        <div class="nav-icon" routerLink="/add-vendor">
+            <mat-icon>add_box</mat-icon>
+            <mat-label>AddVendor</mat-label>
+        </div>
+
+        <div class="nav-icon" routerLink="/add-payment">
+            <mat-icon>attach_money</mat-icon>
+            <mat-label>Payment</mat-label>
+        </div>
+
+        <div class="nav-icon">
+            <mat-icon>settings</mat-icon>
+            <mat-label>Settings</mat-label>
+        </div>
+
+        <div class="nav-icon">
+            <mat-icon>account_circle</mat-icon>
+            <mat-label>Account</mat-label>
+        </div>
+
+
+
+    </mat-sidenav>
+    <mat-sidenav-content style="background-color:white">
+        
+
+      <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+
+        <mat-button *ngIf="close==false" class="toggle" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
+        <mat-button *ngIf="close==true" class="back" (click)="back()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
+        <span class="titleTxt">Notification</span>
+        <mat-icon class="notification" (click)="openNotification()">notifications</mat-icon>
+        <p class="no-number" style="color:white;" >{{notifyNo}}</p>
+
+      </mat-toolbar>
+
+
+      </mat-sidenav-content>
+    </mat-sidenav-container>

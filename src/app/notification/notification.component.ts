@@ -1,5 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { notificationService } from '../services/notification.service';
 
 @Component({
@@ -16,7 +19,9 @@ export class NotificationComponent implements OnInit {
   retrieveData: any;
 
   constructor(private notification: notificationService,
-    private datePipe: DatePipe 
+    private datePipe: DatePipe,
+    private router: Router,
+    private slidePanel: MatSlidePanel
     ) { }
 
   ngOnInit(): void {
@@ -89,7 +94,8 @@ export class NotificationComponent implements OnInit {
   }
 
   showNotification(){
-    console.log("hahahah")
+    this.slidePanel.dismiss();
+    this.router.navigate(['/allnotification'])
   }
 
 }
