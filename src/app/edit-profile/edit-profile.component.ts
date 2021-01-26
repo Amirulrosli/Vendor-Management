@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { profileService } from '../services/profile.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { notificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -66,6 +67,7 @@ export class EditProfileComponent implements OnInit {
   private formbuilder: FormBuilder,
   private dialog: MatDialog,
   private profile: profileService,
+  private notification: notificationService
   ) {
 
     this.value = [
@@ -199,6 +201,8 @@ export class EditProfileComponent implements OnInit {
 
       } else{
 
+        
+
         this.saveData(profileModel)
 
       }
@@ -215,7 +219,23 @@ export class EditProfileComponent implements OnInit {
 
 
   async saveData(profileModel){
+    var date = new Date();
     await this.profile.update(this.data.dataKey.id,profileModel).subscribe(data=> {
+
+          const notify = {
+        rid: this.data.dataKey.rid,
+        title: 'Profile Account Update for'+' '+this.data.dataKey.name, 
+        description: 'Vendor profile has been updated to '+profileModel.name+'\n with Account ID: '+profileModel.rid,
+        category: 'Updated vendor profile',
+        date: date,
+        view: false
+    };
+
+      this.notification.create(notify).subscribe(resp=> {
+        console.log(resp)
+      },error=> {
+        console.log(error)
+      })
       console.log(data)  
  
       this.registrationForm.reset();

@@ -31,7 +31,7 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotification(){
-
+    this.listData = [];
     this.date = new Date();
     var today = this.datePipe.transform(this.date,'dd-MM-yyyy')
 

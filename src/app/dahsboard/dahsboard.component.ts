@@ -42,7 +42,7 @@ export class DahsboardComponent implements OnInit {
     'email',
     'phone',
     'latest_Payment',
-    'overdue',
+    'slot',
     'actions',
   
   ];
