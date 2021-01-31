@@ -149,7 +149,8 @@ compareData(dueDate){
           var day = date.getDate();
           var month = date.getMonth()+1;
           var year = date.getFullYear();
-
+          console.log("compare date:"+day+"/"+month+"/"+year)
+          console.log("field date:"+paymentDay+"/"+paymentMonth+"/"+paymentYear)
           
 
           if (newDate == undefined){

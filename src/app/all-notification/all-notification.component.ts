@@ -1,5 +1,8 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
 import { notificationService } from '../services/notification.service';
@@ -14,9 +17,25 @@ export class AllNotificationComponent implements OnInit {
   close = true
   opened: any;
   notificationList: any;
-  listData:any=[];
   notifyData:any;
   notifyNo: any;
+  searchKey: any;
+  notificationLength: any;
+
+  displayedColumns: string[] = [
+  
+    'title',
+    'description',
+    'category',
+    'date',
+
+  ];
+
+  
+  @ViewChild(MatSort) sort:MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  listData: MatTableDataSource<any>;
 
   constructor(private location: Location,
     private notification: notificationService,
@@ -33,8 +52,13 @@ export class AllNotificationComponent implements OnInit {
 
     this.notification.findAll().subscribe(data=> {
       this.notificationList = data;
-      this.listData = this.notificationList;
-      console.log(this.listData)
+      this.notificationLength = this.notificationList.length;
+
+
+
+      this.listData = new MatTableDataSource(this.notificationList);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
     })
 
   }
@@ -63,6 +87,16 @@ export class AllNotificationComponent implements OnInit {
         this.notifyNo = this.notifyData.length;
     })
   }
+
+  applyFilter(){
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  onChange(data){
+    console.log(data)
+    this.listData.filter = data.trim().toLowerCase();
+  }
+
 
 
 }

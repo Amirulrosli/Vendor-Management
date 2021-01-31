@@ -2,7 +2,6 @@
     <mat-sidenav>
     </mat-sidenav>
     <mat-sidenav-content style="background-color:white">
-        
 
       <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
 
@@ -14,33 +13,61 @@
 
       </mat-toolbar>
 
+      <mat-card class="search-card">
+        <div class="search-bar">
+          <input [(ngModel)]="searchKey" (keyup)="applyFilter()" type="Text" placeholder="Search by Date, Category or Title"/>
+          <button mat-raised-button class="submitBtn">Search</button>
+        </div>
+        <mat-label style="color: black;">Enter Date: </mat-label>
+        <input type="date" (change)="onChange($event.target.value)" placeholder="enter date"/>
+      </mat-card>
 
-      <mat-accordion *ngIf="listData.length!==0">
-  
-        <mat-expansion-panel *ngFor="let data of listData; let i = index" >
-          <mat-expansion-panel-header style="height: 80px;">  
-            <mat-panel-title>
-              {{data.title}}
-            </mat-panel-title>
-            <mat-panel-description>
-              {{data.date}}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-      
-          <mat-panel-description style="color:white;">
-    
-            {{data.description}}
-    
-          </mat-panel-description>
-          <br>
-          <mat-panel-description style="color:white;">
-    
-            {{data.date}}
-    
-          </mat-panel-description>
-        </mat-expansion-panel>
-      </mat-accordion>
 
+      <div class ="mat-elevation-z8" style="margin-top: 20px;">
+        <mat-table [dataSource]="listData" matSort>
+          
+            <ng-container  matColumnDef="title">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.title}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.description}}</mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="gender">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
+              <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
+          </ng-container> -->
+            <ng-container matColumnDef="category">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Category</mat-header-cell>
+                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.category}}</mat-cell>
+            </ng-container>
+    
+            <!-- <ng-container matColumnDef="dob">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date of Birth</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.dob}}</mat-cell>
+            </ng-container> -->
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.date}}</mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+          </ng-container> -->
+    
+    
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  No data available.
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+          </div>
 
       </mat-sidenav-content>
     </mat-sidenav-container>

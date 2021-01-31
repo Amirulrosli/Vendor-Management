@@ -9,6 +9,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
+import { slotService } from '../services/slot.service';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class AddVendorComponent implements OnInit {
   ICData: any;
   notifyNo: any;
   notifyData:any;
+  slotArray:any =[];
 
   public errorMessages = {
     name: [
@@ -87,7 +89,8 @@ export class AddVendorComponent implements OnInit {
     private formbuilder: FormBuilder,
     private alert: alertService,
     private notification: notificationService,
-    private slidePanel: MatSlidePanel
+    private slidePanel: MatSlidePanel,
+    private Slot: slotService
 
     ) { 
 
@@ -127,7 +130,7 @@ export class AddVendorComponent implements OnInit {
       email: ['',[Validators.required]],
       phone:['',[Validators.required]],
       rent_Date: ['',[Validators.required]],
-      slot:['',[Validators.required]],
+      slot:[''],
       slotprice:['',[Validators.required]]
     })
 
@@ -176,9 +179,12 @@ export class AddVendorComponent implements OnInit {
 
   async submit(){
 
-    
+    if (this.slotArray.length == 0){
+      Swal.fire("Unsuccessful","Please Enter slot number!",'error')
+      return;
+    }
 
-    if(!this.registrationForm.valid){
+   if(!this.registrationForm.valid){
       Swal.fire("Unsuccessful","Please Check and try again!",'error')
       return;
     } else {
@@ -200,6 +206,17 @@ export class AddVendorComponent implements OnInit {
 
         if (this.ICData.length == 0) {
 
+        var slotNumber = "";
+        const date_Now = new Date();
+        let today = date_Now.getDate()+""+(date_Now.getMonth()+1)+""+date_Now.getFullYear();
+        console.log(this.slotArray)
+        
+        for (let i = 0; i<this.slotArray.length;i++){
+          slotNumber += this.slotArray[i].slot+",";
+        }
+      
+          console.log(slotNumber)
+
           var profileModel = {
             name: name,
             email: email,
@@ -207,11 +224,32 @@ export class AddVendorComponent implements OnInit {
             phone: phone,
             IC_Number: IC_Number,
             slot_Price: slot_Price,
-            slot: slot
+            slot: slotNumber
           }
+        
         
     
         await this.profile.create(profileModel).subscribe(data=> {
+
+          for (let i = 0; i <this.slotArray.length; i++){
+            
+            var slot = {
+              rid: "V_01"+slotNumber+today+"0000"+IC_Number,
+              slot_Number: this.slotArray[i].slot
+            }
+
+            this.Slot.create(slot).subscribe(resp=> {
+              console.log(this.Slot)
+
+              this.slotArray = [];
+
+            }, error=> {
+              console.log(error)
+            })
+
+          
+          }
+
           console.log(data)  
           this.name="";
           this.email="";
@@ -256,6 +294,26 @@ export class AddVendorComponent implements OnInit {
         this.notifyNo = this.notifyData.length;
     })
   }
+
+  addSlot(){
+    var slot = this.registrationForm.value.slot;
+    if (slot !==""){
+      var slotNo = {
+        slot: slot
+      }
+      this.slotArray.push(slotNo);
+      this.slot="";
+      this.registrationForm.controls['slot'].reset();
+      this.registrationForm.value.slot = "";
+    }
+   
+
+  }
+
+  clear(i){
+    this.slotArray.splice(i,1);
+  }
+
 
   // async showAlert(header:string, message:string){
   //   const alert = await this.alert.create({

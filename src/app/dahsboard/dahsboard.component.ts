@@ -120,6 +120,8 @@ export class DahsboardComponent implements OnInit {
   openNotification(){
     this.slidePanel.open(NotificationComponent, {
       slideFrom:'right'
+    }).afterDismissed().subscribe(data=> {
+      this.notifyNumber();
     })
   }
 
