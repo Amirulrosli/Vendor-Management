@@ -234,7 +234,7 @@ export class AddVendorComponent implements OnInit {
           for (let i = 0; i <this.slotArray.length; i++){
             
             var slot = {
-              rid: "V_01"+slotNumber+today+"0000"+IC_Number,
+              rid: "V_01"+today+"0000"+IC_Number,
               slot_Number: this.slotArray[i].slot
             }
 

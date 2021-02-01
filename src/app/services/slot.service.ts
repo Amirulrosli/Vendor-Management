@@ -46,5 +46,9 @@ export class slotService {
     findByRid(rid): Observable<any> {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
+
+    findBySlot(slot_Number): Observable<any> {
+        return this.http.get(`${baseURL}/slot/${slot_Number}`)
+    }
     
 }

@@ -70,15 +70,26 @@
     <mat-label>Slot No.</mat-label>
     <br>
 
-    <input formControlName="slot" type="text" placeholder="Slot No.">
-    
-    <div *ngFor="let error of errorMessages.slot">
-        <ng-container *ngIf="registrationForm.controls['slot']?.hasError(error.type)">
-          <small class="error-message">{{error.message}}</small>
-        </ng-container>
-    </div>
+      <input style="width: 90%" formControlName="slot" type="text" placeholder="Slot No.">
+      <mat-icon tappable (click)="addSlot()" style="cursor:pointer; color:purple; font-size:40px;position: relative;top:18px;left: 10px;">add_circle_outline</mat-icon>
 
-    <br>
+      <div *ngFor="let error of errorMessages.slot">
+          <ng-container *ngIf="registrationForm.controls['slot']?.hasError(error.type)">
+              <small class="error-message">{{error.message}}</small>
+          </ng-container>
+      </div>
+
+                
+      <mat-list role="list" *ngIf="slotArray.length !== 0" style="margin-bottom:10px;">
+          <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);"*ngFor="let data of slotArray; let i = index" role="listitem">
+            <mat-icon style="color:purple">where_to_vote</mat-icon>
+              <mat-label>{{data.slot_Number}}</mat-label>
+              <mat-icon (click)="clear(i)" style="cursor:pointer;position:absolute; right: 10px;">clear</mat-icon>
+          </mat-list-item>
+      </mat-list>
+
+      <br>
+
     <mat-label>Slot Price.</mat-label>
     <br>
 

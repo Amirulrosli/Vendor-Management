@@ -133,8 +133,8 @@ export class DahsboardComponent implements OnInit {
     this.listData.filter = this.searchKey.trim().toLowerCase();
   }
 
-  onDelete(id){
-    console.log(id)
+  onDelete(data){
+    console.log(data.id)
 
     Swal.fire({
       title: 'Are you sure?',
@@ -147,13 +147,33 @@ export class DahsboardComponent implements OnInit {
     }).then((result) => {
 
       if (result.value) {
-        this.profiles.delete(id).subscribe(resp=> {
+        const date = new Date();
+        const notify = {
+          rid: data.rid,
+          title: 'Account Deletion'+' '+data.name, 
+          description: 'Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was deleted !',
+          category: 'Deleted vendor profile',
+          date: date,
+          view: false
+        };
+  
+        this.notification.create(notify).subscribe(resp=> {
+          console.log(resp)
+        },error=> {
+          console.log(error)
+        });
+
+        this.profiles.delete(data.id).subscribe(resp=> {
+
+         
+
           Swal.fire(
             'Removed!',
             'Vendor Profile removed successfully.',
             'success'
           )
-          this.ngOnInit()
+          this.refreshData();
+          this.notifyNumber();
           
         },err=> {
           console.log(err)

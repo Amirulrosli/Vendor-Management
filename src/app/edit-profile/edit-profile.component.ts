@@ -5,6 +5,7 @@ import { profileService } from '../services/profile.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
 import { Location } from '@angular/common';
+import { slotService } from '../services/slot.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -17,6 +18,16 @@ export class EditProfileComponent implements OnInit {
   registrationForm: FormGroup;
   value: any;
   ICData:any;
+  slotArray:any = [];
+  slot:any;
+  slotRetrieved: any;
+  slotRetrievedLength: any;
+  slotNumber = "";
+  date_Now: any;
+  today: any;
+  IC_No: any;
+  slotData: any = [];
+  slotDelete: any = [];
 
   public errorMessages = {
     name: [
@@ -69,7 +80,8 @@ export class EditProfileComponent implements OnInit {
   private dialog: MatDialog,
   private profile: profileService,
   private notification: notificationService,
-  private location: Location
+  private location: Location,
+  private Slot: slotService
   ) {
 
     this.value = [
@@ -99,6 +111,8 @@ export class EditProfileComponent implements OnInit {
   ngOnInit(): void {
 
     console.log(this.data.dataKey)
+    
+    
 
     this.registrationForm = this.formbuilder.group({
       name: ['',[Validators.required,Validators.maxLength(100)]],
@@ -107,7 +121,7 @@ export class EditProfileComponent implements OnInit {
       email: ['',[Validators.required]],
       phone:['',[Validators.required]],
       rent_Date: ['',[Validators.required]],
-      slot:['',[Validators.required]],
+      slot:[''],
       slotprice:['',[Validators.required]]
     })
     const IC_No = this.data.dataKey.IC_Number;
@@ -122,12 +136,29 @@ export class EditProfileComponent implements OnInit {
       email: this.data.dataKey.email,
       phone: this.data.dataKey.phone,
       rent_Date: this.data.dataKey.rent_Date,
-      slot: this.data.dataKey.slot,
+      slot: "",
       slotprice: this.data.dataKey.slot_Price
       
     }
 
+
+    this.retrieveSlot();
+
     this.registrationForm.setValue(editProfile)
+  }
+
+
+  retrieveSlot(){
+    this.Slot.findByRid(this.data.dataKey.rid).subscribe(data=> {
+      
+      this.slotRetrieved = data;
+      this.slotRetrievedLength = this.slotRetrieved.length;
+      this.slotArray = this.slotRetrieved;
+      console.log(this.slotArray)
+      console.log(this.slotRetrieved)
+    }, error=> {
+      console.log(error)
+    })
   }
 
   closeModal(){
@@ -147,7 +178,6 @@ export class EditProfileComponent implements OnInit {
       return;
     } else {
 
-
       const name = this.registrationForm.value.name;
       const email = this.registrationForm.value.email;
       const rent_Date = this.registrationForm.value.rent_Date;
@@ -155,10 +185,18 @@ export class EditProfileComponent implements OnInit {
       const next_IC = this.registrationForm.value.IC_Number;
       const forIC = this.registrationForm.value.forIC;
       const IC_Number = forIC+"-"+next_IC;
+      this.IC_No = IC_Number
       const slot_Price = this.registrationForm.value.slotprice;
       const slot = this.registrationForm.value.slot;
 
-        
+      this.date_Now = new Date();
+      this.today = this.date_Now.getDate()+""+(this.date_Now.getMonth()+1)+""+this.date_Now.getFullYear();
+      console.log(this.slotArray)
+      
+      for (let i = 0; i<this.slotArray.length;i++){
+        this.slotNumber += this.slotArray[i].slot_Number+",";
+      }
+
       var profileModel = {
         id: this.data.dataKey.id,
         rid: this.data.dataKey.rid,
@@ -168,7 +206,7 @@ export class EditProfileComponent implements OnInit {
         phone: phone,
         IC_Number: IC_Number,
         slot_Price: slot_Price,
-        slot: slot,
+        slot: this.slotNumber,
         latest_Payment: this.data.dataKey.latest_Payment,
         latest_Payment_Date: this.data.dataKey.latest_Payment_Date,
         overdue: this.data.dataKey.overdue,
@@ -180,39 +218,18 @@ export class EditProfileComponent implements OnInit {
           this.ICData = data;
   
           if (this.ICData.length == 0) {
-
-  
             this.saveData(profileModel)
-           
-          
           } else {
-  
             Swal.fire('Please try again!','IC Number is already existed','error')
             return;
-  
           }
-          
         }, err=> {
-  
           Swal.fire('Please try again!','IC Number is already existed','error')
           return;
-  
-  
         });
-
-
       } else{
-
-        
-
         this.saveData(profileModel)
-
       }
-
-    
-
-      
-      
       
     }
    
@@ -223,23 +240,57 @@ export class EditProfileComponent implements OnInit {
   saveData(profileModel){
     var date = new Date();
     console.log(profileModel)
-  this.profile.update(this.data.dataKey.id,profileModel).subscribe(data=> {
+    this.profile.update(this.data.dataKey.id,profileModel).subscribe(data=> {
 
-          const notify = {
+      for (let i = 0; i <this.slotArray.length; i++){
+          
+        var slot = {
+          rid: this.data.dataKey.rid,
+          slot_Number: this.slotArray[i].slot_Number
+        }
+
+        this.Slot.findBySlot(this.slotArray[i].slot_Number).subscribe(data=> {
+          this.slotData = data;
+          console.log(this.slotData)
+
+          if (this.slotData.length == 0){
+            this.Slot.create(slot).subscribe(resp=> {
+              console.log(this.Slot)
+    
+              this.slotArray = [];
+    
+            }, error=> {
+              console.log(error)
+            })
+          }
+        }, error=> {
+          console.log(error)
+        }); 
+      }
+
+      for (let i = 0; i< this.slotDelete.length; i++){
+        this.Slot.delete(this.slotDelete[i].id).subscribe(data=> {
+          console.log("Delete"+ data)
+        }, error=> {
+          console.log(error)
+        });
+      }
+
+      const notify = {
         rid: this.data.dataKey.rid,
         title: 'Profile Account Update for'+' '+this.data.dataKey.name, 
         description: 'Vendor profile has been updated to '+profileModel.name+'\n with Account ID: '+profileModel.rid,
         category: 'Updated vendor profile',
         date: date,
         view: false
-    };
+      };
 
       this.notification.create(notify).subscribe(resp=> {
         console.log(resp)
       },error=> {
         console.log(error)
       })
-      console.log(data)  
+        console.log(data)  
  
       this.registrationForm.reset();
       Swal.fire('Success','Data have been saved','success')
@@ -254,6 +305,33 @@ export class EditProfileComponent implements OnInit {
   }
 
 
+    addSlot(){
+      var slot = this.registrationForm.value.slot;
+      if (slot !==""){
+        var slotNo = {
+          slot_Number: slot
+       }
+      this.slotArray.push(slotNo);
+      this.slot="";
+      this.registrationForm.controls['slot'].reset();
+      this.registrationForm.value.slot = "";
+    }
+  }
+
+  
+  clear(i){
+    this.slotDelete.push(this.slotArray[i])
+    this.slotArray.splice(i,1);
+  }
+
+  deleteSlot(id){
+    this.Slot.delete(id).subscribe(data=> {
+      console.log(data)
+      this.retrieveSlot();
+    }, error=> {
+      console.log(error)
+    })
+  }
 }
 
 

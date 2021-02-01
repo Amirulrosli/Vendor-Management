@@ -152,7 +152,7 @@ compareData(dueDate){
           console.log("compare date:"+day+"/"+month+"/"+year)
           console.log("field date:"+paymentDay+"/"+paymentMonth+"/"+paymentYear)
           
-
+          console.log(newDate)
           if (newDate == undefined){
             newDate = this.dateField;
             newDay = paymentDay;
@@ -165,9 +165,8 @@ compareData(dueDate){
 
           
 
-          if (day <= newDay){ //if day high
+          if (day <= newDay){ //15<14
             if (month <= newMonth){ //month low
-
               if (year <= newYear){
 
                 newDate = newDate;
@@ -178,7 +177,6 @@ compareData(dueDate){
                 newPrice = newPrice;
                 console.log("set 1")
                 
-
               } else {
 
                 newDate = date;
@@ -188,7 +186,6 @@ compareData(dueDate){
                 newDueDate = this.userData[i].due_Date;
                 newPrice = this.userData[i].price;
                 console.log("set 4")
-
               }
 
             } else if (year <= newYear) {
@@ -212,10 +209,8 @@ compareData(dueDate){
               console.log("set 4")
 
             }
-          } else if (month <= newMonth) {
-            if (year <= newYear){
-
-              
+          } else if (month <= newMonth) { //4vs3
+            if (year < newYear){ //2021
               newDate = newDate;
               newDay = newDay;
               newMonth = newMonth;
@@ -233,9 +228,8 @@ compareData(dueDate){
               newPrice = this.userData[i].price;
               console.log("set 4")
             }
-          } else if (year <= newYear){
-
-            
+          } else if (year < newYear){ 
+   
             newDate = newDate;
             newDay = newDay;
             newMonth = newMonth;
@@ -258,10 +252,6 @@ compareData(dueDate){
         this.list.latest_Due_Date = newDueDate;
         this.list.latest_Payment = newPrice;
       }
-     
-
-  
-
 
       this.info = {
         payment_Date: this.dateField, 

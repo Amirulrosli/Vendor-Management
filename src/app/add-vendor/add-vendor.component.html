@@ -85,7 +85,7 @@
                 <mat-label>Phone Number:</mat-label>
                 <br>
 
-                <input formControlName="phone" type="number" placeholder="phone no.">
+                <input formControlName="phone" type="string" placeholder="phone no.">
                 
                 <div *ngFor="let error of errorMessages.phone">
                     <ng-container *ngIf="registrationForm.controls['phone']?.hasError(error.type)">
