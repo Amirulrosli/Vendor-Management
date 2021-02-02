@@ -42,56 +42,58 @@
         <div class="divDesign"  *ngIf="retrieveData!==undefined">
 
             <div class="user-image">
-                <mat-icon class="accountIcon">account_circle</mat-icon>
+                <img class="accountIcon" src="assets/profile.png"/>
             </div>
 
             <div class="user-data">
-                <h2 style="font-size: 40px;">{{username}}</h2>
-                <p style="font-size: 20px;">{{email}}<br> 
+                <h2 style="font-size: 35px;">{{username}}</h2>
+                <p style="font-size: 18px;">{{email}}<br> 
                 </p>
                 <br>
-                <button class="button-1" mat-raised-button (click)="onEdit()">Update Profile</button>
+
             </div>
 
-            <div class="user-data2">
-                <span style="font-size: 25px; color: red; float: right; margin-left: 5px; margin-right: 2px;">{{finalOverdue}}</span>
-                <span style="font-size: 15px; float: right;">Overdue:  </span>
-                <br>
-                <span style="float: right; margin-right: 5px;">Next Payment Date: </span>
-                <br>
-                <p style="font-size: 18px; float: right; color:rgb(0, 255, 0);">{{nextPay}}</p>
-            </div>
-
+            
+            <button class="button-1" mat-raised-button (click)="onEdit()">Update Profile </button>
+            <button class="button-2" mat-raised-button >View Details<mat-icon>launch</mat-icon></button>
           
-                <mat-card class="statCard-1" style="background-color: white;">
-                    <div class="stat">
-                        <p class="head-1">Slot Price</p>
-                        <p>${{price}}</p>
-                    </div>
-                    <div class="stat">
-                        <p class="head-1">Slot</p>
-                        <p>{{slot}}</p>
-                        
-                    </div>
-                    <div class="stat" style="border:none !important;">
-                        <p class="head-1">Overdue</p>
-                        <p>{{finalOverdue}}</p>
-                    </div>
-                </mat-card>
-            
-
-
-            
-
 
         </div>
 
+        <div class="banner">
 
-    
+            <div class="stat-1">
+                <div class="stat">
+                    <p class="head-1">Slot Price</p>
+                    <p>${{price}}</p>
+                </div>
+                <div class="stat">
+                    <p class="head-1">Slot</p>
+                    <p>{{slot}}</p>
+                    
+                </div>
+                <div class="stat">
+                    <p class="head-1">Overdue</p>
+                    <p>{{finalOverdue}}</p>
+                </div>
+
+                <div class="stat" style="border:none !important;">
+                    <p class="head-1">Next Payment Date</p>
+                    <p style="color: green">{{nextPay}}</p>
+                </div>
+            
+            </div>
+        </div>
+
+
+        <div class="back-2">
+        <div class="history">
+            <mat-card class="search-card-1">
+                  <mat-label style="color: black;">Enter Date: </mat-label>
+                  <input type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+                  <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black;">closed</mat-icon>
+            </mat-card>
            
-    
-
-        <div style="position:absolute; left:1px; width: 60%;">
             <h1 class="titles">Payment History</h1>
             <div class ="mat-elevation-z8" >
 
@@ -152,21 +154,8 @@
                     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
                   </div>
         </div>
-
-        <div style="position: absolute; right: 1px; width: 40%; ">
-
-            <h1 class="titles">Vendor Details</h1>
-
-            <div class="divCard">
-              <div class="bottomBorder" ><p>Vendor Slot: <span style="color: black;">{{slot}} </span></p> </div>  
-              <div class="bottomBorder" ><p>Ic Number: <span style="color: black;">{{vendorIC}} </span></p> </div>
-              <div class="bottomBorder" ><p>Phone No: <span style="color: black;">{{phoneNo}} </span></p></div> 
-              <div class="bottomBorder" ><p>Vendor ID: <span style="color: black;">{{vendorID}} </span></p></div>
-            </div>
-
-
-        </div>
        
+    </div>
 
 
               

@@ -23,6 +23,7 @@ import * as Material15 from '@angular/material/dialog'
 import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatButtonToggleModule} from '@angular/material/button-toggle'
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
     declarations: [],
@@ -48,7 +49,8 @@ import { MatButtonToggleModule} from '@angular/material/button-toggle'
     Material13.MatSortModule,
     Material14.MatPaginatorModule,
     Material15.MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatTabsModule
     
 
     ],
@@ -74,7 +76,8 @@ import { MatButtonToggleModule} from '@angular/material/button-toggle'
     Material15.MatDialogModule,
     MatCardModule,
     MatSidenavModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatTabsModule
    
 
 
