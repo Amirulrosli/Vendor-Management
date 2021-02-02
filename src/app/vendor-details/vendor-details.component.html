@@ -1,0 +1,64 @@
+<mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">close</mat-icon></mat-button>
+    <span class="titleTxt">Vendor Details</span>
+
+  </mat-toolbar>
+  <br>
+
+  <mat-label>Account ID:</mat-label>                    
+  <br>
+  <input [ngModel]="rid" type="text" placeholder="Enter Name.." disabled/>
+  
+  <br>
+
+
+
+    <mat-label>Vendor Name:</mat-label>                    
+    <br>
+    <input [ngModel]="name" type="text" placeholder="Enter Name.." disabled/>
+    
+    <br>
+    <mat-label>IC Number:</mat-label>
+    <br>
+
+
+    <input [ngModel]="IC_Number"  type="text" placeholder="Enter IC Number" disabled/>
+    
+
+    <br>
+    <mat-label>Email Address:</mat-label>
+    <br>
+
+    <input  [ngModel]="email"   type="email" placeholder="Enter Email Address" disabled/>
+
+    <br>
+    <mat-label>Phone Number:</mat-label>
+    <br>
+
+    <input  [ngModel]="phone"   type="number" placeholder="phone no." disabled>
+    
+    <br>
+    <mat-label>Registration Date:</mat-label>
+    <br>
+
+    <input  [ngModel]="rent_Date"   type="date" placeholder="Enter Date" disabled>
+    
+    <br>
+    <mat-label>Slot No.</mat-label>
+    <br>
+                
+      <mat-list role="list" *ngIf="slotArray.length !== 0" style="margin-bottom:10px;">
+          <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);"*ngFor="let data of slotArray; let i = index" role="listitem">
+            <mat-icon style="color:purple">where_to_vote</mat-icon>
+              <mat-label>{{data.slot_Number}}</mat-label>
+          </mat-list-item>
+      </mat-list>
+
+      <br>
+
+    <mat-label>Slot Price.</mat-label>
+    <br>
+
+    <input  [ngModel]="slot_Price"  type="number" placeholder="Slot Price ($)" disabled>
+    
+    <br>

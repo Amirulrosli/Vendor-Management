@@ -55,7 +55,7 @@
 
             
             <button class="button-1" mat-raised-button (click)="onEdit()">Update Profile </button>
-            <button class="button-2" mat-raised-button >View Details<mat-icon>launch</mat-icon></button>
+            <button class="button-2" mat-raised-button (click)="viewDetails()">View Details<mat-icon>launch</mat-icon></button>
           
 
         </div>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="stat">
                     <p class="head-1">Overdue</p>
-                    <p>{{finalOverdue}}</p>
+                    <p style="color: red">{{finalOverdue}} day(s)</p>
                 </div>
 
                 <div class="stat" style="border:none !important;">
@@ -88,13 +88,16 @@
 
         <div class="back-2">
         <div class="history">
-            <mat-card class="search-card-1">
-                  <mat-label style="color: black;">Enter Date: </mat-label>
-                  <input type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
-                  <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black;">closed</mat-icon>
-            </mat-card>
+ 
            
             <h1 class="titles">Payment History</h1>
+
+            <mat-card class="search-card-1">
+                <mat-label style="color: black;">Enter Date: </mat-label>
+                <input type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+                <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black;">closed</mat-icon>
+          </mat-card>
+
             <div class ="mat-elevation-z8" >
 
            

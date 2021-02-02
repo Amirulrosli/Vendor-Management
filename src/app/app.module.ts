@@ -20,6 +20,7 @@ import { VendorProfileComponent } from './vendor-profile/vendor-profile.componen
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
+import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
 
  
 
@@ -32,7 +33,8 @@ import { AllNotificationComponent } from './all-notification/all-notification.co
     EditProfileComponent,
     NotificationComponent,
     VendorProfileComponent,
-    AllNotificationComponent
+    AllNotificationComponent,
+    VendorDetailsComponent
   ],
   imports: [
     BrowserModule,

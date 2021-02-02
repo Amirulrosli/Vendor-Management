@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { notificationService } from '../services/notification.service';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
+import { VendorDetailsComponent } from '../vendor-details/vendor-details.component';
 
 
 
@@ -37,7 +38,7 @@ export class VendorProfileComponent implements OnInit {
   retrieveDataLength:any;
   list:any[];
   close;
-  opened = false
+  opened = true
 
   nextPayment: any;
   nextDate:any;
@@ -88,7 +89,7 @@ export class VendorProfileComponent implements OnInit {
   ) {
     const compId = this.route.snapshot.paramMap.get('rid')
     this.id = compId
-    this.close = true;
+    this.close = false;
 
    }
 
@@ -198,6 +199,20 @@ export class VendorProfileComponent implements OnInit {
       this.refreshData();
     });
 
+  }
+
+  viewDetails(){
+    this.dialog.open(VendorDetailsComponent, {
+      width: "800px",
+      height: "90%",
+      panelClass:'custom-modalbox',
+      data: {
+
+        dataKey: this.retrieveData[0]
+      }
+    }).afterClosed().subscribe(result=> {
+      this.refreshData();
+    });
   }
 
   

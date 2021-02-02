@@ -106,15 +106,18 @@ mat-sidenav {
   .divDesign{
     height: 120px;
     width: 100%;
-    background-image: linear-gradient(to bottom right,#580092,rgb(187, 0, 187)); 
+    background-image: linear-gradient(to bottom right, rgb(88, 27, 138), rgb(182, 103, 255)); 
     // border-bottom-style: solid;
     // border-bottom-color: #580092;  
+    height: 180px;
   }
 
   .banner{
     height: 100px;
     width: 100%;
     background-color: white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
 
   .accountIcon{
@@ -180,8 +183,7 @@ mat-sidenav {
 
  .titles{
    color: #580092;
-   margin-left: 20px;
-   margin-right: 20px;
+   margin-left: 80px;
    margin-top: 30px;
   //  font-weight: 600;
   font-size: 20px;
@@ -229,7 +231,10 @@ mat-sidenav {
 }
 
 .mat-toolbar{
-  background-image: linear-gradient(to right,#580092,rgb(187, 0, 187)); 
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  // background-image: linear-gradient(to right, rgb(88, 27, 138), rgb(182, 103, 255)); 
 }
 .button-1{
   background-color: rgb(194, 0, 194);
@@ -278,10 +283,11 @@ mat-sidenav-content{
 
 
 .search-card-1{
-  width: 45%;
+  width: 48%;
   background-color: white;
-  margin-left: 20px;
+  margin-left: 80px;
   margin-top: 10px;
+
 
 
   .search-bar{
