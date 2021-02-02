@@ -73,5 +73,18 @@ mat-sidenav {
     color: red;
 }
 
+.no-number{
+    font-size: 15px;
+    color:white;
+    background-color: red;
+    text-align:center;
+    position:absolute;
+    right: 5px;
+    top:3px;
+    border-radius: 50%;
+    transform: scale(0.65);
+    width:30px;
+}
+
 
   
