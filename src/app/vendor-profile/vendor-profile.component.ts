@@ -1,4 +1,4 @@
-import { ViewChild } from '@angular/core';
+import { ViewChild, ViewEncapsulation } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +20,7 @@ import { NotificationComponent } from '../notification/notification.component';
 @Component({
   selector: 'app-vendor-profile',
   templateUrl: './vendor-profile.component.html',
-  styleUrls: ['./vendor-profile.component.scss']
+  styleUrls: ['./vendor-profile.component.scss'],
 })
 export class VendorProfileComponent implements OnInit {
 
@@ -54,6 +54,8 @@ export class VendorProfileComponent implements OnInit {
   notifyData: any;
   notifyNo: any;
   price: any;
+  searchKey: any;
+  dateFilter: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -226,4 +228,28 @@ export class VendorProfileComponent implements OnInit {
     })
   }
 
+
+  applyFilter(){
+    this.paymentData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  onChange(data){
+    console.log(data)
+    const date = data;
+    const year = date.substring(0,4);
+    const month = date.substring(5,7);
+    const day = date.substring(8,10);
+    const fullDate = day+"-"+month+"-"+year;
+    console.log(fullDate)
+    this.paymentData.filter = fullDate.trim().toLowerCase();
+  }
+
+  clear(){
+    this.dateFilter = "";
+    this.paymentData.filter = this.dateFilter.toLowerCase();
+  }
+
 }
+
+
+
