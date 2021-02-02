@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
 import { ChangeDetectorRef } from '@angular/core';
+// import { error } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -31,6 +32,14 @@ export class DahsboardComponent implements OnInit {
   notifyNo: any;
   notifyData:any;
 
+  overdue:any;
+  dateToday;
+  today;
+  paymentDue;
+  overdueDays;
+  overdueBoolean: boolean;
+  dueTrue: true;
+
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -44,7 +53,9 @@ export class DahsboardComponent implements OnInit {
     'phone',
     'latest_Payment',
     'slot',
-    'actions',
+    'overdue',
+    'actions'
+    
   
   ];
   
@@ -88,15 +99,62 @@ export class DahsboardComponent implements OnInit {
         }
       });
 
+      this.dateToday = new Date()
+      this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')
+
+
       for (let i = 0; i<this.list.length;i++){
         const paymentOldDate = this.list[i].latest_Payment_Date;
+        const paymentDueDate = this.list[i].latest_Due_Date;
         // const dueOldDate = this.paymentList[i].due_Date;
 
         let payment = this.datePipe.transform(paymentOldDate,'dd-MM-yyyy')
+        // let due = this.datePipe.transform(paymentDueDate,'dd-MM-yyyy')
         // let due = this.datePipe.transform(dueOldDate,'dd-MM-yyyy')
 
         this.list[i].latest_Payment_Date = payment;
+        // this.list[i].latest_Due_Date = due;
         // this.paymentList[i].due_Date = due;
+
+        this.paymentDue = this.datePipe.transform(paymentDueDate,'MM/dd/yyyy');
+
+        if(this.paymentDue !== null){
+
+          var parsedNextDate = this.parseDate(this.paymentDue)
+          var parsedToday = this.parseDate(this.today)
+
+          var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
+          this.overdueDays = overdueTime / (1000 * 3600 * 24);
+          this.overdue = this.overdueDays
+
+          console.log(this.paymentDue+" and " + this.today)
+          console.log(this.overdueDays)
+
+          if (this.overdueDays <= 0) {
+            this.overdueBoolean = false;
+          }else {
+            this.overdueBoolean = true;
+          }
+
+          // this.overdueBoolean == this.list[i].overdue;
+          this.list[i].overdue = this.overdueBoolean
+          
+          console.log(this.overdueBoolean)
+          console.log(this.list[i].overdue)
+
+
+          //update latest payment
+          this.profiles.update(this.list[i].id,this.list[i]).subscribe(array =>{
+            console.log(array);
+          },error => {
+            console.log(error)
+          })
+
+        }
+        
+
+        //write overdue to true
+        
       }
 
       this.listData = new MatTableDataSource(this.list);
@@ -106,6 +164,11 @@ export class DahsboardComponent implements OnInit {
 
     })
 
+  }
+
+  parseDate(str){
+        var mdy = str.split('/');
+        return new Date(mdy[2], mdy[0]-1, mdy[1]);
   }
 
   goToDashboard(){
