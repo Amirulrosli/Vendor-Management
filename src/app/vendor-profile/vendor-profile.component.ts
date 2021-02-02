@@ -164,6 +164,9 @@ export class VendorProfileComponent implements OnInit {
       var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
       this.overdueDays = overdueTime / (1000 * 3600 * 24);
       this.overdue = this.overdueDays
+
+      console.log(this.overdueDays)
+
       var noOverdue = this.overdueDays - this.overdue
       this.finalOverdue = this.overdue
       
