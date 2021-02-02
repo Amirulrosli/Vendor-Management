@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
 import { ChangeDetectorRef } from '@angular/core';
-import { error } from '@angular/compiler/src/util';
+// import { error } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -118,45 +118,44 @@ export class DahsboardComponent implements OnInit {
 
         this.paymentDue = this.datePipe.transform(paymentDueDate,'MM/dd/yyyy');
 
-        var parsedNextDate = parseDate(this.paymentDue)
-        var parsedToday = parseDate(this.today)
+        if(this.paymentDue !== null){
 
-        var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
-        this.overdueDays = overdueTime / (1000 * 3600 * 24);
-        this.overdue = this.overdueDays
+          var parsedNextDate = this.parseDate(this.paymentDue)
+          var parsedToday = this.parseDate(this.today)
 
-        console.log(this.paymentDue+" and " + this.today)
-        console.log(this.overdueDays)
+          var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
+          this.overdueDays = overdueTime / (1000 * 3600 * 24);
+          this.overdue = this.overdueDays
 
-        if (this.overdueDays <= 0) {
-          this.overdueBoolean = false;
-        }else {
-          this.overdueBoolean = true;
-        }
+          console.log(this.paymentDue+" and " + this.today)
+          console.log(this.overdueDays)
 
-        // this.overdueBoolean == this.list[i].overdue;
-        this.list[i].overdue = this.overdueBoolean
+          if (this.overdueDays <= 0) {
+            this.overdueBoolean = false;
+          }else {
+            this.overdueBoolean = true;
+          }
+
+          // this.overdueBoolean == this.list[i].overdue;
+          this.list[i].overdue = this.overdueBoolean
           
-        console.log(this.overdueBoolean)
-        console.log(this.list[i].overdue)
+          console.log(this.overdueBoolean)
+          console.log(this.list[i].overdue)
 
 
-         //update latest payment
-         this.profiles.update(this.list[i].id,this.list[i]).subscribe(array =>{
-          console.log(array);
-        },error => {
-          console.log(error)
-        })
+          //update latest payment
+          this.profiles.update(this.list[i].id,this.list[i]).subscribe(array =>{
+            console.log(array);
+          },error => {
+            console.log(error)
+          })
+
+        }
+        
 
         //write overdue to true
         
       }
-
-       //parse to date
-       function parseDate(str) {
-        var mdy = str.split('/');
-        return new Date(mdy[2], mdy[0]-1, mdy[1]);
-    }
 
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;
@@ -165,6 +164,11 @@ export class DahsboardComponent implements OnInit {
 
     })
 
+  }
+
+  parseDate(str){
+        var mdy = str.split('/');
+        return new Date(mdy[2], mdy[0]-1, mdy[1]);
   }
 
   goToDashboard(){
