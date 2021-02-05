@@ -62,7 +62,7 @@
                 name="selectField"
                 [matAutocomplete]="auto">
                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions | async " [value]="option" (click)="set(option)" >
+                    <mat-option *ngFor="let option of filteredOptions | async " [value]="option" (click)="set()" >
                         {{option}}
                     </mat-option>
                 </mat-autocomplete>
@@ -77,7 +77,7 @@
                 <mat-label class="mat-label-form"> Vendor Name:</mat-label>
                 <br>
                 <!-- <input type="text" placeholder="Enter Name.."/> -->
-                <input [(ngModel)]="vendorField" [hidden]="list.length!==0" placeholder="vendor name" style="color: black; font-weight: 500; margin-top: 5px;"v alue="{{list.name}}" disabled/>
+                <input [(ngModel)]="vendorField" [hidden]="list.length!==0" placeholder="vendor name" style="color: black; font-weight: 500; margin-top: 5px;" value="{{list.name}}" disabled/>
                 <mat-list role="list" *ngIf="list.length !== 0" style="margin-bottom:10px;">
                     <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
                         <mat-icon style="color:purple">account_circle</mat-icon>

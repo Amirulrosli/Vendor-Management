@@ -134,7 +134,7 @@ onChange(deviceValue) {
   })
 }
 
-set(option){
+set(){
 
   console.log(this.myControl.value)
 
