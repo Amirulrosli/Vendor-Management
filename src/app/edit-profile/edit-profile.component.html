@@ -20,11 +20,11 @@
     <mat-label>IC Number:</mat-label>
     <br>
 
-    <input style="background-color: rgba(0, 150, 0, 0.143); width: 8%" formControlName="forIC" name="IC" placeholder="No." disabled/>
+    <input style="background-color: rgba(150, 0, 0, 0.143); width: 8%" formControlName="forIC" name="IC" placeholder="No." disabled/>
 
     <mat-label class="IC-Dash">-</mat-label>
 
-    <input formControlName="IC_Number" style="width: 88%; background-color: rgba(0, 150, 0, 0.143);" type="text" placeholder="Enter IC Number" disabled/>
+    <input formControlName="IC_Number" style="width: 88%; background-color: rgba(150, 0, 0, 0.143);" type="text" placeholder="Enter IC Number" disabled/>
     <p style="color: red; font-size: 12px;">*IC Number cannot be edited</p>
     <div *ngFor="let error of errorMessages.IC_Number">
         <ng-container *ngIf="registrationForm.controls['IC_Number']?.hasError(error.type)">
