@@ -46,6 +46,11 @@
         <div class="search-bar">
           <input [(ngModel)]="searchKey" type="Text" placeholder="Search for IC"/>
           <button mat-raised-button (click)="applyFilter()" class="submitBtn">Search</button>
+          <div class="inline">
+            <mat-icon (click)="refreshData()" class="reset">close</mat-icon>
+            <p class="resetInfo">Reset</p>
+          </div>
+         
         </div>
         <mat-icon style="color:black; position: relative; top: 5px;">filter_list</mat-icon>
         <mat-label style="color:black;">Filter: </mat-label>
