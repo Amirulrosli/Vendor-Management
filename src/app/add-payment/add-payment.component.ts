@@ -10,7 +10,7 @@ import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, withLatestFrom} from 'rxjs/operators';
 
 
 
@@ -96,6 +96,7 @@ export class AddPaymentComponent implements OnInit {
 
   filter(value: string): string[]{
    this.ifSet = false;
+   this.list = [];
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
@@ -164,6 +165,11 @@ addMonths(date, months) {
 }
 
 compareData(dueDate){
+
+  if(this.list.length==0){
+    Swal.fire('Please Enter IC Number','No data reference available','error')
+    return;
+  }
 
   try{
 
@@ -434,6 +440,7 @@ compareData(dueDate){
           this.slotField = "";
           this.priceField = undefined;
           this.vendorField = "";
+          this.myControl.reset();
        
           this.list = [];
         

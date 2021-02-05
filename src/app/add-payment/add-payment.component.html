@@ -77,15 +77,27 @@
                 <mat-label class="mat-label-form"> Vendor Name:</mat-label>
                 <br>
                 <!-- <input type="text" placeholder="Enter Name.."/> -->
-                <input [(ngModel)]="vendorField" placeholder="vendor name" style="color: black; font-weight: 500; font-size: 20px; margin-top: 5px;"value="{{list.name}}" disabled/>
+                <input [(ngModel)]="vendorField" [hidden]="list.length!==0" placeholder="vendor name" style="color: black; font-weight: 500; margin-top: 5px;"v alue="{{list.name}}" disabled/>
+                <mat-list role="list" *ngIf="list.length !== 0" style="margin-bottom:10px;">
+                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                        <mat-icon style="color:purple">account_circle</mat-icon>
+                           <mat-label >{{list.name}}</mat-label>
+                    </mat-list-item>
+                </mat-list>
+                <br>
+                <mat-label class="mat-label-form">Slot Number:</mat-label>
+                <br>
+                <input [(ngModel)]="slotField" [hidden]="list.length!==0" placeholder="Slot No." value="{{list.slot}}" type="text" disabled/>
+                <mat-list role="list" *ngIf="list.length !== 0" style="margin-bottom:10px;">
+                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                        <mat-icon style="color:purple">where_to_vote</mat-icon>
+                           <mat-label>{{list.slot}}</mat-label>
+                    </mat-list-item>
+                </mat-list>
                 <br>
                 <mat-label class="mat-label-form">Payment Date:</mat-label>
                 <br>
                 <input [(ngModel)]="dateField" type="date"/>
-                <br>
-                <mat-label class="mat-label-form">Slot Number:</mat-label>
-                <br>
-                <input [(ngModel)]="slotField" placeholder="Slot No." value="{{list.slot}}" type="text" disabled/>
                 <br>
                 <mat-label class="mat-label-form">Price:</mat-label>
                 <br>
