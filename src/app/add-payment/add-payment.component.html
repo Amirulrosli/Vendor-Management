@@ -34,8 +34,8 @@
             <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt">Add Payment</span>
-            <mat-icon class="notification"  (click)="openNotification()">notifications</mat-icon>
-            <p class="no-number" style="color:white;" >{{notifyNo}}</p>
+            <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
+            <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
         </mat-toolbar>
      
@@ -45,9 +45,33 @@
                 <mat-label class="mat-label-form">IC number:</mat-label>
                 <br>
 
-                <select [(ngModel)]="selectField" placeholder="Select IC Number" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
+                <!-- <input type="text"
+                    placeholder="Enter IC Number"
+                    [ngModel]="selectField"
+                    [matAutocomplete]="auto" onChange="onChange(ic)">
+                <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let data of retrieveData" value="{{data.IC_Number}}" (click)="onChange(data.id)">
+                    {{data.IC_Number}}
+                </mat-option>
+                </mat-autocomplete> -->
+                <form>
+                <input style="color: black;width:80%" type="text"
+                placeholder="Enter IC Number..."
+                aria-label="Number"
+                [formControl]="myControl"
+                name="selectField"
+                [matAutocomplete]="auto">
+                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async " [value]="option" (click)="set(option)" >
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+                <button style="background-color: #6902AD;" mat-raised-button (click)="set()" [disabled]="ifSet">Set</button>
+                </form>
+
+                <!-- <select [(ngModel)]="selectField" placeholder="Select IC Number" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
                     <option *ngFor="let data of retrieveData" value="{{data.id}}">{{data.IC_Number}}</option>
-                </select>
+                </select> -->
                 <br>
 
                 <mat-label class="mat-label-form"> Vendor Name:</mat-label>

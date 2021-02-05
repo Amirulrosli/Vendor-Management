@@ -8,7 +8,9 @@ import { DatePipe } from '@angular/common';
 import { notificationService } from '../services/notification.service';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
-
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 
 
@@ -21,7 +23,7 @@ export class AddPaymentComponent implements OnInit {
   close: any;
   opened = true
   date: Date;
-  retrieveData:any;
+  retrieveData:any = [];
   retrieveDataLength:any;
   id;
   value;
@@ -38,8 +40,12 @@ export class AddPaymentComponent implements OnInit {
   userData: any;
   notifyNo: any;
   notifyData:any;
-
-  
+  searchKey:any;
+  myControl = new FormControl();
+  filteredOptions: Observable<string[]>;
+  options: string[] = [];
+  ifSet: Boolean;
+  myList:any = [];
 
   constructor(
     private router: Router,
@@ -53,23 +59,46 @@ export class AddPaymentComponent implements OnInit {
     this.close = false;
 
     this.selectField = null;
-
+    this.ifSet = false;
     
    }
 
 
 
   ngOnInit(): void {
+
+
+
+
     this.notifyNumber();
     this.profile.findAll().subscribe(array => {
       this.retrieveData = array
       
+      for (let i = 0; i < this.retrieveData.length; i++){
+        this.options.push(this.retrieveData[i].IC_Number)
+      }
       
       console.log(array)
       
       
-    })
+    });
 
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filter(value))
+    );
+
+  }
+
+  applyFilter(){
+
+  }
+
+  filter(value: string): string[]{
+   this.ifSet = false;
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
 
   
@@ -93,14 +122,7 @@ export class AddPaymentComponent implements OnInit {
     })
   }
 
-  addMonths(date, months) {
-    var d = date.getDate();
-    date.setMonth(date.getMonth() + +months);
-    if (date.getDate() != d) {
-      date.setDate(0);
-    }
-    return date;
-}
+
 
 
 
@@ -109,6 +131,36 @@ onChange(deviceValue) {
     console.log(array)
     this.list = array;
   })
+}
+
+set(option){
+
+  console.log(this.myControl.value)
+
+  this.profile.findByIC(this.myControl.value).subscribe(array =>{
+ 
+    this.myList = array;
+    console.log(this.myList)
+
+    if (this.myList.length == 0){
+      this.ifSet = false;
+      this.vendorField = "";
+      this.slotField="";
+      Swal.fire('No Result Found','Please Check your IC Number and Try again','error')
+    } else {
+      this.ifSet = true;
+      this.list = this.myList[0];
+    }
+  })
+}
+
+addMonths(date, months) {
+  var d = date.getDate();
+  date.setMonth(date.getMonth() + +months);
+  if (date.getDate() != d) {
+    date.setDate(0);
+  }
+  return date;
 }
 
 compareData(dueDate){
@@ -163,12 +215,10 @@ compareData(dueDate){
 
           }
 
-          
-
-          if (day <= newDay){ //15<14
-            if (month <= newMonth){ //month low
-              if (year <= newYear){
-
+          if (newYear == year){
+            if (newMonth == month){
+              if (newDay > day){
+                
                 newDate = newDate;
                 newDay = newDay;
                 newMonth = newMonth;
@@ -176,9 +226,7 @@ compareData(dueDate){
                 newDueDate = newDueDate;
                 newPrice = newPrice;
                 console.log("set 1")
-                
               } else {
-
                 newDate = date;
                 newDay = day;
                 newMonth = month;
@@ -187,49 +235,24 @@ compareData(dueDate){
                 newPrice = this.userData[i].price;
                 console.log("set 4")
               }
-
-            } else if (year <= newYear) {
-                
-              newDate = newDate;
-              newDay = newDay;
-              newMonth = newMonth;
-              newYear = newYear;
-              newDueDate = newDueDate;
-              newPrice = newPrice;
-              console.log("set 1")
-
+            } else if (newMonth > month) {
+                newDate = newDate;
+                newDay = newDay;
+                newMonth = newMonth;
+                newYear = newYear;
+                newDueDate = newDueDate;
+                newPrice = newPrice;
+                console.log("set 1")
             } else {
-
-              newDate = date;
-              newDay = day;
-              newMonth = month;
-              newYear = year;
-              newDueDate = this.userData[i].due_Date;
-              newPrice = this.userData[i].price;
-              console.log("set 4")
-
+                newDate = date;
+                newDay = day;
+                newMonth = month;
+                newYear = year;
+                newDueDate = this.userData[i].due_Date;
+                newPrice = this.userData[i].price;
+                console.log("set 4")
             }
-          } else if (month <= newMonth) { //4vs3
-            if (year < newYear){ //2021
-              newDate = newDate;
-              newDay = newDay;
-              newMonth = newMonth;
-              newYear = newYear;
-              newDueDate = newDueDate;
-              newPrice = newPrice;
-              console.log("set 1")
-
-            } else {
-              newDate = date;
-              newDay = day;
-              newMonth = month;
-              newYear = year;
-              newDueDate = this.userData[i].due_Date;
-              newPrice = this.userData[i].price;
-              console.log("set 4")
-            }
-          } else if (year < newYear){ 
-   
+          } else if (newYear > year) {
             newDate = newDate;
             newDay = newDay;
             newMonth = newMonth;
@@ -237,16 +260,118 @@ compareData(dueDate){
             newDueDate = newDueDate;
             newPrice = newPrice;
             console.log("set 1")
-
           } else {
-              newDate = date;
-              newDay = day;
-              newMonth = month;
-              newYear = year;
-              newDueDate = this.userData[i].due_Date;
-              newPrice = this.userData[i].price;
-              console.log("set 4")
+            newDate = date;
+            newDay = day;
+            newMonth = month;
+            newYear = year;
+            newDueDate = this.userData[i].due_Date;
+            newPrice = this.userData[i].price;
+            console.log("set 4")
           }
+
+          // if (day <= newDay){ //15<14
+          //   if (month <= newMonth){ //month low
+          //     if (year <= newYear){
+
+          //       newDate = newDate;
+          //       newDay = newDay;
+          //       newMonth = newMonth;
+          //       newYear = newYear;
+          //       newDueDate = newDueDate;
+          //       newPrice = newPrice;
+          //       console.log("set 1")
+                
+          //     } else {
+
+          //       newDate = date;
+          //       newDay = day;
+          //       newMonth = month;
+          //       newYear = year;
+          //       newDueDate = this.userData[i].due_Date;
+          //       newPrice = this.userData[i].price;
+          //       console.log("set 4")
+          //     }
+
+          //   } else if (year <= newYear) {
+                
+          //     newDate = newDate;
+          //     newDay = newDay;
+          //     newMonth = newMonth;
+          //     newYear = newYear;
+          //     newDueDate = newDueDate;
+          //     newPrice = newPrice;
+          //     console.log("set 1")
+
+          //   } else {
+
+          //     newDate = date;
+          //     newDay = day;
+          //     newMonth = month;
+          //     newYear = year;
+          //     newDueDate = this.userData[i].due_Date;
+          //     newPrice = this.userData[i].price;
+          //     console.log("set 4")
+
+          //   }
+          // } else if (month < newMonth) { //4vs3
+          //   if (year <= newYear){ //2021
+          //     newDate = newDate;
+          //     newDay = newDay;
+          //     newMonth = newMonth;
+          //     newYear = newYear;
+          //     newDueDate = newDueDate;
+          //     newPrice = newPrice;
+          //     console.log("set 1")
+
+          //   } else {
+          //     newDate = date;
+          //     newDay = day;
+          //     newMonth = month;
+          //     newYear = year;
+          //     newDueDate = this.userData[i].due_Date;
+          //     newPrice = this.userData[i].price;
+          //     console.log("set 4")
+          //   }
+          // } else if (month == newMonth){
+
+          //   if (year < newYear){
+          //     newDate = newDate;
+          //     newDay = newDay;
+          //     newMonth = newMonth;
+          //     newYear = newYear;
+          //     newDueDate = newDueDate;
+          //     newPrice = newPrice;
+          //     console.log("set 1")
+          //   } else {
+          //     newDate = date;
+          //     newDay = day;
+          //     newMonth = month;
+          //     newYear = year;
+          //     newDueDate = this.userData[i].due_Date;
+          //     newPrice = this.userData[i].price;
+          //     console.log("set 4")
+          //   }
+
+          // } else if (year < newYear){ 
+   
+          //   newDate = newDate;
+          //   newDay = newDay;
+          //   newMonth = newMonth;
+          //   newYear = newYear;
+          //   newDueDate = newDueDate;
+          //   newPrice = newPrice;
+          //   console.log("set 1")
+
+          // } else {
+          //     newDate = date;
+          //     newDay = day;
+          //     newMonth = month;
+          //     newYear = year;
+          //     newDueDate = this.userData[i].due_Date;
+          //     newPrice = this.userData[i].price;
+          //     console.log("set 4")
+          // }
         }
         this.list.latest_Payment_Date = newDate;
         this.list.latest_Due_Date = newDueDate;
@@ -265,22 +390,27 @@ compareData(dueDate){
       this.lastPayment ={
         latest_Payment_Date: this.dateField
       }
+
+      this.selectField = this.myControl.value;
   
   
       //validation
       if(this.selectField == null){
         this.formStatus = false;
         Swal.fire('Error', 'Please select an IC number!', 'error')
+        return;
   
       }
       else if(this.dateField == null){
         this.formStatus = false;
         Swal.fire('Error', 'Please enter a valid date!', 'error')
+        return;
   
       }
       else if(this.priceField == null){
         this.formStatus = false;
         Swal.fire('Error', 'Please enter a price!', 'error')
+        return;
   
       }
       else if(this.priceField == null && this.dateField == null && this.selectField == null){

@@ -197,6 +197,14 @@ mat-sidenav {
   left:31%;
   top:100px;
 
+  h2{
+    font-size: 35px;
+  }
+
+  p{
+    font-size: 18px;
+  }
+
 }
 
 .user-data2{
@@ -318,5 +326,72 @@ input{
   margin-top: 30px;
 }
 
+
+@media screen and (max-width: 1369px) {
+  .accountIcon{
+    display: inline;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+ 
+ 
+   }
+ 
+   .user-image{
+     position: absolute;
+     left: 3%;
+     top: 5%;
+   }
+
+
+   .user-data{
+    color: #ffffff;
+    position: absolute;
+    left:31%;
+    top:100px;
+
+    h2{
+      font-size: 25px;
+
+    }
+
+    p{
+      font-size: 16px;
+    }
+  
+  }
+
+
+  .button-1{
+    background-color: rgb(194, 0, 194);
+  
+    position: absolute;
+    left: 75%;
+    top: 120px;
+  }
+  
+  .button-2{
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid white ;
+    position: absolute;
+    left: 73%;
+    top: 70px;
+  }
+
+  .stat-1{
+    position: relative;
+    top:15%;
+    left: 0px;
+    box-shadow: 1px rgba(191, 191, 191, 0.32);
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  
+  }
+}
 
 

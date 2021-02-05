@@ -8,8 +8,8 @@
         <mat-button *ngIf="close==false" class="toggle" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
         <mat-button *ngIf="close==true" class="back" (click)="back()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
         <span class="titleTxt">Notification</span>
-        <mat-icon class="notification" (click)="openNotification()">notifications</mat-icon>
-        <p class="no-number" style="color:white;" >{{notifyNo}}</p>
+        <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
+        <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
       </mat-toolbar>
 
@@ -19,13 +19,17 @@
           <button mat-raised-button class="submitBtn">Search</button>
         </div>
         <mat-label style="color: black;">Enter Date: </mat-label>
-        <input type="date" (change)="onChange($event.target.value)" placeholder="enter date"/>
+        <input type="date" [ngModel]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+        <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position:relative; top:5px;">closed</mat-icon>
       </mat-card>
 
 
       <div class ="mat-elevation-z8" style="margin-top: 20px;">
         <mat-table [dataSource]="listData" matSort>
-          
+          <ng-container  matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+            <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.id}}</mat-cell>
+        </ng-container>
             <ng-container  matColumnDef="title">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
                 <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.title}}</mat-cell>
@@ -51,6 +55,11 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
                 <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.date}}</mat-cell>
             </ng-container>
+
+            <ng-container matColumnDef="time">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
+              <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.time}}</mat-cell>
+          </ng-container>
             <!-- <ng-container matColumnDef="id">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
               <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>

@@ -42,7 +42,7 @@ export class NotificationComponent implements OnInit {
         var latest_date = this.datePipe.transform(this.notificationData[i].date,'dd-MM-yyyy')
         var oldDate = this.notificationData[i].date;
         this.notificationData[i].date = latest_date;
-
+       
         if (today==latest_date){
           if(this.notificationData[i].view==false){
           this.listData.push(this.notificationData[i])
@@ -52,7 +52,7 @@ export class NotificationComponent implements OnInit {
           var id = this.notificationData[i].id;
           var data = this.notificationData[i];
 
-          var newData = [
+          var newData = 
             {
               id: id,
               rid: this.notificationData[i].rid,
@@ -61,10 +61,10 @@ export class NotificationComponent implements OnInit {
               view: true,
               category: this.notificationData[i].category,
               date: oldDate
-            }
-          ]
+            };
+          
           console.log(newData)
-          this.notification.update(this.notificationData[i].rid,newData).subscribe(data=> {
+          this.notification.update(this.notificationData[i].id,newData).subscribe(data=> {
             console.log(data)
             console.log("Successfully updated notification")
           }, error => {

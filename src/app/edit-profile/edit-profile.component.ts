@@ -28,6 +28,7 @@ export class EditProfileComponent implements OnInit {
   IC_No: any;
   slotData: any = [];
   slotDelete: any = [];
+  slotNoArray: any = [];
 
   public errorMessages = {
     name: [
@@ -118,7 +119,7 @@ export class EditProfileComponent implements OnInit {
       name: ['',[Validators.required,Validators.maxLength(100)]],
       forIC: ['',[Validators.required]],
       IC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
-      email: ['',[Validators.required]],
+      email: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]],
       phone:['',[Validators.required]],
       rent_Date: ['',[Validators.required]],
       slot:[''],
@@ -180,11 +181,9 @@ export class EditProfileComponent implements OnInit {
 
       const name = this.registrationForm.value.name;
       const email = this.registrationForm.value.email;
-      const rent_Date = this.registrationForm.value.rent_Date;
+      const rent_Date = this.data.dataKey.rent_Date;
       const phone = this.registrationForm.value.phone;
-      const next_IC = this.registrationForm.value.IC_Number;
-      const forIC = this.registrationForm.value.forIC;
-      const IC_Number = forIC+"-"+next_IC;
+      const IC_Number = this.data.dataKey.IC_Number;
       this.IC_No = IC_Number
       const slot_Price = this.registrationForm.value.slotprice;
       const slot = this.registrationForm.value.slot;
@@ -306,16 +305,38 @@ export class EditProfileComponent implements OnInit {
 
 
     addSlot(){
-      var slot = this.registrationForm.value.slot;
-      if (slot !==""){
-        var slotNo = {
-          slot_Number: slot
-       }
-      this.slotArray.push(slotNo);
-      this.slot="";
-      this.registrationForm.controls['slot'].reset();
-      this.registrationForm.value.slot = "";
-    }
+ 
+        var slot = this.registrationForm.value.slot;
+    
+        if (slot !==""){
+    
+          var slotNo = {
+            slot: slot
+          }
+    
+          this.Slot.findBySlot(slot).subscribe(data=> {
+            console.log (data);
+            this.slotNoArray = data;
+    
+            if (this.slotNoArray.length == 0){
+              this.slotArray.push(slotNo);
+              this.slot="";
+              this.registrationForm.controls['slot'].reset();
+              this.registrationForm.value.slot = "";
+            } else {
+              console.log("Existed Slot")
+              Swal.fire('Cannot Add Slot '+slot,'Slot already taken, Please Try Again','error')
+            }
+          },error=> {
+            console.log(error)
+          })
+          
+        
+       } else {
+        console.log("Existed Slot")
+        Swal.fire('Cannot Add Slot '+slot,'Slot field is Empty, Please Try Again','error')
+        }
+      
   }
 
   

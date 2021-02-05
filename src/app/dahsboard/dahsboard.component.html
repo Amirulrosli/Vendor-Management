@@ -37,16 +37,23 @@
         <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
         <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
         <span class="titleTxt">Dashboard</span>
-        <mat-icon class="notification" (click)="openNotification()">notifications</mat-icon>
-        <p class="no-number" style="color:white;" >{{notifyNo}}</p>
+        <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
+        <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
       </mat-toolbar>
  
       <mat-card class="search-card">
         <div class="search-bar">
-          <input [(ngModel)]="searchKey" (keyup)="applyFilter()" type="Text" placeholder="Search for IC"/>
-          <button mat-raised-button class="submitBtn">Search</button>
+          <input [(ngModel)]="searchKey" type="Text" placeholder="Search for IC"/>
+          <button mat-raised-button (click)="applyFilter()" class="submitBtn">Search</button>
         </div>
+        <mat-icon style="color:black; position: relative; top: 5px;">filter_list</mat-icon>
+        <mat-label style="color:black;">Filter: </mat-label>
+        <select [(ngModel)]="selectField" placeholder="All" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
+          <option value="All">All</option>
+          <option value="Overdue">Overdue</option>
+          <option value="Paid">Paid</option>
+      </select>
       </mat-card>
 
       <div class ="mat-elevation-z8" style="margin-top: 20px;">
@@ -54,11 +61,11 @@
           
             <ng-container  matColumnDef="IC_Number">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</mat-cell>
             </ng-container>
             <!-- <ng-container matColumnDef="gender">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
@@ -66,7 +73,7 @@
           </ng-container> -->
             <ng-container matColumnDef="email">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.email}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.email}}</mat-cell>
             </ng-container>
     
             <!-- <ng-container matColumnDef="dob">
@@ -75,21 +82,25 @@
             </ng-container> -->
             <ng-container matColumnDef="phone">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.phone}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.phone}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="latest_Payment">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.latest_Payment_Date}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                  <span *ngIf="element.overdue==null">N/A</span>
+                  <span *ngIf="element.overdue!==null">{{element.latest_Payment_Date}}</span>
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="slot">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Slot No.</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)">{{element.slot}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">{{element.slot}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="overdue">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-              <mat-cell *matCellDef="let element" (click)="viewing(element.rid)">
-                <span style="margin-right: 5px; color: red;" *ngIf="element.overdue">Overdue</span> <mat-icon style="color: red;" *ngIf="element.overdue">query_builder</mat-icon>
-                <span style="margin-right: 5px; color: green;" *ngIf="!element.overdue">Paid</span><mat-icon style="color: green;" *ngIf="!element.overdue">done</mat-icon>
+              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+                <span style="margin-right: 5px; color: red;" *ngIf="element.overdue==true">Overdue</span> <mat-icon style="color: red;" *ngIf="element.overdue==true">query_builder</mat-icon>
+                <span style="margin-right: 5px; color: green;" *ngIf="element.overdue==false">Paid</span><mat-icon style="color: green;" *ngIf="element.overdue==false">done</mat-icon>
+                <span style="margin-right: 5px; color: rgb(8, 0, 78);" *ngIf="element.overdue==null">N/A</span>
               </mat-cell>
           </ng-container>
     

@@ -24,6 +24,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { MatButtonToggleModule} from '@angular/material/button-toggle'
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
     declarations: [],
@@ -50,7 +52,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     Material14.MatPaginatorModule,
     Material15.MatDialogModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    MatBadgeModule,
+    MatAutocompleteModule
     
 
     ],
@@ -77,7 +81,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatCardModule,
     MatSidenavModule,
     MatButtonToggleModule,
-    MatTabsModule
+    MatTabsModule,
+    MatBadgeModule,
+    MatAutocompleteModule
    
 
 

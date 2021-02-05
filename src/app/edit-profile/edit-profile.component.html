@@ -20,14 +20,12 @@
     <mat-label>IC Number:</mat-label>
     <br>
 
-    <select formControlName="forIC" class="selection" name="IC" placeholder="No.">
-        <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
-    </select>
+    <input style="background-color: rgba(0, 150, 0, 0.143); width: 8%" formControlName="forIC" name="IC" placeholder="No." disabled/>
 
     <mat-label class="IC-Dash">-</mat-label>
 
-    <input formControlName="IC_Number" style="width: 88%;" type="text" placeholder="Enter IC Number"/>
-    
+    <input formControlName="IC_Number" style="width: 88%; background-color: rgba(0, 150, 0, 0.143);" type="text" placeholder="Enter IC Number" disabled/>
+    <p style="color: red; font-size: 12px;">*IC Number cannot be edited</p>
     <div *ngFor="let error of errorMessages.IC_Number">
         <ng-container *ngIf="registrationForm.controls['IC_Number']?.hasError(error.type)">
           <small class="error-message">{{error.message}}</small>
@@ -55,17 +53,7 @@
           <small class="error-message">{{error.message}}</small>
         </ng-container>
     </div>
-    <br>
-    <mat-label>Registration Date:</mat-label>
-    <br>
-
-    <input type="date" formControlName="rent_Date" placeholder="Enter Date">
-    
-    <div *ngFor="let error of errorMessages.rent_Date">
-        <ng-container *ngIf="registrationForm.controls['rent_Date']?.hasError(error.type)">
-          <small class="error-message">{{error.message}}</small>
-        </ng-container>
-    </div>
+  
     <br>
     <mat-label>Slot No.</mat-label>
     <br>

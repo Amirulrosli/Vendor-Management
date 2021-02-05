@@ -57,13 +57,13 @@ export class VendorProfileComponent implements OnInit {
   price: any;
   searchKey: any;
   dateFilter: any;
+  selectFilter: any = "All"
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
    displayedColumns: string[] = [
-
     'payment_Date',
     'due_Date',
     'price',
@@ -158,26 +158,32 @@ export class VendorProfileComponent implements OnInit {
       this.dateToday = new Date()
       this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')
 
-      var parsedNextDate = parseDate(this.nextPayment)
-      var parsedToday = parseDate(this.today)
-
-      console.log("today: "+ parsedToday)
-      console.log("latest Payment Date: " + parsedNextDate)
-
-      var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
-      this.overdueDays = overdueTime / (1000 * 3600 * 24);
-      this.overdue = this.overdueDays
-
-      console.log(this.overdueDays)
-
-      var noOverdue = this.overdueDays - this.overdue
-      this.finalOverdue = this.overdue
-      
-
-      if(this.overdueDays < 0){
-        this.finalOverdue = noOverdue;
-        console.log(this.finalOverdue);
+      if (this.nextPayment !== null){
+        var parsedNextDate = parseDate(this.nextPayment)
+        var parsedToday = parseDate(this.today)
+  
+        console.log("today: "+ parsedToday)
+        console.log("latest Payment Date: " + parsedNextDate)
+  
+        var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
+        this.overdueDays = overdueTime / (1000 * 3600 * 24);
+        this.overdue = this.overdueDays
+  
+        console.log(this.overdueDays)
+  
+        var noOverdue = this.overdueDays - this.overdue
+        this.finalOverdue = this.overdue
+        
+  
+        if(this.overdueDays < 0){
+          this.finalOverdue = noOverdue;
+          console.log(this.finalOverdue);
+        }
+      } else {
+        this.finalOverdue = 0;
+        this.nextPay = "N/A"
       }
+     
 
       //parse to date
       function parseDate(str) {

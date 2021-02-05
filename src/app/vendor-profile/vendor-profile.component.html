@@ -34,8 +34,8 @@
             <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt"></span>
-            <mat-icon class="notification"(click)="openNotification()">notifications</mat-icon>
-            <p class="no-number" style="color:white;" >{{notifyNo}}</p>
+            <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
+            <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
         </mat-toolbar>
 
@@ -46,8 +46,8 @@
             </div>
 
             <div class="user-data">
-                <h2 style="font-size: 35px;">{{username}}</h2>
-                <p style="font-size: 18px;">{{email}}<br> 
+                <h2>{{username}}</h2>
+                <p>{{email}}<br> 
                 </p>
                 <br>
 
@@ -95,7 +95,7 @@
             <mat-card class="search-card-1">
                 <mat-label style="color: black;">Enter Date: </mat-label>
                 <input type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
-                <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black;">closed</mat-icon>
+                <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
           </mat-card>
 
             <div class ="mat-elevation-z8" >
@@ -103,7 +103,7 @@
            
             
                 <mat-table [dataSource]="paymentData" matSort>
-                  
+       
                     <ng-container  matColumnDef="payment_Date">
                         <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
                         <mat-cell *matCellDef="let element" >{{element.payment_Date}}</mat-cell>
@@ -122,7 +122,11 @@
                     </ng-container>
                     <ng-container matColumnDef="send_Email">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Send</mat-header-cell>
-                        <mat-cell *matCellDef="let element" >{{element.send_Email}}</mat-cell>
+                        <mat-cell *matCellDef="let element" >
+
+                        <mat-icon style="color: red;" *ngIf="element.send_Email==false">closed</mat-icon>
+                        <mat-icon style="color: green;" *ngIf="element.send_Email==true">done</mat-icon>
+                        </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="overdue">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>

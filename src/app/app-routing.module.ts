@@ -11,6 +11,9 @@ const routes: Routes = [
     path: 'dashboard', component: DahsboardComponent
   },
   {
+    path: '', component: DahsboardComponent
+  },
+  {
     path: 'add-vendor', component: AddVendorComponent
   },
   {
