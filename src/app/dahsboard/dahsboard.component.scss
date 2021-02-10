@@ -191,4 +191,35 @@ mat-form-field.mat-form-field{
       cursor: pointer;
   }
 
+  .statistic{
+      background-color: white;
+      width: 95%;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      .stat{
+
+          flex: 25%;
+          background-color: white;
+
+          mat-label{
+              color: green;
+          }
+
+          mat-icon{
+              color: green;
+          }
+
+          p{
+              color: green;
+          }
+      }
+  }
+
+  .tab-content > .tab-pane:not(.active) {
+    display: block;
+    height: 0;
+    overflow-y: hidden;
+}
+
 

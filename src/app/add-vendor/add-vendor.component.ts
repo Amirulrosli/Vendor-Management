@@ -112,7 +112,7 @@ export class AddVendorComponent implements OnInit {
         id: "50"
       },
       {
-        id: "50"
+        id: "51"
       },
 
     ]

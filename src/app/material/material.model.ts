@@ -26,6 +26,7 @@ import { MatButtonToggleModule} from '@angular/material/button-toggle'
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
     declarations: [],
@@ -54,7 +55,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatCardModule,
     MatTabsModule,
     MatBadgeModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,MatSliderModule
     
 
     ],
@@ -83,7 +84,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatButtonToggleModule,
     MatTabsModule,
     MatBadgeModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSliderModule
    
 
 

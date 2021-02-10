@@ -35,6 +35,10 @@ export class slotService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
+    deletebyRid(rid): Observable<any>{
+        return this.http.delete(`${baseURL}/rid/${rid}`)
+    }
+
     findByIC(IC): Observable<any> {
         return this.http.get(`${baseURL}/IC/${IC}`)
     }
