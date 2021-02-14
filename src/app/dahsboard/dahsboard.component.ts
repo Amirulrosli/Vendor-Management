@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { slotService } from '../services/slot.service';
+import { paymentService } from '../services/payment.service';
 // import { error } from '@angular/compiler/src/util';
 
 
@@ -33,7 +35,7 @@ export class DahsboardComponent implements OnInit {
   notifyData:any;
   overDueData: any;
   paidData: any;
-
+  overdueLength: any;
   overdue:any;
   dateToday;
   today;
@@ -41,7 +43,11 @@ export class DahsboardComponent implements OnInit {
   overdueDays;
   overdueBoolean: boolean;
   dueTrue: true;
-  selectField: string = "All"
+  selectField: string = "All";
+  slotData: any;
+  slotLength: any;
+  slotRid: any = []
+  paymentRid: any = []
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -69,8 +75,9 @@ export class DahsboardComponent implements OnInit {
     private slidePanel: MatSlidePanel,
     private datePipe: DatePipe,
     private notification: notificationService,
-    private changeDetectorRefs: ChangeDetectorRef
-
+    private changeDetectorRefs: ChangeDetectorRef,
+    private slot: slotService,
+    private payment: paymentService
   ) { 
 
     this.close = false;
@@ -83,9 +90,18 @@ export class DahsboardComponent implements OnInit {
 
     this.notifyNumber();
     this.refreshData();
+    this.overDue();
+    this.retrieveSlot();
 
   }
 
+
+  retrieveSlot(){
+    this.slot.findAll().subscribe(data=> {
+      this.slotData = data;
+      this.slotLength = this.slotData.length;
+    })
+  }
 
   parseDate(str){
         var mdy = str.split('/');
@@ -93,7 +109,6 @@ export class DahsboardComponent implements OnInit {
   }
 
   goToDashboard(){
-    console.log("hantu")
     this.router.navigate(["/dashboard"]);
   }
 
@@ -118,7 +133,7 @@ export class DahsboardComponent implements OnInit {
   }
 
   onDelete(data){
-    console.log(data.id)
+  
 
     Swal.fire({
       title: 'Are you sure?',
@@ -147,9 +162,40 @@ export class DahsboardComponent implements OnInit {
           console.log(error)
         });
 
-        this.profiles.delete(data.id).subscribe(resp=> {
+        this.payment.findByRid(data.rid).subscribe(resp=> {
+          this.paymentRid = resp;
+          console.log(resp)
 
-         
+          if (this.paymentRid.length > 0){
+            for (let i = 0; i < this.paymentRid.length; i++){
+              this.payment.delete(this.paymentRid[i].id).subscribe(data=> {
+                console.log(data);
+              }, error=> {
+                console.log(error)
+              })
+            }
+          }
+        }, err=> {
+          console.log(err)
+        })
+
+        this.slot.findByRid(data.rid).subscribe(resp=> {  //testing delete slot
+          this.slotRid = resp;
+
+          if (this.slotRid.length > 0){
+            for (let i = 0 ; i <this.slotRid.length; i++){
+              this.slot.delete(this.slotRid[i].id).subscribe(data=> {
+                console.log(data);
+              },error=> {
+                console.log(error)
+              })
+            }
+          }
+        },error=> {
+          console.log(error)
+        })
+
+        this.profiles.delete(data.id).subscribe(resp=> {
 
           Swal.fire(
             'Removed!',
@@ -157,6 +203,8 @@ export class DahsboardComponent implements OnInit {
             'success'
           )
           this.refreshData();
+          this.overDue();
+          this.retrieveSlot();
           this.notifyNumber();
           
         },err=> {
@@ -177,7 +225,6 @@ export class DahsboardComponent implements OnInit {
 
   viewing(id){
     this.router.navigate(["vendor-profile/"+id])
-    console.log(id)
   }
 
   onEdit(data){
@@ -195,6 +242,8 @@ export class DahsboardComponent implements OnInit {
         }
       }).afterClosed().subscribe(result => {
         this.refreshData();
+        this.overDue();
+        this.retrieveSlot();
       });
     }, error=> {
       console.log(error)
@@ -214,12 +263,11 @@ export class DahsboardComponent implements OnInit {
 
   refreshData(){
 
-    console.log(this.notification.notifyData);
+   
     this.profiles.findAll().subscribe(array=> {
       this.retrieveData = array
       this.retrieveDataLength = this.retrieveData.length;
-      console.log(this.retrieveDataLength)
-      console.log(array)
+   
       this.list = array.map(item=> {
        
         return{
@@ -276,17 +324,25 @@ export class DahsboardComponent implements OnInit {
         }
 
         // this.overdueBoolean == this.list[i].overdue;
-        this.list[i].overdue = this.overdueBoolean
+  
+        if (this.list[i].overdue !== this.overdueBoolean){
+          this.list[i].overdue = this.overdueBoolean
+          this.list[i].latest_Due_Date = paymentDueDate;
+          this.list[i].latest_Payment_Date = paymentOldDate;
         
-        console.log(this.overdueBoolean)
+     
+  
+  
+          //update latest payment
+          this.profiles.update(this.list[i].id,this.list[i]).subscribe(array =>{
+            console.log(array);
 
-
-        //update latest payment
-        this.profiles.update(this.list[i].id,this.list[i]).subscribe(array =>{
-          console.log(array);
-        },error => {
-          console.log(error)
-        })
+            this.list[i].latest_Payment_Date = payment;
+          },error => {
+            console.log(error)
+          })
+        }
+    
 
       }
       
@@ -294,6 +350,14 @@ export class DahsboardComponent implements OnInit {
       //write overdue to true
       
     }
+  }
+
+  overDue(){
+
+    this.profiles.findAllOverdue().subscribe(data=> {
+      this.overDueData = data;
+      this.overdueLength = this.overDueData.length;
+    })
   }
 
   retrieveOverdue(){

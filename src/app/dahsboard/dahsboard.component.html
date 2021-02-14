@@ -136,6 +136,49 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
           </div>
 
+          <div class="statistic-2">
+          <mat-card class="stat-2">
+            <div class="flex-container">
+              <div class="inline">
+                <mat-icon style="color: rgb(180, 9, 9)">timelapse</mat-icon>
+                <h3>Total Overdue</h3>
+              </div>
+              
+              <p>{{overdueLength}}</p>
+            </div>
+          </mat-card>
+          <mat-card class="stat-2">
+            <div class="flex-container">
+              <div class="inline">
+              <mat-icon style="color: rgb(9, 180, 86)">verified_user</mat-icon>
+              <h3>Total Paid</h3>
+            </div>
+              <p>{{overdueLength}}</p>
+            </div>
+          </mat-card>
+          <mat-card class="stat-2">
+            <div class="flex-container">
+              <div class="inline">
+              <mat-icon style="color: rgb(0, 109, 143)">supervised_user_circle</mat-icon>
+              <h3>Total Vendor</h3>
+            </div>
+              <p>{{retrieveDataLength}}</p>
+            </div>
+          </mat-card>
+           <mat-card class="stat-2">
+            <div  class="flex-container">
+              <div class="inline">
+              <mat-icon style="color: rgb(180, 9, 166)"> location_on</mat-icon>
+              <h3>Total Slot Taken</h3>
+            </div>
+              <p>{{slotLength}}</p>
+            
+            </div>
+           </mat-card>
+          </div>
+            
+         
+
           <!-- routerLink="/vendor-profile/row.id" -->
 
 
