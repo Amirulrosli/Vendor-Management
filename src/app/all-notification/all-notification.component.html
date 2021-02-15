@@ -16,7 +16,7 @@
       <mat-card class="search-card">
         <div class="search-bar">
           <input [(ngModel)]="searchKey" (keyup)="applyFilter()" type="Text" placeholder="Search by Date, Category or Title"/>
-          <button mat-raised-button class="submitBtn">Search</button>
+          <mat-icon class="search-logo">search</mat-icon>
         </div>
         <mat-label style="color: black;">Enter Date: </mat-label>
         <input type="date" [ngModel]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>

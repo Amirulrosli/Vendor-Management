@@ -265,7 +265,7 @@ export class AddVendorComponent implements OnInit {
         },
         error=> {
           console.log(error)
-          Swal.fire('Please try again','Cannot Create vendor, Please Try Again!','error')
+          Swal.fire('Please try again','Cannot Create vendor, please check your phone number and try again!','error')
         })
 
         } else {
