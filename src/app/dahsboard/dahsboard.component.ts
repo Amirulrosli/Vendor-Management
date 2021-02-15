@@ -48,6 +48,8 @@ export class DahsboardComponent implements OnInit {
   slotLength: any;
   slotRid: any = []
   paymentRid: any = []
+  paymentData: any = [];
+  paidLength: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -92,6 +94,7 @@ export class DahsboardComponent implements OnInit {
     this.refreshData();
     this.overDue();
     this.retrieveSlot();
+    this.paid();
 
   }
 
@@ -206,6 +209,7 @@ export class DahsboardComponent implements OnInit {
           this.overDue();
           this.retrieveSlot();
           this.notifyNumber();
+          this.paid();
           
         },err=> {
           console.log(err)
@@ -244,6 +248,7 @@ export class DahsboardComponent implements OnInit {
         this.refreshData();
         this.overDue();
         this.retrieveSlot();
+        this.paid();
       });
     }, error=> {
       console.log(error)
@@ -357,6 +362,13 @@ export class DahsboardComponent implements OnInit {
     this.profiles.findAllOverdue().subscribe(data=> {
       this.overDueData = data;
       this.overdueLength = this.overDueData.length;
+    })
+  }
+
+  paid(){
+    this.profiles.findAllPaid().subscribe(data=> {
+      this.paymentData = data;
+      this.paidLength = this.paymentData.length;
     })
   }
 

@@ -117,7 +117,7 @@ export class EditProfileComponent implements OnInit {
 
     this.registrationForm = this.formbuilder.group({
       name: ['',[Validators.required,Validators.maxLength(100)]],
-      forIC: ['',[Validators.required]],
+      forIC: ['',[Validators.required],],
       IC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
       email: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]],
       phone:['',[Validators.required]],
@@ -307,11 +307,13 @@ export class EditProfileComponent implements OnInit {
     addSlot(){
  
         var slot = this.registrationForm.value.slot;
+
+        console.log(slot)
     
         if (slot !==""){
     
           var slotNo = {
-            slot: slot
+            slot_Number: slot
           }
     
           this.Slot.findBySlot(slot).subscribe(data=> {
@@ -320,6 +322,7 @@ export class EditProfileComponent implements OnInit {
     
             if (this.slotNoArray.length == 0){
               this.slotArray.push(slotNo);
+              console.log(this.slotArray)
               this.slot="";
               this.registrationForm.controls['slot'].reset();
               this.registrationForm.value.slot = "";
