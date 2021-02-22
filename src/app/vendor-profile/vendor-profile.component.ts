@@ -15,6 +15,7 @@ import { notificationService } from '../services/notification.service';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
 import { VendorDetailsComponent } from '../vendor-details/vendor-details.component';
+import Swal from 'sweetalert2';
 
 
 
@@ -57,7 +58,8 @@ export class VendorProfileComponent implements OnInit {
   price: any;
   searchKey: any;
   dateFilter: any;
-  selectFilter: any = "All"
+  selectFilter: any = "All";
+  rent_Date: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -97,6 +99,18 @@ export class VendorProfileComponent implements OnInit {
     this.notifyNumber();
     this.refreshData();
 
+  }
+
+
+
+  print(){
+    if (this.opened == true){
+      this.opened = false;
+      this.close = true;
+      Swal.fire("INFO: Closing The Navigation","Closing the navigation pane provide better print display, Please click the 'Print' icon again to continue","info")
+    } else{
+      window.print();
+    }
   }
 
   refreshData(){
@@ -144,7 +158,8 @@ export class VendorProfileComponent implements OnInit {
       this.price = this.retrieveData[0].slot_Price;
       this.email = this.retrieveData[0].email
       this.vendorIC = this.retrieveData[0].IC_Number
-      this.phoneNo = this.retrieveData[0].phone
+      this.phoneNo = this.retrieveData[0].phone;
+      this.rent_Date = this.retrieveData[0].rent_Date;
       this.vendorID = this.id
       this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
       console.log(this.username)
@@ -192,6 +207,10 @@ export class VendorProfileComponent implements OnInit {
     }
 
     })
+  }
+
+  addPayment(){
+    this.router.navigate(['/add-payment'])
   }
 
   onEdit(){

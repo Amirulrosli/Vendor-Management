@@ -49,9 +49,12 @@
       </select>
       </mat-card>
 
+      <button class="vendor-button" mat-raised-button (click)="addVendor()">Add Vendor</button>
+
+
       <div class ="mat-elevation-z8" style="margin-top: 20px;">
+        
         <mat-table [dataSource]="listData" matSort>
-          
             <ng-container  matColumnDef="IC_Number">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
                 <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</mat-cell>

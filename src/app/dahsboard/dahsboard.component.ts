@@ -357,6 +357,10 @@ export class DahsboardComponent implements OnInit {
     }
   }
 
+  addVendor(){
+    this.router.navigate(['/add-vendor'])
+  }
+
   overDue(){
 
     this.profiles.findAllOverdue().subscribe(data=> {
