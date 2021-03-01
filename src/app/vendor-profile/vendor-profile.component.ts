@@ -16,6 +16,7 @@ import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
 import { VendorDetailsComponent } from '../vendor-details/vendor-details.component';
 import Swal from 'sweetalert2';
+import { EmailComponent } from '../email/email.component';
 
 
 
@@ -111,6 +112,19 @@ export class VendorProfileComponent implements OnInit {
     } else{
       window.print();
     }
+  }
+
+  sendEmail(){
+    this.dialog.open(EmailComponent, {
+      width: "800px",
+        height: "90%",
+        panelClass:'custom-modalbox',
+        data:{
+          dataKey: this.retrieveData[0]
+        }
+    }).afterClosed().subscribe(data=> {
+      this.refreshData();
+    })
   }
 
   refreshData(){

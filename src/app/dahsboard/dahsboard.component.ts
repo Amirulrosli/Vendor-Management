@@ -16,6 +16,7 @@ import { notificationService } from '../services/notification.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { slotService } from '../services/slot.service';
 import { paymentService } from '../services/payment.service';
+import { EmailComponent } from '../email/email.component';
 // import { error } from '@angular/compiler/src/util';
 
 
@@ -256,6 +257,22 @@ export class DahsboardComponent implements OnInit {
 
     
 
+  }
+
+  onEmail(data){
+    this.dialog.open(EmailComponent, {
+      width: "800px",
+        height: "90%",
+        panelClass:'custom-modalbox',
+        data:{
+          dataKey: data
+        }
+    }).afterClosed().subscribe(data=> {
+      this.refreshData();
+        this.overDue();
+        this.retrieveSlot();
+        this.paid();
+    })
   }
 
   public notifyNumber(){

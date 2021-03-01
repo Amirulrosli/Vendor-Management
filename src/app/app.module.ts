@@ -21,6 +21,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
 import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
+import { EmailComponent } from './email/email.component';
 
  
 
@@ -34,7 +35,8 @@ import { VendorDetailsComponent } from './vendor-details/vendor-details.componen
     NotificationComponent,
     VendorProfileComponent,
     AllNotificationComponent,
-    VendorDetailsComponent
+    VendorDetailsComponent,
+    EmailComponent
   ],
   imports: [
     BrowserModule,

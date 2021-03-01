@@ -4,6 +4,7 @@ import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
 import { DahsboardComponent } from "./dahsboard/dahsboard.component"
+import { EmailComponent } from './email/email.component';
 import { NotificationComponent } from './notification/notification.component';
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 const routes: Routes = [
@@ -28,6 +29,9 @@ const routes: Routes = [
   {
     path: 'allnotification', component: AllNotificationComponent
   },
+  {
+    path: 'email', component: EmailComponent
+  }, 
 ];
 
 @NgModule({

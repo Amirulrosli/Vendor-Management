@@ -379,7 +379,7 @@ tr:nth-child(even) {
 .print-1{
   color: white;
   position: absolute;
-  right: 70px;
+  right: 120px;
   cursor: pointer;
   font-size: 28px;
 }
@@ -421,6 +421,17 @@ tr:nth-child(even) {
 
 
   }
+}
+
+
+.send{
+
+  color: white;
+  position: absolute;
+  right: 70px;
+  cursor: pointer;
+  font-size: 25px;
+
 }
 @media screen and (max-width: 1369px) {
   .accountIcon{

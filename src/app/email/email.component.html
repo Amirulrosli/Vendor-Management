@@ -1,0 +1,48 @@
+
+
+<mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">close</mat-icon></mat-button>
+    <span class="titleTxt">Email</span>
+    <p class="send" (click)="sendEmail()">Send<span><mat-icon class="send-icon">send</mat-icon></span></p>
+
+  </mat-toolbar>
+
+  <mat-card>
+      <img class="profile" src="assets/profile.png">
+      <div class="info">
+        <p class="username">Username: <span style="color:purple">{{username}}</span> </p>
+        <p class="rid">Acc: <span style="color:purple">{{rid}}</span></p>
+      </div>
+     
+  </mat-card>
+  <br>
+
+  <mat-label>To:</mat-label>                    
+  <br>
+  <input style="background-color: white; color: purple" [(ngModel)]="email" type="text" placeholder="Enter Name.." disabled/>
+  
+  <br>
+
+
+
+    <mat-label>Vendor IC Number:</mat-label>                    
+    <br>
+    <input style="background-color: white; color: rebeccapurple" [(ngModel)]="IC_Number" type="text" placeholder="Enter Name.." disabled/>
+    
+    <br>
+    <mat-label>Subject:</mat-label>
+    <br>
+
+
+    <input [(ngModel)]="title" type="text" placeholder="Enter Subject"/>
+    
+
+    <br>
+    <mat-label>Body</mat-label>
+    <br>
+
+    <textarea [(ngModel)]="details" row="100" class="textarea" type="text" placeholder="Enter body" ></textarea>
+
+    <input style="background-color: white; color: rgb(0, 0, 0)" [(ngModel)]="Date"   type="text" placeholder="Enter Date" disabled>
+    
+   
