@@ -251,6 +251,21 @@ export class AddVendorComponent implements OnInit {
           
           }
 
+          const notify = {
+            rid: IC_Number,
+            title: 'New Vendor Added Name: '+name, 
+            description: 'New vendor has been successfully added name '+name+'\n with IC Number: '+IC_Number,
+            category: 'New Vendor Added: '+name,
+            date: this.date,
+            view: false
+          };
+
+          this.notification.create(notify).subscribe(data=> {
+            console.log("notification created")
+          },error=> {
+            console.log(error)
+          })
+
           console.log(data)  
           this.name="";
           this.email="";

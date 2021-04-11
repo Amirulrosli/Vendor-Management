@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { emailService } from '../services/email.service';
+import { notificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-email',
@@ -24,7 +25,8 @@ export class EmailComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-    private emailService: emailService
+    private emailService: emailService,
+    private notification: notificationService
   ) { }
 
   ngOnInit(): void {
@@ -68,7 +70,23 @@ export class EmailComponent implements OnInit {
     console.log(emailData)
 
     this.emailService.create(emailData).subscribe(data=> {
-      Swal.fire('Successful','Email Has Been Send To '+email,'success')
+
+      const notify = {
+        rid: this.rid,
+        title: 'Successfully sent an email to : '+' '+ email, 
+        description: 'Email has been successfully sent to '+' '+email+'\n with Account ID: '+this.rid+' **** Subject: '+subject+' '+'Content: '+body,
+        category: 'Successfully Sent an Email',
+        date: Date,
+        view: false
+      };
+
+      this.notification.create(notify).subscribe(data=> {
+        console.log("notification created")
+      },error=> {
+        console.log(error)
+      })
+
+      Swal.fire('Successful','Successfully send an email to '+email,'success')
       this.title = "";
       this.details = "";
       this.dialog.closeAll();
