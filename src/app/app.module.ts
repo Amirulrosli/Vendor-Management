@@ -22,6 +22,7 @@ import { environment } from '../environments/environment';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
 import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
 import { EmailComponent } from './email/email.component';
+import { LoginComponent } from './login/login.component';
 
  
 
@@ -36,7 +37,8 @@ import { EmailComponent } from './email/email.component';
     VendorProfileComponent,
     AllNotificationComponent,
     VendorDetailsComponent,
-    EmailComponent
+    EmailComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

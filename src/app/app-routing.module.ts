@@ -5,6 +5,7 @@ import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
 import { DahsboardComponent } from "./dahsboard/dahsboard.component"
 import { EmailComponent } from './email/email.component';
+import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './notification/notification.component';
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 const routes: Routes = [
@@ -12,7 +13,7 @@ const routes: Routes = [
     path: 'dashboard', component: DahsboardComponent
   },
   {
-    path: '', component: DahsboardComponent
+    path: '', component: LoginComponent
   },
   {
     path: 'add-vendor', component: AddVendorComponent
@@ -46,5 +47,6 @@ export const routingComponents =
   AddPaymentComponent,
   NotificationComponent,
   VendorProfileComponent,
-  AllNotificationComponent
+  AllNotificationComponent,
+  LoginComponent
 ]
