@@ -24,7 +24,7 @@ mat-sidenav{
 
 mat-sidenav {
     background-color: rgb(124, 57, 179);
-    width: 100px;
+    width: 110px;
 }
 
 .nav-icon{
@@ -58,8 +58,26 @@ mat-sidenav {
 
   .notification{
       position: absolute;
-      right: 20px;
+      right: 25px;
       cursor: pointer;
+  }
+
+  .profile-photo{
+      border-radius: 50%;
+      width: 35px;
+      position: absolute;
+      right: 70px;
+      cursor: pointer;
+      border: 1px solid white;
+  }
+
+  .username{
+      font-size: 14px;
+      position: absolute;
+      right: 120px;
+      top: 16px;
+      cursor: pointer;
+
   }
 
   .custom-modalbox {

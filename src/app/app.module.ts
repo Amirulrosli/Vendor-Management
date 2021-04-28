@@ -23,6 +23,7 @@ import { AllNotificationComponent } from './all-notification/all-notification.co
 import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
 import { EmailComponent } from './email/email.component';
 import { LoginComponent } from './login/login.component';
+import { UsermanagementComponent } from './usermanagement/usermanagement.component';
 
  
 
@@ -38,7 +39,8 @@ import { LoginComponent } from './login/login.component';
     AllNotificationComponent,
     VendorDetailsComponent,
     EmailComponent,
-    LoginComponent
+    LoginComponent,
+    UsermanagementComponent
   ],
   imports: [
     BrowserModule,
