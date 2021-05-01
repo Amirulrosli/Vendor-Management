@@ -24,6 +24,7 @@ import { VendorDetailsComponent } from './vendor-details/vendor-details.componen
 import { EmailComponent } from './email/email.component';
 import { LoginComponent } from './login/login.component';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
+import { UserService } from './user.service';
 
  
 
@@ -58,6 +59,7 @@ import { UsermanagementComponent } from './usermanagement/usermanagement.compone
   providers: [
     DatePipe,
     alertService,
+    UserService
   
   ],
 

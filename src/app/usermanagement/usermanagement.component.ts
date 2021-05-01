@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
+import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { notificationService } from '../services/notification.service';
 
@@ -25,7 +26,8 @@ export class UsermanagementComponent implements OnInit {
     private slidePanel: MatSlidePanel,
     private notification: notificationService,
     private attachment: attachmentService,
-    private http: HttpClient
+    private http: HttpClient,
+    private account: accountService
 
   ) {
     this.close = false;
@@ -72,18 +74,28 @@ export class UsermanagementComponent implements OnInit {
 
   submit(){
 
-    const vendor_rid = "13y14hbfhgjaf"
-    const account_rid = "121212121"
-    const link = this.link;
+    const username = "Amirulrosli";
+    const password = "Amirulrosli133@";
+    const email = "meerros8100@gmail.com";
+    const IC_Number = "01-119328"
+    const role = "Administrator"
+    var newDate = new Date();
+    const last_login = newDate;
 
-    var attachment = {
-      vendor_rid: vendor_rid,
-      account_rid: account_rid,
-      link: link
+
+    var account1 = {
+      username: username,
+      password: password,
+      email: email,
+      IC_Number: IC_Number,
+      role: role,
+      last_Login: last_login
     }
 
-    this.http.post(this.action,attachment).subscribe(data=> {
+    this.account.createAccount(account1).subscribe(data=> {
       console.log(data)
+    }, error=> {
+      console.log(error)
     })
 
 

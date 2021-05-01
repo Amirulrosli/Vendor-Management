@@ -51,6 +51,7 @@ export class DahsboardComponent implements OnInit {
   paymentRid: any = []
   paymentData: any = [];
   paidLength: any;
+  username: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -306,6 +307,8 @@ export class DahsboardComponent implements OnInit {
       this.changeDetectorRefs.detectChanges();
 
     })
+
+    this.username = localStorage.getItem("username");
 
   }
 

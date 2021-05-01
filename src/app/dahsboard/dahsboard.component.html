@@ -36,7 +36,7 @@
         <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
         <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
         <span class="titleTxt">Dashboard</span>
-        <p class="username">MUHAMMAD AMIRUL AMIN</p>
+        <p class="username">{{username}}</p>
         <img class="profile-photo" src="assets/profile.png"/>
         <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
         <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
