@@ -2,6 +2,10 @@ mat-sidenav {
     background-color: rgb(124, 57, 179);
     width: 110px;
 }
+mat-sidenav-content{
+  background-color: rgb(245, 245, 245) !important;
+}
+
 
 .search-card{
     background-color: white;
@@ -96,3 +100,8 @@ mat-sidenav {
     display: inline;
   }
   
+
+
+  .toggle{
+    color:rgb(90, 38, 133);
+}

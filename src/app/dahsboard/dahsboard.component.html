@@ -35,24 +35,30 @@
 
         <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
         <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
-        <span class="titleTxt">Dashboard</span>
-        <p class="username">{{username}}</p>
-        <img class="profile-photo" src="assets/profile.png"/>
+       
+
+        <div class="search-bar-dashboard">
+          <input class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for IC"/>
+          <mat-icon  (click)="applyFilter()" class="submitBtn-1">search</mat-icon>
+          <span (click)="refreshData()" class="resetInfo-1">Reset</span>
+        </div>
+
+        <div class="name-inline">
+          <p class="username">{{username}}</p>
+          <p class="role">{{role}}</p>
+
+        </div>
+        
+        <img class="profile-photo" src="assets/profile.jpg"/>
         <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
         <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
       </mat-toolbar>
+
+      <p class="titleTxt">Dashboard</p>
+      <p class="descTxt">Information management & Intelligence</p>
  
       <mat-card class="search-card">
-        <div class="search-bar">
-          <input [(ngModel)]="searchKey" type="Text" placeholder="Search for IC"/>
-          <button mat-raised-button (click)="applyFilter()" class="submitBtn">Search</button>
-          <div class="inline">
-            <mat-icon (click)="refreshData()" class="reset">close</mat-icon>
-            <p class="resetInfo">Reset</p>
-          </div>
-         
-        </div>
         <mat-icon style="color:black; position: relative; top: 5px;">filter_list</mat-icon>
         <mat-label style="color:black;">Filter: </mat-label>
         <select style="color: rgb(71, 71, 71)" [(ngModel)]="selectField" placeholder="All" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
@@ -62,10 +68,11 @@
       </select>
       </mat-card>
 
+
       <button class="vendor-button" mat-raised-button (click)="addVendor()">Add Vendor</button>
 
 
-      <div class ="mat-elevation-z8" style="margin-top: 20px;">
+      <div class ="mat-elevation-z8" style="margin-top: 10px;">
         
         <mat-table [dataSource]="listData" matSort>
             <ng-container  matColumnDef="IC_Number">
@@ -180,6 +187,31 @@
             </div>
            </mat-card>
           </div>
+
+        <div class="graphic">
+
+          
+          <div id="chart">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [plotOptions]="chartOptions.plotOptions"
+              [labels]="chartOptions.labels"
+              [color]="chartOptions.colors"
+            ></apx-chart>
+          </div>
+          <div id="piechart">
+            <apx-chart
+              [series]="piechartOptions.series"
+              [chart]="piechartOptions.chart"
+              [plotOptions]="piechartOptions.plotOptions"
+              [labels]="piechartOptions.labels"
+              [color]="piechartOptions.colors"
+            ></apx-chart>
+          </div>
+
+        </div>
+
             
          
 

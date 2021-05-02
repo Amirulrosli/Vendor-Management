@@ -46,6 +46,8 @@ export class AddPaymentComponent implements OnInit {
   options: string[] = [];
   ifSet: Boolean;
   myList:any = [];
+  username: any;
+  role: any;
 
   constructor(
     private router: Router,
@@ -67,7 +69,9 @@ export class AddPaymentComponent implements OnInit {
 
   ngOnInit(): void {
 
-
+    
+    this.username = localStorage.getItem("username");
+    this.role = localStorage.getItem("role")
 
 
     this.notifyNumber();

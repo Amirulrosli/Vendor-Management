@@ -19,6 +19,8 @@ export class UsermanagementComponent implements OnInit {
   notifyData: any = [];
   notifyNo: any;
   link: any;
+  username: any;
+  role: string;
   action = "http://localhost:3000/upload-Profile"
 
   constructor(
@@ -35,6 +37,9 @@ export class UsermanagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.notifyNumber()
+
+    this.username = localStorage.getItem("username")
+    this.role = localStorage.getItem("role");
   }
 
   openNav(){

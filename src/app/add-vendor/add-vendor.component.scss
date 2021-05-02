@@ -3,6 +3,10 @@ mat-sidenav {
     width: 110px;
 }
 
+mat-sidenav-content{
+    background-color: rgb(245, 245, 245) !important;
+}
+
 .search-card{
     background-color: white;
     margin-top: 20px;
@@ -68,8 +72,10 @@ mat-sidenav {
 
 
 .toggle{
-    color: white !important;
+    color:rgb(90, 38, 133) !important;
 }
+    
+
 
 .error-message{
     color: red;
@@ -87,6 +93,11 @@ mat-sidenav {
     transform: scale(0.65);
     width:30px;
 }
+
+div.mat-tab-label-content{
+    background-color: black;
+}
+
 
 
   

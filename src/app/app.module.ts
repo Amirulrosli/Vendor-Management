@@ -25,6 +25,8 @@ import { EmailComponent } from './email/email.component';
 import { LoginComponent } from './login/login.component';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
 import { UserService } from './user.service';
+import { NgApexchartsModule } from 'ng-apexcharts';
+
 
  
 
@@ -52,6 +54,7 @@ import { UserService } from './user.service';
     HttpClientModule,
     ReactiveFormsModule,
     MatSlidePanelModule,
+    NgApexchartsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     
   ],

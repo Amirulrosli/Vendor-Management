@@ -36,6 +36,8 @@ export class AddVendorComponent implements OnInit {
   notifyData:any;
   slotArray:any =[];
   slotNumber: any = [];
+  username: any;
+  role: any;
 
   public errorMessages = {
     name: [
@@ -123,6 +125,10 @@ export class AddVendorComponent implements OnInit {
   ngOnInit(): void {
 
     this.notifyNumber();
+
+    
+    this.username = localStorage.getItem("username");
+    this.role = localStorage.getItem("role")
     
     this.registrationForm = this.formbuilder.group({
       name: ['',[Validators.required,Validators.maxLength(100)]],

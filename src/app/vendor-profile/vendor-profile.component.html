@@ -27,14 +27,14 @@
 
     </mat-sidenav>
     <mat-sidenav-content style="background-color:white">
-        <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+        <mat-toolbar style="border-bottom: none;" class="mat-toolbar"> <!--Toolbar C-->
 
             <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt"></span>
             <mat-icon type="button" (click)="sendEmail()" class="send">send</mat-icon>
             <mat-icon type="button" class="print-1" (click)="print()">print</mat-icon>
-            <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
+            <mat-icon matBadge="{{notifyNo}}" style="color:white;" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
             <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
         </mat-toolbar>
@@ -42,7 +42,7 @@
         <div class="divDesign"  *ngIf="retrieveData!==undefined">
 
             <div class="user-image">
-                <img class="accountIcon" src="assets/profile.png"/>
+                <img class="accountIcon" src="assets/profile-1.png"/>
             </div>
 
             <div class="user-data">

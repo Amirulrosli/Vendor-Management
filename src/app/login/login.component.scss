@@ -3,7 +3,7 @@ mat-card{
     margin-left: auto;
     margin-right: auto;
     display: block;
-    margin-top: 5%;
+    margin-top: 10px;
     height: 600px;
     background-color: white;
     padding: 0px;
@@ -21,6 +21,13 @@ mat-card{
     width: 100%;
     position: absolute;
     top: 0;
+}
+
+.logo{
+   width: 400px;
+   position: relative;
+   left: 15%;
+   margin-top: 30px;
 }
 
 input{
