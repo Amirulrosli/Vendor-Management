@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import Swal from 'sweetalert2';
 import { NotificationComponent } from '../notification/notification.component';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
@@ -13,6 +15,10 @@ import { notificationService } from '../services/notification.service';
   styleUrls: ['./usermanagement.component.scss']
 })
 export class UsermanagementComponent implements OnInit {
+
+ 
+  fileUploadForm: FormGroup;
+  fileInputLabel: string
 
   close: any;
   opened = true
@@ -29,17 +35,57 @@ export class UsermanagementComponent implements OnInit {
     private notification: notificationService,
     private attachment: attachmentService,
     private http: HttpClient,
-    private account: accountService
+    private account: accountService,
+    private formBuilder: FormBuilder
 
   ) {
     this.close = false;
    }
 
   ngOnInit(): void {
+
+    this.fileUploadForm = this.formBuilder.group({
+      uploadedImage: ['']
+    })
     this.notifyNumber()
 
     this.username = localStorage.getItem("username")
     this.role = localStorage.getItem("role");
+  }
+
+  onFileSelect(event){
+    const fileValue = event.target.files[0];
+    this.fileInputLabel = fileValue.name;
+    this.fileUploadForm.value.uploadedImage = fileValue;
+    console.log(this.fileUploadForm.value.uploadedImage)
+  }
+
+  upload(){
+    if (!this.fileUploadForm.value.uploadedImage){
+      Swal.fire('Upload Failed','Please Try again','error')
+    } else {
+      console.log(this.fileUploadForm.value.uploadedImage)
+      const formData = new FormData()
+      formData.append('image',this.fileUploadForm.value.uploadedImage);
+      formData.append('vendor_rid','123')
+      formData.append('account_rid','111');
+
+      // this.attachment.uploadFile(formData).subscribe(data=> {
+      //   console.log(data)
+      // })
+
+
+      this.http
+      .post<any>('http://localhost:3000/uploadfile',formData).subscribe(response => {
+        console.log(response);
+        if (response.statusCode === 200) {
+          this.fileInputLabel = undefined;
+        }
+      }, er => {
+        console.log(er);
+        alert(er.error.error);
+      });
+    }
   }
 
   openNav(){

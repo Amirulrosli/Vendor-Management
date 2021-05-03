@@ -47,9 +47,15 @@
         <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
       </mat-toolbar>
- 
+      
+      <form [formGroup]="fileUploadForm" (ngSubmit)="upload()">
 
-        <button type="submit" (click)="submit()">Submit</button>
+        <input type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
+        <button type="submit">Upload</button>
+        <!-- <button type="submit" (click)="submit()">Submit</button> -->
+
+      </form>
+      
 
     
 

@@ -17,6 +17,10 @@ export class attachmentService {
         return this.http.get(baseURL)
     }
 
+    uploadFile(formData): Observable<any> {
+        return this.http.post('http://localhost:3000/uploadfile', formData)
+    }
+
     create(data): Observable<any> {
         console.log(data)
         return this.http.post(baseURL,data)

@@ -26,6 +26,7 @@
     "apexcharts": "^3.26.1",
     "http-server": "^0.12.3",
     "ng-apexcharts": "^1.5.9",
+    "ng2-file-upload": "^1.4.0",
     "ngx-mat-slide-panel": "0.0.8",
     "push-notifications-swpush": "^1.0.7",
     "rxjs": "~6.6.0",
