@@ -72,7 +72,14 @@ export class LoginComponent implements OnInit {
 
         this.userService.setUser(user);
         this.showMessage = false;
-        Swal.fire("Successful login","Welcome back, "+account.username,'success')
+        Swal.fire({
+          title: 'You have successfully logged in',
+          text: 'Welcome Back,'+account.username,
+          imageUrl: 'assets/logged in.jpg',
+          imageHeight:280,
+          imageWidth:280
+        })
+        // Swal.fire("You have successfully logged in",'Welcome Back,'+account.username,'success')
         this.router.navigate(['/dashboard'])
       }, error=> {
         Swal.fire("Login Failed","Invalid Username or password, Please check and try again",'error')

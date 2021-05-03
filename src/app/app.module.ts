@@ -26,6 +26,7 @@ import { LoginComponent } from './login/login.component';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
 import { UserService } from './user.service';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 
  
@@ -43,7 +44,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     VendorDetailsComponent,
     EmailComponent,
     LoginComponent,
-    UsermanagementComponent
+    UsermanagementComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
