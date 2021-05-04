@@ -46,8 +46,8 @@
 
         </mat-toolbar>
 
-        <mat-tab-group animationDuration="0ms">
-            <mat-tab label="First">Content 1
+        <mat-tab-group #tab2Button class="mat-group" animationDuration="0ms">
+            <mat-tab class="mat-tab-first" class="mat-tab" label="Step 1: Personal Details">
 
                 <mat-card class="search-card">
                     <form [formGroup]="registrationForm">
@@ -101,6 +101,140 @@
                             </ng-container>
                         </div>
                         <br>
+                        <mat-label>Address:</mat-label>
+                        <br>
+        
+                        <textarea formControlName="address" type="string" placeholder="Enter Postal Address"></textarea>
+                        
+                        <div *ngFor="let error of errorMessages.address">
+                            <ng-container *ngIf="registrationForm.controls['address']?.hasError(error.type)">
+                              <small class="error-message">{{error.message}}</small>
+                            </ng-container>
+                        </div>
+                        <br>
+
+                        <button mat-raised-button class="submitBtn" (click)="tabClick(tab2Button)">Step 2: Spouse and Child Details</button>
+                        <br>
+                    </form>
+        
+                </mat-card>
+                <br>
+                <br>
+                <br>
+                <br>
+
+
+
+            </mat-tab>
+            <mat-tab [disabled]="stepTwo" label="Step 2: Spouse and Child Details">
+
+                
+                <mat-card class="search-card">
+                    <form [formGroup]="registrationForm">
+
+                        <p style="color:black; font-size: 16px; font-weight: bold;">Spouse Details</p>
+        
+                        <mat-label>Spouse Name:</mat-label>                    
+                        <br>
+                        <input #spouseName formControlName="spouseName" type="text" placeholder="Enter Spouse Name.."/>
+                        
+                        <div *ngFor="let error of errorMessages.spouseName">
+                            <ng-container *ngIf="registrationForm.controls['spouseName']?.hasError(error.type)">
+                              <small class="error-message">{{error.message}}</small>
+                            </ng-container>
+                        </div>
+                        <br>
+                        <mat-label>Spouse IC Number:</mat-label>
+                        <br>
+        
+                        <select style="color: black;" formControlName="spIC" class="selection" name="IC" placeholder="No.">
+                            <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
+                        </select>
+        
+                        <mat-label class="IC-Dash">-</mat-label>
+        
+                        <input formControlName="spouseIC_Number" style="width: 88%;" type="text" placeholder="Enter IC Number"/>
+                        
+                        <div *ngFor="let error of errorMessages.spouseIC_Number">
+                            <ng-container *ngIf="registrationForm.controls['spouseIC_Number']?.hasError(error.type)">
+                              <small class="error-message">{{error.message}}</small>
+                            </ng-container>
+                        </div>
+
+                        <br>
+                        <br>
+
+                        <p style="color:black; font-size: 16px; font-weight: bold;">Child Details</p>
+                        <p style="color: purple; font-size: 12px;">*User can add multiple child detail by clicking "Add" button.</p>
+                        
+
+                        <mat-label>Child Name:</mat-label>                    
+                        <br>
+                        <input #childName formControlName="childName" type="text" placeholder="Enter Child Name.."/>
+                        
+                        <div *ngFor="let error of errorMessages.childName">
+                            <ng-container *ngIf="registrationForm.controls['childName']?.hasError(error.type)">
+                              <small class="error-message">{{error.message}}</small>
+                            </ng-container>
+                        </div>
+                        <br>
+
+                        <mat-label>Child IC Number:</mat-label>
+                        <br>
+        
+                        <select style="color: black;" formControlName="chIC" class="selection" name="IC" placeholder="No.">
+                            <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
+                        </select>
+        
+                        <mat-label class="IC-Dash">-</mat-label>
+        
+                        <input formControlName="childIC_Number" style="width: 88%;" type="text" placeholder="Enter IC Number"/>
+                        
+                        <div *ngFor="let error of errorMessages.childIC_Number">
+                            <ng-container *ngIf="registrationForm.controls['childIC_Number']?.hasError(error.type)">
+                              <small class="error-message">{{error.message}}</small>
+                            </ng-container>
+                        </div>
+                        <br>
+                        <button mat-raised-button class="addBtn" (click)="AddChild()"><mat-icon style="color: white; margin-right: 5px;">add_circle_outline</mat-icon>Add</button>
+
+
+                        <table *ngIf="childArray.length !==0" id="childTable" style="width:98%;">
+                            <tr>
+                              <th>Child No.</th>
+                              <th>Name</th>
+                              <th>IC Number</th>
+                              <th>Action</th>
+                            </tr>
+                            <tr *ngFor="let data of childArray; let i = index">
+                              <td style="color: black">{{i}}</td>
+                              <td style="color: black">{{data.name}}</td>
+                              <td style="color: black">{{data.IC_Number}}</td>
+                              <td><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
+                            </tr>
+                          </table>
+        
+                        <br>
+                        <br>
+                        <br>
+                        <button mat-raised-button class="submitBtn" (click)="tabClick(tab2Button)">Step 3: Slot and Amount</button>
+                        <br>
+                    </form>
+        
+                </mat-card>
+
+                <br>
+                <br>
+                <br>
+                <br>
+
+
+
+            </mat-tab>
+            <mat-tab [disabled]="stepThree" label="Step 3: Slot and Amount">
+                <mat-card class="search-card">
+                    <form [formGroup]="registrationForm">
+        
                         <mat-label>Registration Date:</mat-label>
                         <br>
         
@@ -146,17 +280,12 @@
                             </ng-container>
                         </div>
         
-                        <button mat-raised-button class="submitBtn" (click)="submit()">Submit</button>
+                        <button mat-raised-button class="submitBtn" (click)="submit()">Create Vendor</button>
                         <br>
                     </form>
         
                 </mat-card>
-
-
-
             </mat-tab>
-            <mat-tab label="Second">Content 2</mat-tab>
-            <mat-tab label="Third">Content 3</mat-tab>
           </mat-tab-group>
      
 

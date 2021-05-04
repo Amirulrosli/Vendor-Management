@@ -10,6 +10,8 @@ import { notificationService } from '../services/notification.service';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
 import { slotService } from '../services/slot.service';
+import { relativeService } from '../services/relative.service';
+import { MatTabGroup } from '@angular/material/tabs';
 
 
 @Component({
@@ -38,9 +40,28 @@ export class AddVendorComponent implements OnInit {
   slotNumber: any = [];
   username: any;
   role: any;
+  stepTwo: Boolean = true;
+  stepThree: Boolean = true;
+  childArray: any = [];
+  childDataArray: any = [];
 
   public errorMessages = {
     name: [
+      { type: 'required', message: 'Name is required' },
+      { type: 'maxlength', message: 'Name cant be longer than 100 characters' }
+    ],
+
+    address: [
+      { type: 'required', message: 'Address is required' },
+      { type: 'maxlength', message: 'Address cant be longer than 100 characters' }
+    ],
+
+    spouseName: [
+      { type: 'required', message: 'Name is required' },
+      { type: 'maxlength', message: 'Name cant be longer than 100 characters' }
+    ],
+
+    childName: [
       { type: 'required', message: 'Name is required' },
       { type: 'maxlength', message: 'Name cant be longer than 100 characters' }
     ],
@@ -60,12 +81,36 @@ export class AddVendorComponent implements OnInit {
       { type: 'maxlength', message: 'Please enter 6 number for the Identification number' },
       { type: 'minlength', message: 'Please enter 6 number for the Identification number' }
     ],
+    spouseIC_Number: [
+      { type: 'required', message: 'Identification number is required' },
+      { type: 'pattern', message: 'Please enter a valid IC number' },
+      { type: 'maxlength', message: 'Please enter 6 number for the Identification number' },
+      { type: 'minlength', message: 'Please enter 6 number for the Identification number' }
+    ],
+
+    childIC_Number: [
+      { type: 'required', message: 'Identification number is required' },
+      { type: 'pattern', message: 'Please enter a valid IC number' },
+      { type: 'maxlength', message: 'Please enter 6 number for the Identification number' },
+      { type: 'minlength', message: 'Please enter 6 number for the Identification number' }
+    ],
 
     rent_Date: [
       { type: 'required', message: 'Date of registration is required' },
     ],
 
     forIC: [
+
+      { type: 'required', message: 'First two number is required' }
+
+    ],
+
+    chIC: [
+
+      { type: 'required', message: 'First two number is required' }
+
+    ],
+    spIC: [
 
       { type: 'required', message: 'First two number is required' }
 
@@ -81,6 +126,8 @@ export class AddVendorComponent implements OnInit {
       { type: 'required', message: 'Slot price is required' }
 
     ],
+
+    
     
   };
   
@@ -93,7 +140,8 @@ export class AddVendorComponent implements OnInit {
     private alert: alertService,
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
-    private Slot: slotService
+    private Slot: slotService,
+    private relativeService: relativeService
 
     ) { 
 
@@ -132,13 +180,20 @@ export class AddVendorComponent implements OnInit {
     
     this.registrationForm = this.formbuilder.group({
       name: ['',[Validators.required,Validators.maxLength(100)]],
+      address: ['',[Validators.required,Validators.maxLength(100)]],
       forIC: ['',[Validators.required]],
       IC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
       email: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]],
       phone:['',[Validators.required]],
       rent_Date: ['',[Validators.required]],
       slot:[''],
-      slotprice:['',[Validators.required]]
+      slotprice:['',[Validators.required]],
+      spouseName: ['',[Validators.required,Validators.maxLength(100)]],
+      spIC: ['',[Validators.required]],
+      spouseIC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
+      childName: ['',[Validators.required,Validators.maxLength(100)]],
+      chIC: ['',[Validators.required]],
+      childIC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
     })
 
     //, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'
@@ -358,6 +413,74 @@ export class AddVendorComponent implements OnInit {
     this.slotArray.splice(i,1);
   }
 
+  AddChild(){
+
+    const childName = this.registrationForm.value.childName;
+    const chIC = this.registrationForm.value.chIC;
+    const childIC_Number = this.registrationForm.value.childIC_Number;
+    const IC_Number = chIC+"-"+childIC_Number;
+
+    var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
+
+
+ 
+
+    if(childName !== "" && chIC !=="" && childIC_Number !== ""){
+
+      if (exp.test(childIC_Number) && childIC_Number.length == 6){
+        
+        var child = {
+          name: childName,
+          IC_Number: IC_Number,
+          relationship: "child"
+        }
+  
+        this.relativeService.findByIC(IC_Number).subscribe(data=> {
+          this.childDataArray = data;
+  
+          if(this.childDataArray.length == 0){
+            this.childArray.push(child);
+            this.registrationForm.value.childName = "";
+            this.registrationForm.value.chIC = "";
+            this.registrationForm.value.childIC_Number = "";
+            this.registrationForm.controls['childName'].reset();
+            this.registrationForm.controls['chIC'].reset();
+            this.registrationForm.controls['childIC_Number'].reset();
+          } else {
+            console.log("Existed Child")
+            Swal.fire('Cannot Add Child '+child.name,'child is already existed in the database, Please Try Again','error')
+          }
+        })
+
+      } else {
+        Swal.fire("Incorrect Format","Please check your IC Number and try again",'error')
+      }
+
+    } else {
+      Swal.fire("Cannot Add Child, Empty Field","Please Fill in the field to add child",'error')
+    }
+
+  }
+
+  clearChild(i){
+    this.childArray.splice(i,1);
+  }
+
+  tabClick(tabGroup: MatTabGroup){
+    if(!tabGroup || !(tabGroup instanceof MatTabGroup)){
+      return
+    }
+
+    const tabCount = tabGroup._tabs.length;
+    tabGroup.selectedIndex = (tabGroup.selectedIndex+1) % tabCount;
+    console.log(tabGroup.selectedIndex)
+
+    if(tabGroup.selectedIndex == 0){
+      this.stepTwo = false;
+    } else if (tabGroup.selectedIndex == 1){
+      this.stepThree = false;
+    }
+  }
 
   // async showAlert(header:string, message:string){
   //   const alert = await this.alert.create({

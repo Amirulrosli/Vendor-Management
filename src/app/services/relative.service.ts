@@ -38,4 +38,8 @@ export class relativeService {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
+    findByIC(IC_Number): Observable<any> {
+        return this.http.get(`${baseURL}/IC/${IC_Number}`)
+    }
+
 }
