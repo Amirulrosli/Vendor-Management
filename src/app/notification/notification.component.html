@@ -1,7 +1,7 @@
 <mat-label style="color: black; font-weight: bold;"> Today </mat-label>
 <button style="color: rgb(157, 157, 157);" (click)="showNotification()" class="submitBtn button-1" mat-button>View All Notification</button>
 
-<img *ngIf="listData.length==0" src="assets/result.gif" alt="No data available" width="300px"/>
+<img *ngIf="listData.length==0" src="assets/not found.gif" alt="No data available" width="300px"/>
 <p *ngIf="listData.length==0" class="no-message">No new notification available</p>
 <mat-accordion *ngIf="listData.length!==0">
   

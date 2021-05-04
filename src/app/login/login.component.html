@@ -1,0 +1,21 @@
+<div class="container">
+    <img class="logo" src="assets/Jabatan-Bandaran-Logo.png" alt="logo-1" />
+<mat-card>
+    <img class="image" src="assets/VMIS-background.jpg">
+    <div class="login">
+        <h3 class="header">VMIS LOGIN <span><mat-icon>lock</mat-icon></span></h3>
+        <mat-label>Username</mat-label>
+        <br>
+        <input [(ngModel)]="username" placeholder="Enter Username" type="text"/>
+        
+        <mat-label>Password</mat-label>
+        <br>
+        <input [(ngModel)]="password" placeholder="Enter Password" type="password"/>
+        <button mat-raised-button class="submitBtn" (click)="submit()">Login</button>
+        <br>
+        <p *ngIf="showMessage==true" style="margin-top: 10px;font-size: 10px; color: red; text-align: center;" >If you still cannot login to the VMIS system using your credentials</p>
+        <p *ngIf="showMessage==true" style="font-size: 10px;margin-top: -10px; color: red; text-align: center;">Please contact your administrator and report for this system error.</p>
+    </div>
+</mat-card>
+</div>
+

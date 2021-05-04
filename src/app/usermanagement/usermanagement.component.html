@@ -1,0 +1,86 @@
+
+<mat-sidenav-container>
+    <mat-sidenav class="sidenav" #sidenav mode="side" [(opened)]="opened">
+        <div class="nav-icon" tappable (click)="goToDashboard()">
+        <mat-icon>dashboard</mat-icon>
+        <mat-label>Dashboard</mat-label>
+        </div>
+
+        <div class="nav-icon" routerLink="/add-vendor">
+            <mat-icon>add_box</mat-icon>
+            <mat-label>AddVendor</mat-label>
+        </div>
+
+        <div class="nav-icon" routerLink="/add-payment">
+            <mat-icon>attach_money</mat-icon>
+            <mat-label>Payment</mat-label>
+        </div>
+
+        <div class="nav-icon" routerLink="/usermanagement">
+          <mat-icon class="active" style="font-size: 30px">supervisor_account</mat-icon>
+          <mat-label class="active" style="text-align: center;">User Management</mat-label>
+      </div>
+
+      <div class="nav-icon" routerLink="/add-payment">
+        <mat-icon >account_circle</mat-icon>
+        <mat-label style="text-align: center;">Account</mat-label>
+    </div>
+
+
+    </mat-sidenav>
+    <mat-sidenav-content style="background-color:white">
+        
+
+      <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+
+        <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
+        <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
+        <span class="titleTxt">User Management</span>
+        <div class="name-inline">
+          <p class="username">{{username}}</p>
+          <p class="role">{{role}}</p>
+
+        </div>
+        
+        <img class="profile-photo" src="assets/profile.png"/>
+        <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
+        <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
+
+      </mat-toolbar>
+      
+      <form [formGroup]="fileUploadForm" (ngSubmit)="upload()">
+
+        <input type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
+        <button type="submit">Upload</button>
+        <!-- <button type="submit" (click)="submit()">Submit</button> -->
+
+      </form>
+      
+
+    
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+    </mat-sidenav-content>
+  
+  </mat-sidenav-container>

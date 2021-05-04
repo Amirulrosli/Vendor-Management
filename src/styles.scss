@@ -15,7 +15,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .mat-toolbar{
-    background-color: rgb(88, 0, 146);
+    background-color: rgba(255, 255, 255, 0.89);
+    border-bottom: 1px solid rgb(226, 226, 226);
 }
 
 mat-sidenav{
@@ -24,8 +25,9 @@ mat-sidenav{
 
 mat-sidenav {
     background-color: rgb(124, 57, 179);
-    width: 100px;
+    width: 110px;
 }
+
 
 .nav-icon{
 
@@ -51,16 +53,51 @@ mat-sidenav {
       color: rgb(95, 30, 148);
   }
 
-  .toggle{
-      cursor: pointer;
-      color: white;
-  }
 
   .notification{
       position: absolute;
-      right: 20px;
+      right: 25px;
       cursor: pointer;
+      color: rgb(124, 57, 179);
   }
+
+  .profile-photo{
+      border-radius: 50%;
+      width: 42px;
+      height: 40px;
+      position: absolute;
+      right: 70px;
+      cursor: pointer;
+      border: 1px solid white;
+  }
+.name-inline{
+    color: black;
+    display: inline;
+
+    .username{
+        font-size: 14px;
+        position: absolute;
+        right: 120px;
+        top: 10px;
+        cursor: pointer;
+        font-weight: bold;
+        color:rgb(124, 57, 179);
+        font-family: Tahoma, sans-serif;
+  
+    }
+
+    .role{
+
+        font-size: 10px;
+        position: absolute;
+        right: 120px;
+        top: 28px;
+        cursor: pointer;
+
+    }
+
+}
+
 
   .custom-modalbox {
     mat-dialog-container {
@@ -92,5 +129,6 @@ mat-slide-panel-container{
 input{
     color: black !important;
 }
+
 
 

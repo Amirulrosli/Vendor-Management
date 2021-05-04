@@ -22,6 +22,12 @@ import { environment } from '../environments/environment';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
 import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
 import { EmailComponent } from './email/email.component';
+import { LoginComponent } from './login/login.component';
+import { UsermanagementComponent } from './usermanagement/usermanagement.component';
+import { UserService } from './user.service';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+
 
  
 
@@ -36,7 +42,10 @@ import { EmailComponent } from './email/email.component';
     VendorProfileComponent,
     AllNotificationComponent,
     VendorDetailsComponent,
-    EmailComponent
+    EmailComponent,
+    LoginComponent,
+    UsermanagementComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +56,7 @@ import { EmailComponent } from './email/email.component';
     HttpClientModule,
     ReactiveFormsModule,
     MatSlidePanelModule,
+    NgApexchartsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     
   ],
@@ -54,6 +64,7 @@ import { EmailComponent } from './email/email.component';
   providers: [
     DatePipe,
     alertService,
+    UserService
   
   ],
 

@@ -1,7 +1,12 @@
 mat-sidenav {
     background-color: rgb(124, 57, 179);
-    width: 100px;
+    width: 110px;
 }
+
+mat-sidenav-content{
+  background-color: rgb(245, 245, 245) !important;
+}
+
 
 .search-card{
     background-color: white;
@@ -513,5 +518,7 @@ tr:nth-child(even) {
   
   }
 }
+
+
 
 

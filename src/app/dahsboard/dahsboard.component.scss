@@ -8,7 +8,7 @@ mat-sidenav{
 
 mat-sidenav {
     background-color: rgb(124, 57, 179);
-    width: 100px;
+    width: 110px;
 }
 
 mat-sidenav-content{
@@ -20,17 +20,51 @@ mat-sidenav-content{
     background-color: white;
     margin-left: 20px;
     margin-top: 10px;
+    padding: 10px;
 
-    .search-bar{
-        display: flex;
+}
+
+.search-bar-dashboard{
+    width: 80%;
+    margin-top: 20px;
+    margin-left: 30px;
+    .searchbar-1{
+        width: 70%;
+        background-color: rgb(250, 250, 250);
+        border-bottom: 1px solid rgb(148, 148, 148);
     }
 
+    .submitBtn-1{
+        color: gray;
+        cursor: pointer;
+        position:relative;
+        top: 10px;
+        left: 10px;
+    }
 
+    .resetInfo-1{
+        color: rgb(160, 160, 160);
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 20px;
+        position: relative;
+        top: 3px;
+    }
+
+    .submitBtn-1:hover{
+        color: purple;
+    }
+
+    .resetInfo-1:hover{
+        color: purple;
+    }
 }
 
 mat-form-field.mat-form-field{
     width: 100%;
     color: rgb(124, 57, 179);
+
+
 
 
 
@@ -160,8 +194,21 @@ mat-form-field.mat-form-field{
  }
 
  .titleTxt{
-    margin-left: 40px;
-}
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+ }
+ .descTxt{
+     color: rgb(148, 148, 148);
+     font-size: 12px;
+     margin-left: 20px;
+     margin-bottom: 20px;
+     
+     
+ }
 
 
 .selection{
@@ -345,7 +392,33 @@ mat-form-field.mat-form-field{
     background: white;
     position: absolute;
     right: 20px;
-    top: 170px;
+    top: 120px;
 }
+
+.toggle{
+    
+    color:rgb(90, 38, 133);
+}
+
+.graphic {
+    display: flex;
+
+    #chart {
+        padding: 0;
+        width: 350px;
+        margin-left: 20px;
+        margin-top: 10px;
+      }
+    
+      #piechart {
+        padding: 0;
+        width: 350px;
+        margin-left: 20px;
+        margin-top: 10px;
+      }
+
+}
+
+
 
 

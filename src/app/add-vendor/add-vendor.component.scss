@@ -1,6 +1,10 @@
 mat-sidenav {
     background-color: rgb(124, 57, 179);
-    width: 100px;
+    width: 110px;
+}
+
+mat-sidenav-content{
+    background-color: rgb(245, 245, 245) !important;
 }
 
 .search-card{
@@ -62,12 +66,17 @@ mat-sidenav {
 }
 
 .titleTxt{
-    margin-left: 40px;
+    margin-left: 20px;
+    margin-bottom: 10px;
 }
 
+
 .toggle{
-    color: white !important;
+    color:rgb(90, 38, 133) !important;
+    cursor: pointer;
 }
+    
+
 
 .error-message{
     color: red;
@@ -85,6 +94,11 @@ mat-sidenav {
     transform: scale(0.65);
     width:30px;
 }
+
+div.mat-tab-label-content{
+    background-color: black;
+}
+
 
 
   

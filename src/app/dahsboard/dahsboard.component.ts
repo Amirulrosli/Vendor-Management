@@ -17,7 +17,24 @@ import { ChangeDetectorRef } from '@angular/core';
 import { slotService } from '../services/slot.service';
 import { paymentService } from '../services/payment.service';
 import { EmailComponent } from '../email/email.component';
-// import { error } from '@angular/compiler/src/util';
+
+import {
+  ApexNonAxisChartSeries,
+  ApexPlotOptions,
+  ApexChart,
+  ChartComponent,
+  ApexResponsive,
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: string[];
+  colors: string [];
+  plotOptions: ApexPlotOptions;
+  responsive: ApexResponsive[];
+};
+
 
 
 @Component({
@@ -25,7 +42,13 @@ import { EmailComponent } from '../email/email.component';
   templateUrl: './dahsboard.component.html',
   styleUrls: ['./dahsboard.component.scss']
 })
+
 export class DahsboardComponent implements OnInit {
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+  @ViewChild("piechart") piechart: ChartComponent;
+  public piechartOptions: Partial<ChartOptions>;
+  
   close: any;
   opened = true
   retrieveData:any;
@@ -51,6 +74,8 @@ export class DahsboardComponent implements OnInit {
   paymentRid: any = []
   paymentData: any = [];
   paidLength: any;
+  username: any;
+  role: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -90,6 +115,8 @@ export class DahsboardComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.createChart();
+    this.createPieChart();
 
     this.notifyNumber();
     this.refreshData();
@@ -99,6 +126,8 @@ export class DahsboardComponent implements OnInit {
 
   }
 
+
+  //TABLE SECTION --- VENDOR PROFILE
 
   retrieveSlot(){
     this.slot.findAll().subscribe(data=> {
@@ -307,6 +336,10 @@ export class DahsboardComponent implements OnInit {
 
     })
 
+    this.username = localStorage.getItem("username");
+    this.role = localStorage.getItem("role")
+    this.searchKey = "";
+
   }
 
   loopData(){
@@ -445,6 +478,59 @@ export class DahsboardComponent implements OnInit {
         break;
       }
     }
+  }
+
+  //GRAPHIC SECTION ----- APEXCHART
+
+
+  createChart(){
+    this.chartOptions = {
+      series: [70],
+      chart: {
+        height: 350,
+        type: "radialBar",
+        background: "white"
+      },
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            size: "70%"
+          }
+        }
+      },
+      colors: ["purple"],
+      labels: ["Slots Taken"]
+    };
+  
+  }
+
+  createPieChart(){
+
+    this.piechartOptions = {
+      series: [12,11,1],
+      chart: {
+        height: 350,
+        width: 480,
+        type: "donut",
+        background: "white"
+      },
+      labels: ["Paid", "Overdue", "Discontinued"],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 350
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    };
+  
+
   }
 
 
