@@ -1,10 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import Swal from 'sweetalert2';
 import { NotificationComponent } from '../notification/notification.component';
+import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { notificationService } from '../services/notification.service';
@@ -27,7 +31,26 @@ export class UsermanagementComponent implements OnInit {
   link: any;
   username: any;
   role: string;
-  action = "http://localhost:3000/upload-Profile"
+  action = "http://localhost:3000/upload-Profile";
+  @ViewChild(MatSort) sort:MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  listData: MatTableDataSource<any>;
+
+  displayedColumns: string[] = [
+    'profile',
+    'username',
+    'id',
+    'IC_Number',
+    'email',
+    'last_Login',
+    'role'
+    
+  
+  ];
+
+  list:any;
+  retrieveData: any = [];
 
   constructor(
     private router: Router,
@@ -36,7 +59,8 @@ export class UsermanagementComponent implements OnInit {
     private attachment: attachmentService,
     private http: HttpClient,
     private account: accountService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private changeDetectorRefs: ChangeDetectorRef,
 
   ) {
     this.close = false;
@@ -51,6 +75,29 @@ export class UsermanagementComponent implements OnInit {
 
     this.username = localStorage.getItem("username")
     this.role = localStorage.getItem("role");
+    this.getUser();
+  }
+
+  getUser(){
+    this.account.findAll().subscribe(array=> {
+      this.retrieveData = array
+   
+      this.list = array.map(item=> {
+       
+        return{
+          id: item.id,
+          ...item as Account
+        }
+      });
+
+
+
+
+      this.listData = new MatTableDataSource(this.list);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+    })
   }
 
   onFileSelect(event){

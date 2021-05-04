@@ -20,3 +20,60 @@ mat-sidenav-content{
     color:rgb(90, 38, 133);
     cursor:pointer;
 }
+
+
+
+div.mat-elevation-z8{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: none !important;
+    border: 1px solid rgb(209, 209, 209);
+    width: 90%;
+  }
+
+
+ mat-header-cell{
+     color:rgb(54, 54, 54);
+     background-color: white;
+ }
+
+ mat-cell{
+    color:rgb(73, 73, 73);
+    background-color: white;
+    cursor: pointer;
+    
+ }
+
+
+ .matcell:hover{
+    background-color: rgb(240, 240, 240);
+ }
+
+
+ mat-footer-cell{
+    color:black;
+    background-color: white;
+ 
+ }
+
+ mat-header-row{
+    color: rgb(0, 0, 0);
+    background-color:  rgb(161, 161, 161);
+ }
+ mat-paginator{
+    background-color: rgb(124, 57, 179);
+    color: rgb(255, 255, 255);
+    // margin-left: 60px;
+    // margin-right: 60px;
+
+ }
+
+ .user-photo{
+     width: 40px;
+     height: 40px;
+     border-radius: 50%;
+     display: block;
+     margin-left: auto;
+     margin-right: auto;
+ }

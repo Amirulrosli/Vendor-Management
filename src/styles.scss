@@ -133,6 +133,7 @@ input{
     color: black !important;
 }
 
+  
 div.mat-tab-label-content{
     color: black;
     font-size: 16px;
@@ -141,7 +142,7 @@ div.mat-tab-label-content{
 div.mat-tab-label{
     border-left: 1px solid rgb(146, 146, 146);
     background-color: white;
-    
+    display: flex;
     margin-top: 30px;
     
 
@@ -150,6 +151,13 @@ div.mat-tab-label{
     margin-left: 18%;
    
 }
+
+#mat-tab-label-1-0{
+    margin-left: 18%;
+   
+}
+
+
 .mat-group{
     width: 80%;
     display: block;
@@ -160,6 +168,7 @@ div.mat-tab-label{
     margin-top: -15px;
     padding: 0px;
 }
+
 
 
 
