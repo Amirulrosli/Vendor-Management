@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import Swal from 'sweetalert2';
 import { CreateUserComponent } from '../create-user/create-user.component';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import { EditUserComponent } from '../edit-user/edit-user.component';
 import { NotificationComponent } from '../notification/notification.component';
 import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
@@ -201,6 +203,63 @@ export class UsermanagementComponent implements OnInit {
 
   }
 
+  onDelete(data){
+    console.log(data.id)
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This process is irreversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+
+    }).then((result) => {
+
+      if (result.value) {
+        const date = new Date();
+        const notify = {
+          rid: data.rid,
+          title: 'User Account Deleted'+' '+data.username, 
+          description: 'User Account with \n name: '+data.username+'\n Account ID: '+data.rid+'\n was deleted !',
+          category: 'Deleted user account',
+          date: date,
+          view: false
+        };
+  
+        this.notification.create(notify).subscribe(resp=> {
+          console.log(resp)
+        },error=> {
+          console.log(error)
+        });
+
+
+        this.account.delete(data.id).subscribe(resp=> {
+
+          Swal.fire(
+            'Removed!',
+            'Successfully remove user account',
+            'success'
+          )
+          this.getUser();
+          this.notifyNumber();
+          
+          
+        },err=> {
+          console.log(err)
+        });
+
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'User Account is still in the database.',
+          'error'
+        )
+      }
+    });
+  }
+
   submit(){
 
     const username = "Amirulrosli";
@@ -250,10 +309,25 @@ export class UsermanagementComponent implements OnInit {
     this.dialog.open(CreateUserComponent, {
       width: "600px",
       height: "90%",
-      panelClass: 'custom-modalbox',
+      panelClass: 'edit-modalbox',
     }).afterClosed().subscribe(data=> {
       this.getUser();
     })
+  }
+
+  onEdit(data){
+    
+      this.dialog.open(EditUserComponent, {
+        width: "600px",
+        height: "90%",
+        panelClass: 'edit-modalbox',
+        data: {
+          dataKey: data
+        }
+      }).afterClosed().subscribe(data=> {
+        this.getUser();
+      })
+    
   }
 
   nav1(){
@@ -264,6 +338,35 @@ export class UsermanagementComponent implements OnInit {
   }
   nav3(){
     console.log("3")
+  }
+
+
+  onFilterChange(value) {
+    switch (value){
+      case "All": {
+        this.getUser();
+        break;
+      }
+
+      case "Administrator": {
+
+        this.onChange("Administrator");
+        break;
+
+      }
+
+      case "Staff": {
+        this.onChange("Staff");
+        break;
+      }
+
+      case "View-only": {
+        this.onChange("View-only");
+        break;
+      }
+
+
+    }
   }
 
 

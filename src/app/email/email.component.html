@@ -1,14 +1,14 @@
 
 
-<mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+<mat-toolbar class="toolbar"> <!--Toolbar C-->
     <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">close</mat-icon></mat-button>
     <span class="titleTxt">Email</span>
-    <p class="send" (click)="sendEmail()">Send<span><mat-icon class="send-icon">send</mat-icon></span></p>
+    <button mat-raised-button class="send" (click)="sendEmail()">Send<span><mat-icon class="send-icon">send</mat-icon></span></button>
 
   </mat-toolbar>
 
   <mat-card>
-      <img class="profile" src="assets/profile.png">
+      <img class="profile" src="assets/profile-1.png">
       <div class="info">
         <p class="username">Username: <span style="color:purple">{{username}}</span> </p>
         <p class="rid">Acc: <span style="color:purple">{{rid}}</span></p>
