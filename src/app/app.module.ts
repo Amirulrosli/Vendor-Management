@@ -27,6 +27,9 @@ import { UsermanagementComponent } from './usermanagement/usermanagement.compone
 import { UserService } from './user.service';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { DeletedRecordsComponent } from './deleted-records/deleted-records.component';
 
 
  
@@ -45,7 +48,10 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     EmailComponent,
     LoginComponent,
     UsermanagementComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    CreateUserComponent,
+    EditUserComponent,
+    DeletedRecordsComponent
   ],
   imports: [
     BrowserModule,

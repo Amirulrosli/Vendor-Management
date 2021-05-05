@@ -1,12 +1,15 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import Swal from 'sweetalert2';
+import { CreateUserComponent } from '../create-user/create-user.component';
 import { NotificationComponent } from '../notification/notification.component';
 import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
@@ -23,7 +26,7 @@ export class UsermanagementComponent implements OnInit {
  
   fileUploadForm: FormGroup;
   fileInputLabel: string
-
+  searchKey:any;
   close: any;
   opened = true
   notifyData: any = [];
@@ -34,17 +37,22 @@ export class UsermanagementComponent implements OnInit {
   action = "http://localhost:3000/upload-Profile";
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  dateFilter: any;
+  selectField: any = "All"
 
   listData: MatTableDataSource<any>;
+  
 
   displayedColumns: string[] = [
+    
     'profile',
     'username',
     'id',
     'IC_Number',
     'email',
     'last_Login',
-    'role'
+    'role',
+    'action'
     
   
   ];
@@ -61,6 +69,7 @@ export class UsermanagementComponent implements OnInit {
     private account: accountService,
     private formBuilder: FormBuilder,
     private changeDetectorRefs: ChangeDetectorRef,
+    private dialog: MatDialog,
 
   ) {
     this.close = false;
@@ -98,6 +107,28 @@ export class UsermanagementComponent implements OnInit {
       this.listData.paginator = this.paginator;
       this.changeDetectorRefs.detectChanges();
     })
+  }
+
+  applyFilter(){
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  clear(){
+    this.dateFilter = "";
+    this.listData.filter = this.dateFilter.toLowerCase();
+  }
+
+
+
+  onChange(data){
+    console.log(data)
+    const date = data;
+    const year = date.substring(0,4);
+    const month = date.substring(5,7);
+    const day = date.substring(8,10);
+    const fullDate = day+"-"+month+"-"+year;
+    console.log(fullDate)
+    this.listData.filter = data.trim().toLowerCase();
   }
 
   onFileSelect(event){
@@ -214,5 +245,28 @@ export class UsermanagementComponent implements OnInit {
 
 
   }
+
+  createUser(){
+    this.dialog.open(CreateUserComponent, {
+      width: "600px",
+      height: "90%",
+      panelClass: 'custom-modalbox',
+    }).afterClosed().subscribe(data=> {
+      this.getUser();
+    })
+  }
+
+  nav1(){
+    console.log("1")
+  }
+  nav2(){
+    console.log("2")
+  }
+  nav3(){
+    console.log("3")
+  }
+
+
+
 
 }

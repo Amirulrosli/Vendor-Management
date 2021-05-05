@@ -17,13 +17,14 @@
         </div>
 
         <div class="nav-icon" routerLink="/usermanagement">
-          <mat-icon class="active" style="font-size: 30px">supervisor_account</mat-icon>
-          <mat-label class="active" style="text-align: center;">User Management</mat-label>
+          
+          <mat-icon class="active" style="font-size: 30px">ballot</mat-icon>
+          <mat-label class="active" style="text-align: center;">Admin IE</mat-label>
       </div>
 
       <div class="nav-icon" routerLink="/add-payment">
-        <mat-icon >account_circle</mat-icon>
-        <mat-label style="text-align: center;">Account</mat-label>
+        <mat-icon >file_copy</mat-icon>
+        <mat-label style="text-align: center;">Deleted Records</mat-label>
     </div>
 
 
@@ -35,7 +36,11 @@
 
         <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
         <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
-        <span class="titleTxt">User Management</span>
+        <div class="search-bar-dashboard">
+          <input class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for Username, IC Number,"/>
+          <mat-icon  (click)="applyFilter()" class="submitBtn-1">search</mat-icon>
+          <span (click)="getUser()" class="resetInfo-1">Reset</span>
+        </div>
         <div class="name-inline">
           <p class="username">{{username}}</p>
           <p class="role">{{role}}</p>
@@ -48,23 +53,48 @@
 
       </mat-toolbar>
       
-      <form [formGroup]="fileUploadForm" (ngSubmit)="upload()">
+      <!-- <form [formGroup]="fileUploadForm" (ngSubmit)="upload()">
 
         <input type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
         <button type="submit">Upload</button>
-        <!-- <button type="submit" (click)="submit()">Submit</button> -->
+     
 
-      </form>
+      </form> -->
 
+      <p class="titleTxt">Administrator Interface AIE</p>
+      <p class="descTxt">Manage User Access</p>
+      <div class="navigation">
+        <button mat-raised-button class="nav active" (click)="nav1()">User Management</button>
+        <button mat-raised-button class="nav" (click)="nav2()">Location & Slot</button>
+        <button mat-raised-button class="nav" (click)="nav3()">Backup</button>  
+      </div>
+  
+      <button mat-raised-button class="create-button" (click)="createUser()">Create User <span>	<mat-icon style="margin-top: 5px;">library_add</mat-icon></span></button>
+
+      <mat-card class="search-card">
+        <mat-icon style="color:black; position: relative; top: 5px;">filter_list</mat-icon>
+        <mat-label style="color:black;">Filter Role: </mat-label>
+        <select style="color: rgb(71, 71, 71)" [(ngModel)]="selectField" placeholder="All" (change)="onChange($event.target.value)" label="" class="selection">
+          <option value="Administrator">Administrator</option>
+          <option value="Staff">Staff</option>
+          <option value="View-only">View-only</option>
+          <option value="All">All</option>
+      </select>
+
+      <mat-label style="margin-left: 20px;color: black;">Enter Date: </mat-label>
+      <input class="date-input" type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+      <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
+      </mat-card>
 
       <div class ="mat-elevation-z8" style="margin-top: 10px;">
         
         <mat-table [dataSource]="listData" matSort>
 
+
           <ng-container  matColumnDef="profile">
-            <mat-header-cell *matHeaderCellDef mat-sort-header ></mat-header-cell>
-            <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
-              <img class="user-photo" src="assets/profile.jpg"/>
+            <mat-header-cell style="flex: 0 0 5% " *matHeaderCellDef mat-sort-header ></mat-header-cell>
+            <mat-cell style="flex: 0 0 5% " class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+              <mat-icon class="user-photo">account_circle</mat-icon>
             </mat-cell>
         </ng-container>
 
@@ -98,18 +128,17 @@
               <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
               <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">{{element.role}}</mat-cell>
           </ng-container>
+
      
     
     
     
-            <ng-container matColumnDef="actions">
+            <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                  <button mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
-               
-                 
-                  <button mat-icon-button color="warn" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
-                  <button mat-icon-button style="color:rgba(102, 51, 153, 0.733);" (click)="onEmail(row)"><mat-icon>send</mat-icon></button>
+                
+                  <button mat-raised-button class="delBtn" (click)="onEdit(row)">Edit</button>
+                  <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
                 </mat-cell>
     
                 
