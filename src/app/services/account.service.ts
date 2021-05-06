@@ -28,7 +28,7 @@ export class accountService {
     }
 
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/${id}`,data)
+        return this.http.put(`${baseURL}/id/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -41,6 +41,13 @@ export class accountService {
 
     findByid(id): Observable<any> {
         return this.http.get(`${baseURL}/${id}`)
+    }
+
+    findByUsername(username): Observable<any> {
+        return this.http.get(`${baseURL}/username/${username}`)
+    }
+    findByIC(IC_Number): Observable <any> {
+        return this.http.get(`${baseURL}/IC_Number/${IC_Number}`)
     }
 
 }

@@ -1,0 +1,110 @@
+
+<div class="background">
+
+    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">close</mat-icon></mat-button>
+    <span class="titleTxt">Edit User Account</span>
+
+</div>
+<img class="user-profile" src="assets/profile.jpg"/>
+<mat-icon class="create">camera_alt</mat-icon>
+<p *ngIf="username" class="name-profile">{{profileName}}</p>
+
+<div class="form-profile">
+<form [formGroup]="accountForm">
+
+    <mat-label>Username:</mat-label>                    
+    <br>
+    <input #username formControlName="username" type="text" placeholder="Enter Name.."/>
+    
+    <div *ngFor="let error of errorMessages.username">
+        <ng-container *ngIf="accountForm.controls['username']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+    <br>
+    <mat-label>IC Number:</mat-label>
+
+    <br>
+        
+    <select style="color: black;" formControlName="forIC" class="selection" name="IC" placeholder="No." [attr.disabled]="true">
+            <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
+    </select>
+
+    <mat-label class="IC-Dash">-</mat-label>
+
+    <input formControlName="IC_Number" style="width: 87%; background-color: rgba(150, 0, 0, 0.143);" type="text" placeholder="Enter IC Number"  [attr.disabled]="true"/>
+    <p class="error-message">*IC Cannot be edited</p>
+    <div *ngFor="let error of errorMessages.IC_Number">
+        <ng-container *ngIf="accountForm.controls['IC_Number']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+    <br>
+    <mat-label>Email Address:</mat-label>
+    <br>
+
+    <input formControlName="email" type="email" placeholder="Enter Email Address"/>
+    
+    <div *ngFor="let error of errorMessages.email">
+        <ng-container *ngIf="accountForm.controls['email']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+  
+
+      <br>
+
+    <mat-label>Password</mat-label>
+    <br>
+
+    <input formControlName="password" type="password" placeholder="Enter Password">
+    
+    <div *ngFor="let error of errorMessages.password">
+        <ng-container *ngIf="accountForm.controls['password']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+
+    <br>
+
+    <mat-label>Re-enter Password</mat-label>
+    <br>
+
+    <input formControlName="repassword" type="password" placeholder="Re-Enter Password">
+    
+    <div *ngFor="let error of errorMessages.repassword">
+        <ng-container *ngIf="accountForm.controls['repassword']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+
+    <ng-container *ngIf="accountForm.hasError('mismatchedPasswords') && accountForm.controls.password.valid">
+        <small class="error-message">Password does not Match</small>
+      </ng-container>
+
+      <ng-container *ngIf="!accountForm.hasError('mismatchedPasswords') && accountForm.controls.repassword.valid">
+        <small class="green-message">Password Match</small>
+      </ng-container>
+    <br>
+    <br>
+
+    
+    <mat-label>Role / User Access</mat-label>
+    <br>
+
+
+    <select style="color: black;" formControlName="role" class="role-selection" name="role" placeholder="Select Role">
+        <option *ngFor="let myRoles of myRoles" value="{{myRoles.role}}">{{myRoles.role}}</option>
+    </select>
+    
+    <div *ngFor="let error of errorMessages.role">
+        <ng-container *ngIf="accountForm.controls['role']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+
+    <button mat-raised-button type="submit" (click)="saveChanges()" class="submitBtn" >Save Changes</button>
+    <br>
+</form>
+
+</div>

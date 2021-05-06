@@ -1,10 +1,19 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import Swal from 'sweetalert2';
+import { CreateUserComponent } from '../create-user/create-user.component';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import { EditUserComponent } from '../edit-user/edit-user.component';
 import { NotificationComponent } from '../notification/notification.component';
+import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { notificationService } from '../services/notification.service';
@@ -19,7 +28,7 @@ export class UsermanagementComponent implements OnInit {
  
   fileUploadForm: FormGroup;
   fileInputLabel: string
-
+  searchKey:any;
   close: any;
   opened = true
   notifyData: any = [];
@@ -27,7 +36,31 @@ export class UsermanagementComponent implements OnInit {
   link: any;
   username: any;
   role: string;
-  action = "http://localhost:3000/upload-Profile"
+  action = "http://localhost:3000/upload-Profile";
+  @ViewChild(MatSort) sort:MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dateFilter: any;
+  selectField: any = "All"
+
+  listData: MatTableDataSource<any>;
+  
+
+  displayedColumns: string[] = [
+    
+    'profile',
+    'username',
+    'id',
+    'IC_Number',
+    'email',
+    'last_Login',
+    'role',
+    'action'
+    
+  
+  ];
+
+  list:any;
+  retrieveData: any = [];
 
   constructor(
     private router: Router,
@@ -36,7 +69,9 @@ export class UsermanagementComponent implements OnInit {
     private attachment: attachmentService,
     private http: HttpClient,
     private account: accountService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private changeDetectorRefs: ChangeDetectorRef,
+    private dialog: MatDialog,
 
   ) {
     this.close = false;
@@ -51,6 +86,51 @@ export class UsermanagementComponent implements OnInit {
 
     this.username = localStorage.getItem("username")
     this.role = localStorage.getItem("role");
+    this.getUser();
+  }
+
+  getUser(){
+    this.account.findAll().subscribe(array=> {
+      this.retrieveData = array
+   
+      this.list = array.map(item=> {
+       
+        return{
+          id: item.id,
+          ...item as Account
+        }
+      });
+
+
+
+
+      this.listData = new MatTableDataSource(this.list);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+    })
+  }
+
+  applyFilter(){
+    this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  clear(){
+    this.dateFilter = "";
+    this.listData.filter = this.dateFilter.toLowerCase();
+  }
+
+
+
+  onChange(data){
+    console.log(data)
+    const date = data;
+    const year = date.substring(0,4);
+    const month = date.substring(5,7);
+    const day = date.substring(8,10);
+    const fullDate = day+"-"+month+"-"+year;
+    console.log(fullDate)
+    this.listData.filter = data.trim().toLowerCase();
   }
 
   onFileSelect(event){
@@ -123,6 +203,63 @@ export class UsermanagementComponent implements OnInit {
 
   }
 
+  onDelete(data){
+    console.log(data.id)
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This process is irreversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+
+    }).then((result) => {
+
+      if (result.value) {
+        const date = new Date();
+        const notify = {
+          rid: data.rid,
+          title: 'User Account Deleted'+' '+data.username, 
+          description: 'User Account with \n name: '+data.username+'\n Account ID: '+data.rid+'\n was deleted !',
+          category: 'Deleted user account',
+          date: date,
+          view: false
+        };
+  
+        this.notification.create(notify).subscribe(resp=> {
+          console.log(resp)
+        },error=> {
+          console.log(error)
+        });
+
+
+        this.account.delete(data.id).subscribe(resp=> {
+
+          Swal.fire(
+            'Removed!',
+            'Successfully remove user account',
+            'success'
+          )
+          this.getUser();
+          this.notifyNumber();
+          
+          
+        },err=> {
+          console.log(err)
+        });
+
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'User Account is still in the database.',
+          'error'
+        )
+      }
+    });
+  }
+
   submit(){
 
     const username = "Amirulrosli";
@@ -167,5 +304,72 @@ export class UsermanagementComponent implements OnInit {
 
 
   }
+
+  createUser(){
+    this.dialog.open(CreateUserComponent, {
+      width: "600px",
+      height: "90%",
+      panelClass: 'edit-modalbox',
+    }).afterClosed().subscribe(data=> {
+      this.getUser();
+    })
+  }
+
+  onEdit(data){
+    
+      this.dialog.open(EditUserComponent, {
+        width: "600px",
+        height: "90%",
+        panelClass: 'edit-modalbox',
+        data: {
+          dataKey: data
+        }
+      }).afterClosed().subscribe(data=> {
+        this.getUser();
+      })
+    
+  }
+
+  nav1(){
+    console.log("1")
+  }
+  nav2(){
+    console.log("2")
+  }
+  nav3(){
+    console.log("3")
+  }
+
+
+  onFilterChange(value) {
+    switch (value){
+      case "All": {
+        this.getUser();
+        break;
+      }
+
+      case "Administrator": {
+
+        this.onChange("Administrator");
+        break;
+
+      }
+
+      case "Staff": {
+        this.onChange("Staff");
+        break;
+      }
+
+      case "View-only": {
+        this.onChange("View-only");
+        break;
+      }
+
+
+    }
+  }
+
+
+
 
 }
