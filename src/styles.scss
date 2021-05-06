@@ -15,8 +15,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .mat-toolbar{
-    background-color: rgba(255, 255, 255, 0.89);
+    background-color: rgb(255, 255, 255);
     border-bottom: 1px solid rgb(226, 226, 226);
+    position: sticky;
+    top: 0px;
+    z-index: 999;
 }
 
 mat-sidenav{
@@ -129,6 +132,53 @@ mat-slide-panel-container{
 input{
     color: black !important;
 }
+
+  
+div.mat-tab-label-content{
+    color: black;
+    font-size: 16px;
+}
+
+div.mat-tab-label{
+    border-left: 1px solid rgb(146, 146, 146);
+    background-color: white;
+    display: flex;
+    margin-top: 30px;
+    
+
+}
+#mat-tab-label-0-0{
+    margin-left: 18%;
+   
+}
+
+#mat-tab-label-1-0{
+    margin-left: 18%;
+   
+}
+
+
+.mat-group{
+    width: 80%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+.mat-tab-body{
+    margin-top: -15px;
+    padding: 0px;
+}
+
+.edit-modalbox {
+   
+    mat-dialog-container {
+        padding: 0px;
+        background-color: white;
+    }
+}
+
+
+
 
 
 

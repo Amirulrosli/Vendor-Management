@@ -182,7 +182,7 @@ export class DahsboardComponent implements OnInit {
         const date = new Date();
         const notify = {
           rid: data.rid,
-          title: 'Account Deletion'+' '+data.name, 
+          title: 'Account Deleted'+' '+data.name, 
           description: 'Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was deleted !',
           category: 'Deleted vendor profile',
           date: date,
@@ -249,7 +249,7 @@ export class DahsboardComponent implements OnInit {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire(
           'Cancelled',
-          'Vendor Profile is still in our database.)',
+          'Vendor Profile is still in our database.',
           'error'
         )
       }

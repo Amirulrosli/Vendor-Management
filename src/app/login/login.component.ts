@@ -75,9 +75,9 @@ export class LoginComponent implements OnInit {
         Swal.fire({
           title: 'You have successfully logged in',
           text: 'Welcome Back,'+account.username,
-          imageUrl: 'assets/logged in.jpg',
+          imageUrl: 'assets/welcome.png',
           imageHeight:280,
-          imageWidth:280
+          imageWidth:300
         })
         // Swal.fire("You have successfully logged in",'Welcome Back,'+account.username,'success')
         this.router.navigate(['/dashboard'])

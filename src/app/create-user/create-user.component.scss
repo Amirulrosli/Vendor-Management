@@ -1,0 +1,121 @@
+form{
+    width: 97%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    mat-label{
+        color: black;
+    }
+
+    input{
+        background: rgba(118, 118, 118, 0.158);
+        box-shadow: none;
+        height: 38px;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        padding-left: 5px;
+        margin-bottom: 20px;
+        
+    }
+
+    
+}
+
+.selection{
+  background: rgba(128, 128, 128, 0.158);
+  color: black;
+  box-shadow: none;
+  height: 38px;
+  width: 10%;
+  border: none;
+  border-radius: 5px;
+  padding-left: 5px;
+  margin-bottom: 20px;
+}
+
+.role-selection{
+    background: rgba(128, 128, 128, 0.158);
+    color: black;
+    box-shadow: none;
+    height: 38px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding-left: 5px;
+    margin-bottom: 20px;
+  }
+
+.user-profile{
+
+    width: 150px;
+    height: 144px;
+    margin-top: -100px;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid white;
+    cursor: pointer;
+
+
+}
+
+.error-message{
+    color: red;
+}
+
+.green-message{
+    color: green;
+}
+
+.form-profile{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.submitBtn{
+    width: 50%;
+    height: 45px;
+    background-color: rgb(174, 87, 255);
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.background{
+
+    
+    .titleTxt{
+        margin-left: 15px;
+        font-size: 20px;
+    }
+
+    .toggle{
+        margin-top: 20px;
+        margin-left: 10px;
+        cursor: pointer
+    }
+
+    background-color: rgb(174, 87, 255);
+    height: 30%;
+    top: 0;
+    width: 100%;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px ;
+
+}
+
+.create{
+    position: relative;
+    color: rgb(0, 0, 0);
+    left: 55%;
+    top: -4%;
+    font-size: 30px;
+
+
+}

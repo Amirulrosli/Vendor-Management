@@ -10,7 +10,7 @@ mat-sidenav-content{
 .search-card{
     background-color: white;
     margin-top: 20px;
-    width: 600px;
+    width: 700px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -24,6 +24,7 @@ mat-sidenav-content{
       margin: 0 auto;
       mat-label{
           color: black;
+          font-size: 13px;
       }
 
       input{
@@ -35,6 +36,19 @@ mat-sidenav-content{
           border-radius: 5px;
           padding-left: 5px;
           margin-bottom: 20px;
+      }
+
+      textarea{
+
+        background: rgba(128, 128, 128, 0.158);
+        box-shadow: none;
+        height: 40px;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        padding-left: 5px;
+        margin-bottom: 20px;
+
       }
 
       
@@ -67,7 +81,8 @@ mat-sidenav-content{
 
 .titleTxt{
     margin-left: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    color: rgb(90, 38, 133);
 }
 
 
@@ -95,9 +110,40 @@ mat-sidenav-content{
     width:30px;
 }
 
-div.mat-tab-label-content{
-    background-color: black;
+.addBtn{
+    background-color: rgb(90, 90, 90);
 }
+
+#childTable {
+    margin-top:20px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #childTable td, #childTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #childTable tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #childTable tr:hover {background-color: #ddd;}
+  
+  #childTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: rgb(124, 122, 122);
+    color: white;
+  }
+
+  .delBtn{
+      background-color: rgb(255, 82, 82);
+  }
+
+
+
 
 
 

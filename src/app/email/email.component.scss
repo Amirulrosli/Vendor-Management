@@ -1,16 +1,17 @@
 .send{
-    border: 1px solid white;
     padding : 8px;
-    margin-top: 8px;
-    border-radius: 40px;
     margin-left: 500px;
     font-size: 16px;
     cursor: pointer;
+    width: 120px;
+    background-color: rgb(255, 255, 255);
+    color: purple;
 
     .send-icon{
         position: relative;
-        top: 5px;
+        top: 1px;
         left: 5px;
+        font-size: 16px;
     }
 }
 
@@ -31,9 +32,6 @@
     }
 }
 
-.send:hover{
-    color: black;
-}
 .textarea{
     width: 100%;
     height: 350px;
@@ -137,6 +135,22 @@ mat-card{
 
 .error-message{
     color: red;
+}
+
+.toolbar{
+    background-color: rgb(105, 2, 173);
+    position:relative;
+    .titleTxt{
+        margin-left: 15px;
+        margin-top: 3px;
+        font-size: 20px;
+    }
+
+    .toggle{
+        margin-left: 5px;
+        margin-top: 5px;
+        cursor: pointer
+    }
 }
 
 
