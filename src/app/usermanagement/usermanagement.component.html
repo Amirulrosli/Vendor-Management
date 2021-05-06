@@ -57,40 +57,7 @@
 
         <input type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
         <button type="submit">Upload</button>
-<<<<<<< HEAD
         <button type="submit" (click)="submit()">Submit</button>
-=======
-     
-
-      </form> -->
-
-      <p class="titleTxt">Administrator Interface AIE</p>
-      <p class="descTxt">Manage User Access</p>
-      <div class="navigation">
-        <button mat-raised-button class="nav active" (click)="nav1()">User Management</button>
-        <button mat-raised-button class="nav" (click)="nav2()">Location & Slot</button>
-        <button mat-raised-button class="nav" (click)="nav3()">Backup</button>  
-      </div>
-  
-      <button mat-raised-button class="create-button" (click)="createUser()">Create User <span>	<mat-icon style="margin-top: 5px;">library_add</mat-icon></span></button>
-
-      <mat-card class="search-card">
-        <mat-icon style="color:black; position: relative; top: 5px;">filter_list</mat-icon>
-        <mat-label style="color:black;">Filter Role: </mat-label>
-        <select style="color: rgb(71, 71, 71)" [(ngModel)]="selectField" placeholder="All" (change)="onFilterChange($event.target.value)" label="" class="selection">
-          
-          <option value="All">All</option>
-          <option value="Administrator">Administrator</option>
-          <option value="Staff">Staff</option>
-          <option value="View-only">View-only</option>
-
-      </select>
-
-      <mat-label style="margin-left: 20px;color: black;">Enter Date: </mat-label>
-      <input class="date-input" type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
-      <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
-      </mat-card>
->>>>>>> 853a239e436d2cd76750e63c6e6c34377b3faf55
 
       <div class ="mat-elevation-z8" style="margin-top: 10px;">
         
@@ -116,7 +83,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
                 <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.username}}</mat-cell>
             </ng-container>
-            <!-- <ng-container matColumnDef="gender">
+            <ng-container matColumnDef="gender">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
               <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
           </ng-container> -->
