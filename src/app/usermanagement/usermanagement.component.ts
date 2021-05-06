@@ -41,7 +41,12 @@ export class UsermanagementComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dateFilter: any;
   selectField: any = "All"
-
+  buttonColor1: string = '#ff3333'
+  buttonColor2: string = '#ffffff';
+  buttonColor3: string = '#ffffff';
+  color1: string = '#ffffff';
+  color2: string = '#000000';
+  color3: string = '#000000';
   listData: MatTableDataSource<any>;
   
 
@@ -332,12 +337,33 @@ export class UsermanagementComponent implements OnInit {
 
   nav1(){
     console.log("1")
+    this.buttonColor1 = "#ff3333";
+    this.buttonColor2 = "#ffffff";
+    this.buttonColor3 = "#ffffff";
+
+    this.color1 = '#ffffff';
+    this.color2 = '#000000';
+    this.color3 = '#000000';
   }
   nav2(){
     console.log("2")
+    this.buttonColor2 = "#ff3333";
+    this.buttonColor1 = "#ffffff";
+    this.buttonColor3 = "#ffffff";
+
+    this.color2 = '#ffffff';
+    this.color1 = '#000000';
+    this.color3 = '#000000';
   }
   nav3(){
     console.log("3")
+    this.buttonColor3 = "#ff3333";
+    this.buttonColor2 = "#ffffff";
+    this.buttonColor1 = "#ffffff";
+
+    this.color3 = '#ffffff';
+    this.color2 = '#000000';
+    this.color1 = '#000000';
   }
 
 

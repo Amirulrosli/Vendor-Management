@@ -191,9 +191,9 @@ export class AddVendorComponent implements OnInit {
       spouseName: ['',[Validators.required,Validators.maxLength(100)]],
       spIC: ['',[Validators.required]],
       spouseIC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
-      childName: ['',[Validators.required,Validators.maxLength(100)]],
-      chIC: ['',[Validators.required]],
-      childIC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
+      childName: ['',[Validators.maxLength(100)]],
+      chIC: [''],
+      childIC_Number:[''],
     })
 
     //, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'
@@ -241,10 +241,11 @@ export class AddVendorComponent implements OnInit {
 
   async submit(){
 
-    if (this.slotArray.length == 0){
+    if (this.slotArray.length == 0 || this.childArray.length == 0){
       Swal.fire("Unsuccessful","Please Enter slot number!",'error')
       return;
     }
+
 
    if(!this.registrationForm.valid){
       Swal.fire("Unsuccessful","Please Check and try again!",'error')

@@ -64,9 +64,9 @@
       <p class="titleTxt">Administrator Interface AIE</p>
       <p class="descTxt">Manage User Access</p>
       <div class="navigation">
-        <button mat-raised-button class="nav active" (click)="nav1()">User Management</button>
-        <button mat-raised-button class="nav" (click)="nav2()">Location & Slot</button>
-        <button mat-raised-button class="nav" (click)="nav3()">Backup</button>  
+        <button mat-raised-button [style.background]="buttonColor1" [style.color]="color1" class="nav" (click)="nav1()">User Management</button>
+        <button mat-raised-button [style.background]="buttonColor2" [style.color]="color2" class="nav" (click)="nav2()">Location & Slot</button>
+        <button mat-raised-button [style.background]="buttonColor3" [style.color]="color3" class="nav" (click)="nav3()">Backup</button>  
       </div>
   
       <button mat-raised-button class="create-button" (click)="createUser()">Create User <span>	<mat-icon style="margin-top: 5px;">library_add</mat-icon></span></button>
