@@ -23,14 +23,10 @@
     "@angular/router": "~11.0.9",
     "@angular/service-worker": "^11.0.9",
     "@jaspero/ng-alerts": "^0.1.2",
-<<<<<<< HEAD
-    "@material/slider": "^10.0.0",
-=======
     "apexcharts": "^3.26.1",
     "http-server": "^0.12.3",
     "ng-apexcharts": "^1.5.9",
     "ng2-file-upload": "^1.4.0",
->>>>>>> 435ad0f6298b51faadcab404e5b17fc7b1e89064
     "ngx-mat-slide-panel": "0.0.8",
     "push-notifications-swpush": "^1.0.7",
     "rxjs": "~6.6.0",
@@ -40,7 +36,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1100.7",
-    "@angular/cli": "~11.0.7",
+    "@angular/cli": "^11.0.7",
     "@angular/compiler-cli": "~11.0.9",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
