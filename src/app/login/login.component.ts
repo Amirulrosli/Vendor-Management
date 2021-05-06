@@ -82,13 +82,13 @@ export class LoginComponent implements OnInit {
         // Swal.fire("You have successfully logged in",'Welcome Back,'+account.username,'success')
         this.router.navigate(['/dashboard'])
       }, error=> {
-        Swal.fire("Login Failed","Invalid Username or password, Please check and try again",'error')
+        Swal.fire("Login Failed","Invalid Username or password [1], Please check and try again",'error')
         console.log(error)
         this.showMessage = true;
         return;
       })
     } catch (error) {
-      Swal.fire("Login Failed","Invalid Username or Password, Please check and try again",'error')
+      Swal.fire("Login Failed","Invalid Username or Password [2], Please check and try again",'error')
       this.showMessage = true;
       console.log(error)
       return;
