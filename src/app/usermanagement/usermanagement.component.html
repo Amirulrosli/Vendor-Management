@@ -58,7 +58,7 @@
         <input type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
         <button type="submit">Upload</button>
         <button type="submit" (click)="submit()">Submit</button>
-
+        -->
       <div class ="mat-elevation-z8" style="margin-top: 10px;">
         
         <mat-table [dataSource]="listData" matSort>
@@ -83,7 +83,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
                 <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.username}}</mat-cell>
             </ng-container>
-            <ng-container matColumnDef="gender">
+           <!-- <ng-container matColumnDef="gender">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
               <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
           </ng-container> -->
