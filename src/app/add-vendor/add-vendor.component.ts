@@ -49,7 +49,7 @@ export class AddVendorComponent implements OnInit {
   locationField: any = "Select Location...";
   priceArray: any;
   profileList: any = [];
-
+  slotData: any = []
   public errorMessages = {
     name: [
       { type: 'required', message: 'Name is required' },
@@ -256,18 +256,18 @@ export class AddVendorComponent implements OnInit {
 
   showSlot(){
     const location = this.registrationForm.value.location;
-    var slotData = [];
+    this.slotData = [];
     this.slotArray = [];
     this.Slot.findByLocation(location).subscribe(data=> {
-      slotData = data;
-      if(slotData.length == 0){
+      this.slotData = data;
+      if(this.slotData.length == 0){
         this.slotArray = [];
       } 
 
-      for(let i = 0; i<slotData.length; i++){
+      for(let i = 0; i<this.slotData.length; i++){
 
-        if (slotData[i].taken == false){
-          this.slotArray.push(slotData)
+        if (this.slotData[i].taken == false){
+          this.slotArray.push(this.slotData)
         }
 
       }
@@ -346,7 +346,7 @@ export class AddVendorComponent implements OnInit {
 
         if (this.ICData.length == 0) {
 
-        var slotNumber = "";
+      
         const date_Now = new Date();
         let today = date_Now.getDate()+""+(date_Now.getMonth()+1)+""+date_Now.getFullYear();
         console.log(this.slotArray)
@@ -388,7 +388,7 @@ export class AddVendorComponent implements OnInit {
             console.log(error)
           })
 
-          for (let i = 0; i<this.childArray;i++){                           //Save Child array
+          for (let i = 0; i<this.childArray.length;i++){                           //Save Child array
             this.childArray[i].rid = rid;
 
             this.relativeService.createRelative(this.childArray[i]).subscribe(data=> {
