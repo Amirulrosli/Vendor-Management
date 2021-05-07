@@ -363,9 +363,6 @@ export class AddVendorComponent implements OnInit {
             address:address,
             contract: contract
           }
-        
-        
-        
     
          this.profile.create(profileModel).subscribe(data=> { //Start save to database
 
@@ -381,13 +378,11 @@ export class AddVendorComponent implements OnInit {
             IC_Number: spouseIC_Number,
             relationship: "spouse"
           }
-
           this.relativeService.createRelative(relative).subscribe(data=> {  //save spouse
             console.log("spouse successfully created")
           },error=> {
             console.log(error)
           })
-
           for (let i = 0; i<this.childArray.length;i++){                           //Save Child array
             this.childArray[i].rid = rid;
 
@@ -397,7 +392,6 @@ export class AddVendorComponent implements OnInit {
               console.log(error)
             })
           }
-
           this.Slot.findBySlot(slot).subscribe(data=> {                     //find slot
             slotData = data;
 
@@ -405,9 +399,6 @@ export class AddVendorComponent implements OnInit {
               Swal.fire("Slot is not found","Please check and try again","error")
               return;
             }
-
-        
-
             var slotModel = {
               rid: rid,
               taken: taken,
@@ -422,6 +413,7 @@ export class AddVendorComponent implements OnInit {
               console.log(err)
               return;
             })
+
           }, error=> {
             console.log(error)
             return;
@@ -458,26 +450,16 @@ export class AddVendorComponent implements OnInit {
         error=> {
           console.log(error)
           Swal.fire('Please try again','Cannot Create vendor, please check your phone number and try again!','error')
+          return;
         })
-
         } else {
-
           Swal.fire('Please try again!','IC Number is already existed','error')
           return;
-
         }
-        
-      }, async err=> {
-        
-        
+      }, async err=> {  
         Swal.fire('Please try again!','Cannot create profile to the database','error')
         return;
-
-      });
-
-      
-      
-      
+      }); 
     }
    
   }
