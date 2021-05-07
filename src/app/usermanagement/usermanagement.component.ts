@@ -577,7 +577,7 @@ export class UsermanagementComponent implements OnInit {
   
         if (compare.length == 0){
           this.locationService.update(this.locationArray[i].id,location).subscribe(result=> {
-            Swal.fire('Location Updated','Succesfully Update location','success')
+            Swal.fire('Location Updated','Succesfully Update the location','success')
             this.locationName = "";
             this.locationRefresh();
             this.showEdit = false;
@@ -585,7 +585,7 @@ export class UsermanagementComponent implements OnInit {
             this.newLocation = "";
             return;
           }, error=> {
-            Swal.fire('Unsuccessful','Cannot update location, please check and try again','error')
+            Swal.fire('Unsuccessful','Cannot update the location, please check and try again','error')
             return;
           })
         }
@@ -594,7 +594,7 @@ export class UsermanagementComponent implements OnInit {
         return;
         
       },error=> {
-        Swal.fire('Unsuccessful','Cannot update Location, please check and try again','error')
+        Swal.fire('Unsuccessful','Cannot update the Location, please check and try again','error')
         return;
       })
     
@@ -685,7 +685,7 @@ export class UsermanagementComponent implements OnInit {
       console.log(data.id)
       Swal.fire({
         title: 'Are you sure?',
-        text: 'This process is irreversible. Deleting the location may cause data loss or damage',
+        text: 'This process is irreversible. Deleting the location may cause data loss',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, go ahead.',

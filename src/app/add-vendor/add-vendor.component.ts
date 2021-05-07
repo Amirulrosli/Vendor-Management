@@ -312,13 +312,13 @@ export class AddVendorComponent implements OnInit {
   async submit(){
 
     if (this.slotArray.length == 0 || this.childArray.length == 0){
-      Swal.fire("Unsuccessful","Please Enter your child details!",'error')
+      Swal.fire("Failed to create vendor","Please check and try again, Click 'Add' to add child details",'error')
       return;
     }
 
 
    if(!this.registrationForm.valid){
-      Swal.fire("Unsuccessful","Please Check and try again!",'error')
+      Swal.fire("Failed to create vendor","Please Check and try again!",'error')
       return;
     } else {
 
@@ -445,7 +445,7 @@ export class AddVendorComponent implements OnInit {
           this.slot="";
           this.slotprice="";
           this.registrationForm.reset();
-          Swal.fire('Success','Data have been saved','success')
+          Swal.fire('Successfully created vendor','Data have been saved','success')
         },
         error=> {
           console.log(error)
@@ -457,7 +457,7 @@ export class AddVendorComponent implements OnInit {
           return;
         }
       }, async err=> {  
-        Swal.fire('Please try again!','Cannot create profile to the database','error')
+        Swal.fire('Please try again!','Cannot create vendor profile to the database','error')
         return;
       }); 
     }
