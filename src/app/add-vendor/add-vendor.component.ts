@@ -48,6 +48,7 @@ export class AddVendorComponent implements OnInit {
   locationArray: any =[]
   locationField: any = "Select Location...";
   priceArray: any;
+  profileList: any = [];
 
   public errorMessages = {
     name: [
@@ -137,6 +138,10 @@ export class AddVendorComponent implements OnInit {
 
     ],
 
+    contract: [
+      {type: 'required', message: 'contract is required'}
+    ]
+
     
     
   };
@@ -205,7 +210,8 @@ export class AddVendorComponent implements OnInit {
       childName: ['',[Validators.maxLength(100)]],
       chIC: [''],
       childIC_Number:[''],
-      location: ['',[Validators.required]]
+      location: ['',[Validators.required]],
+      contract:['',[Validators.required]],
     })
 
     //, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'
@@ -359,13 +365,13 @@ export class AddVendorComponent implements OnInit {
           }
         
         
-        var profileList = [];
+        
     
-        await this.profile.create(profileModel).subscribe(data=> { //Start save to database
+         this.profile.create(profileModel).subscribe(data=> { //Start save to database
 
-          profileList = data;
+          this.profileList = data;
           console.log(data)
-          const rid = profileList.rid;
+          const rid = this.profileList.rid;
           const taken = true;
           var slotData = [];
 
