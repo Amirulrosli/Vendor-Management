@@ -632,13 +632,14 @@ export class UsermanagementComponent implements OnInit {
         this.listSlotData.paginator = this.paginator;
         this.changeDetectorRefs.detectChanges();
         this.searchKey = "";
+        this.locationField = "All"
       })
     }
 
     createSlot(){
       this.dialog.open(CreateSlotComponent, {
         width: "600px",
-        height: "75%",
+        height: "78%",
         panelClass: 'edit-modalbox',
       }).afterClosed().subscribe(data=> {
         this.getSlot();
