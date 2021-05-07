@@ -87,11 +87,13 @@ export class UsermanagementComponent implements OnInit {
     'slot_Number',
     'slot_Price',
     'location',
-    'taken'
+    'taken',
+    'action'
   ]
 
   list:any;
   retrieveData: any = [];
+  locationField: any = "All";
 
   constructor(
     private router: Router,
@@ -557,7 +559,7 @@ export class UsermanagementComponent implements OnInit {
       var newDate = new Date();
 
       if (this.newLocation == "" || this.newLocation == null){
-        Swal.fire('Unsucessful','Empty Field, Please fill in the field to add location','error')
+        Swal.fire('Unsuccessful','Empty Field, Please fill in the field to add location','error')
         return;
       }
       var location = {
@@ -583,16 +585,16 @@ export class UsermanagementComponent implements OnInit {
             this.newLocation = "";
             return;
           }, error=> {
-            Swal.fire('Unsucessful','Cannot update location, please check and try again','error')
+            Swal.fire('Unsuccessful','Cannot update location, please check and try again','error')
             return;
           })
         }
   
-        Swal.fire('Unsucessful','Existed Location! please check and try again','error')
+        Swal.fire('Unsuccessful','Existed Location! please check and try again','error')
         return;
         
       },error=> {
-        Swal.fire('Unsucessful','Cannot update Location, please check and try again','error')
+        Swal.fire('Unsuccessful','Cannot update Location, please check and try again','error')
         return;
       })
     
@@ -625,22 +627,99 @@ export class UsermanagementComponent implements OnInit {
         });
   
   
-        this.listData = new MatTableDataSource(this.list);
-        this.listData.sort = this.sort;
-        this.listData.paginator = this.paginator;
+        this.listSlotData = new MatTableDataSource(this.list);
+        this.listSlotData.sort = this.sort;
+        this.listSlotData.paginator = this.paginator;
         this.changeDetectorRefs.detectChanges();
+        this.searchKey = "";
       })
     }
 
     createSlot(){
       this.dialog.open(CreateSlotComponent, {
         width: "600px",
-        height: "90%",
+        height: "75%",
         panelClass: 'edit-modalbox',
       }).afterClosed().subscribe(data=> {
         this.getSlot();
       })
       
+    }
+
+
+    applySlotFilter(){
+      this.listSlotData.filter = this.searchKey.trim().toLowerCase();
+    }
+
+
+    showTable(){
+      var data = this.locationField;
+
+      if (data == "All"){
+        this.getSlot();
+        return;
+      }
+
+      this.slotService.findByLocation(this.locationField).subscribe(data=> {
+        this.retrieveData = data
+     
+        this.list = this.retrieveData.map(item=> {
+         
+          return{
+            id: item.id,
+            ...item as Slot
+          }
+        });
+  
+  
+        this.listSlotData = new MatTableDataSource(this.list);
+        this.listSlotData.sort = this.sort;
+        this.listSlotData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+      })
+
+    }
+
+    deleteSlot(data){
+      console.log(data.id)
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This process is irreversible. Deleting the location may cause data loss or damage',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, go ahead.',
+        cancelButtonText: 'No, let me think'
+  
+      }).then((result) => {
+  
+        if (result.value){
+          this.slotService.delete(data.id).subscribe(resp=> {
+  
+            Swal.fire(
+              'Removed!',
+              'Successfully remove slot',
+              'success'
+            )
+            this.getSlot();
+            this.locationRefresh();
+            
+          },err=> {
+            Swal.fire(
+              'Cannot remove slot',
+              'Please check and try again',
+              'error'
+            )
+          });
+  
+  
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Slot is still in the database.',
+            'error'
+          )
+        }
+      });
     }
 
   

@@ -54,5 +54,10 @@ export class slotService {
     findBySlot(slot_Number): Observable<any> {
         return this.http.get(`${baseURL}/slot/${slot_Number}`)
     }
+
+    findByLocation(location): Observable<any> {
+        return this.http.get(`${baseURL}/location/${location}`)
+    }
+    
     
 }

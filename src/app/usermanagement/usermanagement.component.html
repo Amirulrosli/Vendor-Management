@@ -153,16 +153,23 @@
 
 
       <p class="titleTxt" style="font-size: 16px; color: purple" *ngIf="showSlot==true">Slots</p>
+
       <p  class="descTxt" *ngIf="showSlot==true">Manage Slots for vendor</p>
 
-      <div *ngIf="showSlot==true" style="background-color: white; margin-left: 70px; border-radius: 10px;" class="search-bar-dashboard">
+      <div *ngIf="showSlot==true" style="background-color: white; margin-left: 70px; height: 130px" class="search-bar-dashboard">
         <input style="margin-left: 20px; margin-top: 20px; background-color: rgb(230, 230, 230);" class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for Slot Number"/>
-        <mat-icon  (click)="applyFilter()" class="submitBtn-1">search</mat-icon>
-        <span (click)="getUser()" class="resetInfo-1">Reset</span>
+        <mat-icon  (click)="applySlotFilter()" class="submitBtn-1">search</mat-icon>
+        <span (click)="getSlot()" class="resetInfo-1">Reset</span>
+        <br>
+        <mat-label style="color:black; margin-left:20px;">Filter Location: </mat-label>
+        <select style="color: rgb(71, 71, 71)" [(ngModel)]="locationField" placeholder="Select Location" (change)="showTable()" label="" class="selection">
+          <option value="All">All</option>
+          <option *ngFor="let location of locationArray" value="{{location.location}}">{{location.location}}</option>
+        </select>
+
       </div>
-
+    
       <button *ngIf="showSlot==true" mat-raised-button class="slot-button" (click)="createSlot()">Create Slot <span>	<mat-icon style="margin-top: 5px;">library_add</mat-icon></span></button>
-
       <div *ngIf="showSlot==true" class ="mat-elevation-z8" style="margin-top: 10px;">
         
         <mat-table [dataSource]="listSlotData" matSort>
@@ -177,7 +184,7 @@
                 <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Number}}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="slot_Price">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Price ($)</mat-header-cell>
                 <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Price}}</mat-cell>
             </ng-container>
             <!-- <ng-container matColumnDef="gender">
@@ -191,15 +198,18 @@
     
             <ng-container matColumnDef="taken">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Available</mat-header-cell>
-                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">{{element.taken}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+                  <p style="color:green; margin-top:10px;" *ngIf="element.taken == false">Available</p>
+                  <p style="color: red;  margin-top:10px;" *ngIf="element.taken == true">Taken</p>
+                </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let row">
                 
-                  <button mat-raised-button class="editBtn" (click)="onEdit(row)">Edit</button>
-                  <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
+                  <button mat-raised-button class="editBtn" (click)="editSlot(row)">Edit</button>
+                  <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="deleteSlot(row)"><mat-icon>delete</mat-icon></button>
                 </mat-cell>
     
                 
