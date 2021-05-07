@@ -83,7 +83,6 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/dashboard'])
       }, error=> {
         Swal.fire("Login Failed","Invalid Username or password [1], Please check and try again",'error')
-        console.log(error)
         this.showMessage = true;
         return;
       })
