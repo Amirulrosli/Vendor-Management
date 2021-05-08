@@ -89,6 +89,16 @@
 
         <div class="back-2">
 
+            <button mat-button class="paymentHistory" (click)="goToPayment()">Payment History</button>
+          
+            <button mat-button class="paymentHistory">Full Profile</button>
+            
+            <button mat-button class="paymentHistory">Spouse & Child Details</button>
+  
+            <button mat-button class="paymentHistory">Attachments</button>
+            
+            <button mat-button class="paymentHistory">Remarks</button>
+
         <div class="history">
  
            
@@ -100,6 +110,7 @@
                 <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
           </mat-card>
 
+        
           <button class="payment-button" mat-raised-button (click)="addPayment()">Add Payment</button>
 
             <div class ="mat-elevation-z8" >
