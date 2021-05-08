@@ -258,6 +258,8 @@ export class AddVendorComponent implements OnInit {
     const location = this.registrationForm.value.location;
     this.slotData = [];
     this.slotArray = [];
+    this.registrationForm.controls['slot'].setValue("");
+    this.registrationForm.controls['slotprice'].setValue("");
     this.Slot.findByLocation(location).subscribe(data=> {
       this.slotData = data;
       if(this.slotData.length == 0){
