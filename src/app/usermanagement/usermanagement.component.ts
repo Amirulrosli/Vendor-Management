@@ -1,4 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -9,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import Swal from 'sweetalert2';
+import { CreateSlotComponent } from '../create-slot/create-slot.component';
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 import { EditUserComponent } from '../edit-user/edit-user.component';
@@ -16,7 +18,10 @@ import { NotificationComponent } from '../notification/notification.component';
 import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
+import { locationService } from '../services/location.service';
 import { notificationService } from '../services/notification.service';
+import { Slot } from '../services/slot.model';
+import { slotService } from '../services/slot.service';
 
 @Component({
   selector: 'app-usermanagement',
@@ -25,7 +30,7 @@ import { notificationService } from '../services/notification.service';
 })
 export class UsermanagementComponent implements OnInit {
 
- 
+ //start User = true
   fileUploadForm: FormGroup;
   fileInputLabel: string
   searchKey:any;
@@ -42,9 +47,6 @@ export class UsermanagementComponent implements OnInit {
   dateFilter: any;
   selectField: any = "All"
 
-  listData: MatTableDataSource<any>;
-  
-
   displayedColumns: string[] = [
     
     'profile',
@@ -59,8 +61,39 @@ export class UsermanagementComponent implements OnInit {
   
   ];
 
+
+  //Start Slot = true
+  buttonColor1: string = '#ff3333'
+  buttonColor2: string = '#ffffff';
+  buttonColor3: string = '#ffffff';
+  color1: string = '#ffffff';
+  color2: string = '#000000';
+  color3: string = '#000000';
+  listData: MatTableDataSource<any>;
+  listSlotData: MatTableDataSource<any>;
+  showUser: any = true;
+  showSlot: any = false;
+  showBackup: any = false;
+  locationArray: any = [];
+  locationName: any;
+  newLocation: any;
+  showEdit: any = false;
+  number:any;
+  slot:Slot
+
+
+  displayedSlotColumns: string [] = [
+    'id',
+    'slot_Number',
+    'slot_Price',
+    'location',
+    'taken',
+    'action'
+  ]
+
   list:any;
   retrieveData: any = [];
+  locationField: any = "All";
 
   constructor(
     private router: Router,
@@ -72,9 +105,15 @@ export class UsermanagementComponent implements OnInit {
     private formBuilder: FormBuilder,
     private changeDetectorRefs: ChangeDetectorRef,
     private dialog: MatDialog,
+    private locationService: locationService,
+    private datePipe: DatePipe,
+    private slotService: slotService,
 
   ) {
     this.close = false;
+    this.showBackup = false;
+    this.showSlot = false;
+    this.showUser = true;
    }
 
   ngOnInit(): void {
@@ -92,8 +131,19 @@ export class UsermanagementComponent implements OnInit {
   getUser(){
     this.account.findAll().subscribe(array=> {
       this.retrieveData = array
+
+
+      for (let i = 0; i<this.retrieveData.length; i++){
+
+        const newDate = new Date(this.retrieveData[i].last_Login);
+        console.log(newDate)
+
+        let latest_date = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm:ss')
+
+        this.retrieveData[i].last_Login = latest_date;
+      }
    
-      this.list = array.map(item=> {
+      this.list = this.retrieveData.map(item=> {
        
         return{
           id: item.id,
@@ -285,59 +335,6 @@ export class UsermanagementComponent implements OnInit {
     }, error=> {
       console.log(error)
     })
-
-
-
-
-  //   try{
-
-  //     this.attachment.create(attachment).subscribe(data=> {
-  //       console.log(data)
-  //     },error=> {
-  //       console.log( error)
-  //     })
-
-  //   } catch (error){
-  //     console.log(error)
-  //   }
-
-
-
-  }
-
-  createUser(){
-    this.dialog.open(CreateUserComponent, {
-      width: "600px",
-      height: "90%",
-      panelClass: 'edit-modalbox',
-    }).afterClosed().subscribe(data=> {
-      this.getUser();
-    })
-  }
-
-  onEdit(data){
-    
-      this.dialog.open(EditUserComponent, {
-        width: "600px",
-        height: "90%",
-        panelClass: 'edit-modalbox',
-        data: {
-          dataKey: data
-        }
-      }).afterClosed().subscribe(data=> {
-        this.getUser();
-      })
-    
-  }
-
-  nav1(){
-    console.log("1")
-  }
-  nav2(){
-    console.log("2")
-  }
-  nav3(){
-    console.log("3")
   }
 
 
@@ -368,6 +365,366 @@ export class UsermanagementComponent implements OnInit {
 
     }
   }
+
+  createUser(){
+    this.dialog.open(CreateUserComponent, {
+      width: "600px",
+      height: "90%",
+      panelClass: 'edit-modalbox',
+    }).afterClosed().subscribe(data=> {
+      this.getUser();
+    })
+  }
+
+  onEdit(data){
+    
+      this.dialog.open(EditUserComponent, {
+        width: "600px",
+        height: "90%",
+        panelClass: 'edit-modalbox',
+        data: {
+          dataKey: data
+        }
+      }).afterClosed().subscribe(data=> {
+        this.getUser();
+      })
+    
+  }
+
+
+
+
+  nav1(){
+    console.log("1")
+    this.buttonColor1 = "#ff3333";
+    this.buttonColor2 = "#ffffff";
+    this.buttonColor3 = "#ffffff";
+
+    this.color1 = '#ffffff';
+    this.color2 = '#000000';
+    this.color3 = '#000000';
+
+    this.showBackup = false;
+    this.showSlot = false;
+    this.showUser = true;
+
+    this.getUser();
+  }
+  nav2(){
+    console.log("2")
+    this.buttonColor2 = "#ff3333";
+    this.buttonColor1 = "#ffffff";
+    this.buttonColor3 = "#ffffff";
+
+    this.color2 = '#ffffff';
+    this.color1 = '#000000';
+    this.color3 = '#000000';
+    this.showBackup = false;
+    this.showSlot = true;
+    this.showUser = false;
+
+    this.locationRefresh();
+    this.getSlot();
+  }
+  nav3(){
+    console.log("3")
+    this.buttonColor3 = "#ff3333";
+    this.buttonColor2 = "#ffffff";
+    this.buttonColor1 = "#ffffff";
+
+    this.color3 = '#ffffff';
+    this.color2 = '#000000';
+    this.color1 = '#000000';
+    this.showBackup = true;
+    this.showSlot = false;
+    this.showUser = false;
+  }
+
+
+
+  //Start Slot = true ------------------------ LOCATION
+
+
+  locationRefresh(){
+    this.locationService.findAll().subscribe(data=> {
+      this.locationArray = data;
+      console.log(this.locationArray)
+
+      for (let i = 0; i<this.locationArray.length; i++){
+
+        const newDate = new Date(this.locationArray[i].date_Updated);
+        console.log(newDate)
+
+        let latest_date = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm:ss')
+
+        this.locationArray[i].date_Updated = latest_date;
+      }
+
+    },error=> {
+      console.log(error)
+    })
+  }
+
+  addLocation(){
+
+    if (this.locationName == "" || this.locationName == null){
+      Swal.fire('Unsucessful','Empty Field, Please fill in the field to add location','error')
+      return;
+    }
+    var location = {
+      location: this.locationName,
+    };
+    var compare = [];
+
+    this.locationService.findByLocation(this.locationName).subscribe(data=> {
+      compare = data;
+
+      console.log(compare)
+
+      if (compare.length == 0){
+        this.locationService.create(location).subscribe(result=> {
+          Swal.fire('Location Added','Succesfully added location','success')
+          this.locationName = "";
+          this.locationRefresh();
+          return;
+        }, error=> {
+          Swal.fire('Unsucessful','Cannot add location, please check and try again','error')
+          return;
+        })
+      }
+
+      Swal.fire('Unsucessful','Existed Location! please check and try again','error')
+      return;
+      
+    },error=> {
+      Swal.fire('Unsucessful','Cannot add Location, please check and try again','error')
+      return;
+    })
+  
+  }
+
+
+  deleteLocation(id){
+
+      console.log(id)
+  
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This process is irreversible. Deleting the location may cause data loss or damage',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, go ahead.',
+        cancelButtonText: 'No, let me think'
+  
+      }).then((result) => {
+  
+        if (result.value){
+          this.locationService.delete(id).subscribe(resp=> {
+  
+            Swal.fire(
+              'Removed!',
+              'Successfully remove location',
+              'success'
+            )
+            this.locationRefresh();
+            
+          },err=> {
+            Swal.fire(
+              'Cannot remove location',
+              'Please check and try again',
+              'error'
+            )
+          });
+  
+  
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'User Account is still in the database.',
+            'error'
+          )
+        }
+      });
+    }
+
+    editLocation(i){
+      this.number = i;
+      this.showEdit = true;
+   
+      
+    }
+
+    saveLocation(i){
+
+      var newDate = new Date();
+
+      if (this.newLocation == "" || this.newLocation == null){
+        Swal.fire('Unsuccessful','Empty Field, Please fill in the field to add location','error')
+        return;
+      }
+      var location = {
+        id: this.locationArray[i].id,
+        location: this.newLocation,
+        total_Slot: this.locationArray[i].total_Slot,
+        date_Updated: newDate
+      };
+      var compare = [];
+  
+      this.locationService.findByLocation(this.newLocation).subscribe(data=> {
+        compare = data;
+  
+        console.log(compare)
+  
+        if (compare.length == 0){
+          this.locationService.update(this.locationArray[i].id,location).subscribe(result=> {
+            Swal.fire('Location Updated','Succesfully Update the location','success')
+            this.locationName = "";
+            this.locationRefresh();
+            this.showEdit = false;
+            this.number = "";
+            this.newLocation = "";
+            return;
+          }, error=> {
+            Swal.fire('Unsuccessful','Cannot update the location, please check and try again','error')
+            return;
+          })
+        }
+  
+        Swal.fire('Unsuccessful','Existed Location! please check and try again','error')
+        return;
+        
+      },error=> {
+        Swal.fire('Unsuccessful','Cannot update the Location, please check and try again','error')
+        return;
+      })
+    
+
+
+    }
+
+    cancelLocation(){
+      const date = new Date();
+      console.log(date)
+      this.showEdit = false;
+      this.showEdit = false;
+      this.number = "";
+      this.newLocation = "";
+    }
+
+
+    // start slot
+
+    getSlot(){
+      this.slotService.findAll().subscribe(array=> {
+        this.retrieveData = array
+     
+        this.list = this.retrieveData.map(item=> {
+         
+          return{
+            id: item.id,
+            ...item as Slot
+          }
+        });
+  
+  
+        this.listSlotData = new MatTableDataSource(this.list);
+        this.listSlotData.sort = this.sort;
+        this.listSlotData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+        this.searchKey = "";
+        this.locationField = "All"
+      })
+    }
+
+    createSlot(){
+      this.dialog.open(CreateSlotComponent, {
+        width: "600px",
+        height: "78%",
+        panelClass: 'edit-modalbox',
+      }).afterClosed().subscribe(data=> {
+        this.getSlot();
+      })
+      
+    }
+
+
+    applySlotFilter(){
+      this.listSlotData.filter = this.searchKey.trim().toLowerCase();
+    }
+
+
+    showTable(){
+      var data = this.locationField;
+
+      if (data == "All"){
+        this.getSlot();
+        return;
+      }
+
+      this.slotService.findByLocation(this.locationField).subscribe(data=> {
+        this.retrieveData = data
+     
+        this.list = this.retrieveData.map(item=> {
+         
+          return{
+            id: item.id,
+            ...item as Slot
+          }
+        });
+  
+  
+        this.listSlotData = new MatTableDataSource(this.list);
+        this.listSlotData.sort = this.sort;
+        this.listSlotData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+      })
+
+    }
+
+    deleteSlot(data){
+      console.log(data.id)
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This process is irreversible. Deleting the location may cause data loss',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, go ahead.',
+        cancelButtonText: 'No, let me think'
+  
+      }).then((result) => {
+  
+        if (result.value){
+          this.slotService.delete(data.id).subscribe(resp=> {
+  
+            Swal.fire(
+              'Removed!',
+              'Successfully remove slot',
+              'success'
+            )
+            this.getSlot();
+            this.locationRefresh();
+            
+          },err=> {
+            Swal.fire(
+              'Cannot remove slot',
+              'Please check and try again',
+              'error'
+            )
+          });
+  
+  
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Cancelled',
+            'Slot is still in the database.',
+            'error'
+          )
+        }
+      });
+    }
+
+  
+
 
 
 

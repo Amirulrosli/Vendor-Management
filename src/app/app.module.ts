@@ -26,10 +26,12 @@ import { LoginComponent } from './login/login.component';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
 import { UserService } from './user.service';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+
 import { CreateUserComponent } from './create-user/create-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { DeletedRecordsComponent } from './deleted-records/deleted-records.component';
+import { CreateSlotComponent } from './create-slot/create-slot.component';
+import { EditSlotComponent } from './edit-slot/edit-slot.component';
 
 
  
@@ -48,10 +50,11 @@ import { DeletedRecordsComponent } from './deleted-records/deleted-records.compo
     EmailComponent,
     LoginComponent,
     UsermanagementComponent,
-    UserProfileComponent,
     CreateUserComponent,
     EditUserComponent,
-    DeletedRecordsComponent
+    DeletedRecordsComponent,
+    CreateSlotComponent,
+    EditSlotComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +73,8 @@ import { DeletedRecordsComponent } from './deleted-records/deleted-records.compo
   providers: [
     DatePipe,
     alertService,
-    UserService
+    UserService,
+    DatePipe
   
   ],
 

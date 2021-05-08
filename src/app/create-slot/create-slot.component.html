@@ -1,0 +1,65 @@
+
+<div class="background">
+
+    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">close</mat-icon></mat-button>
+    <span class="titleTxt">Add Slot</span>
+
+</div>
+
+<br>
+
+
+<div class="form-profile">
+
+<form [formGroup]="slotForm">
+
+    <p style="color:rgb(163, 65, 255); font-size: 10px;">*Please create location first to add slot</p>
+
+    <mat-label>Select Location:</mat-label>
+    <br>
+
+
+    <select style="color: black;"  formControlName="location" class="role-selection" name="location" placeholder="Select Location">
+        <option value="" disabled selected hidden>Select location..</option>
+        <option *ngFor="let locationData of locationArray" value="{{locationData.location}}">{{locationData.location}}</option>
+    </select>
+    
+    <div *ngFor="let error of errorMessages.location">
+        <ng-container *ngIf="slotForm.controls['location']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+    <br>
+
+    <mat-label>Slot Number</mat-label>                    
+    <br>
+    <input #username formControlName="slot_Number" type="text" placeholder="Enter Slot Number.."/>
+    
+    <div *ngFor="let error of errorMessages.slot_Number">
+        <ng-container *ngIf="slotForm.controls['slot_Number']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+
+    <br>
+    <mat-label>Slot Price</mat-label>
+    <br>
+
+    <input formControlName="slot_Price" type="number" placeholder="Enter Slot Price $"/>
+    
+    <div *ngFor="let error of errorMessages.slot_Price">
+        <ng-container *ngIf="slotForm.controls['slot_Price']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+  
+
+      <br>
+
+    <button mat-raised-button type="submit" (click)="submit()" class="submitBtn" >Create Slot</button>
+
+    
+   
+</form>
+
+</div>

@@ -21,10 +21,32 @@
         <mat-label class="active" style="text-align: center;">Admin IE</mat-label>
     </div>
 
-    <div class="nav-icon" routerLink="/add-payment">
-      <mat-icon >file_copy</mat-icon>
-      <mat-label style="text-align: center;">Deleted Records</mat-label>
-  </div>
+      <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+
+        <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
+        <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
+        <div *ngIf="showUser==true" class="search-bar-dashboard">
+          <input class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for Username, IC Number,"/>
+          <mat-icon  (click)="applyFilter()" class="submitBtn-1">search</mat-icon>
+          <span (click)="getUser()" class="resetInfo-1">Reset</span>
+        </div>
+
+
+        <div *ngIf="showSlot==true" class="search-bar-dashboard">
+          <input class="searchbar-1" [(ngModel)]="locationKey" type="Text" placeholder="Search for location"/>
+          <mat-icon  (click)="findLocation()" class="submitBtn-1">search</mat-icon>
+          <span (click)="refreshLocation()" class="resetInfo-1">Reset</span>
+        </div>
+
+
+
+
+
+
+
+        <div class="name-inline">
+          <p class="username">{{username}}</p>
+          <p class="role">{{role}}</p>
 
 
   </mat-sidenav>
@@ -33,18 +55,243 @@
 
     <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
 
-      <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
-      <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
-      <div class="search-bar-dashboard">
-        <input class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for Username, IC Number,"/>
-        <mat-icon  (click)="applyFilter()" class="submitBtn-1">search</mat-icon>
-        <span (click)="getUser()" class="resetInfo-1">Reset</span>
+      </form> -->
+
+      <p class="titleTxt">Administrator Interface AIE</p>
+      <p *ngIf="showUser==true" class="descTxt">Manage User Access</p>
+      <p *ngIf="showSlot==true" class="descTxt">Manage Slots and location</p>
+      <p *ngIf="showBackup==true" class="descTxt">Manage Backup</p>
+
+      <div class="navigation">
+        <button mat-raised-button [style.background]="buttonColor1" [style.color]="color1" class="nav" (click)="nav1()">User Management</button>
+        <button mat-raised-button [style.background]="buttonColor2" [style.color]="color2" class="nav" (click)="nav2()">Location & Slot</button>
+        <button mat-raised-button [style.background]="buttonColor3" [style.color]="color3" class="nav" (click)="nav3()">Backup</button>  
       </div>
-      <div class="name-inline">
-        <p class="username">{{username}}</p>
-        <p class="role">{{role}}</p>
+  
+      <button *ngIf="showUser==true" mat-raised-button class="create-button" (click)="createUser()">Create User <span>	<mat-icon style="margin-top: 5px;">library_add</mat-icon></span></button>
+
+      <mat-card *ngIf="showUser==true" class="search-card">
+        <mat-icon style="color:black; position: relative; top: 5px;">filter_list</mat-icon>
+        <mat-label style="color:black;">Filter Role: </mat-label>
+        <select style="color: rgb(71, 71, 71)" [(ngModel)]="selectField" placeholder="All" (change)="onFilterChange($event.target.value)" label="" class="selection">
+          
+          <option value="All">All</option>
+          <option value="Administrator">Administrator</option>
+          <option value="Staff">Staff</option>
+          <option value="View-only">View-only</option>
+
+      </select>
+
+      <mat-label style="margin-left: 20px;color: black;">Enter Date: </mat-label>
+      <input class="date-input" type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+      <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
+
+      </mat-card>
+
+
+
+      <mat-card *ngIf="showSlot==true" class="search-card">
+        <mat-icon style="color:black; position: relative; top: 5px;">add_circle_outline</mat-icon>
+        <mat-label style="color:black;">Add Location: </mat-label>
+        <input [(ngModel)]="locationName" type="text" placeholder="Enter location / place" class="location-input"/>
+        <button (click)="addLocation()" class="location-button" mat-raised-button>Add</button>
+      </mat-card>
+
+      <p class="titleTxt" style="font-size: 16px; color: purple" *ngIf="showSlot==true">Location</p>
+      <p  class="descTxt" *ngIf="showSlot==true">Add location for slots management</p>
+
+      <div *ngIf="locationArray.length == 0 && showSlot==true" class="not-found">
+
+        <img src="assets/not found.gif" width="250px"/>
+        <p style="color: purple; text-align: center">No Location Found</p>
 
       </div>
+   
+      <table *ngIf="locationArray.length !==0 && showSlot==true" id="childTable">
+        <tr>
+          <th style="text-align: center;">No.</th>
+          <th>Location Name</th>
+          <th>Total Slot</th>
+          <th>Date Updated</th>
+          <th>Action</th>
+        </tr>
+        <tr *ngFor="let data of locationArray; let i = index">
+          <td style="color: black;text-align: center;">{{i}}</td>
+          <td style="color: black">{{data.location}} <br> 
+            <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
+          <input *ngIf="showEdit==true && number==i" [(ngModel)]=newLocation type="text" class="edit-input" placeholder="Enter location..."/>
+          </td>
+          <td style="color: black">{{data.total_Slot}}</td>
+          <td  style="color: black">{{data.date_Updated}}</td>
+          <td><button *ngIf="showEdit==false" mat-raised-button class="delBtn" (click)="editLocation(i)">Edit</button>
+            <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: blueviolet;" class="delBtn" (click)="saveLocation(i)">Save Changes</button>
+            <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53);" class="delBtn" (click)="cancelLocation()">Cancel</button>
+          <mat-icon class="del-icon" (click)="deleteLocation(data.id)">delete</mat-icon>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <br>
+
+
+      <p class="titleTxt" style="font-size: 16px; color: purple" *ngIf="showSlot==true">Slots</p>
+
+      <p  class="descTxt" *ngIf="showSlot==true">Manage Slots for vendor</p>
+
+      <div *ngIf="showSlot==true" style="background-color: white; margin-left: 70px; height: 130px" class="search-bar-dashboard">
+        <input style="margin-left: 20px; margin-top: 20px; background-color: rgb(230, 230, 230);" class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for Slot Number"/>
+        <mat-icon  (click)="applySlotFilter()" class="submitBtn-1">search</mat-icon>
+        <span (click)="getSlot()" class="resetInfo-1">Reset</span>
+        <br>
+        <mat-label style="color:black; margin-left:20px;">Filter Location: </mat-label>
+        <select style="color: rgb(71, 71, 71)" [(ngModel)]="locationField" placeholder="Select Location" (change)="showTable()" label="" class="selection">
+          <option value="All">All</option>
+          <option *ngFor="let location of locationArray" value="{{location.location}}">{{location.location}}</option>
+        </select>
+
+      </div>
+    
+      <button *ngIf="showSlot==true" mat-raised-button class="slot-button" (click)="createSlot()">Create Slot <span>	<mat-icon style="margin-top: 5px;">library_add</mat-icon></span></button>
+      <div *ngIf="showSlot==true" class ="mat-elevation-z8" style="margin-top: 10px;">
+        
+        <mat-table [dataSource]="listSlotData" matSort>
+
+
+          <ng-container  matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
+            <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.id}}</mat-cell>
+        </ng-container>
+            <ng-container  matColumnDef="slot_Number">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Slot No.</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Number}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="slot_Price">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Price ($)</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Price}}</mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="gender">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
+              <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
+          </ng-container> -->
+            <ng-container matColumnDef="location">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Location</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.location}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="taken">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Available</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+                  <p style="color:green; margin-top:10px;" *ngIf="element.taken == false">Available</p>
+                  <p style="color: red;  margin-top:10px;" *ngIf="element.taken == true">Taken</p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                
+                  <button mat-raised-button class="editBtn" (click)="editSlot(row)">Edit</button>
+                  <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="deleteSlot(row)"><mat-icon>delete</mat-icon></button>
+                </mat-cell>
+    
+                
+              </ng-container>
+    
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  No data available.
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedSlotColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedSlotColumns;" ></mat-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+          </div>
+
+
+
+
+
+
+      <div *ngIf="showUser==true" class ="mat-elevation-z8" style="margin-top: 10px;">
+        
+        <mat-table [dataSource]="listData" matSort>
+
+
+          <ng-container  matColumnDef="profile">
+            <mat-header-cell style="flex: 0 0 5% " *matHeaderCellDef mat-sort-header ></mat-header-cell>
+            <mat-cell style="flex: 0 0 5% " class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+              <mat-icon class="user-photo">account_circle</mat-icon>
+            </mat-cell>
+        </ng-container>
+
+          <ng-container  matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
+            <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.rid}}</mat-cell>
+        </ng-container>
+            <ng-container  matColumnDef="IC_Number">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="username">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.username}}</mat-cell>
+            </ng-container>
+            <!-- <ng-container matColumnDef="gender">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
+              <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
+          </ng-container> -->
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Email Address</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.email}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="last_Login">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Last Login</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">{{element.last_Login}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
+              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">{{element.role}}</mat-cell>
+          </ng-container>
+
+     
+    
+    
+    
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                
+                  <button mat-raised-button class="editBtn" (click)="onEdit(row)">Edit</button>
+                  <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
+                </mat-cell>
+    
+                
+              </ng-container>
+    
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  No data available.
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+          </div>
+
+
+
+          
+
+          <br>
+          <br>
+          <br>
+          <br>
       
       <img class="profile-photo" src="assets/profile.png"/>
       <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>

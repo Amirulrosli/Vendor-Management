@@ -48,8 +48,8 @@ form{
 
 .user-profile{
 
-    width: 160px;
-    height: 156px;
+    width: 150px;
+    height: 144px;
     margin-top: -100px;
     border-radius: 50%;
     display: block;
@@ -93,6 +93,8 @@ form{
     .titleTxt{
         margin-left: 15px;
         font-size: 20px;
+        position: relative;
+        top: -3px;
     }
 
     .toggle{
@@ -102,11 +104,10 @@ form{
     }
 
     background-color: rgb(174, 87, 255);
-    height: 30%;
+    height: 11%;
     top: 0;
     width: 100%;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px ;
+
 
 }
 

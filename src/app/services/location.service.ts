@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/slots"
+const baseURL="http://localhost:3000/api/location"
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class slotService {
+export class locationService {
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
@@ -24,7 +24,7 @@ export class slotService {
     }
 
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/update/${id}`,data)
+        return this.http.put(`${baseURL}/id/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -35,29 +35,9 @@ export class slotService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    deletebyRid(rid): Observable<any>{
-        return this.http.delete(`${baseURL}/rid/${rid}`)
-    }
-
-    findByIC(IC): Observable<any> {
-        return this.http.get(`${baseURL}/IC/${IC}`)
-    }
-
-    updateLatestPayment(id, data): Observable<any> {
-        return this.http.put(`${baseURL}/${id}`,data)
-    }
-
-    findByRid(rid): Observable<any> {
-        return this.http.get(`${baseURL}/rid/${rid}`)
-    }
-
-    findBySlot(slot_Number): Observable<any> {
-        return this.http.get(`${baseURL}/slot/${slot_Number}`)
-    }
-
     findByLocation(location): Observable<any> {
         return this.http.get(`${baseURL}/location/${location}`)
     }
-    
+
     
 }
