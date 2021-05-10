@@ -11,6 +11,8 @@ import { NotificationComponent } from '../notification/notification.component';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map, startWith, withLatestFrom} from 'rxjs/operators';
+import { SideProfileComponent } from '../side-profile/side-profile.component';
+import { accountService } from '../services/account.service';
 
 
 
@@ -48,6 +50,7 @@ export class AddPaymentComponent implements OnInit {
   myList:any = [];
   username: any;
   role: any;
+  profileArray: any;
 
   constructor(
     private router: Router,
@@ -56,7 +59,8 @@ export class AddPaymentComponent implements OnInit {
     private alert: alertService,
     private datePipe: DatePipe,
     private notification: notificationService,
-    private slidePanel: MatSlidePanel
+    private slidePanel: MatSlidePanel,
+    private accountService: accountService
   ) {
     this.close = false;
 
@@ -510,6 +514,31 @@ compareData(dueDate){
 //     console.log(this.list)
 //     console.log(deviceValue);
 // }
+
+openSideProfile(id){
+    
+      console.log(id)
+
+      this.slidePanel.open(SideProfileComponent, {
+        slideFrom:'right',
+        panelClass: "edit-modalbox1",
+        data: {
+          dataKey: id,
+        }
+      })
+
+  }
+
+
+  retrieveID(username){
+    this.accountService.findByUsername(username).subscribe(data=> {
+      this.profileArray = data;
+      console.log(this.profileArray)
+      const id = this.profileArray[0].id;
+      this.openSideProfile(this.profileArray[0]);
+  })
+
+}
 
 
 

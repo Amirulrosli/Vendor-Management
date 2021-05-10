@@ -45,12 +45,12 @@
         </div>
 
         <div class="name-inline">
-          <p class="username">{{username}}</p>
+          <p class="username" (click)="retrieveID(username)" >{{username}}</p>
           <p class="role">{{role}}</p>
 
         </div>
         
-        <img class="profile-photo" src="assets/profile.jpg"/>
+        <img class="profile-photo" src="assets/profile.jpg" (click)="retrieveID(username)"/>
         <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
         <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 

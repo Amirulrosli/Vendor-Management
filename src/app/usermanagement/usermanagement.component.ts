@@ -17,6 +17,7 @@ import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { notificationService } from '../services/notification.service';
+import { SideProfileComponent } from '../side-profile/side-profile.component';
 
 @Component({
   selector: 'app-usermanagement',
@@ -61,6 +62,7 @@ export class UsermanagementComponent implements OnInit {
 
   list:any;
   retrieveData: any = [];
+  profileArray: any;
 
   constructor(
     private router: Router,
@@ -72,6 +74,7 @@ export class UsermanagementComponent implements OnInit {
     private formBuilder: FormBuilder,
     private changeDetectorRefs: ChangeDetectorRef,
     private dialog: MatDialog,
+    private accountService: accountService
 
   ) {
     this.close = false;
@@ -368,6 +371,31 @@ export class UsermanagementComponent implements OnInit {
 
     }
   }
+
+  openSideProfile(id){
+    
+      console.log(id)
+
+      this.slidePanel.open(SideProfileComponent, {
+        slideFrom:'right',
+        panelClass: "edit-modalbox1",
+        data: {
+          dataKey: id,
+        }
+      })
+
+  }
+
+
+  retrieveID(username){
+    this.accountService.findByUsername(username).subscribe(data=> {
+      this.profileArray = data;
+      console.log(this.profileArray)
+      const id = this.profileArray[0].id;
+      this.openSideProfile(this.profileArray[0]);
+  })
+
+}
 
 
 

@@ -42,12 +42,12 @@
           <span (click)="getUser()" class="resetInfo-1">Reset</span>
         </div>
         <div class="name-inline">
-          <p class="username">{{username}}</p>
+          <p class="username" (click)="retrieveID(username)">{{username}}</p>
           <p class="role">{{role}}</p>
 
         </div>
         
-        <img class="profile-photo" src="assets/profile.png"/>
+        <img class="profile-photo" (click)="retrieveID(username)" src="assets/profile.png"/>
         <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
         <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 

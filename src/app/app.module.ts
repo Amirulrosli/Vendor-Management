@@ -30,6 +30,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { DeletedRecordsComponent } from './deleted-records/deleted-records.component';
+import { SideProfileComponent } from './side-profile/side-profile.component';
 
 
  
@@ -51,7 +52,8 @@ import { DeletedRecordsComponent } from './deleted-records/deleted-records.compo
     UserProfileComponent,
     CreateUserComponent,
     EditUserComponent,
-    DeletedRecordsComponent
+    DeletedRecordsComponent,
+    SideProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,7 @@ import { DeletedRecordsComponent } from './deleted-records/deleted-records.compo
   providers: [
     DatePipe,
     alertService,
-    UserService
+    UserService,
   
   ],
 

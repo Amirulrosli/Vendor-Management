@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 import { NotificationComponent } from '../notification/notification.component';
+import { SideProfileComponent } from "../side-profile/side-profile.component";
 import { Profile } from '../services/Profile.model';
 import { profileService } from '../services/profile.service';
 import { DatePipe } from '@angular/common';
@@ -25,6 +26,7 @@ import {
   ChartComponent,
   ApexResponsive,
 } from "ng-apexcharts";
+import { accountService } from '../services/account.service';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -76,6 +78,7 @@ export class DahsboardComponent implements OnInit {
   paidLength: any;
   username: any;
   role: any;
+  profileArray: any =[]
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -105,7 +108,8 @@ export class DahsboardComponent implements OnInit {
     private notification: notificationService,
     private changeDetectorRefs: ChangeDetectorRef,
     private slot: slotService,
-    private payment: paymentService
+    private payment: paymentService,
+    private accountService: accountService
   ) { 
 
     this.close = false;
@@ -123,6 +127,8 @@ export class DahsboardComponent implements OnInit {
     this.overDue();
     this.retrieveSlot();
     this.paid();
+
+
 
   }
 
@@ -340,6 +346,8 @@ export class DahsboardComponent implements OnInit {
     this.role = localStorage.getItem("role")
     this.searchKey = "";
 
+
+
   }
 
   loopData(){
@@ -532,6 +540,31 @@ export class DahsboardComponent implements OnInit {
   
 
   }
+
+  openSideProfile(id){
+    
+      console.log(id)
+
+      this.slidePanel.open(SideProfileComponent, {
+        slideFrom:'right',
+        panelClass: "edit-modalbox1",
+        data: {
+          dataKey: id,
+        }
+      })
+
+  }
+
+
+  retrieveID(username){
+    this.accountService.findByUsername(username).subscribe(data=> {
+      this.profileArray = data;
+      console.log(this.profileArray)
+      const id = this.profileArray[0].id;
+      this.openSideProfile(this.profileArray[0]);
+  })
+
+}
 
 
 

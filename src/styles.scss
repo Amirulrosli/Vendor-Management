@@ -175,8 +175,23 @@ div.mat-tab-label{
         padding: 0px;
         background-color: white;
     }
+
+    mat-slide-panel-container{
+    padding: 0px;
+        background-color: white;
+    }   
 }
 
+.edit-modalbox1 {
+
+    background-color: white;
+    // background-color: rgb(124, 57, 179);
+    padding: 0px !important ;
+    // mat-slide-panel-container{
+    // padding: 0px !important;
+    //     background-color: rgb(51, 152, 192);
+    // }   
+}
 
 
 

@@ -12,6 +12,8 @@ import { NotificationComponent } from '../notification/notification.component';
 import { slotService } from '../services/slot.service';
 import { relativeService } from '../services/relative.service';
 import { MatTabGroup } from '@angular/material/tabs';
+import { SideProfileComponent } from '../side-profile/side-profile.component';
+import { accountService } from '../services/account.service';
 
 
 @Component({
@@ -130,6 +132,7 @@ export class AddVendorComponent implements OnInit {
     
     
   };
+  profileArray: any;
   
   
 
@@ -141,7 +144,8 @@ export class AddVendorComponent implements OnInit {
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
     private Slot: slotService,
-    private relativeService: relativeService
+    private relativeService: relativeService,
+    private accountService: accountService
 
     ) { 
 
@@ -495,5 +499,30 @@ export class AddVendorComponent implements OnInit {
     
 
   // }
+
+  openSideProfile(id){
+    
+    console.log(id)
+
+    this.slidePanel.open(SideProfileComponent, {
+      slideFrom:'right',
+      panelClass: "edit-modalbox1",
+      data: {
+        dataKey: id,
+      }
+    })
+
+}
+
+
+retrieveID(username){
+  this.accountService.findByUsername(username).subscribe(data=> {
+    this.profileArray = data;
+    console.log(this.profileArray)
+    const id = this.profileArray[0].id;
+    this.openSideProfile(this.profileArray[0]);
+})
+
+}
 
 }
