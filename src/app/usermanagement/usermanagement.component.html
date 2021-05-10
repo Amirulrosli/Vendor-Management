@@ -55,12 +55,12 @@
 
 
       <div class="name-inline">
-        <p class="username">{{username}}</p>
+        <p class="username" (click)="retrieveID(username)">{{username}}</p>
         <p class="role">{{role}}</p>
 
       </div>
       
-      <img class="profile-photo" src="assets/profile.png"/>
+      <img class="profile-photo" (click)="retrieveID(username)" src="assets/profile.png"/>
       <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
       <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
@@ -97,22 +97,9 @@
 
     </select>
 
-        <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
-        <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
-        <div class="search-bar-dashboard">
-          <input class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for Username, IC Number,"/>
-          <mat-icon  (click)="applyFilter()" class="submitBtn-1">search</mat-icon>
-          <span (click)="getUser()" class="resetInfo-1">Reset</span>
-        </div>
-        <div class="name-inline">
-          <p class="username" (click)="retrieveID(username)">{{username}}</p>
-          <p class="role">{{role}}</p>
-
-        </div>
         
-        <img class="profile-photo" (click)="retrieveID(username)" src="assets/profile.png"/>
-        <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
-        <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
+        
+        
     <mat-label style="margin-left: 20px;color: black;">Enter Date: </mat-label>
     <input class="date-input" type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
     <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>

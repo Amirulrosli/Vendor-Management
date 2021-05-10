@@ -4,6 +4,7 @@ import { MAT_SLIDE_PANEL_DATA } from 'ngx-mat-slide-panel';
 import { accountService } from '../services/account.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditUserComponent } from '../edit-user/edit-user.component';
+import { Router } from '@angular/router';
 
 
 
@@ -29,7 +30,9 @@ export class SideProfileComponent implements OnInit {
   constructor(
     @Inject(MAT_SLIDE_PANEL_DATA) public data: any,
     private account : accountService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
+
   ) { }
 
   ngOnInit(): void {
@@ -69,8 +72,8 @@ export class SideProfileComponent implements OnInit {
   
 }
 
-cuba(data){
-  console.log(data)
+goToDashboard(){
+  this.router.navigate(["/dashboard"]);
 }
 
 }

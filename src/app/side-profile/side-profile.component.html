@@ -6,7 +6,7 @@
 <p class="role">{{role}}</p>
 
 <div >
-  <button class="listBtn" mat-flat-button> <mat-icon class="iconBtn">dashboard</mat-icon>Dashboard</button>
+  <button class="listBtn activeBtn" (click)=goToDashboard() mat-flat-button> <mat-icon class="iconBtn">dashboard</mat-icon>Dashboard</button>
   <button class="listBtn" (click)=onEdit() mat-flat-button> <mat-icon class="iconBtn">person</mat-icon> Manage Profile</button>
   <button class="listBtn" mat-flat-button > <mat-icon class="iconBtn">question_answer</mat-icon> Report</button>
 

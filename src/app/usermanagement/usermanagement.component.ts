@@ -20,12 +20,10 @@ import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { locationService } from '../services/location.service';
 import { notificationService } from '../services/notification.service';
-<<<<<<< HEAD
-import { SideProfileComponent } from '../side-profile/side-profile.component';
-=======
 import { Slot } from '../services/slot.model';
 import { slotService } from '../services/slot.service';
->>>>>>> 43d74a695df644974b5777066ccd33d97cc86e3c
+import { SideProfileComponent } from '../side-profile/side-profile.component';
+
 
 @Component({
   selector: 'app-usermanagement',
@@ -113,7 +111,7 @@ export class UsermanagementComponent implements OnInit {
     private accountService: accountService,
     private locationService: locationService,
     private datePipe: DatePipe,
-    private slotService: slotService,
+    private slotService: slotService
 
   ) {
     this.close = false;
