@@ -306,6 +306,10 @@ export class VendorProfileComponent implements OnInit {
     this.paymentData.filter = this.dateFilter.toLowerCase();
   }
 
+
+  goToPayment(){
+    console.log("")
+  }
 }
 
 

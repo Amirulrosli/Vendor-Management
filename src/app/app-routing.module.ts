@@ -3,14 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
+import { CreateSlotComponent } from './create-slot/create-slot.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DahsboardComponent } from "./dahsboard/dahsboard.component"
 import { DeletedRecordsComponent } from './deleted-records/deleted-records.component';
+import { EditSlotComponent } from './edit-slot/edit-slot.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { EmailComponent } from './email/email.component';
 import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './notification/notification.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 const routes: Routes = [
@@ -53,9 +54,16 @@ const routes: Routes = [
   {
     path: 'deleted-records', component: DeletedRecordsComponent
   },
+
   {
-    path: 'user-profile', component: UserProfileComponent
+    path: 'create-slot', component: CreateSlotComponent
   },
+
+  {
+    path: 'edit-slot', component: EditSlotComponent
+  },
+  
+
 
 
 ];
@@ -78,5 +86,6 @@ export const routingComponents =
   CreateUserComponent,
   EditUserComponent,
   DeletedRecordsComponent,
-  UserProfileComponent
+  EditSlotComponent,
+  CreateSlotComponent
 ]

@@ -204,12 +204,12 @@ saveChanges(){
       if (this.usernameArray.length == 0){
 
             this.accountService.update(id, account).subscribe(result=> {
-              Swal.fire("Account Updated","Successfully updated the user account","success")
+              Swal.fire("Account Updated","Successfully update the user account","success")
               this.closeModal();
               return;
             },error=> {
               console.log(error)
-              Swal.fire("Cannot update the account [1]","Please check your details and try again","error")
+              Swal.fire("Cannot update the user account [1]","Please check your details and try again","error")
               return;
             })
 
@@ -220,7 +220,7 @@ saveChanges(){
           
           this.accountService.update(id, account).subscribe(result=> {
             console.log(result)
-            Swal.fire("Account Updated","Successfully updated the user account","success")
+            Swal.fire("Account Updated","Successfully update the user account","success")
             this.closeModal();
             return;
           },error=> {
@@ -230,7 +230,7 @@ saveChanges(){
           })
         }
         else {
-          Swal.fire("Username is already Existed","Please change your username and try again","error")
+          Swal.fire("Failed to create user account","Existed Username and please try again","error")
           return;
         }
       

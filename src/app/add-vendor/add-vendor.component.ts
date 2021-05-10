@@ -14,6 +14,7 @@ import { relativeService } from '../services/relative.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
 import { accountService } from '../services/account.service';
+import { locationService } from '../services/location.service';
 
 
 @Component({
@@ -46,7 +47,11 @@ export class AddVendorComponent implements OnInit {
   stepThree: Boolean = true;
   childArray: any = [];
   childDataArray: any = [];
-
+  locationArray: any =[]
+  locationField: any = "Select Location...";
+  priceArray: any;
+  profileList: any = [];
+  slotData: any = []
   public errorMessages = {
     name: [
       { type: 'required', message: 'Name is required' },
@@ -129,6 +134,16 @@ export class AddVendorComponent implements OnInit {
 
     ],
 
+    location: [
+
+      { type: 'required', message: 'Location is required' }
+
+    ],
+
+    contract: [
+      {type: 'required', message: 'contract is required'}
+    ]
+
     
     
   };
@@ -145,7 +160,8 @@ export class AddVendorComponent implements OnInit {
     private slidePanel: MatSlidePanel,
     private Slot: slotService,
     private relativeService: relativeService,
-    private accountService: accountService
+    private accountService: accountService,
+    private locationService: locationService
 
     ) { 
 
@@ -190,14 +206,16 @@ export class AddVendorComponent implements OnInit {
       email: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]],
       phone:['',[Validators.required]],
       rent_Date: ['',[Validators.required]],
-      slot:[''],
+      slot:['',[Validators.required]],
       slotprice:['',[Validators.required]],
       spouseName: ['',[Validators.required,Validators.maxLength(100)]],
       spIC: ['',[Validators.required]],
       spouseIC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
-      childName: ['',[Validators.required,Validators.maxLength(100)]],
-      chIC: ['',[Validators.required]],
-      childIC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
+      childName: ['',[Validators.maxLength(100)]],
+      chIC: [''],
+      childIC_Number:[''],
+      location: ['',[Validators.required]],
+      contract:['',[Validators.required]],
     })
 
     //, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'
@@ -222,6 +240,60 @@ export class AddVendorComponent implements OnInit {
     // error => {
     //   console.log(error)
     // })
+
+    this.getLocation();
+
+  }
+
+  getLocation(){
+    this.locationService.findAll().subscribe(data=> {
+      this.locationArray = data;
+      console.log(this.locationArray)
+
+      if(this.locationArray == 0){
+        this.locationField = "No Location Found..."
+      }
+    },error=> {
+      console.log("error"+error)
+    })
+  }
+
+  showSlot(){
+    const location = this.registrationForm.value.location;
+    this.slotData = [];
+    this.slotArray = [];
+    this.registrationForm.controls['slot'].setValue("");
+    this.registrationForm.controls['slotprice'].setValue("");
+    this.Slot.findByLocation(location).subscribe(data=> {
+      this.slotData = data;
+      if(this.slotData.length == 0){
+        this.slotArray = [];
+      } 
+
+      for(let i = 0; i<this.slotData.length; i++){
+
+        if (this.slotData[i].taken == false){
+          this.slotArray.push(this.slotData)
+        }
+
+      }
+
+    }, error=> {
+      console.log(error)
+    })
+  }
+
+  showPrice(){
+    const slot_Number = this.registrationForm.value.slot;
+
+    this.Slot.findBySlot(slot_Number).subscribe(data=> {
+      this.priceArray = data;
+      this.registrationForm.value.slotprice = this.priceArray[0].slot_Price;
+      this.registrationForm.controls['slotprice'].setValue(this.priceArray[0].slot_Price);
+
+    },error=> {
+      console.log(error)
+    })
   }
 
   goToDashboard(){
@@ -245,13 +317,14 @@ export class AddVendorComponent implements OnInit {
 
   async submit(){
 
-    if (this.slotArray.length == 0){
-      Swal.fire("Unsuccessful","Please Enter slot number!",'error')
+    if (this.slotArray.length == 0 || this.childArray.length == 0){
+      Swal.fire("Failed to create vendor","Please check and try again, Click 'Add' to add child details",'error')
       return;
     }
 
+
    if(!this.registrationForm.valid){
-      Swal.fire("Unsuccessful","Please Check and try again!",'error')
+      Swal.fire("Failed to create vendor","Please Check and try again!",'error')
       return;
     } else {
 
@@ -265,6 +338,13 @@ export class AddVendorComponent implements OnInit {
       const IC_Number = forIC+"-"+next_IC;
       const slot_Price = this.registrationForm.value.slotprice;
       const slot = this.registrationForm.value.slot;
+      const address = this.registrationForm.value.address;
+
+      const spouseName = this.registrationForm.value.spouseName;
+      const spIC = this.registrationForm.value.spIC;
+      const nextSpIC= this.registrationForm.value.spouseIC_Number;
+      const spouseIC_Number = spIC+"-"+nextSpIC;
+      const contract = this.registrationForm.value.contract;
 
       this.profile.findByIC(IC_Number).subscribe(async data=> {
         console.log(data)
@@ -272,16 +352,11 @@ export class AddVendorComponent implements OnInit {
 
         if (this.ICData.length == 0) {
 
-        var slotNumber = "";
+      
         const date_Now = new Date();
         let today = date_Now.getDate()+""+(date_Now.getMonth()+1)+""+date_Now.getFullYear();
         console.log(this.slotArray)
         
-        for (let i = 0; i<this.slotArray.length;i++){
-          slotNumber += this.slotArray[i].slot+",";
-        }
-      
-          console.log(slotNumber)
 
           var profileModel = {
             name: name,
@@ -290,31 +365,66 @@ export class AddVendorComponent implements OnInit {
             phone: phone,
             IC_Number: IC_Number,
             slot_Price: slot_Price,
-            slot: slotNumber
+            slot: slot,
+            address:address,
+            contract: contract
           }
-        
-        
     
-        await this.profile.create(profileModel).subscribe(data=> {
+         this.profile.create(profileModel).subscribe(data=> { //Start save to database
 
-          for (let i = 0; i <this.slotArray.length; i++){
-            
-            var slot = {
-              rid: "V_01"+today+"0000"+IC_Number,
-              slot_Number: this.slotArray[i].slot
-            }
+          this.profileList = data;
+          console.log(data)
+          const rid = this.profileList.rid;
+          const taken = true;
+          var slotData = [];
 
-            this.Slot.create(slot).subscribe(resp=> {
-              console.log(this.Slot)
+          var relative = {
+            rid: rid,
+            name: spouseName,
+            IC_Number: spouseIC_Number,
+            relationship: "spouse"
+          }
+          this.relativeService.createRelative(relative).subscribe(data=> {  //save spouse
+            console.log("spouse successfully created")
+          },error=> {
+            console.log(error)
+          })
+          for (let i = 0; i<this.childArray.length;i++){                           //Save Child array
+            this.childArray[i].rid = rid;
 
-              this.slotArray = [];
-
-            }, error=> {
+            this.relativeService.createRelative(this.childArray[i]).subscribe(data=> {
+              console.log("Child successfully created")
+            },error=> {
               console.log(error)
             })
-
-          
           }
+          this.Slot.findBySlot(slot).subscribe(data=> {                     //find slot
+            slotData = data;
+
+            if (slotData.length == 0){
+              Swal.fire("Slot is not found","Please check and try again","error")
+              return;
+            }
+            var slotModel = {
+              rid: rid,
+              taken: taken,
+              slot_Price: slot_Price,
+              slot_Number: slot,
+
+            }
+
+            this.Slot.update(slotData[0].id,slotModel).subscribe(data=> {                //update Slot
+              console.log(data)
+            }, err=> {
+              console.log(err)
+              return;
+            })
+
+          }, error=> {
+            console.log(error)
+            return;
+          })
+          
 
           const notify = {
             rid: IC_Number,
@@ -325,7 +435,7 @@ export class AddVendorComponent implements OnInit {
             view: false
           };
 
-          this.notification.create(notify).subscribe(data=> {
+          this.notification.create(notify).subscribe(data=> {                     //create notification
             console.log("notification created")
           },error=> {
             console.log(error)
@@ -341,29 +451,21 @@ export class AddVendorComponent implements OnInit {
           this.slot="";
           this.slotprice="";
           this.registrationForm.reset();
-          Swal.fire('Success','Data have been saved','success')
+          Swal.fire('Successfully created vendor','Data have been saved','success')
         },
         error=> {
           console.log(error)
           Swal.fire('Please try again','Cannot Create vendor, please check your phone number and try again!','error')
+          return;
         })
-
         } else {
-
           Swal.fire('Please try again!','IC Number is already existed','error')
           return;
-
         }
-        
-      }, async err=> {
-
-      
-
-      });
-
-      
-      
-      
+      }, async err=> {  
+        Swal.fire('Please try again!','Cannot create vendor profile to the database','error')
+        return;
+      }); 
     }
    
   }
@@ -376,46 +478,6 @@ export class AddVendorComponent implements OnInit {
     })
   }
 
-  addSlot(){
-    var slot = this.registrationForm.value.slot;
-
-    if (slot !==""){
-
-      var slotNo = {
-        slot: slot
-      }
-
-      this.Slot.findBySlot(slot).subscribe(data=> {
-        console.log (data);
-        this.slotNumber = data;
-
-        if (this.slotNumber.length == 0){
-          this.slotArray.push(slotNo);
-          this.slot="";
-          this.registrationForm.controls['slot'].reset();
-          this.registrationForm.value.slot = "";
-        } else {
-          console.log("Existed Slot")
-          Swal.fire('Cannot Add Slot '+slot,'Slot already taken, Please Try Again','error')
-        }
-      },error=> {
-        console.log(error)
-      })
-      
-    
-   } else {
-    console.log("Existed Slot")
-    Swal.fire('Cannot Add Slot '+slot,'Slot field is Empty, Please Try Again','error')
-    }
-    
-   
-   
-
-  }
-
-  clear(i){
-    this.slotArray.splice(i,1);
-  }
 
   AddChild(){
 
@@ -434,6 +496,7 @@ export class AddVendorComponent implements OnInit {
       if (exp.test(childIC_Number) && childIC_Number.length == 6){
         
         var child = {
+          rid: "",
           name: childName,
           IC_Number: IC_Number,
           relationship: "child"
