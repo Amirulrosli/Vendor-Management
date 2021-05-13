@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { Console } from 'console';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import Swal from 'sweetalert2';
 import { CreateSlotComponent } from '../create-slot/create-slot.component';
@@ -82,7 +83,8 @@ export class UsermanagementComponent implements OnInit {
   showEdit: any = false;
   number:any;
   slot:Slot
-
+  slotArray: any = [];
+  dataArray:any = []
 
   displayedSlotColumns: string [] = [
     'id',
@@ -140,7 +142,7 @@ export class UsermanagementComponent implements OnInit {
       for (let i = 0; i<this.retrieveData.length; i++){
 
         const newDate = new Date(this.retrieveData[i].last_Login);
-        console.log(newDate)
+   
 
         let latest_date = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm:ss')
 
@@ -177,13 +179,13 @@ export class UsermanagementComponent implements OnInit {
 
 
   onChange(data){
-    console.log(data)
+
     const date = data;
     const year = date.substring(0,4);
     const month = date.substring(5,7);
     const day = date.substring(8,10);
     const fullDate = day+"-"+month+"-"+year;
-    console.log(fullDate)
+
     this.listData.filter = data.trim().toLowerCase();
   }
 
@@ -191,7 +193,7 @@ export class UsermanagementComponent implements OnInit {
     const fileValue = event.target.files[0];
     this.fileInputLabel = fileValue.name;
     this.fileUploadForm.value.uploadedImage = fileValue;
-    console.log(this.fileUploadForm.value.uploadedImage)
+
   }
 
   upload(){
@@ -573,6 +575,29 @@ export class UsermanagementComponent implements OnInit {
         date_Updated: newDate
       };
       var compare = [];
+      var slotCompare = [];
+
+      this.slotService.findByLocation(this.locationArray[i].location).subscribe(data=> {
+        slotCompare = data;
+
+        if (slotCompare.length !== 0){
+
+          for (let i = 0; i< slotCompare.length; i++){
+            slotCompare[i].location = this.newLocation;
+            
+            this.slotService.update(slotCompare[i].id, slotCompare[i]).subscribe(data=> {
+              console.log(data);
+              this.getSlot();
+            }, error=> {
+              console.log(error)
+            })
+          }
+        }
+
+
+      },error=> {
+        console.log(error)
+      })
   
       this.locationService.findByLocation(this.newLocation).subscribe(data=> {
         compare = data;
@@ -647,9 +672,11 @@ export class UsermanagementComponent implements OnInit {
         panelClass: 'edit-modalbox',
       }).afterClosed().subscribe(data=> {
         this.getSlot();
+        this.locationRefresh();
       })
       
     }
+    
 
 
     applySlotFilter(){
@@ -686,7 +713,7 @@ export class UsermanagementComponent implements OnInit {
     }
 
     deleteSlot(data){
-      console.log(data.id)
+      console.log(data)
       Swal.fire({
         title: 'Are you sure?',
         text: 'This process is irreversible. Deleting the location may cause data loss',
@@ -698,8 +725,44 @@ export class UsermanagementComponent implements OnInit {
       }).then((result) => {
   
         if (result.value){
+
           this.slotService.delete(data.id).subscribe(resp=> {
+
+            var location = data.location;
+
+            this.slotService.findByLocation(data.location).subscribe(data=> {
+              this.slotArray = data;
+         
+              console.log(location)
+                this.locationService.findByLocation(location).subscribe(data=> {
+                  this.dataArray = data;
+    
+                  if(this.dataArray.length !==0){
+    
+                                this.dataArray[0].total_Slot = this.slotArray.length;
+                                this.locationService.update(this.dataArray[0].id, this.dataArray[0]).subscribe(resp=> {
+                                console.log(resp)
+                                this.locationRefresh();
+                                }, error=> {
+                                  console.log(error)
+                                })
+               
+    
+                  }
+    
+                },error=> {
+                  console.log(error)
+                })
+      
   
+              
+          
+            },error=> {
+              console.log(error)
+            })
+  
+            
+
             Swal.fire(
               'Removed!',
               'Successfully remove slot',

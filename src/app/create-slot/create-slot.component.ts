@@ -14,6 +14,8 @@ export class CreateSlotComponent implements OnInit {
 
   locationArray:any = []
   slotForm: FormGroup
+  slotArray: any = [];
+  dataArray: any = []
 
   public errorMessages = {
     slot_Price: [
@@ -61,6 +63,8 @@ export class CreateSlotComponent implements OnInit {
 
   closeModal(){
 
+
+
     this.dialog.closeAll();
 
   }
@@ -95,6 +99,32 @@ export class CreateSlotComponent implements OnInit {
 
         if (slotArray.length == 0){
           this.slotService.create(slot).subscribe(resp=> {
+
+            //update total slot  - location table
+
+            this.slotService.findByLocation(this.slotForm.value.location).subscribe(data=> {
+              this.slotArray = data;
+              console.log(slotArray)
+              this.locationService.findByLocation(this.slotForm.value.location).subscribe(data=> {
+                this.dataArray = data;
+                console.log(this.dataArray)
+                this.dataArray[0].total_Slot = this.slotArray.length;
+                this.locationService.update(this.dataArray[0].id, this.dataArray[0]).subscribe(resp=> {
+                  console.log(resp)
+                }, error=> {
+                  console.log(error)
+                })
+              },error=> {
+                console.log(error)
+              })
+            },error=> {
+              console.log(error)
+            })
+
+
+
+
+
             console.log(resp);
             Swal.fire('Slot Added','Successfully add slot to the database','success');
             this.dialog.closeAll();
