@@ -5,6 +5,7 @@ import { accountService } from '../services/account.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditUserComponent } from '../edit-user/edit-user.component';
 import { Router } from '@angular/router';
+import { loginStateService } from '../services/loginState.service';
 
 
 
@@ -24,6 +25,8 @@ export class SideProfileComponent implements OnInit {
 
   list:any;
   retrieveData: any = [];
+  rid: string;
+  updateAccount: any;
 
 
 
@@ -31,7 +34,10 @@ export class SideProfileComponent implements OnInit {
     @Inject(MAT_SLIDE_PANEL_DATA) public data: any,
     private account : accountService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private accountService: accountService,
+    private loginState: loginStateService
+
 
   ) { }
 
@@ -74,6 +80,38 @@ export class SideProfileComponent implements OnInit {
 
 goToDashboard(){
   this.router.navigate(["/dashboard"]);
+}
+
+logout(){
+
+  // this.accountService.update(this.updateAccount.id,this.updateAccount).subscribe(data=> {
+
+  // })
+  
+  this.rid = localStorage.getItem("rid")
+
+  this.loginState.findByRid(this.rid).subscribe(data =>{
+    this.updateAccount = data[0] 
+    console.log(this.updateAccount.id)
+
+    var loginState = {
+      id : this.updateAccount.id,
+      rid : this.updateAccount.rid,
+      login_state : false
+    }
+  
+    this.loginState.update(this.updateAccount.id, loginState).subscribe(data => {
+      console.log(data)
+      localStorage.clear();
+      window.location.reload();
+      // this.authGuard.getState(this.updateAccount.rid)
+    })
+  })
+
+  
+
+
+
 }
 
 }

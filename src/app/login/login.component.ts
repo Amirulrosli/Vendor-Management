@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthGuard } from '../auth.guard';
 import { accountService } from '../services/account.service';
+import { loginStateService } from '../services/loginState.service';
 import { UserService } from '../user.service';
 
 @Component({
@@ -20,7 +22,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private accountService: accountService,
-    private userService: UserService
+    private userService: UserService,
+    private loginState: loginStateService,
+    private authGuard: AuthGuard
   ) { }
 
   ngOnInit(): void {
@@ -45,10 +49,24 @@ export class LoginComponent implements OnInit {
           this.loginDate = new Date();
           this.updateAccount = data[0];
           this.updateAccount.last_Login = this.loginDate;
+          localStorage.setItem('rid',this.updateAccount.rid)
           console.log(this.updateAccount)
 
           this.accountService.update(this.updateAccount.id,this.updateAccount).subscribe(data=> {
             console.log(data)
+
+            //state
+            var loginState = {
+              id : this.updateAccount.id,
+              rid : this.updateAccount.rid,
+              login_state : true
+            }
+
+            this.loginState.update(this.updateAccount.id, loginState).subscribe(data => {
+              console.log(data)
+              this.authGuard.getState(this.updateAccount.rid)
+            })
+
           }, error=> {
             console.log(error)
           })
