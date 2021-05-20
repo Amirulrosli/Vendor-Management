@@ -370,10 +370,10 @@ export class VendorProfileComponent implements OnInit {
     this.buttonColor4 = '#ffffff';
     this.buttonColor5 = '#ffffff';
 
-    this.color2 = '#c2c2a3'
-    this.color3 = '#c2c2a3'
-    this.color4 = '#c2c2a3'
-    this.color5 = '#c2c2a3'
+    this.color2 = '#919191'
+    this.color3 ='#919191'
+    this.color4 = '#919191'
+    this.color5 = '#919191'
   }
 
   goToFullProfile(){
@@ -392,10 +392,10 @@ export class VendorProfileComponent implements OnInit {
     this.buttonColor4 = '#ffffff';
     this.buttonColor5 = '#ffffff';
 
-    this.color1 = '#c2c2a3'
-    this.color3 = '#c2c2a3'
-    this.color4 = '#c2c2a3'
-    this.color5 = '#c2c2a3'
+    this.color1 = '#919191'
+    this.color3 = '#919191'
+    this.color4 = '#919191'
+    this.color5 = '#919191'
 
   }
 
@@ -417,10 +417,10 @@ export class VendorProfileComponent implements OnInit {
     this.buttonColor4 = '#ffffff';
     this.buttonColor5 = '#ffffff';
 
-    this.color1 = '#c2c2a3'
-    this.color2 = '#c2c2a3'
-    this.color4 = '#c2c2a3'
-    this.color5 = '#c2c2a3'
+    this.color1 ='#919191'
+    this.color2 = '#919191'
+    this.color4 = '#919191'
+    this.color5 = '#919191'
     this.relativeArray = [];
     this.retrieveRelative();
   }
@@ -471,10 +471,10 @@ export class VendorProfileComponent implements OnInit {
     this.buttonColor3 = '#ffffff';
     this.buttonColor5 = '#ffffff';
 
-    this.color1 = '#c2c2a3'
-    this.color2 = '#c2c2a3'
-    this.color3 = '#c2c2a3'
-    this.color5 = '#c2c2a3'
+    this.color1 = '#919191'
+    this.color2 = '#919191'
+    this.color3 = '#919191'
+    this.color5 = '#919191'
 
   }
 
@@ -493,10 +493,10 @@ export class VendorProfileComponent implements OnInit {
     this.buttonColor3 = '#ffffff';
     this.buttonColor4 = '#ffffff';
 
-    this.color1 = '#c2c2a3'
-    this.color2 = '#c2c2a3'
-    this.color3 = '#c2c2a3'
-    this.color4 = '#c2c2a3'
+    this.color1 = '#919191'
+    this.color2 = '#919191'
+    this.color3 = '#919191'
+    this.color4 = '#919191'
   }
 
 
