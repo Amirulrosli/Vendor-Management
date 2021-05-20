@@ -1,4 +1,4 @@
-import { SelectionModel } from '@angular/cdk/collections';
+
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
@@ -8,7 +8,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-// import { Console } from 'console';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import Swal from 'sweetalert2';
 import { CreateSlotComponent } from '../create-slot/create-slot.component';

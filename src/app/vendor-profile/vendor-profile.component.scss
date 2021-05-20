@@ -97,6 +97,10 @@ mat-sidenav-content{
     margin-left: 40px;
 }
 
+.titleTxt-1{
+  margin-left: 10px;
+}
+
 .selection{
     background: rgba(128, 128, 128, 0.158);
     box-shadow: none;
@@ -120,9 +124,7 @@ mat-sidenav-content{
   .banner{
     height: 100px;
     width: 100%;
-    background-color: white;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    background-color: rgb(252, 252, 252);
   }
 
   .accountIcon{
@@ -187,11 +189,12 @@ mat-sidenav-content{
  }
 
  .titles{
-   color: #580092;
-   margin-left: 80px;
-   margin-top: 30px;
+   color: #050505;
+   margin-left: 60px;
+   margin-top: 20px;
   //  font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: bold;
  }
 
 
@@ -296,10 +299,11 @@ mat-sidenav-content{
 
 
 .search-card-1{
-  width: 48%;
+  width: 55%;
   background-color: white;
   margin-left: 80px;
   margin-top: 10px;
+  border: 1px solid rgb(243, 243, 243);
 
 
 
@@ -328,7 +332,16 @@ input{
 }
 
 .history{
-  margin-top: 30px;
+  margin-top: 0px;
+  background-color: white;
+  height: 100%;
+  width: 95%;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 1px solid rgb(236, 236, 236);
 }
 
 .payment-button{
@@ -520,15 +533,143 @@ tr:nth-child(even) {
 }
 
 .paymentHistory{
-  color: #b9b9b9;
+  color: #919191;
   background-color: white;
   position: relative;
-  right: 120px;
-  bottom: -20px;
-  left: 70px;
+  border-right: 1px solid rgb(218, 218, 218);
+  border-radius: 0px !important;
+
+  mat-icon{
+    position:relative;
+    top: -3px;
+    margin-right: 5px;
+  }
+
+}
+
+.paymentHistory:hover{
+  color: blueviolet;
+}
+
+.navigation-1{
+  background-color: white;
+  margin-top: 10px;
+  height: 50px;
+  display: flex;
+  width:54%;
+  margin-left: 35px;
+}
+.titleTxt{
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.titleTxt-1{
+
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+
+}
+
+.descTxt{
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 40px;
+}
+
+.input-profile{
+  
+background: rgba(128, 128, 128, 0.158);
+box-shadow: none;
+height: 38px;
+width: 40%;
+border: none;
+border-radius: 5px;
+padding-left: 5px;
+margin-bottom: 10px;
+margin-left: 40px;
+margin-top: 10px;
+
+}
+
+.act{
+  background-color: rgb(255, 215, 215);
+}
+
+.text-profile{
+  color: gray;
+  margin-left: 40px;
+  margin-bottom: 10px;
+}
+
+.second-row{
+  position: relative;
+  left: 50%;
+  top: -320px;
+  width: 50%;
+
+  input{
+    width: 75%;
+  }
+}
+
+.icon-profile{
+  color: gray;
+  position: relative;
+  top: 10px;
+  right: 30px;
+}
+
+.history-1{
+  height: 700px;
+}
+
+.edit-Button{
+  position: absolute;
+  right: 150px;
+  margin-top: -40px;
+
 }
 
 
+#childTable {
+  margin-top:20px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#childTable td, #childTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#childTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#childTable tr:hover {background-color: #ddd;}
+
+#childTable th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  background-color: rgb(124, 122, 122);
+  color: white;
+}
+
+.delBtn{
+    background-color: rgb(255, 82, 82);
+}
 
 
+.second-row-1{
+  position: relative;
+  left: 50%;
+  top: -220px;
+  width: 50%;
+}
 

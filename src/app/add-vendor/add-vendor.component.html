@@ -208,7 +208,7 @@
                               <th>Action</th>
                             </tr>
                             <tr *ngFor="let data of childArray; let i = index">
-                              <td style="color: black">{{i}}</td>
+                              <td style="color: rgb(247, 234, 234)">{{i}}</td>
                               <td style="color: black">{{data.name}}</td>
                               <td style="color: black">{{data.IC_Number}}</td>
                               <td><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
@@ -252,7 +252,7 @@
                         <mat-label>Contract / Non-contract </mat-label>
                         <br>
         
-                        <select style="color: black;"  formControlName="contract" (change)="showSlot()" class="role-selection" name="contract" placeholder="Select Location">
+                        <select style="color: black;"  formControlName="contract" class="role-selection" name="contract" placeholder="Select Location">
                             <option value=true>Contract</option>
                             <option value=false>Non-contract</option>
                         </select>

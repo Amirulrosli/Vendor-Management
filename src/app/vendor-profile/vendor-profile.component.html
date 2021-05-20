@@ -89,17 +89,23 @@
 
         <div class="back-2">
 
-            <button mat-button class="paymentHistory" (click)="goToPayment()">Payment History</button>
-          
-            <button mat-button class="paymentHistory">Full Profile</button>
-            
-            <button mat-button class="paymentHistory">Spouse & Child Details</button>
-  
-            <button mat-button class="paymentHistory">Attachments</button>
-            
-            <button mat-button class="paymentHistory">Remarks</button>
+            <div class="navigation-1">
 
-        <div class="history">
+                <button mat-button [style.background]="buttonColor1" [style.color]="color1" class="paymentHistory" (click)="goToPayment()"><mat-icon  [style.color]="color1" >payment</mat-icon> Payment History</button>
+          
+                <button mat-button [style.background]="buttonColor2" [style.color]="color2"  class="paymentHistory" (click)="goToFullProfile()"><mat-icon [style.color]="color2">account_circle</mat-icon>Full Profile</button>
+                
+                <button mat-button [style.background]="buttonColor3" [style.color]="color3"  class="paymentHistory" (click)="goToSpouse()" ><mat-icon [style.color]="color3">supervisor_account</mat-icon>Spouse & Child Details</button>
+      
+                <button mat-button [style.background]="buttonColor4" [style.color]="color4"  class="paymentHistory" (click)="goToAttachment()"><mat-icon [style.color]="color4"> attach_file</mat-icon> Attachments</button>
+                
+                <button mat-button [style.background]="buttonColor5" [style.color]="color5"  class="paymentHistory" (click)="goToRemarks()"><mat-icon [style.color]="color5"> add_comment</mat-icon>Remarks</button>
+
+            </div>
+
+
+
+        <div *ngIf="showPayment==true" class="history">
  
            
             <h1 class="titles">Payment History</h1>
@@ -172,9 +178,176 @@
                       <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
                     </mat-table>
 
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
                   </div>
         </div>       
+
+
+
+        <div *ngIf="showProfile==true" class="history history-1">
+
+            <h1 class="titleTxt">Personal Details</h1>
+            <button class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:13px">edit</mat-icon></span></button>
+            <br>
+
+            <mat-label class="text-profile">Account ID:</mat-label>                    
+            <br>
+            <input class="input-profile" [(ngModel)]="rid" type="text" placeholder="Enter Name.." disabled/><span><mat-icon class="icon-profile">account_box</mat-icon></span>
+            
+            <br>
+          
+          
+          
+              <mat-label class="text-profile">Vendor Name:</mat-label>                    
+              <br>
+              <input  class="input-profile" [(ngModel)]="username" type="text" placeholder="Enter Name.." disabled/><span><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+              
+              <br>
+              <mat-label class="text-profile">IC Number:</mat-label>
+              <br>
+          
+          
+              <input  class="input-profile" [(ngModel)]="vendorIC"  type="text" placeholder="Enter IC Number" disabled/><span><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+              
+          
+              <br>
+              <mat-label class="text-profile">Email Address:</mat-label>
+              <br>
+          
+              <input  class="input-profile" [(ngModel)]="email"   type="email" placeholder="Enter Email Address" disabled/><span><mat-icon class="icon-profile">chat_bubble</mat-icon></span>
+          
+              <br>
+
+              <div class="second-row">
+              <mat-label class="text-profile">Phone Number:</mat-label>
+              <br>
+          
+              <input  class="input-profile"  [(ngModel)]="phoneNo"   type="number" placeholder="phone no." disabled><span><mat-icon class="icon-profile">  call</mat-icon></span>
+              <br>
+
+  
+
+                <mat-label class="text-profile">Registration Date:</mat-label>
+                <br>
+            
+                <input  class="input-profile" [(ngModel)]="rent_Date"   type="date" placeholder="Enter Date" disabled><span><mat-icon class="icon-profile">date_range</mat-icon></span>
+                
+                <br>
+                   
+                <mat-label class="text-profile">Address:</mat-label>
+                <br>
+            
+                <input  class="input-profile" [(ngModel)]="address"  type="text" placeholder="address.." disabled><span><mat-icon class="icon-profile">gps_fixed</mat-icon></span>
+                
+                <br>
+                <br>
+                <p class="descTxt">Slot Details</p>
+                <br>
+            
+                <mat-label class="text-profile">Slot Location: </mat-label>
+                <br>
+            
+                <input  class="input-profile act" [(ngModel)]="location"  type="text" placeholder="location" disabled> <span><mat-icon class="icon-profile"> location_on</mat-icon></span>
+                
+                <br>
+            
+                
+                <mat-label class="text-profile">Slot:</mat-label>
+                <br>
+            
+                <input  class="input-profile act" [(ngModel)]="slot"  type="text" placeholder="Slot Number" disabled><span><mat-icon class="icon-profile">add_to_photos</mat-icon></span>
+                
+                <br>
+            
+                <mat-label class="text-profile">Slot Price ($):</mat-label>
+                <br>
+            
+                <input  class="input-profile act" [(ngModel)]="price"  type="number" placeholder="Slot Price ($)" disabled><span><mat-icon class="icon-profile">attach_money</mat-icon></span>
+                
+                <br>
+
+              </div>
+            
+            
+
+
+
+        </div>
+
+
+
+        <div *ngIf="showSpouse == true" class="history">
+
+            <h1 class="titleTxt">Spouse Details <span><mat-icon style="margin-left: 5px;color: gray;cursor:pointer;">edit</mat-icon></span></h1>
+
+            <div *ngFor="let spouseArray of spouseArray">
+
+                <mat-label class="text-profile">Spouse Name</mat-label>
+                <br>
+            
+                <input  class="input-profile" value="{{spouseArray.name}}" type="text" placeholder="Spouse Name" disabled><span><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+                
+                <br>
+            
+                <mat-label class="text-profile">Spouse IC Number</mat-label>
+                <br>
+            
+                <input  class="input-profile" value="{{spouseArray.IC_Number}}" type="text" placeholder="Spouse IC Number" disabled><span><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+                
+                <br>
+
+            </div>
+
+            <div class="second-row-1">
+                <h1 class="titleTxt-1">Child Details</h1>
+            
+                <table id="childTable" style="width:98%; font-size: 14px;">
+                    <tr>
+                      <th>Child No.</th>
+                      <th>Name</th>
+                      <th>IC Number</th>
+                      <th>Action</th>
+                    </tr>
+                    <tr *ngFor="let data of childArray; let i = index">
+                      <td style="color: black">{{i}}</td>
+                      <td style="color: black">{{data.name}}</td>
+                      <td style="color: black">{{data.IC_Number}}</td>
+                      <td><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
+                    </tr>
+                  </table>
+
+            </div>
+         
+            
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
 
