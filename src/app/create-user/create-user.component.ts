@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { accountService } from '../services/account.service';
+import { loginStateService } from '../services/loginState.service';
 
 @Component({
   selector: 'app-create-user',
@@ -68,12 +69,15 @@ export class CreateUserComponent implements OnInit {
     
     
   };
+  updateAccount: any;
 
   constructor(
 
     private formbuilder: FormBuilder,
     private dialog: MatDialog,
-    private accountService: accountService
+    private accountService: accountService,
+    private loginStateService: loginStateService
+
   ) { 
 
 
@@ -189,6 +193,21 @@ submit(){
 
             this.accountService.createAccount(account).subscribe(result=> {
               Swal.fire("Account Added","Successfully added user account","success")
+              console.log(result)
+
+              this.accountService.findByid(result.id).subscribe(data =>{
+              
+                var loginState = {
+                  id : result.id,
+                  rid : result.rid,
+                  login_state : false
+                }
+              
+                this.loginStateService.create(loginState).subscribe(data => {
+                  console.log(data)
+                })
+              })
+
               this.closeModal();
               return;
             },error=> {
