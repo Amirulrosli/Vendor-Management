@@ -17,6 +17,8 @@ import { NotificationComponent } from '../notification/notification.component';
 import { VendorDetailsComponent } from '../vendor-details/vendor-details.component';
 import Swal from 'sweetalert2';
 import { EmailComponent } from '../email/email.component';
+import { slotService } from '../services/slot.service';
+import { relativeService } from '../services/relative.service';
 
 
 
@@ -32,6 +34,7 @@ export class VendorProfileComponent implements OnInit {
   id;
   username: any;
   slot:any;
+  rid: any;
   email:any;
   retrieveData:any;
   paymentHistory:any;
@@ -61,6 +64,27 @@ export class VendorProfileComponent implements OnInit {
   dateFilter: any;
   selectFilter: any = "All";
   rent_Date: any;
+  color1: any = '#ffffff';
+  color2: any;
+  color3: any;
+  color4: any;
+  color5:any;
+  buttonColor1: any = '#b366ff';
+  buttonColor2:any;
+  buttonColor3:any;
+  buttonColor4:any;
+  buttonColor5:any;
+  showPayment: any = true;
+  showProfile: any = false;
+  showAttachment: any = false;
+  showSpouse: any = false;
+  showRemarks:any = false;
+  address:any;
+  location: any;
+  slotArray: any = [];
+  relativeArray: any = [];
+  childArray: any = [];
+  spouseArray: any = [];
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -86,7 +110,9 @@ export class VendorProfileComponent implements OnInit {
     private datePipe: DatePipe,
     private dialog: MatDialog,
     private notification: notificationService,
-    private slidePanel: MatSlidePanel
+    private slidePanel: MatSlidePanel,
+    private slotService: slotService,
+    private relativeService: relativeService,
 
 
   ) {
@@ -164,20 +190,30 @@ export class VendorProfileComponent implements OnInit {
 
     });
 
-    
+    this.retrieveProfile();
+
+  }
+
+
+  retrieveProfile(){
+
     this.profiles.findByRid(this.id).subscribe(array=> {
       this.retrieveData = array
       this.username = this.retrieveData[0].name;
       this.slot = this.retrieveData[0].slot
+      this.address = this.retrieveData[0].address;
       this.price = this.retrieveData[0].slot_Price;
       this.email = this.retrieveData[0].email
       this.vendorIC = this.retrieveData[0].IC_Number
       this.phoneNo = this.retrieveData[0].phone;
       this.rent_Date = this.retrieveData[0].rent_Date;
+      this.rid = this.retrieveData[0].rid;
       this.vendorID = this.id
       this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
       console.log(this.username)
       console.log(this.retrieveData)
+
+      this.retrieveSlot(this.slot)
 
       //overdue days
       this.nextDate = this.retrieveData[0].latest_Due_Date
@@ -220,6 +256,18 @@ export class VendorProfileComponent implements OnInit {
         return new Date(mdy[2], mdy[0]-1, mdy[1]);
     }
 
+    })
+
+  }
+
+  retrieveSlot(slot){
+    this.slotService.findBySlot(slot).subscribe(data=> {
+        this.slotArray = data;
+        console.log(this.slotArray)
+        this.location = this.slotArray[0].location;
+
+    },error=> {
+      console.log(error)
     })
   }
 
@@ -308,8 +356,168 @@ export class VendorProfileComponent implements OnInit {
 
 
   goToPayment(){
-    console.log("")
+    this.showPayment = true;
+    this.showProfile = false;
+    this.showAttachment = false;
+    this.showRemarks = false;
+    this.showSpouse = false;
+    
+    this.buttonColor1 = '#b366ff';
+    this.color1 = '#ffffff';
+
+    this.buttonColor2 = '#ffffff';
+    this.buttonColor3 = '#ffffff';
+    this.buttonColor4 = '#ffffff';
+    this.buttonColor5 = '#ffffff';
+
+    this.color2 = '#c2c2a3'
+    this.color3 = '#c2c2a3'
+    this.color4 = '#c2c2a3'
+    this.color5 = '#c2c2a3'
   }
+
+  goToFullProfile(){
+
+    this.showProfile = true;
+    this.showPayment = false;
+    this.showAttachment = false;
+    this.showRemarks = false;
+    this.showSpouse = false;
+
+    this.buttonColor2 = '#b366ff';
+    this.color2 = '#ffffff';
+
+    this.buttonColor1 = '#ffffff';
+    this.buttonColor3 = '#ffffff';
+    this.buttonColor4 = '#ffffff';
+    this.buttonColor5 = '#ffffff';
+
+    this.color1 = '#c2c2a3'
+    this.color3 = '#c2c2a3'
+    this.color4 = '#c2c2a3'
+    this.color5 = '#c2c2a3'
+
+  }
+
+
+  goToSpouse(){
+
+    this.showSpouse = true;
+    this.showProfile = false;
+    this.showPayment = false;
+    this.showAttachment = false;
+    this.showRemarks = false;
+
+    
+    this.buttonColor3 = '#b366ff';
+    this.color3 = '#ffffff';
+
+    this.buttonColor1 = '#ffffff';
+    this.buttonColor2 = '#ffffff';
+    this.buttonColor4 = '#ffffff';
+    this.buttonColor5 = '#ffffff';
+
+    this.color1 = '#c2c2a3'
+    this.color2 = '#c2c2a3'
+    this.color4 = '#c2c2a3'
+    this.color5 = '#c2c2a3'
+    this.relativeArray = [];
+    this.retrieveRelative();
+  }
+
+  retrieveRelative(){
+
+    this.childArray = [];
+    this.spouseArray =[];
+
+    this.relativeService.findByrid(this.rid).subscribe(data=> {
+      this.relativeArray = data;
+      console.log(this.relativeArray)
+
+      for (let i = 0; i<this.relativeArray.length; i++){
+        if (this.relativeArray[i].relationship == "spouse") {
+
+          this.spouseArray.push(this.relativeArray[i])
+
+        } else {
+
+          this.childArray.push(this.relativeArray[i])
+        }
+
+
+      }
+
+      console.log(this.spouseArray)
+      console.log(this.childArray)
+    }, error=> {
+      console.log(error)
+    })
+
+  }
+
+  goToAttachment(){
+
+    this.showAttachment = true;
+    this.showProfile = false;
+    this.showPayment = false;
+    this.showRemarks = false;
+    this.showSpouse = false;
+    
+    this.buttonColor4 = '#b366ff';
+    this.color4 = '#ffffff';
+
+    this.buttonColor1 = '#ffffff';
+    this.buttonColor2 = '#ffffff';
+    this.buttonColor3 = '#ffffff';
+    this.buttonColor5 = '#ffffff';
+
+    this.color1 = '#c2c2a3'
+    this.color2 = '#c2c2a3'
+    this.color3 = '#c2c2a3'
+    this.color5 = '#c2c2a3'
+
+  }
+
+  goToRemarks(){
+    this.showRemarks = true;
+    this.showProfile = false;
+    this.showPayment = false;
+    this.showAttachment = false;
+    this.showSpouse = false;
+    
+    this.buttonColor5 = '#b366ff';
+    this.color5 = '#ffffff';
+
+    this.buttonColor1 = '#ffffff';
+    this.buttonColor2 = '#ffffff';
+    this.buttonColor3 = '#ffffff';
+    this.buttonColor4 = '#ffffff';
+
+    this.color1 = '#c2c2a3'
+    this.color2 = '#c2c2a3'
+    this.color3 = '#c2c2a3'
+    this.color4 = '#c2c2a3'
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

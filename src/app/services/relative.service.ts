@@ -35,7 +35,7 @@ export class relativeService {
     }
 
     findByrid(rid): Observable<any> {
-        return this.http.get(`${baseURL}/rid/${rid}`)
+        return this.http.get(`${baseURL}/${rid}`)
     }
 
     findByIC(IC_Number): Observable<any> {
