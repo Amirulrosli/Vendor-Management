@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
+import { AuthGuard } from './auth.guard';
 import { CreateSlotComponent } from './create-slot/create-slot.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DahsboardComponent } from "./dahsboard/dahsboard.component"
@@ -16,7 +17,9 @@ import { UsermanagementComponent } from './usermanagement/usermanagement.compone
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 const routes: Routes = [
   {
-    path: 'dashboard', component: DahsboardComponent
+    path: 'dashboard', component: DahsboardComponent,
+    canActivate: [AuthGuard]
+
   },
   {
     path: '', component: LoginComponent
@@ -25,42 +28,54 @@ const routes: Routes = [
     path: 'login', component: LoginComponent
   },
   {
-    path: 'add-vendor', component: AddVendorComponent
+    path: 'add-vendor', component: AddVendorComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'add-payment', component: AddPaymentComponent
+    path: 'add-payment', component: AddPaymentComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'notification', component: NotificationComponent
+    path: 'notification', component: NotificationComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'vendor-profile/:rid', component: VendorProfileComponent
+    path: 'vendor-profile/:rid', component: VendorProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'allnotification', component: AllNotificationComponent
+    path: 'allnotification', component: AllNotificationComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'email', component: EmailComponent
+    path: 'email', component: EmailComponent,
+    canActivate: [AuthGuard]
   }, 
   {
-    path: 'usermanagement', component: UsermanagementComponent
+    path: 'usermanagement', component: UsermanagementComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'create-user', component: CreateUserComponent
+    path: 'create-user', component: CreateUserComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'edit-user', component: EditUserComponent
+    path: 'edit-user', component: EditUserComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: 'deleted-records', component: DeletedRecordsComponent
+    path: 'deleted-records', component: DeletedRecordsComponent,
+    canActivate: [AuthGuard]
   },
 
   {
-    path: 'create-slot', component: CreateSlotComponent
+    path: 'create-slot', component: CreateSlotComponent,
+    canActivate: [AuthGuard]
   },
 
   {
-    path: 'edit-slot', component: EditSlotComponent
+    path: 'edit-slot', component: EditSlotComponent,
+    canActivate: [AuthGuard]
   },
   
 
