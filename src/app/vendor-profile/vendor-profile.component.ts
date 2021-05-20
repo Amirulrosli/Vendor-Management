@@ -44,6 +44,7 @@ export class VendorProfileComponent implements OnInit {
   list:any[];
   close;
   opened = true
+  contract: any;
 
   nextPayment: any;
   nextDate:any;
@@ -208,6 +209,13 @@ export class VendorProfileComponent implements OnInit {
       this.phoneNo = this.retrieveData[0].phone;
       this.rent_Date = this.retrieveData[0].rent_Date;
       this.rid = this.retrieveData[0].rid;
+      this.contract = this.retrieveData[0].contract;
+
+      if (this.contract){
+        this.contract="Contract"
+      } else {
+        this.contract = "Non-Contract";
+      }
       this.vendorID = this.id
       this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
       console.log(this.username)
