@@ -35,6 +35,15 @@
             <span class="titleTxt"></span>
             <mat-icon type="button" (click)="sendEmail()" class="send">send</mat-icon>
             <mat-icon type="button" class="print-1" (click)="print()">print</mat-icon>
+
+            <div class="name-inline" (click)="retrieveID(profileName)">
+                <p class="username" style="color:white" >{{profileName}}</p>
+                <p style="color:white" class="role">{{profileRole}}</p>
+      
+            </div>
+
+            <img class="profile-photo" (click)="retrieveID(profileName)" src="assets/profile.png"/>
+            
             <mat-icon matBadge="{{notifyNo}}" style="color:white;" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
             <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
@@ -187,7 +196,7 @@
         <div *ngIf="showProfile==true" class="history history-1">
 
             <h1 class="titleTxt">Personal Details</h1>
-            <button class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:13px">edit</mat-icon></span></button>
+            <button class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:15px">edit</mat-icon></span></button>
             <br>
 
             <mat-label class="text-profile">Account ID:</mat-label>                    
@@ -284,28 +293,63 @@
 
         <div *ngIf="showSpouse == true" class="history">
 
-            <h1 class="titleTxt">Spouse Details <span><mat-icon style="margin-left: 5px;color: gray;cursor:pointer;">edit</mat-icon></span></h1>
+            <h1 class="titleTxt">Spouse Details <span><mat-icon (click)="onEditSpouse()" style="margin-left: 5px;color: gray;cursor:pointer;">edit</mat-icon></span></h1>
 
             <div *ngFor="let spouseArray of spouseArray">
 
-                <mat-label class="text-profile">Spouse Name</mat-label>
+                <mat-label class="text-profile">Spouse Name:</mat-label>
                 <br>
             
-                <input  class="input-profile" value="{{spouseArray.name}}" type="text" placeholder="Spouse Name" disabled><span><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+                <input  *ngIf="editSpouse==false" class="input-profile" value="{{spouseArray.name}}" type="text" placeholder="Spouse Name" disabled><span *ngIf="editSpouse==false"><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
                 
+                <input style="background-color: rgb(228, 255, 228);" *ngIf="editSpouse==true" class="input-profile" [(ngModel)]="spouseName" type="text" placeholder="Spouse Name"><span *ngIf="editSpouse==true"><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
                 <br>
             
-                <mat-label class="text-profile">Spouse IC Number</mat-label>
+                <mat-label class="text-profile">Spouse IC Number:</mat-label>
                 <br>
             
-                <input  class="input-profile" value="{{spouseArray.IC_Number}}" type="text" placeholder="Spouse IC Number" disabled><span><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+                <input  *ngIf="editSpouse==false" class="input-profile" value="{{spouseArray.IC_Number}}" type="text" placeholder="Spouse IC Number" disabled><span *ngIf="editSpouse==false"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
                 
+                <select *ngIf="editSpouse==true" style="color: black;" [(ngModel)]="spouseIC" class="selection-IC" name="IC" placeholder="No.">
+                    <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
+                </select>
+
+                <mat-label *ngIf="editSpouse==true" class="IC-Dash">-</mat-label>
+                <input style="background-color: rgb(227, 255, 227); margin-left:0px;width: 34%" *ngIf="editSpouse==true" class="input-profile" [(ngModel)]="spouseNumber" type="text" placeholder="Spouse IC Number"><span *ngIf="editSpouse==true"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
                 <br>
+
+                <button style="margin-left: 40px; background-color: blueviolet;" *ngIf="editSpouse==true" mat-raised-button (click)="submitSpouse()">Save Changes</button>
+                
+                <button style="background-color: rgb(255, 72, 72);margin-left: 5px;" *ngIf="editSpouse==true" mat-raised-button (click)="cancelSpouse()">Cancel</button>
 
             </div>
 
             <div class="second-row-1">
+
                 <h1 class="titleTxt-1">Child Details</h1>
+
+                <button *ngIf="showAddChild==false" style="margin-left: 10px; background-color: blueviolet;"mat-raised-button (click)="showChild()">Add Child <span style="position:relative; top: 5px;left:5px;"><mat-icon>add</mat-icon></span></button>
+                <br>
+
+                <mat-label *ngIf="showAddChild==true" style="margin-left: 10px"  class="text-profile">Child Name:</mat-label>
+                <br  *ngIf="showAddChild==true">
+            
+                <input *ngIf="showAddChild==true" [(ngModel)]="childName" style="margin-left: 10px;width: 88%" class="input-profile" type="text" placeholder="Child Name"><span *ngIf="showAddChild==true" ><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+                <br *ngIf="showAddChild==true">
+              
+                <mat-label *ngIf="showAddChild==true" style="margin-left: 10px"  class="text-profile">Child IC Number:</mat-label>
+                <br *ngIf="showAddChild==true">
+            
+                
+                <select *ngIf="showAddChild==true" style="color: black; margin-left: 10px;" [(ngModel)]="childIC" class="selection-IC" name="IC" placeholder="No.">
+                    <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
+                </select>
+
+                <mat-label *ngIf="showAddChild==true" class="IC-Dash">-</mat-label>
+                <input *ngIf="showAddChild==true" style="background-color: rgb(227, 255, 227); margin-left:0px;width: 77%" class="input-profile" [(ngModel)]="childNumber" type="text" placeholder="Enter child IC Number"><span *ngIf="showAddChild==true"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+                <br *ngIf="showAddChild==true">
+                <button *ngIf="showAddChild==true" style="margin-left: 10px; background-color: blueviolet;"mat-raised-button (click)="submitChild()">Add</button>
+                <button *ngIf="showAddChild==true" style="margin-left: 10px; background-color: rgba(243, 243, 243, 0); color:rgb(53, 53, 53);box-shadow: none;"mat-raised-button (click)="cancelChild()">Cancel</button>
             
                 <table id="childTable" style="width:98%; font-size: 14px;">
                     <tr>
@@ -316,9 +360,23 @@
                     </tr>
                     <tr *ngFor="let data of childArray; let i = index">
                       <td style="color: black">{{i}}</td>
-                      <td style="color: black">{{data.name}}</td>
-                      <td style="color: black">{{data.IC_Number}}</td>
-                      <td><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
+                      <td style="color: black">{{data.name}} <br>
+                        <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
+                        <input *ngIf="showEdit==true && number==i" [(ngModel)]=newChildName type="text" class="edit-input" placeholder="Enter child Name..."/>
+                    
+                    </td>
+                      <td style="color: black">{{data.IC_Number}} <br>
+                        <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
+                        <input *ngIf="showEdit==true && number==i" [(ngModel)]=newChildICNumber type="text" class="edit-input" placeholder="Enter IC Number (XX-XXXXXX)..."/>
+  
+                    </td>
+       
+                      <td>
+                        <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: blueviolet;" class="delBtn" (click)="saveChild(data,i)">Save Changes</button>
+                        <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53);" class="delBtn" (click)="cancelSaveChild()">Cancel</button>
+                          <button *ngIf="showEdit==false" mat-raised-button style="background-color: rgb(80, 80, 80);" class="delBtn" (click)="onEditChild(data,i)">Edit</button>
+                          <button *ngIf="showEdit==false" mat-raised-button style="margin-left: 5px;background-color: rgb(255, 1, 1);" class="delBtn" (click)="onDeleteChild(data.id)">Delete</button>
+                    </td>
                     </tr>
                   </table>
 
@@ -327,6 +385,58 @@
             
 
 
+
+        </div>
+        <div *ngIf="showAttachment==true" class="history">
+
+            <h1 class="titleTxt">Attachments</h1>
+            <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(185, 185, 185)">Upload Necessary Image for Vendor</p>
+
+            <div *ngIf="attachmentArray.length == 0" class="not-found">
+                <img src="assets/not found.gif" width="230px"/>
+                <p style="color: purple; text-align: center">No Image Found</p>
+            </div>
+            <div class="image-container" *ngIf="attachmentArray.length !==0" >
+
+                <div class="attach-container" *ngFor="let data of attachmentArray">
+                
+                    <mat-icon class="deleteImage" (click)=deleteAttachment(data)>delete</mat-icon>
+                    <img class="attachment-2" src="{{data.link}}" alt="image"/>
+                </div>
+
+            </div>
+    <br>
+    <br>
+    <p class="descTxt">Upload Image</p>
+    <form [formGroup]="fileUploadForm" (ngSubmit)="upload()">
+      <input style="margin-left: 40px; margin-top: 20px;" type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
+        <br>
+      <button style="margin-left: 40px; margin-top: 10px;background-color: rgb(167, 73, 255);" mat-raised-button type="submit">Add Image</button>
+      <button style="box-shadow: none;margin-left: 10px;background-color: rgba(255, 255, 255, 0); color: black;" mat-raised-button (click)="cancelAttachment()">Cancel</button>
+
+   
+    </form>
+            <br>
+          
+
+        </div>
+
+
+        <div *ngIf="showRemarks==true" class="history">
+
+            <h1 class="titleTxt">Remarks</h1>
+
+            <div *ngIf="RemarksArray.length == 0" class="not-found">
+                <img src="assets/not found.gif" width="230px"/>
+                <p style="color: purple; text-align: center">No Remarks</p>
+            </div>
+
+
+            <textarea rows="10" class="text-area" placeholder="Enter remark.."></textarea>
+            <button mat-raised-button class="remarkButton">Save Changes</button>
+            <button mat-raised-button class="deleteButton">Cancel</button>
+
+            <br>
 
         </div>
 

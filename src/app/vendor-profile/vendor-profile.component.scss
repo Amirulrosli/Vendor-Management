@@ -397,7 +397,7 @@ tr:nth-child(even) {
 .print-1{
   color: white;
   position: absolute;
-  right: 120px;
+  right: 280px;
   cursor: pointer;
   font-size: 28px;
 }
@@ -446,7 +446,7 @@ tr:nth-child(even) {
 
   color: white;
   position: absolute;
-  right: 70px;
+  right: 320px;
   cursor: pointer;
   font-size: 25px;
 
@@ -673,3 +673,115 @@ margin-top: 10px;
   width: 50%;
 }
 
+.selection-IC{
+  background: rgba(128, 128, 128, 0.158);
+  box-shadow: none;
+  height: 38px;
+  width: 70px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 5px;
+  margin-bottom: 20px;
+  margin-left: 40px;
+}
+
+.IC-Dash{
+  color: black;
+}
+
+.edit-input{
+
+  background: rgba(128, 128, 128, 0.158);
+  box-shadow: none;
+  height: 30px;
+  width: 80%;
+  border: none;
+  border-radius: 5px;
+  padding-left: 5px;
+
+}
+
+.not-found{
+  text-align: center;
+  margin-top: 0px;
+  color: purple;
+  width: 90%;
+  height: 230px;
+  background-color: white;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.image-container{
+
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 80px;
+
+
+  .attachment-2{
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    overflow: hidden;
+    margin-right: 20px;
+    margin-top: 20px;
+    border: 1px solid rgb(219, 219, 219);
+    cursor: pointer;
+  
+  }
+
+  .deleteImage{
+    color: rgb(255, 0, 0);
+    position: relative;
+    left: 30px;
+    top: -20px;
+    visibility: hidden;
+  }
+
+
+
+}
+
+.attach-container:hover{
+
+  .deleteImage{
+    visibility: visible;
+    cursor: pointer;
+    color: rgb(255, 0, 0);
+    position: relative;
+    left: 30px;
+    top: -20px;
+    font-size: 35px;
+  }
+
+}
+
+.deleteImage:hover{
+  box-shadow: 10px 10px 8px #ffa5a5;
+}
+
+.text-area{
+  background: rgba(128, 128, 128, 0.158);
+  box-shadow: none;
+  width: 93%;
+  margin-left: 40px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.remarkButton{
+  margin-left: 40px;
+}
+.deleteButton{
+  margin-left: 20px;
+  background-color: rgb(255, 49, 49);
+  
+}
