@@ -23,6 +23,8 @@ import { accountService } from '../services/account.service';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { attachmentService } from '../services/Attachment.service';
+import { remarkService } from '../services/remark.service';
+import { photoService } from '../services/photo.service';
 
 
 
@@ -105,16 +107,24 @@ export class VendorProfileComponent implements OnInit {
   childIC:any;
   childNumber:any;
   childName: any;
+  RemarksArray: any = [];
   childDataAttay:any = []
   editChildArray: any = [];
   profileArray: any = [];
   attachmentArray: any = [];
+  onEditRemarks = false;
+  description: any;
+  descriptionRemarks:any;
+  
 
   newChildName:any;
   newChildICNumber:any;
   showEdit = false;
   number: any;
   baseURL: any;
+  profilePic: any;
+  photoArray: any = []
+  profilePhoto: any;
   
 
   fileUploadForm: FormGroup;
@@ -149,7 +159,9 @@ export class VendorProfileComponent implements OnInit {
     private relativeService: relativeService,
     private accountService: accountService,
     private formBuilder : FormBuilder,
-    private attachmentService: attachmentService
+    private attachmentService: attachmentService,
+    private remarkService: remarkService,
+    private photoService: photoService
 
 
   ) {
@@ -184,6 +196,9 @@ export class VendorProfileComponent implements OnInit {
   ngOnInit(): void {
     this.notifyNumber();
     this.refreshData();
+    this.retrievePhoto();
+
+  
 
     this.profileName = localStorage.getItem('username');
     this.profileRole = localStorage.getItem('role');
@@ -195,6 +210,22 @@ export class VendorProfileComponent implements OnInit {
       uploadedImage: ['']
     })
 
+  }
+
+  retrievePhoto(){
+    console.log(this.id)
+    this.photoService.findByRid(this.id).subscribe(data=> {
+      this.photoArray = data;
+
+      if (this.photoArray.length !== 0){
+        var baseURL = this.photoService.baseURL();
+        this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+       
+      }
+
+    },error=> {
+      console.log(error)
+    })
   }
 
 
@@ -286,8 +317,7 @@ export class VendorProfileComponent implements OnInit {
       }
       this.vendorID = this.id
       this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
-      console.log(this.username)
-      console.log(this.retrieveData)
+  
 
       this.retrieveSlot(this.slot)
 
@@ -363,6 +393,8 @@ export class VendorProfileComponent implements OnInit {
       }
     }).afterClosed().subscribe(result=> {
       this.refreshData();
+      this.retrievePhoto();
+  
     });
 
   }
@@ -581,8 +613,11 @@ export class VendorProfileComponent implements OnInit {
     this.color1 = '#919191'
     this.color2 = '#919191'
     this.color3 = '#919191'
-    this.color4 = '#919191'
+    this.color4 = '#919191';
+
+    this.retrieveRemarks();
   }
+
 
   onEditSpouse(){
     this.editSpouse = true;
@@ -1046,6 +1081,83 @@ deleteAttachment(data){
 cancelAttachment(){
   this.fileUploadForm.reset();
   this.retrieveAttachment();
+}
+
+retrieveRemarks(){
+
+
+  this.remarkService.findByRid(this.id).subscribe(data=> {
+    this.RemarksArray = data;
+    this.descriptionRemarks = this.RemarksArray[0].Description;
+    this.description = this.RemarksArray[0].Description;
+    console.log(this.descriptionRemarks)
+    console.log(this.RemarksArray.length)
+    
+  }, error=> {
+    console.log(error)
+  })
+
+}
+
+showEditRemarks(){
+  this.onEditRemarks = true;
+}
+
+cancelRemarks(){
+  this.onEditRemarks = false;
+  this.retrieveRemarks();
+}
+
+submitRemarks(){
+
+  const description = this.description;
+  const account_rid = localStorage.getItem('rid');
+  const rid = this.id;
+
+  this.retrieveRemarks();
+
+
+
+  if(this.RemarksArray.length==0){
+
+    var remarks = {
+      rid: rid,
+      account_rid: account_rid,
+      Description: description,
+    }
+
+    this.remarkService.create(remarks).subscribe(data=> {
+
+      Swal.fire("Success","Successfully created remarks",'success')
+      this.onEditRemarks = false;
+      this.retrieveRemarks()
+      return;
+
+    },error=> {
+      Swal.fire("Failed","Cannot create remarks",'error')
+      return;
+    });
+  } else {
+
+    var remarks1 = {
+      id: this.RemarksArray[0].id,
+      rid: rid,
+      account_rid: account_rid,
+      Description: description,
+    }
+
+    this.remarkService.update(this.RemarksArray[0].id, remarks1).subscribe(data=> {
+      Swal.fire("Success","Successfully updated remarks",'success')
+      this.onEditRemarks = false;
+      this.retrieveRemarks()
+      return;
+    },error=> {
+      Swal.fire("Failed","Cannot update remarks",'error')
+      return;
+    });
+
+  }
+
 }
 
 

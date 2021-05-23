@@ -273,10 +273,12 @@ export class AddVendorComponent implements OnInit {
       for(let i = 0; i<this.slotData.length; i++){
 
         if (this.slotData[i].taken == false){
-          this.slotArray.push(this.slotData)
+          this.slotArray.push(this.slotData[i])
         }
 
       }
+
+      console.log(this.slotArray)
 
     }, error=> {
       console.log(error)

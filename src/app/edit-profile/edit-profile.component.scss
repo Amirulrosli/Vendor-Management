@@ -22,15 +22,33 @@ mat-sidenav {
           color: black;
       }
 
-      input{
+      .input-2{
           background: rgba(118, 118, 118, 0.158);
           box-shadow: none;
           height: 38px;
-          width: 100%;
+          width: 95%;
           border: none;
           border-radius: 5px;
           padding-left: 5px;
-          margin-bottom: 20px;
+          margin-bottom: 10px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+      }
+
+      .input-3{
+        background: rgba(118, 118, 118, 0.158);
+        box-shadow: none;
+        height: 38px;
+        width: 95%;
+        border: none;
+        border-radius: 5px;
+        padding-left: 5px;
+        margin-bottom: 10px;
+      }
+
+      mat-label{
+          margin-left: 16px;
       }
 
       
@@ -57,8 +75,8 @@ mat-sidenav {
     margin-left: auto;
     margin-right: auto;
     width: 300px;
-    height: 40px;
-    background-color: rgb(105, 2, 173);
+    height: 45px;
+    background-color: rgb(132, 0, 255);
 }
 
 .titleTxt{
@@ -71,11 +89,13 @@ mat-sidenav {
 
 .error-message{
     color: red;
+    margin-left: 16px;
 }
 
 .toolbar{
-    background-color: rgb(105, 2, 173);
-    position:relative;
+    background-color: blueviolet;
+    border: none !important;
+
     .titleTxt{
         margin-left: 15px;
         font-size: 20px;
@@ -87,6 +107,141 @@ mat-sidenav {
         cursor: pointer
     }
 }
+
+.background-profile{
+    background-color: blueviolet;
+    height: 34%;
+    position: relative;
+    top:-40px;
+    cursor: pointer;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.image-1{
+    width: 150px;
+    height: 143px;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid white;
+    position:relative;
+    top: -10px;
+    cursor: pointer;
+}
+
+.role-selection{
+    background: rgba(128, 128, 128, 0.158);
+    color: black;
+    box-shadow: none;
+    height: 38px;
+    width: 96%;
+    border: none;
+    border-radius: 5px;
+    padding-left: 5px;
+    margin-bottom: 20px;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  textarea{
+
+    background: rgba(128, 128, 128, 0.158);
+    color: black;
+    box-shadow: none;
+    width: 96%;
+    border: none;
+    border-radius: 5px;
+    padding-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    font-family:Arial, Helvetica, sans-serif;
+
+  }
+
+  .titleTxt-1{
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-left: 15px;
+  }
+
+  
+.icon-profile{
+    color: rgb(255, 0, 0);
+    position:relative;
+    left: 93%;
+    top: -53px;
+    cursor:pointer;
+  }
+
+
+  .image-1>input {
+    display: none;
+  }
+
+  .image-2>input{
+      display: none;
+  }
+
+  #file-input{
+      visibility: hidden;
+  }
+
+  .cam{
+      position:relative;
+      left: 52%;
+      top: -30px;
+      color:black;
+  }
+
+  .reset-slot{
+      color: rgb(255, 255, 255);
+      margin-left: 16px;
+      text-decoration: underline;
+      cursor: pointer;
+      background-color: blueviolet;
+  }
+
+  .reset-slot:hover{
+      background-color: gray;
+  }
+  .cancel{
+      position:relative;
+      top: 0px;
+      left: 56%;
+      z-index: 999;
+      font-size: 30px;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+  }
+
+  .cancel:hover{
+    color: black;
+  }
+
+  .image-2{
+
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid white;
+    position:relative;
+    top: -10px;
+    cursor: pointer;
+
+  }
 
 
   

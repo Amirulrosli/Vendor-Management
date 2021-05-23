@@ -52,7 +52,8 @@
         <div class="divDesign"  *ngIf="retrieveData!==undefined">
 
             <div class="user-image">
-                <img class="accountIcon" src="assets/profile-1.png"/>
+                <img *ngIf="photoArray.length==0" class="accountIcon" src="assets/profile-1.png"/>
+                <img *ngIf="photoArray.length!==0" [src]="profilePhoto" class="accountIcon-1" alt="image-propic"/>
             </div>
 
             <div class="user-data">
@@ -425,16 +426,18 @@
         <div *ngIf="showRemarks==true" class="history">
 
             <h1 class="titleTxt">Remarks</h1>
+            <button mat-raised-button (click)="showEditRemarks()" style="margin-left: 40px; background-color: blueviolet;">Edit Remarks <span style="position: relative; top: 5px"><mat-icon>edit</mat-icon></span></button>
 
-            <div *ngIf="RemarksArray.length == 0" class="not-found">
+            <div *ngIf="RemarksArray.length == 0 && onEditRemarks==false" class="not-found">
                 <img src="assets/not found.gif" width="230px"/>
                 <p style="color: purple; text-align: center">No Remarks</p>
             </div>
 
+            <textarea *ngIf="onEditRemarks==false" rows="10" [(ngModel)]="descriptionRemarks" class="text-area-1" placeholder="Enter remark.." disabled></textarea>
 
-            <textarea rows="10" class="text-area" placeholder="Enter remark.."></textarea>
-            <button mat-raised-button class="remarkButton">Save Changes</button>
-            <button mat-raised-button class="deleteButton">Cancel</button>
+            <textarea *ngIf="onEditRemarks==true" rows="10" [(ngModel)]="description" class="text-area" placeholder="Enter remark.."></textarea>
+            <button *ngIf="onEditRemarks==true" mat-raised-button class="remarkButton" (click)="submitRemarks()">Save Changes</button>
+            <button *ngIf="onEditRemarks==true" mat-raised-button class="deleteButton" (click)="cancelRemarks()">Cancel</button>
 
             <br>
 

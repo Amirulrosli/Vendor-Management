@@ -94,7 +94,7 @@
                         <mat-label>Phone Number:</mat-label>
                         <br>
         
-                        <input formControlName="phone" type="string" placeholder="e.g 8989898">
+                        <input formControlName="phone" type="text" placeholder="e.g 8989898">
                         
                         <div *ngFor="let error of errorMessages.phone">
                             <ng-container *ngIf="registrationForm.controls['phone']?.hasError(error.type)">
@@ -105,7 +105,7 @@
                         <mat-label>Address:</mat-label>
                         <br>
         
-                        <textarea formControlName="address" type="string" placeholder="Enter Postal Address"></textarea>
+                        <textarea rows="12" formControlName="address" type="text" placeholder="Enter Postal Address"></textarea>
                         
                         <div *ngFor="let error of errorMessages.address">
                             <ng-container *ngIf="registrationForm.controls['address']?.hasError(error.type)">
@@ -208,7 +208,7 @@
                               <th>Action</th>
                             </tr>
                             <tr *ngFor="let data of childArray; let i = index">
-                              <td style="color: rgb(247, 234, 234)">{{i}}</td>
+                              <td style="color: rgb(0, 0, 0)">{{i}}</td>
                               <td style="color: black">{{data.name}}</td>
                               <td style="color: black">{{data.IC_Number}}</td>
                               <td><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
@@ -289,7 +289,7 @@
         
                         <select style="color: black;" (change)="showPrice()" formControlName="slot" class="role-selection" name="slot" placeholder="Select Location">
                             <option value="" disabled selected hidden>Select Slot</option>
-                            <option *ngFor="let slotData of slotArray; let i = index" value="{{slotData[i].slot_Number}}">{{slotData[i].slot_Number}}</option>
+                            <option *ngFor="let slotArray of slotArray; let i = index" value="{{slotArray.slot_Number}}">{{slotArray.slot_Number}}</option>
                             <option *ngIf="slotArray.length==0" value="" disabled selected hidden>No Available Slot</option>
                             
                         </select>

@@ -140,6 +140,23 @@ mat-sidenav-content{
 
   }
 
+  .accountIcon-1{
+
+    display: inline;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+
+    border-radius: 50%;
+    border: 3px solid white;
+ 
+
+  }
+
   .user-image{
     position: absolute;
     left: 15%;
@@ -465,6 +482,22 @@ tr:nth-child(even) {
  
    }
 
+   .accountIcon-1{
+    display: inline;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+ 
+ 
+   }
+
+
    table {
     margin: 0 auto;
     font-size: 12px;
@@ -773,10 +806,26 @@ margin-top: 10px;
   padding-left: 10px;
   padding-top: 10px;
   margin-bottom: 20px;
+  margin-top: 20px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
 }
 
+.text-area-1{
+  background: rgba(226, 226, 226, 0.158);
+  border: 1px solid rgb(204, 204, 204) !important;
+  box-shadow: none;
+  width: 93%;
+  margin-left: 40px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
 .remarkButton{
   margin-left: 40px;
 }
