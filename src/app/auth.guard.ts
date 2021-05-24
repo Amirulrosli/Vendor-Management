@@ -35,15 +35,6 @@ export class AuthGuard implements CanActivate {
     // this.rid = compId
   }
 
-  getState(rid){
-    // this.rid = rid;
-    // console.log(this.rid)
-    this.login.findByRid(rid).subscribe(data =>{
-      this.rid = data[0].rid
-      console.log(data)
-    })
-
-  }
 
   
      

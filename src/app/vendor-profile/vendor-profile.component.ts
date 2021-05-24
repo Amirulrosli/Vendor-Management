@@ -44,7 +44,6 @@ export class VendorProfileComponent implements OnInit {
   list:any[];
   close;
   opened = true
-
   nextPayment: any;
   nextDate:any;
   dateToday;
@@ -85,6 +84,9 @@ export class VendorProfileComponent implements OnInit {
   relativeArray: any = [];
   childArray: any = [];
   spouseArray: any = [];
+  accountRole: any;
+  isAdmin;
+  viewOnly: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -98,6 +100,7 @@ export class VendorProfileComponent implements OnInit {
     'email'
   
   ];
+  
 
 
   
@@ -125,8 +128,32 @@ export class VendorProfileComponent implements OnInit {
   ngOnInit(): void {
     this.notifyNumber();
     this.refreshData();
+    this.identifyRole();
 
   }
+
+   //identify if user is admin
+   identifyRole(){
+    this.accountRole = localStorage.getItem("role")
+
+    if (this.accountRole == "Administrator") {
+      console.log(this.accountRole)
+      this.isAdmin = true;
+      this.viewOnly = false;
+    } 
+    
+    // else{
+    //   this.isAdmin = false;
+    // }
+
+    if (this.accountRole == "View-only") {
+      this.isAdmin = false;
+      this.viewOnly = true;
+    }
+
+
+  }
+
 
 
 

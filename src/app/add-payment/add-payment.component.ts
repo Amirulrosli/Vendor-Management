@@ -51,6 +51,9 @@ export class AddPaymentComponent implements OnInit {
   username: any;
   role: any;
   profileArray: any;
+  isAdmin;
+  accountRole: any;
+  viewOnly: any;
 
   constructor(
     private router: Router,
@@ -76,8 +79,8 @@ export class AddPaymentComponent implements OnInit {
     
     this.username = localStorage.getItem("username");
     this.role = localStorage.getItem("role")
-
-
+    
+    this.identifyRole();
     this.notifyNumber();
     this.profile.findAll().subscribe(array => {
       this.retrieveData = array
@@ -97,6 +100,25 @@ export class AddPaymentComponent implements OnInit {
     );
 
   }
+
+    //identify if user is admin
+    identifyRole(){
+      this.accountRole = localStorage.getItem("role")
+  
+      if (this.accountRole == "Administrator") {
+        console.log(this.accountRole)
+        this.isAdmin = true;
+      } else{
+        this.isAdmin = false;
+      }
+  
+      if (this.accountRole == "View-only") {
+        this.isAdmin = false;
+        this.viewOnly = true;
+      }
+  
+  
+    }
 
   applyFilter(){
 

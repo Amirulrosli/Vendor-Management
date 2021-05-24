@@ -79,6 +79,9 @@ export class DahsboardComponent implements OnInit {
   username: any;
   role: any;
   profileArray: any =[]
+  isAdmin;
+  accountRole: any;
+  viewOnly: any;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -127,7 +130,27 @@ export class DahsboardComponent implements OnInit {
     this.overDue();
     this.retrieveSlot();
     this.paid();
+    this.identifyRole();
 
+
+
+  }
+
+  //identify if user is admin
+  identifyRole(){
+    this.accountRole = localStorage.getItem("role")
+
+    if (this.accountRole == "Administrator") {
+      console.log(this.accountRole)
+      this.isAdmin = true;
+    } else{
+      this.isAdmin = false;
+    }
+
+    if (this.accountRole == "View-only") {
+      this.isAdmin = false;
+      this.viewOnly = true;
+    }
 
 
   }

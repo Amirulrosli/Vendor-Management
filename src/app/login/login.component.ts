@@ -64,7 +64,6 @@ export class LoginComponent implements OnInit {
 
             this.loginState.update(this.updateAccount.id, loginState).subscribe(data => {
               console.log(data)
-              this.authGuard.getState(this.updateAccount.rid)
             })
 
           }, error=> {

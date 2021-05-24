@@ -5,23 +5,23 @@
         <mat-label>Dashboard</mat-label>
         </div>
 
-        <div class="nav-icon" routerLink="/add-vendor">
+        <div *ngIf="!viewOnly" class="nav-icon" routerLink="/add-vendor">
             <mat-icon>add_box</mat-icon>
             <mat-label>AddVendor</mat-label>
         </div>
 
-        <div class="nav-icon" routerLink="/add-payment">
+        <div *ngIf="!viewOnly"  class="nav-icon" routerLink="/add-payment">
             <mat-icon>attach_money</mat-icon>
             <mat-label>Payment</mat-label>
         </div>
 
-        <div class="nav-icon" routerLink="/usermanagement">
+        <div *ngIf="isAdmin" class="nav-icon" routerLink="/usermanagement">
           
             <mat-icon style="font-size: 30px">ballot</mat-icon>
             <mat-label style="text-align: center;">Admin IE</mat-label>
         </div>
   
-        <div class="nav-icon" routerLink="/add-payment">
+        <div *ngIf="isAdmin" class="nav-icon" routerLink="/add-payment">
           <mat-icon >file_copy</mat-icon>
           <mat-label style="text-align: center;">Deleted Records</mat-label>
       </div>
@@ -33,8 +33,8 @@
             <mat-button *ngIf="close==false" class="toggle" (click)="sidenav.close()" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt"></span>
-            <mat-icon type="button" (click)="sendEmail()" class="send">send</mat-icon>
-            <mat-icon type="button" class="print-1" (click)="print()">print</mat-icon>
+            <mat-icon *ngIf="!viewOnly" type="button" (click)="sendEmail()" class="send">send</mat-icon>
+            <mat-icon *ngIf="!viewOnly" type="button" class="print-1" (click)="print()">print</mat-icon>
             <mat-icon matBadge="{{notifyNo}}" style="color:white;" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
             <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
@@ -55,8 +55,8 @@
             </div>
 
             
-            <button class="button-1" mat-raised-button (click)="onEdit()">Update Profile </button>
-            <button class="button-2" mat-raised-button (click)="viewDetails()">View Details<mat-icon>launch</mat-icon></button>
+            <button *ngIf="!viewOnly" class="button-1" mat-raised-button (click)="onEdit()">Update Profile </button>
+            <button *ngIf="!viewOnly" class="button-2" mat-raised-button (click)="viewDetails()">View Details<mat-icon>launch</mat-icon></button>
           
 
         </div>
@@ -117,7 +117,7 @@
           </mat-card>
 
         
-          <button class="payment-button" mat-raised-button (click)="addPayment()">Add Payment</button>
+          <button *ngIf="!viewOnly" class="payment-button" mat-raised-button (click)="addPayment()">Add Payment</button>
 
             <div class ="mat-elevation-z8" >
 
@@ -187,7 +187,7 @@
         <div *ngIf="showProfile==true" class="history history-1">
 
             <h1 class="titleTxt">Personal Details</h1>
-            <button class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:13px">edit</mat-icon></span></button>
+            <button *ngIf="!viewOnly" class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:13px">edit</mat-icon></span></button>
             <br>
 
             <mat-label class="text-profile">Account ID:</mat-label>                    
@@ -306,13 +306,13 @@
                       <th>Child No.</th>
                       <th>Name</th>
                       <th>IC Number</th>
-                      <th>Action</th>
+                      <th *ngIf="!viewOnly">Action</th>
                     </tr>
                     <tr *ngFor="let data of childArray; let i = index">
                       <td style="color: black">{{i}}</td>
                       <td style="color: black">{{data.name}}</td>
                       <td style="color: black">{{data.IC_Number}}</td>
-                      <td><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
+                      <td *ngIf="!viewOnly"><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
                     </tr>
                   </table>
 

@@ -52,6 +52,10 @@ export class AddVendorComponent implements OnInit {
   priceArray: any;
   profileList: any = [];
   slotData: any = []
+  isAdmin;
+  accountRole: any;
+  viewOnly: any;
+  
   public errorMessages = {
     name: [
       { type: 'required', message: 'Name is required' },
@@ -193,6 +197,7 @@ export class AddVendorComponent implements OnInit {
   ngOnInit(): void {
 
     this.notifyNumber();
+    this.identifyRole();
 
     
     this.username = localStorage.getItem("username");
@@ -242,6 +247,25 @@ export class AddVendorComponent implements OnInit {
     // })
 
     this.getLocation();
+
+  }
+
+   //identify if user is admin
+   identifyRole(){
+    this.accountRole = localStorage.getItem("role")
+
+    if (this.accountRole == "Administrator") {
+      console.log(this.accountRole)
+      this.isAdmin = true;
+    } else{
+      this.isAdmin = false;
+    }
+
+    if (this.accountRole == "View-only") {
+      this.isAdmin = false;
+      this.viewOnly = true;
+    }
+
 
   }
 

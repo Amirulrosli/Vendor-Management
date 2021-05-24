@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddPaymentComponent } from './add-payment/add-payment.component';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
+import { AdminGuard } from './admin.guard';
 import { AllNotificationComponent } from './all-notification/all-notification.component';
 import { AuthGuard } from './auth.guard';
 import { CreateSlotComponent } from './create-slot/create-slot.component';
@@ -13,6 +14,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { EmailComponent } from './email/email.component';
 import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './notification/notification.component';
+import { RoleGuard } from './role.guard';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 const routes: Routes = [
@@ -29,11 +31,11 @@ const routes: Routes = [
   },
   {
     path: 'add-vendor', component: AddVendorComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard]
   },
   {
     path: 'add-payment', component: AddPaymentComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard]
   },
   {
     path: 'notification', component: NotificationComponent,
@@ -53,7 +55,7 @@ const routes: Routes = [
   }, 
   {
     path: 'usermanagement', component: UsermanagementComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, AdminGuard], 
   },
   {
     path: 'create-user', component: CreateUserComponent,
@@ -65,7 +67,7 @@ const routes: Routes = [
   },
   {
     path: 'deleted-records', component: DeletedRecordsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard, AdminGuard]
   },
 
   {
