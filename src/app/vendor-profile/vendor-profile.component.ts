@@ -201,6 +201,7 @@ export class VendorProfileComponent implements OnInit {
     this.notifyNumber();
     this.refreshData();
     this.retrievePhoto();
+    this.identifyRole();
 
   
 

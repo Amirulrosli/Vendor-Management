@@ -197,11 +197,7 @@
         <div *ngIf="showProfile==true" class="history history-1">
 
             <h1 class="titleTxt">Personal Details</h1>
-<<<<<<< HEAD
             <button *ngIf="!viewOnly" class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:13px">edit</mat-icon></span></button>
-=======
-            <button class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:15px">edit</mat-icon></span></button>
->>>>>>> 316c6073d622ccffe987ce24c599139e82c85b86
             <br>
 
             <mat-label class="text-profile">Account ID:</mat-label>                    
@@ -298,7 +294,7 @@
 
         <div *ngIf="showSpouse == true" class="history">
 
-            <h1 class="titleTxt">Spouse Details <span><mat-icon (click)="onEditSpouse()" style="margin-left: 5px;color: gray;cursor:pointer;">edit</mat-icon></span></h1>
+            <h1 class="titleTxt">Spouse Details <span><mat-icon *ngIf="!viewOnly" (click)="onEditSpouse()" style="margin-left: 5px;color: gray;cursor:pointer;">edit</mat-icon></span></h1>
 
             <div *ngFor="let spouseArray of spouseArray">
 
@@ -333,7 +329,7 @@
 
                 <h1 class="titleTxt-1">Child Details</h1>
 
-                <button *ngIf="showAddChild==false" style="margin-left: 10px; background-color: blueviolet;"mat-raised-button (click)="showChild()">Add Child <span style="position:relative; top: 5px;left:5px;"><mat-icon>add</mat-icon></span></button>
+                <button *ngIf="showAddChild==false && !viewOnly" style="margin-left: 10px; background-color: blueviolet;"mat-raised-button (click)="showChild()">Add Child <span style="position:relative; top: 5px;left:5px;"><mat-icon>add</mat-icon></span></button>
                 <br>
 
                 <mat-label *ngIf="showAddChild==true" style="margin-left: 10px"  class="text-profile">Child Name:</mat-label>
@@ -365,11 +361,6 @@
                     </tr>
                     <tr *ngFor="let data of childArray; let i = index">
                       <td style="color: black">{{i}}</td>
-<<<<<<< HEAD
-                      <td style="color: black">{{data.name}}</td>
-                      <td style="color: black">{{data.IC_Number}}</td>
-                      <td *ngIf="!viewOnly"><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
-=======
                       <td style="color: black">{{data.name}} <br>
                         <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
                         <input *ngIf="showEdit==true && number==i" [(ngModel)]=newChildName type="text" class="edit-input" placeholder="Enter child Name..."/>
@@ -381,13 +372,12 @@
   
                     </td>
        
-                      <td>
+                      <td *ngIf="!viewOnly">
                         <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: blueviolet;" class="delBtn" (click)="saveChild(data,i)">Save Changes</button>
                         <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53);" class="delBtn" (click)="cancelSaveChild()">Cancel</button>
-                          <button *ngIf="showEdit==false" mat-raised-button style="background-color: rgb(80, 80, 80);" class="delBtn" (click)="onEditChild(data,i)">Edit</button>
-                          <button *ngIf="showEdit==false" mat-raised-button style="margin-left: 5px;background-color: rgb(255, 1, 1);" class="delBtn" (click)="onDeleteChild(data.id)">Delete</button>
+                          <button *ngIf="showEdit==false && !viewOnly" mat-raised-button style="background-color: rgb(80, 80, 80);" class="delBtn" (click)="onEditChild(data,i)">Edit</button>
+                          <button *ngIf="showEdit==false && !viewOnly" mat-raised-button style="margin-left: 5px;background-color: rgb(255, 1, 1);" class="delBtn" (click)="onDeleteChild(data.id)">Delete</button>
                     </td>
->>>>>>> 316c6073d622ccffe987ce24c599139e82c85b86
                     </tr>
                   </table>
 
