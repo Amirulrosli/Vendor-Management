@@ -12,7 +12,7 @@
     <img *ngIf="photoArray.length==0" class="image-1" src="assets/profile-1.png" alt="profilePIC">
     <img *ngIf="photoArray.length!==0" class="image-2" [src]="profilePhoto" alt="profilePhoto-real"/>
     <mat-icon class="cam">camera_alt</mat-icon>
-    <p style="color: white; font-weight: bold; text-align: center; position:relative;top: -30px;">{{username}}</p>
+    <p style="color: rgb(54, 54, 54); font-size: 16px; font-weight: bold; text-align: center; position:relative;top: -30px;">{{username}}</p>
   </label>
   <form>
     <input id="file-input" type="file" name="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput />
@@ -20,6 +20,10 @@
 
 
 </div>
+
+<br>
+<br>
+<br>
 
 <form [formGroup]="registrationForm">
 
