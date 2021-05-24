@@ -103,9 +103,12 @@ mat-sidenav {
 
 
   .custom-modalbox {
+
     mat-dialog-container {
+        padding: 0px;
         background-color: white;
     }
+
 }
 
 

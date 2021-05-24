@@ -2,16 +2,18 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/attachment"
+const baseURL="http://localhost:3000/api/photo"
 
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class attachmentService {
+export class photoService {
 
+    public notifyData:any;
     constructor( private http : HttpClient){}
+
 
     baseURL(){
         return "http://localhost:3000";
@@ -20,14 +22,13 @@ export class attachmentService {
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-
-    uploadFile(formData): Observable<any> {
-        return this.http.post('http://localhost:3000/uploadfile', formData)
+    findOne(id): Observable <any> {
+        return this.http.get(`${baseURL}/id/${id}`)
     }
 
-    create(data): Observable<any> {
-        console.log(data)
-        return this.http.post(baseURL,data)
+    upload(form): Observable<any> {
+        console.log(form)
+        return this.http.post('http://localhost:3000/photo/uploadfile', form)
     }
 
     update(id,data): Observable<any> {
@@ -42,11 +43,11 @@ export class attachmentService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    findByid(id): Observable<any> {
-        return this.http.get(`${baseURL}/id/${id}`)
+    findByRid(rid): Observable<any> {
+        return this.http.get(`${baseURL}/rid/${rid}`)
     }
-    findByVendorid(vendor_rid): Observable<any> {
-        return this.http.get(`${baseURL}/vendor_rid/${vendor_rid}`)
-    }
+
+    
+
 
 }

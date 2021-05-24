@@ -6,6 +6,8 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { notificationService } from '../services/notification.service';
 import { Location } from '@angular/common';
 import { slotService } from '../services/slot.service';
+import { locationService } from '../services/location.service';
+import { photoService } from '../services/photo.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -29,6 +31,23 @@ export class EditProfileComponent implements OnInit {
   slotData: any = [];
   slotDelete: any = [];
   slotNoArray: any = [];
+  username: any = [];
+  locationArray: any = [];
+  locationField: any;
+   priceArray: any = []
+  slotDataArray: any = [];
+  slotField:any;
+  slotEmpty: any;
+  compareLocation: any;
+  slotCompare: any = []
+  oldSlotArray: any = []
+  fileInputLabel: string;
+  fileUploadForm:any;
+  photoArray: any = [];
+  profilePhoto: any;
+  profileID:any = "";
+  
+
 
   public errorMessages = {
     name: [
@@ -72,6 +91,21 @@ export class EditProfileComponent implements OnInit {
       { type: 'required', message: 'Slot price is required' }
 
     ],
+    address: [
+
+      { type: 'required', message: 'Address is required' }
+
+    ],
+    contract: [
+
+      { type: 'required', message: 'contract is required' }
+
+    ],
+    location: [
+
+      { type: 'required', message: 'location is required' }
+
+    ],
     
   };
   
@@ -82,7 +116,9 @@ export class EditProfileComponent implements OnInit {
   private profile: profileService,
   private notification: notificationService,
   private location: Location,
-  private Slot: slotService
+  private Slot: slotService,
+  private locationService: locationService,
+  private photoService: photoService
   ) {
 
     this.value = [
@@ -123,12 +159,15 @@ export class EditProfileComponent implements OnInit {
       phone:['',[Validators.required]],
       rent_Date: ['',[Validators.required]],
       slot:[''],
-      slotprice:['',[Validators.required]]
+      slotprice:['',[Validators.required]],
+      address:['',[Validators.required]],
+      contract: ['',[Validators.required]],
+      location:['',[Validators.required]]
     })
     const IC_No = this.data.dataKey.IC_Number;
     const forIC = IC_No.substring(0,2);
     const IC_Number = IC_No.substring(3,9);
-
+    this.username = this.data.dataKey.name;
 
     var editProfile= {
       name: this.data.dataKey.name,
@@ -137,30 +176,50 @@ export class EditProfileComponent implements OnInit {
       email: this.data.dataKey.email,
       phone: this.data.dataKey.phone,
       rent_Date: this.data.dataKey.rent_Date,
-      slot: "",
-      slotprice: this.data.dataKey.slot_Price
+      slot: this.data.dataKey.slot,
+      slotprice: this.data.dataKey.slot_Price,
+      address: this.data.dataKey.address,
+      contract: this.data.dataKey.contract,
+      location: this.data.dataKey.location
       
     }
 
-
-    this.retrieveSlot();
-
-    this.registrationForm.setValue(editProfile)
-  }
-
-
-  retrieveSlot(){
-    this.Slot.findByRid(this.data.dataKey.rid).subscribe(data=> {
+    this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
+      this.slotDataArray = data[0];
+      editProfile.location = this.slotDataArray.location;
+      this.compareLocation = this.slotDataArray.location;
       
-      this.slotRetrieved = data;
-      this.slotRetrievedLength = this.slotRetrieved.length;
-      this.slotArray = this.slotRetrieved;
-      console.log(this.slotArray)
-      console.log(this.slotRetrieved)
-    }, error=> {
-      console.log(error)
+      this.registrationForm.setValue(editProfile)
+    
+
+
+      this.slotField = this.slotDataArray.slot_Number;
+      this.registrationForm.controls['slot'].setValue(this.slotField);
+      this.getLocation();
+      this.showSlot();
+
     })
+
+    this.retrievePhoto();
+
+    
+
+
   }
+
+
+  // retrieveSlot(){
+  //   this.Slot.findByRid(this.data.dataKey.rid).subscribe(data=> {
+      
+  //     this.slotRetrieved = data;
+  //     this.slotRetrievedLength = this.slotRetrieved.length;
+  //     this.slotArray = this.slotRetrieved;
+  //     console.log(this.slotArray)
+  //     console.log(this.slotRetrieved)
+  //   }, error=> {
+  //     console.log(error)
+  //   })
+  // }
 
   closeModal(){
 
@@ -168,9 +227,98 @@ export class EditProfileComponent implements OnInit {
 
   }
 
+  resetSlot(){
+
+    this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
+      this.slotDataArray = data[0];
+      var location = this.slotDataArray.location;
+      this.registrationForm.controls['location'].setValue(location);
+
+      this.slotField = this.slotDataArray.slot_Number;
+      console.log(this.slotField)
+      this.registrationForm.controls['slot'].setValue(this.slotField);
+      this.registrationForm.controls['slotprice'].setValue(this.slotDataArray.slot_Price)
+
+      this.getLocation();
+
+    })
+  }
+
+
+  getLocation(){
+
+    console.log(this.registrationForm.value.slot)
+
+    this.locationField = this.registrationForm.value.location;
+
+    this.locationService.findAll().subscribe(data=> {
+      this.locationArray = data;
+      
+
+      if(this.locationArray == 0){
+        this.locationField = "No Location Found..."
+      }
+    },error=> {
+      console.log("error"+error)
+    })
+  }
+
+  showSlot(){
+    const location = this.registrationForm.value.location;
+    this.slotData = [];
+    this.slotArray = [];
+    if(this.compareLocation !== location){
+
+      this.registrationForm.controls['slotprice'].setValue("");
+      this.registrationForm.controls['slot'].setValue("");
+
+    }
+
+    this.Slot.findByLocation(location).subscribe(data=> {
+      this.slotData = data;
+      if(this.slotData.length == 0){
+        this.slotArray = [];
+      } 
+
+      for(let i = 0; i<this.slotData.length; i++){
+
+        console.log(this.slotData[i].taken)
+
+        if (!this.slotData[i].taken){
+          this.slotArray.push(this.slotData[i])
+        }
+
+      }
+
+      console.log(this.slotArray)
+
+    }, error=> {
+      console.log(error)
+    })
+  }
+
+  showPrice(){
+    const slot_Number = this.registrationForm.value.slot;
+
+    this.Slot.findBySlot(slot_Number).subscribe(data=> {
+      this.priceArray = data;
+      this.registrationForm.value.slotprice = this.priceArray[0].slot_Price;
+      this.registrationForm.controls['slotprice'].setValue(this.priceArray[0].slot_Price);
+
+    },error=> {
+      console.log(error)
+    })
+  }
+
 
 
   async submit(){
+
+
+    if(this.registrationForm.value.slot  == ""){
+      Swal.fire("Unsuccessful","Cannot leave slot empty and please try again!",'error')
+      return;
+    }
 
     
 
@@ -184,17 +332,15 @@ export class EditProfileComponent implements OnInit {
       const rent_Date = this.data.dataKey.rent_Date;
       const phone = this.registrationForm.value.phone;
       const IC_Number = this.data.dataKey.IC_Number;
-      this.IC_No = IC_Number
+      const address = this.registrationForm.value.address;
       const slot_Price = this.registrationForm.value.slotprice;
       const slot = this.registrationForm.value.slot;
+      const contract = this.registrationForm.value.contract;
+      const location = this.registrationForm.value.location;
 
       this.date_Now = new Date();
       this.today = this.date_Now.getDate()+""+(this.date_Now.getMonth()+1)+""+this.date_Now.getFullYear();
-      console.log(this.slotArray)
       
-      for (let i = 0; i<this.slotArray.length;i++){
-        this.slotNumber += this.slotArray[i].slot_Number+",";
-      }
 
       var profileModel = {
         id: this.data.dataKey.id,
@@ -202,160 +348,234 @@ export class EditProfileComponent implements OnInit {
         name: name,
         email: email,
         rent_Date: rent_Date,
+        address: address,
+        contract: contract,
         phone: phone,
         IC_Number: IC_Number,
         slot_Price: slot_Price,
-        slot: this.slotNumber,
+        slot: slot,
         latest_Payment: this.data.dataKey.latest_Payment,
         latest_Payment_Date: this.data.dataKey.latest_Payment_Date,
+        latest_Due_Date: this.data.dataKey.latest_Due_Date,
         overdue: this.data.dataKey.overdue,
       }
 
-      if (this.data.dataKey.IC_Number !== IC_Number){
-        this.profile.findByIC(IC_Number).subscribe(data=> {
-          console.log(data)
-          this.ICData = data;
-  
-          if (this.ICData.length == 0) {
-            this.saveData(profileModel)
-          } else {
-            Swal.fire('Please try again!','IC Number is already existed','error')
-            return;
+      this.profile.update(profileModel.id,profileModel).subscribe(data=> {
+
+        
+
+        if (slot !== this.data.dataKey.slot){
+          console.log(this.data.dataKey.slot)
+
+          this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
+            this.oldSlotArray = data[0];
+
+            var oldModel = {
+              id: this.oldSlotArray.id,
+              rid: null,
+              slot_Number: this.oldSlotArray.slot_Number,
+              location: this.oldSlotArray.location,
+              taken: false,
+            }
+
+            this.Slot.update(oldModel.id,oldModel).subscribe(data=> {
+              console.log("update old done")
+            })
+          })
+        }
+
+
+
+        this.Slot.findBySlot(slot).subscribe(data=> {
+          this.slotCompare = data[0];
+
+          var slotModel ={
+            id: this.slotCompare.id,
+            rid: this.data.dataKey.rid,
+            slot_Number: slot,
+            location: location,
+            taken: true,
           }
-        }, err=> {
-          Swal.fire('Please try again!','IC Number is already existed','error')
+
+          if (this.slotCompare.length !==0){
+
+
+            this.Slot.update(slotModel.id, slotModel).subscribe(data=> {
+              var date = new Date();
+
+              const notify = {
+                rid: this.data.dataKey.rid,
+                title: 'Profile Account Update for'+' '+this.data.dataKey.name, 
+                description: 'Vendor profile has been updated to '+profileModel.name+'\n with Account ID: '+profileModel.rid,
+                category: 'Updated vendor profile',
+                date: date,
+                view: false
+              };
+        
+              this.notification.create(notify).subscribe(resp=> {
+                console.log(resp)
+
+                this.registrationForm.reset();
+                Swal.fire('Success','Data have been saved','success')
+                this.dialog.closeAll();
+
+
+              },error=> {
+                console.log(error)
+              })
+
+            },error=> {
+              Swal.fire("Unsuccessful","Please Check and try again!",'error')
+              return;
+            })
+
+          } else {
+
+            Swal.fire("Unsuccessful","Please Check and try again!",'error')
+            return;
+
+          }
+
+        },error=> {
+          Swal.fire("Unsuccessful","Slot is not available",'error')
           return;
-        });
-      } else{
-        this.saveData(profileModel)
-      }
-      
+        })
+      })
     }
    
   }
 
 
 
-  saveData(profileModel){
-    var date = new Date();
-    console.log(profileModel)
-    this.profile.update(this.data.dataKey.id,profileModel).subscribe(data=> {
-
-      for (let i = 0; i <this.slotArray.length; i++){
-          
-        var slot = {
-          rid: this.data.dataKey.rid,
-          slot_Number: this.slotArray[i].slot_Number
-        }
-
-        this.Slot.findBySlot(this.slotArray[i].slot_Number).subscribe(data=> {
-          this.slotData = data;
-          console.log(this.slotData)
-
-          if (this.slotData.length == 0){
-            this.Slot.create(slot).subscribe(resp=> {
-              console.log(this.Slot)
-    
-              this.slotArray = [];
-    
-            }, error=> {
-              console.log(error)
-            })
-          }
-        }, error=> {
-          console.log(error)
-        }); 
-      }
-
-      for (let i = 0; i< this.slotDelete.length; i++){
-        this.Slot.delete(this.slotDelete[i].id).subscribe(data=> {
-          console.log("Delete"+ data)
-        }, error=> {
-          console.log(error)
-        });
-      }
-
-      const notify = {
-        rid: this.data.dataKey.rid,
-        title: 'Profile Account Update for'+' '+this.data.dataKey.name, 
-        description: 'Vendor profile has been updated to '+profileModel.name+'\n with Account ID: '+profileModel.rid,
-        category: 'Updated vendor profile',
-        date: date,
-        view: false
-      };
-
-      this.notification.create(notify).subscribe(resp=> {
-        console.log(resp)
-      },error=> {
-        console.log(error)
-      })
-        console.log(data)  
  
-      this.registrationForm.reset();
-      Swal.fire('Success','Data have been saved','success')
-      this.dialog.closeAll();
-      
-    },
-    error=> {
-      console.log(error)
-      Swal.fire('Please try again','Cannot Edit vendor profile, Please Try Again!','error')
+
+
+  onFileSelect(event){
+    const fileValue = event.target.files[0];
+    this.fileInputLabel = fileValue.name;
+    this.fileUploadForm = fileValue;
+
+    this.promptUpload();
+  
+  }
+
+  promptUpload(){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Are you sure to upload the selected Image?. Uploading may take less than 5 minutes',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+
+    }).then((result)=> {
+      if (result.value) {
+        this.upload();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Cancelling uploading process',
+          'error'
+        )
+        return;
+      }
     })
-
   }
 
+  upload(){
+    if (!this.fileUploadForm || this.fileUploadForm =="" || this.fileUploadForm == undefined){
+      Swal.fire('Upload Failed','Please Try again','error')
+    } else {
+      console.log(this.fileUploadForm)
+      var accountRID = localStorage.getItem('rid')
 
-    addSlot(){
- 
-        var slot = this.registrationForm.value.slot;
-
-        console.log(slot)
-    
-        if (slot !==""){
-    
-          var slotNo = {
-            slot_Number: slot
-          }
-    
-          this.Slot.findBySlot(slot).subscribe(data=> {
-            console.log (data);
-            this.slotNoArray = data;
-    
-            if (this.slotNoArray.length == 0){
-              this.slotArray.push(slotNo);
-              console.log(this.slotArray)
-              this.slot="";
-              this.registrationForm.controls['slot'].reset();
-              this.registrationForm.value.slot = "";
-            } else {
-              console.log("Existed Slot")
-              Swal.fire('Cannot Add Slot '+slot,'Slot already taken, Please Try Again','error')
-            }
-          },error=> {
-            console.log(error)
-          })
-          
-        
-       } else {
-        console.log("Existed Slot")
-        Swal.fire('Cannot Add Slot '+slot,'Slot field is Empty, Please Try Again','error')
-        }
-      
-  }
+      if (this.profileID !== ""){
+         this.photoService.delete(this.profileID).subscribe(data=> {
+           console.log(data)
+         })
+      }
+     
+      const formData = new FormData()
+      formData.append('image',this.fileUploadForm);
+      formData.append('rid',this.data.dataKey.rid)
 
   
-  clear(i){
-    this.slotDelete.push(this.slotArray[i])
-    this.slotArray.splice(i,1);
+      this.photoService.upload(formData).subscribe(response => {
+        console.log(response);
+        if (response.statusCode === 200) {
+          this.fileInputLabel = undefined;
+        }
+  
+        Swal.fire("Success","Image has successfully uploaded",'success')
+        this.fileUploadForm = "";
+        this.retrievePhoto();
+      }, er => {
+        console.log(er);
+        Swal.fire("Upload Failed",'Please Try Again','error');
+        return;
+      });
+    }
   }
 
-  deleteSlot(id){
-    this.Slot.delete(id).subscribe(data=> {
-      console.log(data)
-      this.retrieveSlot();
-    }, error=> {
+
+  retrievePhoto(){
+    this.photoService.findByRid(this.data.dataKey.rid).subscribe(data=> {
+      this.photoArray = data;
+
+      if (this.photoArray.length !== 0){
+        var baseURL = this.photoService.baseURL();
+        this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+        this.profileID = this.photoArray[0].id;
+      }
+
+    },error=> {
       console.log(error)
     })
   }
+
+  deletePhoto(){
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Are you sure to delete the selected Image?. Deleting may take less than 5 minutes',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+
+    }).then((result)=> {
+      if (result.value) {
+        
+        if (this.profileID !== ""){
+          this.photoService.delete(this.profileID).subscribe(data=> {
+            console.log(data)
+            Swal.fire("Success","Image has successfully Delete",'success')
+            this.retrievePhoto()
+            return;
+          })
+       } else {
+
+        Swal.fire("Success","Image has successfully Delete",'success')
+        this.retrievePhoto()
+        return;
+
+       }
+
+
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Cancelling uploading process',
+          'error'
+        )
+        return;
+      }
+    })
+
+  }
+
+
 }
 
 

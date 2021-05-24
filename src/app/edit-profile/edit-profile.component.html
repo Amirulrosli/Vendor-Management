@@ -5,11 +5,29 @@
   </mat-toolbar>
   <br>
 
+<div class="background-profile">
+  <mat-icon (click)="deletePhoto()" class="cancel">cancel</mat-icon>
+  <label for="file-input">
+    
+    <img *ngIf="photoArray.length==0" class="image-1" src="assets/profile-1.png" alt="profilePIC">
+    <img *ngIf="photoArray.length!==0" class="image-2" [src]="profilePhoto" alt="profilePhoto-real"/>
+    <mat-icon class="cam">camera_alt</mat-icon>
+    <p style="color: white; font-weight: bold; text-align: center; position:relative;top: -30px;">{{username}}</p>
+  </label>
+  <form>
+    <input id="file-input" type="file" name="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput />
+  </form>
+
+
+</div>
+
 <form [formGroup]="registrationForm">
+
+  <h1 class="titleTxt-1">Edit Personal Info</h1>
 
     <mat-label>Vendor Name:</mat-label>                    
     <br>
-    <input #name formControlName="name" type="text" placeholder="Enter Name.."/>
+    <input class="input-2" #name formControlName="name" type="text" placeholder="Enter Name.."/>
     
     <div *ngFor="let error of errorMessages.name">
         <ng-container *ngIf="registrationForm.controls['name']?.hasError(error.type)">
@@ -20,12 +38,12 @@
     <mat-label>IC Number:</mat-label>
     <br>
 
-    <input style="background-color: rgba(150, 0, 0, 0.143); width: 8%" formControlName="forIC" name="IC" placeholder="No." [attr.disabled]="true"/>
+    <input class="input-3" style="background-color: rgba(150, 0, 0, 0.143); width: 8%;margin-left: 15px;" formControlName="forIC" name="IC" placeholder="No." [attr.disabled]="true"/>
 
-    <mat-label class="IC-Dash">-</mat-label>
+    <mat-label class="IC-Dash" style="margin-left: 0px;">-</mat-label>
 
-    <input formControlName="IC_Number" style="width: 88%; background-color: rgba(150, 0, 0, 0.143);" type="text" placeholder="Enter IC Number" [attr.disabled]="true"/>
-    <p style="color: red; font-size: 12px;">*IC Number cannot be edited</p>
+    <input class="input-3" formControlName="IC_Number" style="width: 85%; background-color: rgba(150, 0, 0, 0.143);" type="text" placeholder="Enter IC Number" [attr.disabled]="true"/>
+    <p style="color: red; margin-left:15px;font-size: 12px;">*IC Number cannot be edited</p>
     <div *ngFor="let error of errorMessages.IC_Number">
         <ng-container *ngIf="registrationForm.controls['IC_Number']?.hasError(error.type)">
           <small class="error-message">{{error.message}}</small>
@@ -35,7 +53,7 @@
     <mat-label>Email Address:</mat-label>
     <br>
 
-    <input formControlName="email" type="email" placeholder="Enter Email Address"/>
+    <input class="input-2" formControlName="email" type="email" placeholder="Enter Email Address"/>
     
     <div *ngFor="let error of errorMessages.email">
         <ng-container *ngIf="registrationForm.controls['email']?.hasError(error.type)">
@@ -46,42 +64,89 @@
     <mat-label>Phone Number:</mat-label>
     <br>
 
-    <input formControlName="phone" type="number" placeholder="phone no.">
+    <input class="input-2" formControlName="phone" type="number" placeholder="phone no.">
     
     <div *ngFor="let error of errorMessages.phone">
         <ng-container *ngIf="registrationForm.controls['phone']?.hasError(error.type)">
           <small class="error-message">{{error.message}}</small>
         </ng-container>
     </div>
-  
+
     <br>
+
+    <mat-label>Address:</mat-label>
+    <br>
+
+    <textarea rows="12" formControlName="address" type="text" placeholder="Enter Postal Address"></textarea>
+    
+    <div *ngFor="let error of errorMessages.address">
+        <ng-container *ngIf="registrationForm.controls['address']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+    <br>
+
+    <mat-label>Contract / Non-contract </mat-label>
+    <br>
+
+    <select style="color: black;"  formControlName="contract" class="role-selection" name="contract" placeholder="Select Location">
+        <option value=true>Contract</option>
+        <option value=false>Non-contract</option>
+    </select>
+
+    <div *ngFor="let error of errorMessages.contract">
+        <ng-container *ngIf="registrationForm.controls['contract']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+
+    <br>
+    <h1 class="titleTxt-1">Edit Slot/Location</h1>
+
+    <mat-label>Location</mat-label>
+    <br>
+
+    <select style="color: black;"  formControlName="location" (change)="showSlot()" class="role-selection" name="location" placeholder="Select Location">
+        <option value="{{locationField}}" selected hidden>{{locationField}}</option>
+        <option *ngFor="let locationData of locationArray" value="{{locationData.location}}">{{locationData.location}}</option>
+    </select>
+
+    <div *ngFor="let error of errorMessages.location">
+        <ng-container *ngIf="registrationForm.controls['location']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
+
+    <br>
+
     <mat-label>Slot No.</mat-label>
+   
     <br>
 
-      <input style="width: 90%" formControlName="slot" type="text" placeholder="Slot No.">
-      <mat-icon tappable (click)="addSlot()" style="cursor:pointer; color:purple; font-size:40px;position: relative;top:18px;left: 10px;">add_circle_outline</mat-icon>
+    <p style="margin-left:15px;font-size: 10px; color: rgb(125, 55, 255)">*Please select the location first. If Location unvailable, please contact your administrator.</p>
 
-      <div *ngFor="let error of errorMessages.slot">
-          <ng-container *ngIf="registrationForm.controls['slot']?.hasError(error.type)">
-              <small class="error-message">{{error.message}}</small>
-          </ng-container>
-      </div>
+  
+    <select style="color: black;" (change)="showPrice()" formControlName="slot" class="role-selection" name="slot" placeholder="Select Location">
+        <option value="{{slotField}}" hidden selected>{{slotField}}</option>
+        <option value="" hidden>Select slot...</option>
+        <option *ngFor="let slotData of slotArray; let i = index" value="{{slotData.slot_Number}}">{{slotData.slot_Number}}</option>
+        <option *ngIf="slotArray.length==0" value="" disabled selected hidden>No Available Slot</option>
+        
+    </select>
+    <span><button mat-raised-button class="reset-slot" (click)="resetSlot()">Reset Slot <mat-icon style="position:relative; top:0px;">refresh</mat-icon></button></span>
 
-                
-      <mat-list role="list" *ngIf="slotArray.length !== 0" style="margin-bottom:10px;">
-          <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);"*ngFor="let data of slotArray; let i = index" role="listitem">
-            <mat-icon style="color:purple">where_to_vote</mat-icon>
-              <mat-label>{{data.slot_Number}}</mat-label>
-              <mat-icon (click)="clear(i)" style="cursor:pointer;position:absolute; right: 10px;">clear</mat-icon>
-          </mat-list-item>
-      </mat-list>
+  
+    <div *ngFor="let error of errorMessages.slot">
+        <ng-container *ngIf="registrationForm.controls['slot']?.hasError(error.type)">
+          <small class="error-message">{{error.message}}</small>
+        </ng-container>
+    </div>
 
-      <br>
-
-    <mat-label>Slot Price.</mat-label>
+    <br>
+    <mat-label>Slot Price ($):</mat-label>
     <br>
 
-    <input formControlName="slotprice" type="number" placeholder="Slot Price ($)">
+    <input  class="input-2" style="background-color: rgb(255, 231, 231);" formControlName="slotprice" type="number" placeholder="Slot Price ($)" [attr.disabled]="true">
     
     <div *ngFor="let error of errorMessages.slotprice">
         <ng-container *ngIf="registrationForm.controls['slotprice']?.hasError(error.type)">
@@ -89,6 +154,7 @@
         </ng-container>
     </div>
 
+    <br>
     <button mat-raised-button class="submitBtn" (click)="submit()">Save Changes</button>
     <br>
 </form>
