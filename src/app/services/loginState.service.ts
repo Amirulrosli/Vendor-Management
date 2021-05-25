@@ -23,6 +23,10 @@ export class loginStateService {
         return this.http.post(baseURL,data)
     }
 
+    findOnline(): Observable<any> {
+        return this.http.get(`${baseURL}/user/online`)
+    }
+
     update(id,data): Observable<any> {
         return this.http.put(`${baseURL}/update/${id}`,data)
     }

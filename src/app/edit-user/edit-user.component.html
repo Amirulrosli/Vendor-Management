@@ -5,9 +5,18 @@
     <span class="titleTxt">Edit User Account</span>
 
 </div>
-<img class="user-profile" src="assets/profile.jpg"/>
-<mat-icon class="create">camera_alt</mat-icon>
-<p *ngIf="username" class="name-profile">{{profileName}}</p>
+<mat-icon (click)="deletePhoto()" class="cancel">cancel</mat-icon>
+<label for="file-input">
+
+  <img *ngIf="photoArray.length==0" class="user-profile" src="assets/profile.jpg" alt="profilePIC">
+  <img *ngIf="photoArray.length!==0" class="user-profile2" [src]="profilePhoto" alt="profilePhoto-real"/>
+  <mat-icon class="create">camera_alt</mat-icon>
+  <p *ngIf="username" class="name-profile">{{profileName}}</p>
+</label>
+
+<form>
+  <input id="file-input" type="file" name="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput />
+</form>
 
 <div class="form-profile">
 <form [formGroup]="accountForm">

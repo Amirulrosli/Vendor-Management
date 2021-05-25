@@ -44,13 +44,15 @@
           <span (click)="refreshData()" class="resetInfo-1">Reset</span>
         </div>
 
-        <div class="name-inline">
-          <p class="username" (click)="retrieveID(username)" >{{username}}</p>
+        <div class="name-inline" (click)="retrieveID(username)" >
+          <p class="username">{{username}}</p>
           <p class="role">{{role}}</p>
 
         </div>
         
-        <img class="profile-photo" src="assets/profile.jpg" (click)="retrieveID(username)"/>
+        <img *ngIf="photoArray.length==0" class="profile-photo" (click)="retrieveID(username)" src="assets/profile.jpg" alt="profilePIC">
+        <img *ngIf="photoArray.length!==0" class="profile-photo" [src]="profilePhoto" (click)="retrieveID(username)" alt="profilePhoto-real"/>
+
         <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
         <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
@@ -67,6 +69,17 @@
           <option value="Overdue">Overdue</option>
           <option value="Paid">Paid</option>
       </select>
+
+      <mat-icon style="color:black; position: relative; top: 5px; margin-left: 20px;">filter_frames</mat-icon>
+      <mat-label style="color:black; margin-left: 5px;">Search For </mat-label>
+      <select style="color: rgb(71, 71, 71)" [(ngModel)]="selectField" placeholder="All" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
+        <option value="All">Vendor</option>
+        <option value="Overdue">Spouse</option>
+        <option value="Paid">Child</option>
+        <option value="Paid">Slot</option>
+    </select>
+
+
       </mat-card>
 
 
@@ -145,7 +158,7 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
               <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
             </mat-table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
           </div>
 
           <div class="statistic-2">
@@ -181,7 +194,7 @@
             <div  class="flex-container">
               <div class="inline">
               <mat-icon style="color: rgb(180, 9, 166)"> location_on</mat-icon>
-              <h3>Total Slot Taken</h3>
+              <h3>Total Slot</h3>
             </div>
               <p>{{slotLength}}</p>
             
@@ -192,7 +205,7 @@
         <div class="graphic">
 
           
-          <div id="chart">
+          <div id="chart" *ngIf="chartNumber !== undefined">
             <apx-chart
               [series]="chartOptions.series"
               [chart]="chartOptions.chart"
@@ -201,7 +214,7 @@
               [color]="chartOptions.colors"
             ></apx-chart>
           </div>
-          <div id="piechart">
+          <div id="piechart" *ngIf="showPieChart">
             <apx-chart
               [series]="piechartOptions.series"
               [chart]="piechartOptions.chart"
@@ -211,8 +224,74 @@
             ></apx-chart>
           </div>
 
-        </div>
 
+          <div id="linechart" *ngIf="paymentArray.length !== 0">
+            <apx-chart
+              [series]="linechartOptions.series1"
+              [chart]="linechartOptions.chart"
+              [xaxis]="linechartOptions.xaxis"
+              [dataLabels]="linechartOptions.dataLabels"
+              [grid]="linechartOptions.grid"
+              [stroke]="linechartOptions.stroke"
+              [title]="linechartOptions.title"
+              [color]="linechartOptions.colors"
+            ></apx-chart>
+          </div>
+
+        </div>
+        <br>
+
+      <h1 class="titleTxt">Online Users</h1>
+      <p class="descTxt">View people who are online</p>
+
+      <div class ="mat-elevation-z8" style="margin-top: 10px; width: 50%;">
+        
+        <mat-table [dataSource]="loginData" matSort>
+          
+          <ng-container  matColumnDef="profilePic">
+            <mat-header-cell style="color: black" *matHeaderCellDef mat-sort-header ></mat-header-cell>
+            <mat-cell class="matcell" *matCellDef="let element"  >
+              <img *ngIf="element.profilePic == undefined" class="image-1" src="assets/profile-1.png" alt="profilePIC">
+              <img *ngIf="element.profilePic !== undefined"  class="image-1" [src]="element.profilePic" alt="profilePhoto-real"/>
+            </mat-cell>
+        </ng-container>
+           
+            <ng-container  matColumnDef="id">
+                <mat-header-cell style="color: black" *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" >{{element.rid}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="username">
+                <mat-header-cell style="color: black"  *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element">{{element.username}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="state">
+                <mat-header-cell style="color: black"  *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element">
+                  <p *ngIf="element.login_state==true" style="color:green; position:relative; top: 6px;">Online</p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="last_Login">
+                <mat-header-cell  style="color: black" *matHeaderCellDef mat-sort-header>Last Login</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element">
+                  {{element.last_Login}}
+                </mat-cell>
+            </ng-container>
+
+    
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  No data available.
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row style="background-color: gray;" *matHeaderRowDef="displayedLoginColumns; sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedLoginColumns;" ></mat-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
+            </mat-table>
+            <mat-paginator style="color: white; background-color: rgb(59, 59, 59);" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+          </div>
+          <br>
+
+     
             
          
 

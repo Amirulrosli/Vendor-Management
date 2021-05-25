@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { accountService } from '../services/account.service';
+import { photoService } from '../services/photo.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -16,6 +17,11 @@ export class EditUserComponent implements OnInit {
   accountForm: FormGroup;
   profileName: any;
   usernameArray: any = [];
+  fileInputLabel: string;
+  fileUploadForm:any;
+  photoArray: any = [];
+  profilePhoto: any;
+  profileID:any = "";
 
 
   public errorMessages = {
@@ -67,7 +73,8 @@ export class EditUserComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formbuilder: FormBuilder,
     private dialog: MatDialog,
-    private accountService: accountService
+    private accountService: accountService,
+    private photoService: photoService
   ) { }
 
   ngOnInit(): void {
@@ -138,7 +145,7 @@ export class EditUserComponent implements OnInit {
 
     this.accountForm.setValue(account);
 
-
+    this.retrievePhoto();
 
 
   }
@@ -180,6 +187,7 @@ saveChanges(){
     const role = this.accountForm.value.role;
     const IC_Number = this.data.dataKey.IC_Number
     const id = this.data.dataKey.id;
+    const newDate = new Date();
     console.log(id)
 
     var account = {
@@ -189,9 +197,7 @@ saveChanges(){
       IC_Number: IC_Number,
       role: role,
       rid: this.data.dataKey.rid,
-      last_Login: this.data.dataKey.last_Login,
-
-
+      last_Login: newDate,
     }
 
     console.log(account)
@@ -201,7 +207,15 @@ saveChanges(){
 
 
 
+
       if (this.usernameArray.length == 0){
+        var localaccount = localStorage.getItem('username');
+
+        if (localaccount==this.data.dataKey.username){
+          localStorage.removeItem('username');
+          localStorage.setItem('username',username);
+        }
+       
 
             this.accountService.update(id, account).subscribe(result=> {
               Swal.fire("Account Updated","Successfully update the user account","success")
@@ -242,6 +256,133 @@ saveChanges(){
     }); // Find Existed Username
 
   }
+
+}
+
+
+
+onFileSelect(event){
+  const fileValue = event.target.files[0];
+  this.fileInputLabel = fileValue.name;
+  this.fileUploadForm = fileValue;
+
+  this.promptUpload();
+
+}
+
+promptUpload(){
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Are you sure to upload the selected Image?. Uploading may take less than 5 minutes',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, go ahead.',
+    cancelButtonText: 'No, let me think'
+
+  }).then((result)=> {
+    if (result.value) {
+      this.upload();
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Cancelling uploading process',
+        'error'
+      )
+      return;
+    }
+  })
+}
+
+upload(){
+  if (!this.fileUploadForm || this.fileUploadForm =="" || this.fileUploadForm == undefined){
+    Swal.fire('Upload Failed','Please Try again','error')
+  } else {
+    console.log(this.fileUploadForm)
+    var accountRID = localStorage.getItem('rid')
+
+    if (this.profileID !== ""){
+       this.photoService.delete(this.profileID).subscribe(data=> {
+         console.log(data)
+       })
+    }
+   
+    const formData = new FormData()
+    formData.append('image',this.fileUploadForm);
+    formData.append('rid',this.data.dataKey.rid)
+
+
+    this.photoService.upload(formData).subscribe(response => {
+      console.log(response);
+      if (response.statusCode === 200) {
+        this.fileInputLabel = undefined;
+      }
+
+      Swal.fire("Success","Image has successfully uploaded",'success')
+      this.fileUploadForm = "";
+      this.retrievePhoto();
+    }, er => {
+      console.log(er);
+      Swal.fire("Upload Failed",'Please Try Again','error');
+      return;
+    });
+  }
+}
+
+
+retrievePhoto(){
+  this.photoService.findByRid(this.data.dataKey.rid).subscribe(data=> {
+    this.photoArray = data;
+
+    if (this.photoArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+      this.profileID = this.photoArray[0].id;
+    }
+
+  },error=> {
+    console.log(error)
+  })
+}
+
+deletePhoto(){
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Are you sure to delete the selected Image?. Deleting may take less than 5 minutes',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, go ahead.',
+    cancelButtonText: 'No, let me think'
+
+  }).then((result)=> {
+    if (result.value) {
+      
+      if (this.profileID !== ""){
+        this.photoService.delete(this.profileID).subscribe(data=> {
+          console.log(data)
+          Swal.fire("Success","Image has successfully Delete",'success')
+          this.retrievePhoto()
+          return;
+        })
+     } else {
+
+      Swal.fire("Success","Image has successfully Delete",'success')
+      this.retrievePhoto()
+      return;
+
+     }
+
+
+
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Cancelling uploading process',
+        'error'
+      )
+      return;
+    }
+  })
 
 }
 

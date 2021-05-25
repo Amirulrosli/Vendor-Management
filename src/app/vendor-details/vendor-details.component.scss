@@ -3,6 +3,10 @@ mat-sidenav {
     width: 100px;
 }
 
+.mat-toolbar{
+    background-color: rgb(124, 57, 179);
+}
+
 .search-card{
     background-color: white;
     margin-top: 20px;
@@ -19,13 +23,15 @@ mat-sidenav {
  
       mat-label{
           color: black;
+          margin-left: 20px;
       }
 
       input{
-          background: rgba(175, 175, 175, 0.163);
+          background: rgba(161, 161, 161, 0.163);
           box-shadow: none;
           height: 38px;
-          width: 100%;
+          width: 95%;
+          margin-left: 20px;
           border: none;
           border-radius: 5px;
           padding-left: 5px;
@@ -66,6 +72,7 @@ mat-sidenav {
 
 .toggle{
     color: white !important;
+    cursor: pointer;
 }
 
 .error-message{

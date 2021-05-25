@@ -25,8 +25,17 @@ import {
   ApexChart,
   ChartComponent,
   ApexResponsive,
+  ApexAxisChartSeries,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+  ApexStroke,
+  ApexGrid
 } from "ng-apexcharts";
 import { accountService } from '../services/account.service';
+import { loginStateService } from '../services/loginState.service';
+import { OnlineModel } from '../services/online.model';
+import { photoService } from '../services/photo.service';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -35,6 +44,15 @@ export type ChartOptions = {
   colors: string [];
   plotOptions: ApexPlotOptions;
   responsive: ApexResponsive[];
+
+
+
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+  series1: ApexAxisChartSeries;
 };
 
 
@@ -50,12 +68,16 @@ export class DahsboardComponent implements OnInit {
   public chartOptions: Partial<ChartOptions>;
   @ViewChild("piechart") piechart: ChartComponent;
   public piechartOptions: Partial<ChartOptions>;
+
+  @ViewChild("linechart") linechart: ChartComponent;
+  public linechartOptions: Partial<ChartOptions>;
   
   close: any;
   opened = true
   retrieveData:any;
   retrieveDataLength:any;
   list:Profile[];
+  listLogin: OnlineModel[];
   searchKey: any;
   notifyNo: any;
   notifyData:any;
@@ -82,11 +104,27 @@ export class DahsboardComponent implements OnInit {
   isAdmin;
   accountRole: any;
   viewOnly: any;
+  takenSlot: any = [];
+  availableSlot:any = [];
+  chartNumber: any;
+  showPieChart = false;
+  paymentArray: any = [];
+  loginStateArray: any = [];
+  loginProfile: any = [];
+  loginArray: any = []
+  loginModel: OnlineModel[];
+  photoArray: any = [];
+  profilePhoto:any;
+  profileID: any;
+  picArray:any;
+  profilePic: any
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   listData: MatTableDataSource<any>;
+  loginData: MatTableDataSource<any>;
+
 
   displayedColumns: string[] = [
   
@@ -101,6 +139,15 @@ export class DahsboardComponent implements OnInit {
     
   
   ];
+
+  displayedLoginColumns: string [] = [
+    'profilePic',
+    'id',
+    'username',
+    'state',
+    'last_Login',
+   
+  ]
   
   constructor(
     private router: Router,
@@ -112,7 +159,9 @@ export class DahsboardComponent implements OnInit {
     private changeDetectorRefs: ChangeDetectorRef,
     private slot: slotService,
     private payment: paymentService,
-    private accountService: accountService
+    private accountService: accountService,
+    private loginStateService: loginStateService,
+    private photoService: photoService
   ) { 
 
     this.close = false;
@@ -122,15 +171,22 @@ export class DahsboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.createChart();
-    this.createPieChart();
+   this.retrievePhoto()
+    this.showPieChart = false;
 
     this.notifyNumber();
     this.refreshData();
-    this.overDue();
+    
     this.retrieveSlot();
     this.paid();
     this.identifyRole();
+    this.overDue();
+    
+    this.createChart();
+    this.createPieChart();
+    this.createLineChart();
+    this.findOnlineUser();
+
 
 
 
@@ -155,6 +211,61 @@ export class DahsboardComponent implements OnInit {
 
   }
 
+  //TABLE SECTION -- Online User
+
+  findOnlineUser(){
+
+
+    this.loginStateService.findOnline().subscribe(data=> {
+        this.loginStateArray = data;
+
+        if(this.loginStateArray.length !== 0){
+
+          for (let i = 0; i<this.loginStateArray.length;i++){
+            var state = this.loginStateArray[i].login_state;
+            this.accountService.findByRid(this.loginStateArray[i].rid).subscribe(data=> {
+              this.loginProfile = data;
+              var id = i+1;
+              this.loginStateArray[i].username =  this.loginProfile[0].username;
+              var newDate = new Date(this.loginProfile[0].last_Login);
+              let latestDate = this.datePipe.transform(newDate,'dd/MM/YY HH:mm')
+              this.loginStateArray[i].last_Login = latestDate;
+
+
+              this.photoService.findByRid(this.loginStateArray[i].rid).subscribe(data=> {
+                this.picArray = data;
+
+                if (this.picArray.length !== 0){
+                  var baseURL = this.photoService.baseURL();
+                this.loginStateArray[i].profilePic = baseURL+"/"+this.picArray[0].link;
+                }
+                
+              })
+
+            })
+
+          }
+
+         this.refreshOnline();
+
+
+
+
+        }
+    },error=> {
+      console.log(error)
+    })
+
+  }
+
+  refreshOnline(){
+    console.log(this.loginStateArray)
+    this.loginData = new MatTableDataSource(this.loginStateArray);
+    this.loginData.sort = this.sort;
+    this.loginData.paginator = this.paginator;
+    this.changeDetectorRefs.detectChanges();
+
+  }
 
   //TABLE SECTION --- VENDOR PROFILE
 
@@ -358,6 +469,8 @@ export class DahsboardComponent implements OnInit {
 
       this.loopData();
 
+      console.log(this.list)
+
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
@@ -515,58 +628,249 @@ export class DahsboardComponent implements OnInit {
 
 
   createChart(){
-    this.chartOptions = {
-      series: [70],
-      chart: {
-        height: 350,
-        type: "radialBar",
-        background: "white"
-      },
-      plotOptions: {
-        radialBar: {
-          hollow: {
-            size: "70%"
+
+    this.slot.findAll().subscribe(data=> {
+      this.slotData = data;
+      this.slotLength = this.slotData.length;
+
+      if (this.slotData.length !== 0){
+
+        for(let i = 0; i<this.slotData.length;i++){
+          var taken = this.slotData[i].taken;
+
+          if(taken){
+            this.takenSlot.push(this.slotData[i])
+          } else {
+            this.availableSlot.push(this.slotData[i])
           }
         }
-      },
-      colors: ["purple"],
-      labels: ["Slots Taken"]
-    };
+
+
+      } else {
+
+        return;
+
+      }
+
+
+      console.log(this.takenSlot)
+      var takenSlot = parseInt(this.takenSlot.length);
+      var available = parseInt(this.availableSlot.length)
+      var Allslot = parseInt(this.slotData.length);
+      var calc = (takenSlot/Allslot)*100;
+      var availcalc = (available/Allslot)*100;
+      var availcompare = Math.round(availcalc);
+      var compare = Math.round(calc)
+
+      this.chartNumber = compare;
+
+      this.chartOptions = {
+        series: [compare,availcompare],
+        chart: {
+          height: 365,
+          type: "radialBar",
+          background: "white"
+        },
+        plotOptions: {
+          radialBar: {
+            hollow: {
+              size: "70%"
+            },
+            dataLabels: {
+              name: {
+                fontSize: "22px"
+              },
+              value: {
+                fontSize: "16px"
+              },
+              total: {
+                show: true,
+                label: "Total",
+                formatter: function(w) {
+                  return ""+Allslot+" Slots";
+                }
+              }
+            }
+          }
+        },
+        colors: ["pink"],
+        labels: ["Slot Taken: "+takenSlot,"Slot Available: "+available]
+
+      };
   
+      
+    })
+    
+
+   
   }
 
   createPieChart(){
 
-    this.piechartOptions = {
-      series: [12,11,1],
-      chart: {
-        height: 350,
-        width: 480,
-        type: "donut",
-        background: "white"
-      },
-      labels: ["Paid", "Overdue", "Discontinued"],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
+
+
+      this.profiles.findAllOverdue().subscribe(data=> {
+        this.overDueData = data;
+        this.overdueLength = this.overDueData.length;
+
+        this.profiles.findAllPaid().subscribe(data=> {
+          this.paymentData = data;
+          this.paidLength = this.paymentData.length;
+
+
+          var overdue = parseInt(this.overdueLength);
+          var paid = parseInt(this.paidLength);
+
+          this.showPieChart = true;
+      
+          this.piechartOptions = {
+            series: [paid,overdue,2],
             chart: {
-              width: 350
+              height: 400,
+              width: 500,
+              type: "donut",
+              background: "white"
             },
-            legend: {
-              position: "bottom"
-            }
+            labels: ["Paid", "Overdue","Discontinued"],
+            responsive: [
+              {
+                breakpoint: 480,
+                options: {
+                  chart: {
+                    width: 350
+                  },
+                  legend: {
+                    position: "bottom"
+                  }
+                }
+              }
+            ]
+          };
+  
+          
+        },error=> {
+          console.log(error);
+          return;
+        })
+
+      },error=> {
+        console.log(error);
+        return;
+      })
+    
+  
+
+     
+    
+
+  
+
+  }
+
+  createLineChart(){
+
+    var payment = [];
+    var dateArray = [];
+
+    this.payment.findAll().subscribe(data=> {
+      this.paymentArray = data;
+      console.log(this.paymentArray)
+
+      var paymentLength = this.paymentArray.length;
+      var requested = 0;
+      var totalPayment = 0;
+
+      if (paymentLength-1 > 8){
+        requested = paymentLength-9
+      }
+
+      if(this.paymentArray !== 0){
+
+        for (let i = paymentLength-1; i>=requested;i--){
+          console.log(this.paymentArray[i])
+          payment.push(this.paymentArray[i].price)
+
+          const newDate = new Date(this.paymentArray[i].createdAt);
+          let latest_date = this.datePipe.transform(newDate,'dd/MM HH:mm')
+          dateArray.push(latest_date)
+        }
+
+        for(let i = 0; i< paymentLength; i++){
+          totalPayment += parseInt(this.paymentArray[i].price);
+        }
+
+
+        
+      this.linechartOptions = {
+     
+        series1: [{
+          name: "Payment ($):",
+          data: payment,
+        },
+          
+        ],
+
+       
+      
+        chart: {
+          height: 330,
+          width: 460,
+          type: "line",
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: "straight"
+        },
+        title: {
+          text: "Latest Income Trend",
+          align: "left",
+          
+        },
+        
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            opacity: 0.8
+          }
+        },
+        xaxis: {
+          categories: dateArray,
+          title: {
+            text: "Total Income: $" + totalPayment,
+            style:{
+              color: "black",
+              fontFamily: "Sans-Serif",
+              fontSize: "17px"
+            }, 
           }
         }
-      ]
-    };
-  
+      };
+
+
+      }
+
+
+      
+      
+    })
+
+
+
+
+
+
 
   }
 
   openSideProfile(id){
     
       console.log(id)
+
 
       this.slidePanel.open(SideProfileComponent, {
         slideFrom:'right',
@@ -587,6 +891,23 @@ export class DahsboardComponent implements OnInit {
       this.openSideProfile(this.profileArray[0]);
   })
 
+}
+
+
+retrievePhoto(){
+  var accountRID = localStorage.getItem('rid');
+  this.photoService.findByRid(accountRID).subscribe(data=> {
+    this.photoArray = data;
+
+    if (this.photoArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+      this.profileID = this.photoArray[0].id;
+    }
+
+  },error=> {
+    console.log(error)
+  })
 }
 
 

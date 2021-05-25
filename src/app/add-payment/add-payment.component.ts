@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import {map, startWith, withLatestFrom} from 'rxjs/operators';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
 import { accountService } from '../services/account.service';
+import { photoService } from '../services/photo.service';
 
 
 
@@ -54,6 +55,9 @@ export class AddPaymentComponent implements OnInit {
   isAdmin;
   accountRole: any;
   viewOnly: any;
+  photoArray: any = [];
+  profilePhoto:any;
+  profileID: any;
 
   constructor(
     private router: Router,
@@ -63,7 +67,8 @@ export class AddPaymentComponent implements OnInit {
     private datePipe: DatePipe,
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
-    private accountService: accountService
+    private accountService: accountService,
+    private photoService: photoService
   ) {
     this.close = false;
 
@@ -75,6 +80,8 @@ export class AddPaymentComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.retrievePhoto()
 
     
     this.username = localStorage.getItem("username");
@@ -560,6 +567,22 @@ openSideProfile(id){
       this.openSideProfile(this.profileArray[0]);
   })
 
+}
+
+retrievePhoto(){
+  var accountRID = localStorage.getItem('rid');
+  this.photoService.findByRid(accountRID).subscribe(data=> {
+    this.photoArray = data;
+
+    if (this.photoArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+      this.profileID = this.photoArray[0].id;
+    }
+
+  },error=> {
+    console.log(error)
+  })
 }
 
 

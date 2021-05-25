@@ -20,6 +20,7 @@ import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { locationService } from '../services/location.service';
 import { notificationService } from '../services/notification.service';
+import { photoService } from '../services/photo.service';
 import { Slot } from '../services/slot.model';
 import { slotService } from '../services/slot.service';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
@@ -84,6 +85,9 @@ export class UsermanagementComponent implements OnInit {
   slot:Slot
   slotArray: any = [];
   dataArray:any = []
+  photoArray: any = [];
+  profilePhoto:any;
+  profileID: any;
 
   displayedSlotColumns: string [] = [
     'id',
@@ -112,7 +116,8 @@ export class UsermanagementComponent implements OnInit {
     private accountService: accountService,
     private locationService: locationService,
     private datePipe: DatePipe,
-    private slotService: slotService
+    private slotService: slotService,
+    private photoService: photoService
 
   ) {
     this.close = false;
@@ -127,6 +132,7 @@ export class UsermanagementComponent implements OnInit {
       uploadedImage: ['']
     })
     this.notifyNumber()
+    this.retrievePhoto();
 
     this.username = localStorage.getItem("username")
     this.role = localStorage.getItem("role");
@@ -815,6 +821,23 @@ export class UsermanagementComponent implements OnInit {
       this.openSideProfile(this.profileArray[0]);
   })
 
+}
+
+
+retrievePhoto(){
+  var accountRID = localStorage.getItem('rid');
+  this.photoService.findByRid(accountRID).subscribe(data=> {
+    this.photoArray = data;
+
+    if (this.photoArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+      this.profileID = this.photoArray[0].id;
+    }
+
+  },error=> {
+    console.log(error)
+  })
 }
 
 

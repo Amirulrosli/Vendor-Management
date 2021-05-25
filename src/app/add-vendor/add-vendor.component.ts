@@ -15,6 +15,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
 import { accountService } from '../services/account.service';
 import { locationService } from '../services/location.service';
+import { photoService } from '../services/photo.service';
 
 
 @Component({
@@ -55,7 +56,9 @@ export class AddVendorComponent implements OnInit {
   isAdmin;
   accountRole: any;
   viewOnly: any;
-  
+  photoArray: any = [];
+  profilePhoto:any;
+  profileID: any;
   public errorMessages = {
     name: [
       { type: 'required', message: 'Name is required' },
@@ -165,7 +168,8 @@ export class AddVendorComponent implements OnInit {
     private Slot: slotService,
     private relativeService: relativeService,
     private accountService: accountService,
-    private locationService: locationService
+    private locationService: locationService,
+    private photoService: photoService
 
     ) { 
 
@@ -198,6 +202,7 @@ export class AddVendorComponent implements OnInit {
 
     this.notifyNumber();
     this.identifyRole();
+    this.retrievePhoto();
 
     
     this.username = localStorage.getItem("username");
@@ -612,6 +617,22 @@ retrieveID(username){
     this.openSideProfile(this.profileArray[0]);
 })
 
+}
+
+retrievePhoto(){
+  var accountRID = localStorage.getItem('rid');
+  this.photoService.findByRid(accountRID).subscribe(data=> {
+    this.photoArray = data;
+
+    if (this.photoArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+      this.profileID = this.photoArray[0].id;
+    }
+
+  },error=> {
+    console.log(error)
+  })
 }
 
 }

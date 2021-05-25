@@ -42,7 +42,8 @@
       
             </div>
 
-            <img class="profile-photo" (click)="retrieveID(profileName)" src="assets/profile.png"/>
+            <img *ngIf="picArray.length==0" class="profile-photo" (click)="retrieveID(username)" src="assets/profile.jpg" alt="profilePIC">
+            <img *ngIf="picArray.length!==0" class="profile-photo" [src]="proPic" (click)="retrieveID(username)" alt="profilePhoto-real"/>
             
             <mat-icon matBadge="{{notifyNo}}" style="color:white;" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
             <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
@@ -374,7 +375,7 @@
        
                       <td *ngIf="!viewOnly">
                         <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: blueviolet;" class="delBtn" (click)="saveChild(data,i)">Save Changes</button>
-                        <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53);" class="delBtn" (click)="cancelSaveChild()">Cancel</button>
+                        <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53); margin-right:3px;" class="delBtn" (click)="cancelSaveChild()">Cancel</button>
                           <button *ngIf="showEdit==false && !viewOnly" mat-raised-button style="background-color: rgb(80, 80, 80);" class="delBtn" (click)="onEditChild(data,i)">Edit</button>
                           <button *ngIf="showEdit==false && !viewOnly" mat-raised-button style="margin-left: 5px;background-color: rgb(255, 1, 1);" class="delBtn" (click)="onDeleteChild(data.id)">Delete</button>
                     </td>

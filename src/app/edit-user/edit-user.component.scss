@@ -3,7 +3,7 @@ form{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
+    margin-top: 5px;
     mat-label{
         color: black;
     }
@@ -50,8 +50,25 @@ form{
 .user-profile{
 
     width: 150px;
-    height: 145px;
-    margin-top: -200px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: -240px;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid white;
+    cursor: pointer;
+
+
+}
+
+.user-profile2{
+
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-top: -240px;
     border-radius: 50%;
     display: block;
     margin-left: auto;
@@ -125,4 +142,31 @@ form{
     font-weight: bold;
     margin-top: -30px;
 
+}
+
+
+.user-profile>input {
+    display: none;
+  }
+
+  .user-profile2>input {
+    display: none;
+  }
+
+  #file-input{
+    visibility: hidden;
+}
+
+.cancel{
+    position:relative;
+    top: -230px;
+    left: 56%;
+    z-index: 999;
+    font-size: 30px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.cancel:hover{
+    color:black;
 }

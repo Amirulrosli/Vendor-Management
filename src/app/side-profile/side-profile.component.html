@@ -1,7 +1,10 @@
 <div class="top">
 
 </div>
-<img class="sideProfilePhoto" src="assets/profile.jpg" alt="No data available" width="300px"/>
+
+<img *ngIf="photoArray.length==0" class="sideProfilePhoto" src="assets/profile.jpg" alt="profilePIC">
+<img *ngIf="photoArray.length!==0" class="sideProfilePhoto" [src]="profilePhoto"  alt="profilePhoto-real"/>
+
 <p class="username">{{username}}</p>
 <p class="role">{{role}}</p>
 

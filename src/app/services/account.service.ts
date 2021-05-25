@@ -43,6 +43,10 @@ export class accountService {
         return this.http.get(`${baseURL}/${id}`)
     }
 
+    findByRid(rid): Observable<any> {
+        return this.http.get(`${baseURL}/rid/${rid}`)
+    }
+
     findByUsername(username): Observable<any> {
         return this.http.get(`${baseURL}/username/${username}`)
     }

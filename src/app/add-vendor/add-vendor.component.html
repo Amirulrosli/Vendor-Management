@@ -35,13 +35,15 @@
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt">Add Vendor</span>
 
-            <div class="name-inline">
-                <p class="username"  (click)="retrieveID(username)">{{username}}</p>
+            <div class="name-inline" (click)="retrieveID(username)">
+                <p class="username">{{username}}</p>
                 <p class="role">{{role}}</p>
       
             </div>
 
-            <img class="profile-photo" (click)="retrieveID(username)" src="assets/profile.png"/>
+            <img *ngIf="photoArray.length==0" class="profile-photo" (click)="retrieveID(username)" src="assets/profile.jpg" alt="profilePIC">
+            <img *ngIf="photoArray.length!==0" class="profile-photo" [src]="profilePhoto" (click)="retrieveID(username)" alt="profilePhoto-real"/>
+
             <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
             <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 

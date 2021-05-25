@@ -20,6 +20,9 @@ export class CreateUserComponent implements OnInit {
   ICArray: any = [];
 
 
+  
+
+
   public errorMessages = {
     username: [
       { type: 'required', message: 'Name is required' },
@@ -244,5 +247,8 @@ submit(){
   closeModal(){
     this.dialog.closeAll();
   }
+
+
+  
 
 }

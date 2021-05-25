@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditUserComponent } from '../edit-user/edit-user.component';
 import { Router } from '@angular/router';
 import { loginStateService } from '../services/loginState.service';
+import { photoService } from '../services/photo.service';
 
 
 
@@ -21,12 +22,16 @@ export class SideProfileComponent implements OnInit {
   IC: any
   ID: any
   userData: any
+  photoArray: any = [];
+  profilePhoto:any;
+  profileID: any;
  
 
   list:any;
   retrieveData: any = [];
   rid: string;
   updateAccount: any;
+  
 
 
 
@@ -36,7 +41,8 @@ export class SideProfileComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private accountService: accountService,
-    private loginState: loginStateService
+    private loginState: loginStateService,
+    private photoService: photoService
 
 
   ) { }
@@ -47,6 +53,8 @@ export class SideProfileComponent implements OnInit {
     this.role = this.data.dataKey.role;
     this.IC = this.data.dataKey.IC_Number;
     this.userData = this.data.dataKey
+
+    this.retrievePhoto();
   }
 
   getUser(){
@@ -73,7 +81,8 @@ export class SideProfileComponent implements OnInit {
         dataKey: this.userData
       }
     }).afterClosed().subscribe(data=> {
-      this.getUser()
+      this.getUser();
+      this.retrievePhoto();
     })
   
 }
@@ -112,6 +121,23 @@ logout(){
 
 
 
+}
+
+
+retrievePhoto(){
+  var accountRID = localStorage.getItem('rid');
+  this.photoService.findByRid(accountRID).subscribe(data=> {
+    this.photoArray = data;
+
+    if (this.photoArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+      this.profileID = this.photoArray[0].id;
+    }
+
+  },error=> {
+    console.log(error)
+  })
 }
 
 }

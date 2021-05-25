@@ -402,21 +402,42 @@ mat-form-field.mat-form-field{
     color:rgb(90, 38, 133);
 }
 
+.image-1{
+    border-radius:50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    display: block;
+    margin-right: 50%;
+    margin-left: auto;
+}
+
 .graphic {
     display: flex;
 
     #chart {
         padding: 0;
         width: 350px;
-        margin-left: 20px;
-        margin-top: 10px;
+        margin-left: 25px;
+        margin-top: 20px;
       }
     
       #piechart {
         padding: 0;
         width: 350px;
-        margin-left: 20px;
-        margin-top: 10px;
+        margin-left: 25px;
+        margin-top: 20px;
+      }
+      #linechart{
+     
+            max-width: 800px;
+            position:relative;
+            left: 175px;
+            margin-top: 20px;
+            background-color: white;
+            color: black;
+          
+          
       }
 
 }

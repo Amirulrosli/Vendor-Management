@@ -118,6 +118,9 @@ export class VendorProfileComponent implements OnInit {
   onEditRemarks = false;
   description: any;
   descriptionRemarks:any;
+  picArray: any = []
+  proPic: any;
+  profileID:any;
   
 
   newChildName:any;
@@ -202,6 +205,7 @@ export class VendorProfileComponent implements OnInit {
     this.refreshData();
     this.retrievePhoto();
     this.identifyRole();
+    this.retrieveProfilePic();
 
   
 
@@ -990,8 +994,8 @@ export class VendorProfileComponent implements OnInit {
 
 
 retrieveID(profileName){
-  console.log(profileName)
-  this.accountService.findByUsername(profileName).subscribe(data=> {
+  var localaccount = localStorage.getItem('username')
+  this.accountService.findByUsername(localaccount).subscribe(data=> {
     this.profileArray = data;
     console.log(this.profileArray)
     const id = this.profileArray[0].id;
@@ -1185,14 +1189,31 @@ submitRemarks(){
 
   }
 
+
+
+  
+
 }
 
 
 
+retrieveProfilePic(){
+  var accountRID = localStorage.getItem('rid');
+  this.photoService.findByRid(accountRID).subscribe(data=> {
+    this.picArray = data;
+    console.log(this.picArray)
 
+    if (this.picArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.proPic = baseURL+"/"+this.picArray[0].link;
+      console.log(this.proPic)
+      this.profileID = this.picArray[0].id;
+    }
 
-
-
+  },error=> {
+    console.log(error)
+  })
+}
 
 
 
