@@ -1119,10 +1119,17 @@ retrieveRemarks(){
 
   this.remarkService.findByRid(this.id).subscribe(data=> {
     this.RemarksArray = data;
-    this.descriptionRemarks = this.RemarksArray[0].Description;
-    this.description = this.RemarksArray[0].Description;
-    console.log(this.descriptionRemarks)
-    console.log(this.RemarksArray.length)
+
+    if(this.RemarksArray.length !== 0){
+      this.descriptionRemarks = this.RemarksArray[0].Description;
+      this.description = this.RemarksArray[0].Description;
+      console.log(this.descriptionRemarks)
+      console.log(this.RemarksArray.length)
+    } else {
+      this.description = "";
+      this.descriptionRemarks = "";
+    }
+   
     
   }, error=> {
     console.log(error)
@@ -1142,56 +1149,59 @@ cancelRemarks(){
 submitRemarks(){
 
   const description = this.description;
+  console.log(this.description)
   const account_rid = localStorage.getItem('rid');
   const rid = this.id;
 
-  this.retrieveRemarks();
 
+  this.remarkService.findByRid(this.id).subscribe(data=> {
+    this.RemarksArray = data;
 
+    if(this.RemarksArray.length == 0){
 
-  if(this.RemarksArray.length==0){
-
-    var remarks = {
-      rid: rid,
-      account_rid: account_rid,
-      Description: description,
-    }
-
-    this.remarkService.create(remarks).subscribe(data=> {
-
-      Swal.fire("Success","Successfully created remarks",'success')
-      this.onEditRemarks = false;
-      this.retrieveRemarks()
-      return;
-
-    },error=> {
-      Swal.fire("Failed","Cannot create remarks",'error')
-      return;
-    });
-  } else {
-
-    var remarks1 = {
-      id: this.RemarksArray[0].id,
-      rid: rid,
-      account_rid: account_rid,
-      Description: description,
-    }
-
-    this.remarkService.update(this.RemarksArray[0].id, remarks1).subscribe(data=> {
-      Swal.fire("Success","Successfully updated remarks",'success')
-      this.onEditRemarks = false;
-      this.retrieveRemarks()
-      return;
-    },error=> {
-      Swal.fire("Failed","Cannot update remarks",'error')
-      return;
-    });
-
-  }
-
-
-
+      var remarks = {
+        rid: rid,
+        account_rid: account_rid,
+        Description: this.description,
+      }
   
+      this.remarkService.create(remarks).subscribe(data=> {
+  
+        Swal.fire("Success","Successfully created remarks",'success')
+        this.onEditRemarks = false;
+        this.retrieveRemarks()
+        return;
+  
+      },error=> {
+        Swal.fire("Failed","Cannot create remarks",'error')
+        return;
+      });
+
+
+    } else {
+
+      var remarks1 = {
+        id: this.RemarksArray[0].id,
+        rid: rid,
+        account_rid: account_rid,
+        Description: description,
+      }
+  
+      this.remarkService.update(this.RemarksArray[0].id, remarks1).subscribe(data=> {
+        Swal.fire("Success","Successfully updated remarks",'success')
+        this.onEditRemarks = false;
+        this.retrieveRemarks()
+        return;
+      },error=> {
+        Swal.fire("Failed","Cannot update remarks",'error')
+        return;
+      });
+    }
+   
+    
+  }, error=> {
+    console.log(error)
+  })
 
 }
 

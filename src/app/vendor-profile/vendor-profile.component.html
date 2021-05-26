@@ -21,7 +21,7 @@
             <mat-label style="text-align: center;">Admin IE</mat-label>
         </div>
   
-        <div *ngIf="!viewOnly" class="nav-icon" routerLink="/add-payment">
+        <div *ngIf="!viewOnly" class="nav-icon" routerLink="/deleted-records">
           <mat-icon >file_copy</mat-icon>
           <mat-label style="text-align: center;">Deleted Records</mat-label>
       </div>
@@ -434,7 +434,7 @@
                 <p style="color: purple; text-align: center">No Remarks</p>
             </div>
 
-            <textarea *ngIf="onEditRemarks==false" rows="10" [(ngModel)]="descriptionRemarks" class="text-area-1" placeholder="Enter remark.." disabled></textarea>
+            <textarea *ngIf="onEditRemarks==false && RemarksArray.length !== 0" rows="10" [(ngModel)]="descriptionRemarks" class="text-area-1" placeholder="Enter remark.." disabled></textarea>
 
             <textarea *ngIf="onEditRemarks==true" rows="10" [(ngModel)]="description" class="text-area" placeholder="Enter remark.."></textarea>
             <button *ngIf="onEditRemarks==true" mat-raised-button class="remarkButton" (click)="submitRemarks()">Save Changes</button>

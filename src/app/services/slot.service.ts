@@ -39,6 +39,7 @@ export class slotService {
         return this.http.delete(`${baseURL}/rid/${rid}`)
     }
 
+
     findByIC(IC): Observable<any> {
         return this.http.get(`${baseURL}/IC/${IC}`)
     }
@@ -57,6 +58,16 @@ export class slotService {
 
     findByLocation(location): Observable<any> {
         return this.http.get(`${baseURL}/location/${location}`)
+    }
+
+
+    findbytaken(taken): Observable<any>{
+        console.log(taken)
+        return this.http.get(`${baseURL}/taken/${taken}`)
+    }
+
+    findbyAvailable(available): Observable<any> {
+        return this.http.get(`${baseURL}/available/${available}`)
     }
     
     

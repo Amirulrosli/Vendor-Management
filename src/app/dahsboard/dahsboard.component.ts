@@ -30,7 +30,9 @@ import {
   ApexDataLabels,
   ApexTitleSubtitle,
   ApexStroke,
-  ApexGrid
+  ApexGrid,
+  ApexFill,
+  ApexTheme
 } from "ng-apexcharts";
 import { accountService } from '../services/account.service';
 import { loginStateService } from '../services/loginState.service';
@@ -44,7 +46,7 @@ export type ChartOptions = {
   colors: string [];
   plotOptions: ApexPlotOptions;
   responsive: ApexResponsive[];
-
+  theme: ApexTheme
 
 
   xaxis: ApexXAxis;
@@ -53,6 +55,7 @@ export type ChartOptions = {
   stroke: ApexStroke;
   title: ApexTitleSubtitle;
   series1: ApexAxisChartSeries;
+  fill: ApexFill
 };
 
 
@@ -92,6 +95,13 @@ export class DahsboardComponent implements OnInit {
   overdueBoolean: boolean;
   dueTrue: true;
   selectField: string = "All";
+  searchForField: string = "Vendor";
+  selectSlotField: string = "All";
+  showSlotField = false;
+
+
+
+
   slotData: any;
   slotLength: any;
   slotRid: any = []
@@ -118,7 +128,7 @@ export class DahsboardComponent implements OnInit {
   profileID: any;
   picArray:any;
   profilePic: any
-
+  switchAllSlot: any = []
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -148,6 +158,16 @@ export class DahsboardComponent implements OnInit {
     'last_Login',
    
   ]
+displayedLocationColumns: string[] = [
+    "IC_Number",
+    "location",
+    "slot_Number",
+    "slot_Price",
+    "name",
+    "taken",
+    "overdue",
+    "actions",
+  ]
   
   constructor(
     private router: Router,
@@ -170,6 +190,8 @@ export class DahsboardComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.showSlotField = false;
 
    this.retrievePhoto()
     this.showPieChart = false;
@@ -453,8 +475,8 @@ export class DahsboardComponent implements OnInit {
 
 
   refreshData(){
-
-   
+    this.showSlotField = false;
+    this.selectField = "All"
     this.profiles.findAll().subscribe(array=> {
       this.retrieveData = array
       this.retrieveDataLength = this.retrieveData.length;
@@ -603,26 +625,6 @@ export class DahsboardComponent implements OnInit {
   }
 
 
-  onChange(value) {
-    switch (value){
-      case "All": {
-        this.refreshData();
-        break;
-      }
-
-      case "Overdue": {
-
-        this.retrieveOverdue();
-        break;
-
-      }
-
-      case "Paid": {
-        this.retrievePaid();
-        break;
-      }
-    }
-  }
 
   //GRAPHIC SECTION ----- APEXCHART
 
@@ -722,16 +724,21 @@ export class DahsboardComponent implements OnInit {
           var paid = parseInt(this.paidLength);
 
           this.showPieChart = true;
-      
+        
           this.piechartOptions = {
-            series: [paid,overdue,2],
+
+            theme: {
+              palette: 'palette3'
+            },
+           
+            series: [paid,2,overdue],
             chart: {
               height: 400,
               width: 500,
               type: "donut",
               background: "white"
             },
-            labels: ["Paid", "Overdue","Discontinued"],
+            labels: ["Paid","Discontinued","Overdue"],
             responsive: [
               {
                 breakpoint: 480,
@@ -802,6 +809,10 @@ export class DahsboardComponent implements OnInit {
 
         
       this.linechartOptions = {
+
+        theme: {
+          palette: 'palette8'
+        },
      
         series1: [{
           name: "Payment ($):",
@@ -909,6 +920,232 @@ retrievePhoto(){
     console.log(error)
   })
 }
+
+
+
+onChange(value) {
+  var searchFor = this.searchForField;
+  var statusField = this.selectField;
+
+  switch (searchFor){
+    case "Vendor": {
+
+      this.showSlotField = false;
+      if (statusField == "All"){
+        this.refreshData();
+        break;
+      } else if (statusField == "Overdue"){
+        this.retrieveOverdue();
+        break;
+      } else if (statusField == "Paid") {
+        this.retrievePaid();
+        break;
+      } else {
+        break;
+      }
+      
+    
+    }
+
+    case "Location": {
+
+      this.showSlotField = true;
+      var selectSlot = this.selectSlotField
+
+      switch(statusField) {
+
+        case "All": {
+          if (selectSlot == "All"){
+            
+            break;
+          } else if (selectSlot == "Taken"){
+           
+            break;
+          } else {
+         
+            break;
+          }
+        } 
+        case "Overdue": {
+
+          if (selectSlot== "All"){
+            break;
+          } else if (selectSlot == "True"){
+            break;
+          } else {
+            break;
+          }
+          
+        }
+
+        case "Paid": {
+          if (selectSlot == "All"){
+            break;
+          } else if (selectSlot == "True"){
+            break;
+          } else {
+            break;
+          }
+        }
+
+      }
+
+      break;
+    
+
+    }
+
+    case "Payment": {
+      this.showSlotField = false;
+      this.retrievePaid();
+      break;
+    }
+
+    case "Spouse": {
+      this.showSlotField = false;
+      this.retrievePaid();
+      break;
+    }
+
+    case "Child": {
+      this.showSlotField = false;
+      this.retrievePaid();
+      break;
+    }
+  }
+}
+
+
+// retrieveAllSlot(condition){
+  
+//     if (condition == "Taken"){
+//     condition = true;
+//     } else if (condition == "Available"){
+//       condition = false;
+//     }
+
+//     if (condition == "All"){
+
+//       this.slot.findAll().subscribe(data=> {
+//         this.switchAllSlot = data;
+
+//         if (this.switchAllSlot.length !== 0){
+
+
+//           for (let i = 0 ; i< this.switchAllSlot.length; i++){
+//             var rid = this.switchAllSlot[i].rid;
+//             var profileArray = [];
+//             this.profiles.findByRid(rid).subscribe(data=> {
+//               profileArray = data;
+
+//               if (profileArray.length == 0 || this.switchAllSlot[i].taken==false){
+//                 this.switchAllSlot[i].name = "N/A";
+//                 this.switchAllSlot[i].overdue = "N/A";
+//                 this.switchAllSlot[i].IC_Number = "N/A";
+
+//               }
+//               else {
+//                 this.switchAllSlot[i].name = profileArray[0].name;
+//                 this.switchAllSlot[i].overdue = profileArray[0].overdue;
+//                 this.switchAllSlot[i].IC_Number = profileArray[0].IC_Number;
+//               }
+              
+
+          
+//             })
+//           }
+
+//           this.refreshSlot();
+
+
+//         }
+//         else {
+//           return;
+//         }
+//       })
+
+//     } else {
+
+     
+
+//       console.log(condition)
+
+      
+//       this.slot.findbytaken(condition).subscribe(data=> {
+//         this.switchAllSlot = data;
+
+//         if (this.switchAllSlot.length !== 0){
+
+
+//           for (let i = 0 ; i< this.switchAllSlot.length; i++){
+//             var rid = this.switchAllSlot[i].rid;
+//             var profileArray = [];
+//             this.profiles.findByRid(rid).subscribe(data=> {
+//               profileArray = data;
+
+//               if (profileArray.length == 0){
+//                 this.switchAllSlot[i].name = "N/A";
+//                 this.switchAllSlot[i].overdue = "N/A";
+//                 this.switchAllSlot[i].IC_Number = "N/A";
+
+//               } else {
+//                 this.switchAllSlot[i].name = profileArray[0].name;
+//                 this.switchAllSlot[i].status = profileArray[0].status;
+//                 this.switchAllSlot[i].IC_Number = profileArray[0].IC_Number;
+//               }
+
+             
+
+        
+//             })
+//           }
+
+//           this.refreshSlot();
+//         } else {
+//           return;
+//         }
+//       })
+
+//     }
+
+ 
+// }
+
+
+
+
+refreshSlot(){
+
+  console.log(this.switchAllSlot)
+  this.listData = new MatTableDataSource(this.switchAllSlot);
+  this.listData.sort = this.sort;
+  this.listData.paginator = this.paginator;
+  this.changeDetectorRefs.detectChanges();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
