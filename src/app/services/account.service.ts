@@ -44,6 +44,7 @@ export class accountService {
     }
 
     findByRid(rid): Observable<any> {
+        console.log(rid)
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 

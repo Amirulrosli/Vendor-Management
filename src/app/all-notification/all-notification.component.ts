@@ -50,6 +50,7 @@ export class AllNotificationComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   listData: MatTableDataSource<any>;
+  accountRid: any;
 
   constructor(private location: Location,
     private notification: notificationService,
@@ -71,10 +72,12 @@ export class AllNotificationComponent implements OnInit {
       this.notificationLength = this.notificationList.length;
 
       for (let i = 0; i < this.notificationList.length; i++) {
-        console.log(this.notificationList[i].rid);
-        this.Account.findByRid(this.notificationList[i].rid).subscribe(account=>{
-          this.username = account
-          console.log(this.username)
+        console.log(data[i].rid);
+
+        this.accountRid = data[i].rid
+        this.Account.findByRid(this.accountRid).subscribe(accounts=>{
+          // this.username = account.username
+          console.log(accounts)
         });
 
         
