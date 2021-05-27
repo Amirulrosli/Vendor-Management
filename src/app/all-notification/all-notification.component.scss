@@ -113,3 +113,68 @@ div.mat-elevation-z8{
      top: 8px;
      left: 5px;
  }
+
+
+ //new
+
+ table {
+  width: 100%;
+  background-color: white;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: rgb(168, 168, 168);
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 4;
+  border-color: blueviolet;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-rid {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 10px;
+  margin-bottom: 10;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+td{
+    color: black;
+}
+
+th{
+    border-bottom-width: 5;
+    border-color: rgb(95, 30, 148);
+    color:rgb(95, 30, 148);
+}
+

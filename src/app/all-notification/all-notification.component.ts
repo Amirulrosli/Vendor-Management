@@ -6,11 +6,21 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
 import { notificationService } from '../services/notification.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import { accountService } from '../services/account.service';
+
 
 @Component({
   selector: 'app-all-notification',
   templateUrl: './all-notification.component.html',
-  styleUrls: ['./all-notification.component.scss']
+  styleUrls: ['./all-notification.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class AllNotificationComponent implements OnInit {
 
@@ -23,13 +33,15 @@ export class AllNotificationComponent implements OnInit {
   searchKey: any;
   notificationLength: any;
   dateFilter: any;
+  username: any;
   displayedColumns: string[] = [
     'id',
+    // 'rid',
     'title',
-    'description',
+    // 'description',
     'category',
-    'date',
-    'time'
+    // 'date',
+    // 'time'
 
   ];
 
@@ -42,7 +54,8 @@ export class AllNotificationComponent implements OnInit {
   constructor(private location: Location,
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private Account: accountService
     ) {
 
     this.opened = false;
@@ -57,12 +70,28 @@ export class AllNotificationComponent implements OnInit {
       this.notificationList = data;
       this.notificationLength = this.notificationList.length;
 
+      for (let i = 0; i < this.notificationList.length; i++) {
+        console.log(this.notificationList[i].rid);
+        this.Account.findByRid(this.notificationList[i].rid).subscribe(account=>{
+          this.username = account
+          console.log(this.username)
+        });
+
+        
+      }
+
+      // this.account.findByRid(this.notificationList.rid).subscribe(username=>{
+
+      // })
+
       this.loopData();
 
       this.listData = new MatTableDataSource(this.notificationList);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
     })
+
+   
 
   }
 
