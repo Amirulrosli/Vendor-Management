@@ -21,10 +21,11 @@ import { slotService } from '../services/slot.service';
 import { relativeService } from '../services/relative.service';
 import { accountService } from '../services/account.service';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { attachmentService } from '../services/Attachment.service';
 import { remarkService } from '../services/remark.service';
 import { photoService } from '../services/photo.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 
@@ -115,6 +116,7 @@ export class VendorProfileComponent implements OnInit {
   editChildArray: any = [];
   profileArray: any = [];
   attachmentArray: any = [];
+  initialAttachment: any = [];
   onEditRemarks = false;
   description: any;
   descriptionRemarks:any;
@@ -131,6 +133,7 @@ export class VendorProfileComponent implements OnInit {
   profilePic: any;
   photoArray: any = []
   profilePhoto: any;
+  uploadFile = false;
   
 
   fileUploadForm: FormGroup;
@@ -168,7 +171,8 @@ export class VendorProfileComponent implements OnInit {
     private formBuilder : FormBuilder,
     private attachmentService: attachmentService,
     private remarkService: remarkService,
-    private photoService: photoService
+    private photoService: photoService,
+    private sanitizer: DomSanitizer
 
 
   ) {
@@ -206,6 +210,7 @@ export class VendorProfileComponent implements OnInit {
     this.retrievePhoto();
     this.identifyRole();
     this.retrieveProfilePic();
+    this.uploadFile = false;
 
   
 
@@ -216,9 +221,15 @@ export class VendorProfileComponent implements OnInit {
     this.baseURL = this.attachmentService.baseURL();
 
     this.fileUploadForm = this.formBuilder.group({
-      uploadedImage: ['']
+      uploadedImage: [''],
+      name: ['',Validators.required]
     })
 
+  }
+
+  transform(url: string) {
+    if (!url) return null;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   //identify if user is admin
@@ -626,6 +637,10 @@ export class VendorProfileComponent implements OnInit {
 
   }
 
+  editAttachment(){
+    this.uploadFile = true;
+  }
+
   goToRemarks(){
     this.showRemarks = true;
     this.showProfile = false;
@@ -1018,12 +1033,14 @@ upload(){
     Swal.fire('Upload Failed','Please Try again','error')
   } else {
     console.log(this.fileUploadForm.value.uploadedImage)
+    console.log(this.fileUploadForm.value.name)
     var accountRID = localStorage.getItem('rid')
     const formData = new FormData()
     formData.append('image',this.fileUploadForm.value.uploadedImage);
     formData.append('vendor_rid',this.rid)
     formData.append('rid',this.rid)
     formData.append('account_rid',accountRID);
+    formData.append('name',this.fileUploadForm.value.name)
 
     this.attachmentService.uploadFile(formData).subscribe(response => {
       console.log(response);
@@ -1034,6 +1051,7 @@ upload(){
       Swal.fire("Success","Image has successfully uploaded",'success')
       this.fileUploadForm.reset();
       this.retrieveAttachment();
+      this.uploadFile = false;
     }, er => {
       console.log(er);
       Swal.fire("Upload Failed",'Please Try Again','error');
@@ -1044,15 +1062,27 @@ upload(){
 
 retrieveAttachment(){
   this.attachmentService.findByVendorid(this.rid).subscribe(data=> {
-    this.attachmentArray = data;
+    this.initialAttachment = data;
    
-    if (this.attachmentArray.length !== 0){
+    if (this.initialAttachment.length !== 0){
       var Link = "";
-      for(let i = 0; i<this.attachmentArray.length; i++){
-        Link = this.baseURL+"/"+this.attachmentArray[i].link;
-        this.attachmentArray[i].link = Link;
+      for(let i = 0; i<this.initialAttachment.length; i++){
+        Link = this.baseURL+"/"+this.initialAttachment[i].link;
+        this.initialAttachment[i].link = Link;
+
+        if (this.initialAttachment[i].type !== "image/png" || this.initialAttachment[i].type !== "image/jpg" || this.initialAttachment[i].type !== "image/jpeg" || this.initialAttachment[i].type !== "image/gif" ){
+          this.initialAttachment[i].application = true;
+        } else {
+          this.initialAttachment[i].application = false;
+        }
       }
+
+      console.log(this.initialAttachment)
+      this.attachmentArray = this.initialAttachment;
+    } else {
+      this.attachmentArray = [];
     }
+
   },error=> {
     console.log(error)
   })
@@ -1111,6 +1141,7 @@ deleteAttachment(data){
 
 cancelAttachment(){
   this.fileUploadForm.reset();
+  this.uploadFile = false;
   this.retrieveAttachment();
 }
 
@@ -1223,6 +1254,10 @@ retrieveProfilePic(){
   },error=> {
     console.log(error)
   })
+}
+
+openFile(data){
+  window.open(data)
 }
 
 

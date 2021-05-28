@@ -16,7 +16,7 @@ mat-sidenav-content{
 }
 
 .search-card{
-    width: 65%;
+    width: 69%;
     background-color: white;
     margin-left: 20px;
     margin-top: 10px;
@@ -35,11 +35,11 @@ mat-sidenav-content{
     }
 
     .submitBtn-1{
-        color: gray;
+        color: rgb(255, 255, 255);
         cursor: pointer;
         position:relative;
-        top: 10px;
-        left: 10px;
+        top: 5px;
+        left: 5px;
     }
 
     .resetInfo-1{
@@ -51,8 +51,12 @@ mat-sidenav-content{
         top: 3px;
     }
 
-    .submitBtn-1:hover{
-        color: purple;
+    .apply-button{
+        background-color: blueviolet;
+    }
+
+    .apply-button:hover{
+        background-color: rgb(75, 0, 145);
     }
 
     .resetInfo-1:hover{

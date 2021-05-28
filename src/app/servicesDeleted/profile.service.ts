@@ -2,20 +2,20 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/payments"
+const baseURL="http://localhost:3000/api/delprofiles"
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class paymentService {
+export class DelprofileService {
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-    findOne(rid): Observable <any> {
-        return this.http.get(`${baseURL}/${rid}`)
+    findOne(id): Observable <any> {
+        return this.http.get(`${baseURL}/${id}`)
     }
 
     create(data): Observable<any> {
@@ -24,7 +24,7 @@ export class paymentService {
     }
 
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/${id}`,data)
+        return this.http.put(`${baseURL}/update/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -35,17 +35,24 @@ export class paymentService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
+    findByIC(IC): Observable<any> {
+        return this.http.get(`${baseURL}/IC/${IC}`)
+    }
+
+    updateLatestPayment(id, data): Observable<any> {
+        return this.http.put(`${baseURL}/${id}`,data)
+    }
+
     findByRid(rid): Observable<any> {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
-    findSent(): Observable<any> {
-        return this.http.get(`${baseURL}/sent/sent`)
+    findAllOverdue(): Observable<any> {
+        return this.http.get(`${baseURL}/overdue`)
     }
 
-    findNotDelivered(): Observable<any> {
-        return this.http.get(`${baseURL}/deliver/deliver`)
+    findAllPaid(): Observable<any> {
+        return this.http.get(`${baseURL}/paid`)
     }
-
     
 }

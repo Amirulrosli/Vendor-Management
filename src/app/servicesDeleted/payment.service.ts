@@ -2,22 +2,23 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/relative"
-
+const baseURL="http://localhost:3000/api/delpayments"
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class relativeService {
-
+export class DelpaymentService {
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
+    findOne(rid): Observable <any> {
+        return this.http.get(`${baseURL}/${rid}`)
+    }
 
-    createRelative(data): Observable<any> {
+    create(data): Observable<any> {
         console.log(data)
         return this.http.post(baseURL,data)
     }
@@ -34,19 +35,17 @@ export class relativeService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    findByrid(rid): Observable<any> {
-        return this.http.get(`${baseURL}/${rid}`)
+    findByRid(rid): Observable<any> {
+        return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
-    findByIC(IC_Number): Observable<any> {
-        return this.http.get(`${baseURL}/IC/${IC_Number}`)
+    findSent(): Observable<any> {
+        return this.http.get(`${baseURL}/sent/sent`)
     }
 
-    findSpouseOnly():Observable<any> {
-        return this.http.get(`${baseURL}/spouse/spouse`)
-    }
-    findChildOnly():Observable<any> {
-        return this.http.get(`${baseURL}/child/child`)
+    findNotDelivered(): Observable<any> {
+        return this.http.get(`${baseURL}/deliver/deliver`)
     }
 
+    
 }

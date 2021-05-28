@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/relative"
+const baseURL="http://localhost:3000/api/delrelative"
 
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class relativeService {
+export class DelrelativeService {
 
     constructor( private http : HttpClient){}
 

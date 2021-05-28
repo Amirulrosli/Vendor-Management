@@ -2,28 +2,36 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/relative"
+const baseURL="http://localhost:3000/api/delattachment"
 
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class relativeService {
+export class DelattachmentService {
 
     constructor( private http : HttpClient){}
+
+    baseURL(){
+        return "http://localhost:3000";
+    }
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
 
-    createRelative(data): Observable<any> {
+    uploadFile(formData): Observable<any> {
+        return this.http.post('http://localhost:3000/uploadfile', formData)
+    }
+
+    create(data): Observable<any> {
         console.log(data)
         return this.http.post(baseURL,data)
     }
 
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/${id}`,data)
+        return this.http.put(`${baseURL}/update/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -34,19 +42,11 @@ export class relativeService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    findByrid(rid): Observable<any> {
-        return this.http.get(`${baseURL}/${rid}`)
+    findByid(id): Observable<any> {
+        return this.http.get(`${baseURL}/id/${id}`)
     }
-
-    findByIC(IC_Number): Observable<any> {
-        return this.http.get(`${baseURL}/IC/${IC_Number}`)
-    }
-
-    findSpouseOnly():Observable<any> {
-        return this.http.get(`${baseURL}/spouse/spouse`)
-    }
-    findChildOnly():Observable<any> {
-        return this.http.get(`${baseURL}/child/child`)
+    findByVendorid(vendor_rid): Observable<any> {
+        return this.http.get(`${baseURL}/vendor_rid/${vendor_rid}`)
     }
 
 }

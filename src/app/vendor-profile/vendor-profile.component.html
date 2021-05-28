@@ -393,25 +393,36 @@
 
             <h1 class="titleTxt">Attachments</h1>
             <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(185, 185, 185)">Upload Necessary Image for Vendor</p>
-
+            
             <div *ngIf="attachmentArray.length == 0" class="not-found">
                 <img src="assets/not found.gif" width="230px"/>
                 <p style="color: purple; text-align: center">No Image Found</p>
             </div>
-            <div class="image-container" *ngIf="attachmentArray.length !==0" >
+            <div class="image-container" *ngIf="attachmentArray.length !==0; let i = index" >
 
                 <div class="attach-container" *ngFor="let data of attachmentArray">
                 
                     <mat-icon class="deleteImage" (click)=deleteAttachment(data)>delete</mat-icon>
-                    <img class="attachment-2" src="{{data.link}}" alt="image"/>
+                    <mat-icon class="open" (click)="openFile(data.link)">open_with</mat-icon>
+                    <img *ngIf="data.application==false" class="attachment-2" src="{{data.link}}" alt="image"/>
+                    <embed *ngIf="data.application==true" class="attachment-2" [src]="transform(data.link)"/>
+                    <p class="data-name">{{data.name}}</p>
+                    
                 </div>
 
             </div>
     <br>
     <br>
-    <p class="descTxt">Upload Image</p>
-    <form [formGroup]="fileUploadForm" (ngSubmit)="upload()">
-      <input style="margin-left: 40px; margin-top: 20px;" type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
+    <p class="descTxt add" (click)="editAttachment()" style="margin-top: 20px;">Upload Image/File <mat-icon style="position:relative; top: 8px;">add_circle</mat-icon></p>
+    <p *ngIf="uploadFile == true" style="color: blueviolet;font-size: 14px; margin-left: 40px">* Supported Files (.jpg, .jpeg, .png, .gif, .pdf & .docx) </p>
+    <form *ngIf="uploadFile == true" [formGroup]="fileUploadForm" (ngSubmit)="upload()">
+    <mat-label style="color:black; margin-left:40px;">File Name: </mat-label>
+    <br>
+    <input style="margin-left: 40px; margin-top: 5px; width: 25%;" type="text" formControlName="name" placeholder="Enter file name" />
+    <br>
+    <mat-label style="color:black; margin-left:40px;">Choose file: </mat-label>
+    <br>
+      <input style="margin-left: 40px; margin-top: 5px;" type="file" id="customFile" name="uploadedImage" formControlName="uploadedImage" (change)="onFileSelect($event)" #UploadFileInput>
         <br>
       <button style="margin-left: 40px; margin-top: 10px;background-color: rgb(167, 73, 255);" mat-raised-button type="submit">Add Image</button>
       <button style="box-shadow: none;margin-left: 10px;background-color: rgba(255, 255, 255, 0); color: black;" mat-raised-button (click)="cancelAttachment()">Cancel</button>
@@ -434,7 +445,7 @@
                 <p style="color: purple; text-align: center">No Remarks</p>
             </div>
 
-            <textarea *ngIf="onEditRemarks==false && RemarksArray.length !== 0" rows="10" [(ngModel)]="descriptionRemarks" class="text-area-1" placeholder="Enter remark.." disabled></textarea>
+            <textarea *ngIf="onEditRemarks==false && RemarksArray.length !== 0"  [(ngModel)]="descriptionRemarks" class="text-area-1" placeholder="Enter remark.." disabled></textarea>
 
             <textarea *ngIf="onEditRemarks==true" rows="10" [(ngModel)]="description" class="text-area" placeholder="Enter remark.."></textarea>
             <button *ngIf="onEditRemarks==true" mat-raised-button class="remarkButton" (click)="submitRemarks()">Save Changes</button>

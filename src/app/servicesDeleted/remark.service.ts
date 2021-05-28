@@ -2,28 +2,29 @@ import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
-const baseURL="http://localhost:3000/api/relative"
-
+const baseURL="http://localhost:3000/api/delremark"
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class relativeService {
-
+export class DelremarkService {
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
+    findOne(id): Observable <any> {
+        return this.http.get(`${baseURL}/${id}`)
+    }
 
-    createRelative(data): Observable<any> {
+    create(data): Observable<any> {
         console.log(data)
         return this.http.post(baseURL,data)
     }
 
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/${id}`,data)
+        return this.http.put(`${baseURL}/id/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -34,19 +35,8 @@ export class relativeService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    findByrid(rid): Observable<any> {
-        return this.http.get(`${baseURL}/${rid}`)
-    }
-
-    findByIC(IC_Number): Observable<any> {
-        return this.http.get(`${baseURL}/IC/${IC_Number}`)
-    }
-
-    findSpouseOnly():Observable<any> {
-        return this.http.get(`${baseURL}/spouse/spouse`)
-    }
-    findChildOnly():Observable<any> {
-        return this.http.get(`${baseURL}/child/child`)
+    findByRid(rid): Observable<any> {
+        return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
 }
