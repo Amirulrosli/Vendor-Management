@@ -43,6 +43,12 @@ import { locationService } from '../services/location.service';
 import { relativeService } from '../services/relative.service';
 import { attachmentService } from '../services/Attachment.service';
 import { remarkService } from '../services/remark.service';
+import { DelphotoService } from '../servicesDeleted/photo.service';
+import { DelpaymentService } from '../servicesDeleted/payment.service';
+import { DelprofileService } from '../servicesDeleted/profile.service';
+import { DelattachmentService } from '../servicesDeleted/Attachment.service';
+import { DelrelativeService } from '../servicesDeleted/relative.service';
+import { DelremarkService } from '../servicesDeleted/remark.service';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -227,7 +233,18 @@ displayedLocationColumns: string[] = [
     private locationService: locationService,
     private relativeService: relativeService,
     private attachmentService: attachmentService,
-    private remarkService: remarkService
+    private remarkService: remarkService,
+
+
+
+    //Service for deleted records
+
+    private delPhotoService: DelphotoService,
+    private delPaymentService: DelpaymentService,
+    private delProfileService: DelprofileService,
+    private delAttachmentService: DelattachmentService,
+    private delRelativeService: DelrelativeService,
+    private delRemarkService: DelremarkService
   ) { 
 
     this.close = false;
@@ -412,29 +429,58 @@ displayedLocationColumns: string[] = [
         };
   
         this.notification.create(notify).subscribe(resp=> {
-          console.log(resp)
+          
         },error=> {
           console.log(error)
         });
 
+
+        var profile = []
+        this.profiles.findByRid(data.rid).subscribe(data=> {
+          profile = data;
+
+          if(profile.length !==0){
+            this.delProfileService.create(profile[0]).subscribe(data=> {
+              console.log(data)
+            },error=> {
+              console.log(error)
+            })
+          }
+
+        })
+
+
+        //Deleting Payment Service --------------------------------------------------------------------
+
         this.paymentService.findByRid(data.rid).subscribe(resp=> {
           this.paymentRid = resp;
-          console.log(resp)
+        
 
           if (this.paymentRid.length > 0){
             for (let i = 0; i < this.paymentRid.length; i++){
-              this.paymentService.delete(this.paymentRid[i].id).subscribe(data=> {
-                console.log(data);
-              }, error=> {
+              this.delPaymentService.create(this.paymentRid[i]).subscribe(data=> {
+                console.log(data)
+
+                this.paymentService.delete(this.paymentRid[i].id).subscribe(data=> {
+                  console.log(data);
+                }, error=> {
+                  console.log(error)
+                })
+
+              },error=> {
                 console.log(error)
               })
+             
             }
           }
         }, err=> {
           console.log(err)
         })
 
-        this.slot.findByRid(data.rid).subscribe(resp=> {  //testing delete slot
+
+        //Updating Slot Service------------------------------------------------------------
+
+        this.slot.findByRid(data.rid).subscribe(resp=> {  
           this.slotRid = resp;
 
           if (this.slotRid.length !== 0){
@@ -452,6 +498,9 @@ displayedLocationColumns: string[] = [
           console.log(error)
         })
 
+
+        //Deleting Payment Service -----------------------------------------------------------------------------
+
         var relative = [];
         this.relativeService.findByrid(data.rid).subscribe(data=> {
           relative = data;
@@ -459,15 +508,23 @@ displayedLocationColumns: string[] = [
           if (relative.length !== 0){
 
             for (let i = 0; i<relative.length; i++){
-              
-              this.relativeService.delete(relative[i].id).subscribe(data=> {
+              this.delRelativeService.createRelative(relative[i]).subscribe(data=> {
                 console.log(data)
+                this.relativeService.delete(relative[i].id).subscribe(data=> {
+                  console.log(data)
+                },error=> {
+                  console.log(error)
+                })
+
               },error=> {
                 console.log(error)
               })
+          
             }
           }
         })
+
+        //Deleting Attachment Service ---------------------------------------------------------------------------
 
         var attachments = [];
 
@@ -476,42 +533,79 @@ displayedLocationColumns: string[] = [
 
           if (attachments.length !== 0){
             for (let i =0; i<attachments.length;i++){
-              this.attachmentService.delete(attachments[i].id).subscribe(data=> {
-                console.log(data);
+              this.delAttachmentService.create(attachments[i]).subscribe(data=> {
+                console.log(data)
+
+                this.attachmentService.delete(attachments[i].id).subscribe(data=> {
+                  console.log(data);
+                },error=> {
+                  console.log(error)
+                })
+
+
               },error=> {
                 console.log(error)
               })
+          
             }
           }
         })
+
+
+        //Deleting Remark Service ---------------------------------------------------------------------------------
 
         var remark = []
         this.remarkService.findByRid(data.rid).subscribe(data=> {
           remark = data;
 
           if (remark.length !== 0){
-            this.remarkService.delete(remark[0].id).subscribe(data=> {
+
+            this.delRemarkService.create(remark[0]).subscribe(data=> {
               console.log(data)
-            }, error=> {
+
+              this.remarkService.delete(remark[0].id).subscribe(data=> {
+                console.log(data)
+              }, error=> {
+                console.log(error)
+              })
+
+
+            },error=> {
               console.log(error)
             })
+          
           }
         })
+
+
+        //Deleting Photo Service ----------------------------------------------------------------------------------
 
         var photo = []
         this.photoService.findByRid(data.rid).subscribe(data=> {
           photo = data;
 
           if (photo.length !== 0){
-            this.photoService.delete(photo[0].id).subscribe(data=> {
-              console.log(data)
-            }, error=> {
+            this.delPhotoService.create(photo[0]).subscribe(data=> {
+              console.log(data);
+
+              this.photoService.delete(photo[0].id).subscribe(data=> {
+                console.log(data)
+              }, error=> {
+                console.log(error)
+              })
+
+            },error=> {
               console.log(error)
             })
+        
           }
         })
 
 
+
+        //Deleting profile Service ---------------------------------------------------------------------------------
+     
+      
 
         this.profiles.delete(data.id).subscribe(resp=> {
 
@@ -530,7 +624,7 @@ displayedLocationColumns: string[] = [
           this.createLineChart();
           
         },err=> {
-          console.log(err)
+          Swal.fire("Cannot Delete Profile","Please Check and Try Again!","error")
         });
 
 

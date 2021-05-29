@@ -1,0 +1,500 @@
+.toggle{
+    color:#a142ff !important;
+    cursor: pointer;
+    font-size: 26px;
+    background-color: white;
+    padding: 5px;
+    padding-right: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 50%;
+}
+
+.mat-toolbar{
+
+    background-color: #a142ff; 
+    border: none;
+
+}
+
+
+.divDesign{
+ 
+    width: 100%;
+    background-color:#a142ff; 
+    // border-bottom-style: solid;
+    // border-bottom-color: #580092;  
+    height: 130px;
+  }
+
+  .banner{
+    height: 100px;
+    width: 100%;
+    background-color: rgb(252, 252, 252);
+  }
+
+  .accountIcon{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+
+    border-radius: 50%;
+    border: 5px solid white;
+    position:relative;
+    top: 20px;
+
+
+  }
+
+  .accountIcon-1{
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position:relative;
+    top: 20px;
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+
+    border-radius: 50%;
+    border: 5px solid white;
+ 
+
+  }
+
+  .user-image{
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .user-data{
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      margin-top: 30px;
+
+      h2{
+          text-align: center;
+
+      }
+
+      p{
+          text-align: center;
+          color: gray;
+          margin-top: -10px;
+      }
+  }
+
+  .button-1{
+      
+      border-radius: 5px;
+      position:absolute;
+      right: 20%;
+      top: 16%;
+      height: 45px;
+  }
+
+  .button-2{
+    background-color: #ffffff00;
+    border: 2px solid white;
+    border-radius: 5px;
+    position:absolute;
+    right: 11%;
+    top: 16%;
+    height: 45px;
+}
+
+.titleTxt{
+    color: rgb(255, 255, 255);
+    margin-left: 25px;
+    margin-top: -5px;
+}
+
+
+
+.navigation-1{
+    background-color: white;
+    margin-top: 10px;
+    position: relative;
+    top: 180px;
+    height: 50px;
+    display: flex;
+    width:54%;
+    margin-left: 35px;
+  }
+  
+  .paymentHistory{
+    color: #919191;
+    background-color: white;
+    position: relative;
+    border-right: 2px solid rgb(207, 207, 207);
+    border-radius: 0px !important;
+  
+    mat-icon{
+      position:relative;
+      top: -3px;
+      margin-right: 5px;
+    }
+  
+  }
+  
+  .paymentHistory:hover{
+    color: blueviolet;
+  }
+
+  .history{
+    margin-top: 0px;
+    background-color: white;
+    height: 100%;
+    width: 95%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px solid rgb(228, 228, 228);
+    position:relative;
+    top: 180px;
+  }
+
+  div.mat-elevation-z8{
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow: none !important;
+    border: 1px solid rgb(209, 209, 209);
+  }
+
+
+ mat-header-cell{
+     color:rgb(95, 30, 148);
+     background-color: white;
+ }
+
+ mat-cell{
+    color:rgb(73, 73, 73);
+    background-color: white;
+    cursor: pointer;
+ }
+
+ .matcell:hover{
+    background-color: rgb(240, 240, 240);
+ }
+
+
+ mat-footer-cell{
+    color:black;
+    background-color: white;
+ 
+ }
+
+ mat-header-row{
+    color: purple;
+    background-color:  #a142ff;
+ }
+ mat-paginator{
+    background-color: #a142ff;
+    color: white;
+    // margin-left: 60px;
+    // margin-right: 60px;
+
+ }
+
+
+ .search-card-1{
+    width: 56%;
+    background-color: white;
+    margin-left: 20px;
+    margin-top: 10px;
+    border: 1px solid rgb(226, 226, 226);
+  
+  
+  
+    .search-bar{
+        display: flex;
+    }
+  
+  
+  }
+  
+  input{
+    background: rgba(128, 128, 128, 0.158);
+    box-shadow: none;
+    height: 38px;
+    width: 85%;
+    border-radius: 5px;
+    border: none;
+    padding-left: 5px;
+    margin-bottom: 20px;
+  }
+
+  .titles{
+    color: #050505;
+    margin-left: 20px;
+    margin-top: 20px;
+   //  font-weight: 600;
+   font-size: 18px;
+   font-weight: bold;
+  }
+
+
+  .back-2{
+    background-color: rgb(241, 241, 241);
+    height: 100%;
+    margin-top: -10px;
+  }
+
+
+  input{
+    background: rgba(128, 128, 128, 0.158);
+    box-shadow: none;
+    height: 38px;
+    width: 85%;
+    border-radius: 5px;
+    border: none;
+    padding-left: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .submitBtn{
+    background-color: rgb(105, 2, 173);
+    height: 40px;
+  
+  }
+
+  .titleTxt-1{
+
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+  
+  }
+  
+  .descTxt{
+    color: rgb(32, 32, 32);
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 40px;
+  }
+  
+  .input-profile{
+    
+  background: rgba(128, 128, 128, 0.158);
+  box-shadow: none;
+  height: 38px;
+  width: 40%;
+  border: none;
+  border-radius: 5px;
+  padding-left: 5px;
+  margin-bottom: 10px;
+  margin-left: 40px;
+  margin-top: 10px;
+  
+  }
+  
+  .act{
+    background-color: rgb(255, 215, 215);
+  }
+  
+  .text-profile{
+    color: gray;
+    margin-left: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .second-row{
+    position: relative;
+    left: 50%;
+    top: -420px;
+    width: 50%;
+  
+    input{
+      width: 75%;
+    }
+  }
+  
+  .icon-profile{
+    color: gray;
+    position: relative;
+    top: 10px;
+    right: 30px;
+  }
+
+  
+  .titleTxt-1{
+  
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 40px;
+  
+  }
+
+  
+#childTable {
+  margin-top:20px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#childTable td, #childTable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#childTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#childTable tr:hover {background-color: #ddd;}
+
+#childTable th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  background-color: rgb(124, 122, 122);
+  color: white;
+}
+
+.not-found{
+  text-align: center;
+  margin-top: 0px;
+  color: purple;
+  width: 90%;
+  height: 230px;
+  background-color: white;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.image-container{
+
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 80px;
+
+
+  .attachment-2{
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    overflow: hidden;
+    margin-right: 20px;
+    margin-top: 20px;
+    border: 1px solid rgb(219, 219, 219);
+    cursor: pointer;
+  
+  }
+
+  .deleteImage{
+    color: rgb(255, 0, 0);
+    position: relative;
+    left: 50px;
+    top: -20px;
+    visibility: hidden;
+  }
+
+
+
+
+
+}
+
+
+
+.open{
+  color: rgba(44, 44, 44, 0.596);
+  font-size: 60px;
+  position: relative;
+  left: 120px;
+  top: -100px;
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.open:hover{
+  color:black;
+}
+
+.attach-container:hover{
+
+  .deleteImage{
+    visibility: visible;
+    cursor: pointer;
+    color: rgb(255, 0, 0);
+    position: relative;
+    left: 50px;
+    top: -20px;
+    font-size: 35px;
+  }
+
+  .open{
+    visibility: visible;
+    cursor: pointer;
+  }
+
+}
+
+.data-name {
+  color: black;
+  text-align: center;
+}
+
+.deleteImage:hover{
+  box-shadow: 10px 10px 8px #ffa5a5;
+}
+
+
+.not-found{
+  text-align: center;
+  margin-top: 0px;
+  color: purple;
+  width: 90%;
+  height: 230px;
+  background-color: white;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.text-area{
+  background: rgba(128, 128, 128, 0.158);
+  box-shadow: none;
+  width: 93%;
+  margin-left: 40px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.text-area-1{
+  background: rgba(226, 226, 226, 0.158);
+  border: 1px solid rgb(204, 204, 204) !important;
+  box-shadow: none;
+  width: 93%;
+  height: 280px;
+  margin-left: 40px;
+  border: none;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+  
+

@@ -8,6 +8,7 @@ import { AuthGuard } from './auth.guard';
 import { CreateSlotComponent } from './create-slot/create-slot.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DahsboardComponent } from "./dahsboard/dahsboard.component"
+import { DeletedProfileComponent } from './deleted-profile/deleted-profile.component';
 import { DeletedRecordsComponent } from './deleted-records/deleted-records.component';
 import { EditSlotComponent } from './edit-slot/edit-slot.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
@@ -77,6 +78,10 @@ const routes: Routes = [
 
   {
     path: 'edit-slot', component: EditSlotComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'deleted-profile/:rid', component: DeletedProfileComponent,
     canActivate: [AuthGuard]
   },
   

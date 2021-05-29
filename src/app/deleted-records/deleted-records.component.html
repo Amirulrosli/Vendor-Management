@@ -53,6 +53,68 @@
 
 
 
+        <div class ="mat-elevation-z8" style="margin-top: 10px;">
+      
+            <mat-table [dataSource]="listData" matSort>
+      
+      
+              <ng-container  matColumnDef="payment_Date">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Latest Payment Date</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.latest_Payment_Date}}</mat-cell>
+            </ng-container>
+                <ng-container  matColumnDef="IC_Number">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
+                    <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                    <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</mat-cell>
+                </ng-container>
+  
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
+                    <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.email}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="phone">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header >Phone No.</mat-header-cell>
+                    <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.phone}}</mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="slot">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header >Slot</mat-header-cell>
+                    <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot}}</mat-cell>
+                </ng-container>
+        
+        
+         
+      
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                    
+                      <button mat-raised-button class="editBtn" (click)="restoreProfile(row)">Restore</button>
+                      <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="deleteSlot(row)"><mat-icon>delete</mat-icon></button>
+                    </mat-cell>
+        
+                    
+                  </ng-container>
+        
+                  <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="6">
+                      No data available.
+                    </mat-footer-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+                  <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+              </div>
+      
+
+
+
       </mat-sidenav-content>
       </mat-sidenav-container>
       
