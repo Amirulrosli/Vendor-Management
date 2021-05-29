@@ -47,6 +47,11 @@ export class photoService {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
+    create(data): Observable<any> {
+        console.log(data)
+        return this.http.post(baseURL,data)
+    }
+
     
 
 

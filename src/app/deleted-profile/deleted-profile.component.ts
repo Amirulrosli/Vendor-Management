@@ -6,13 +6,17 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import Swal from 'sweetalert2';
 import { NotificationComponent } from '../notification/notification.component';
 import { accountService } from '../services/account.service';
 import { alertService } from '../services/Alert.service';
+import { attachmentService } from '../services/Attachment.service';
 import { notificationService } from '../services/notification.service';
 import { paymentService } from '../services/payment.service';
 import { photoService } from '../services/photo.service';
 import { profileService } from '../services/profile.service';
+import { relativeService } from '../services/relative.service';
+import { remarkService } from '../services/remark.service';
 import { DelattachmentService } from '../servicesDeleted/Attachment.service';
 import { DelpaymentService } from '../servicesDeleted/payment.service';
 import { DelphotoService } from '../servicesDeleted/photo.service';
@@ -90,12 +94,17 @@ export class DeletedProfileComponent implements OnInit {
   dateFilter: any;
   vendorIC: any;
   contract: any;
-  phonNo: any;
+  phoneNo: any;
   rent_Date: any;
   address: any;
   profileLocation:any;
   slot: any;
+  price:any;
+  paymentRid: any =[];
+  profileData: any;
+  searchKey:any;
   
+
 
 
   constructor(
@@ -106,8 +115,14 @@ export class DeletedProfileComponent implements OnInit {
     private datePipe: DatePipe,
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
+
     private accountService: accountService,
     private photoService: photoService,
+    private remarkService: remarkService,
+    private profileService: profileService,
+    private attachmentService: attachmentService,
+    private relativeService: relativeService,
+    private paymentService: paymentService,
     private route: ActivatedRoute,
 
 
@@ -143,6 +158,10 @@ export class DeletedProfileComponent implements OnInit {
     this.retrieveRelatives();
     this.retrieveRemarks();
   
+
+  }
+
+  applyFilter(){
 
   }
 
@@ -206,8 +225,19 @@ export class DeletedProfileComponent implements OnInit {
     this.delProfileService.findByRid(this.rid).subscribe(data=> {
       this.profileList = data;
       if (this.profileList.length !==0){
+        this.profileData = this.profileList[0];
         this.vendorname = this.profileList[0].name;
         this.email = this.profileList[0].email;
+        this.phoneNo = this.profileList[0].phone;
+        this.address = this.profileList[0].address;
+        this.vendorIC = this.profileList[0].IC_Number;
+        this.rent_Date = this.profileList[0].rent_Date;
+
+        if (this.profileList[0].contract == true){
+          this.contract = "Contract"
+        } else {
+          this.contract = "Non-contract"
+        }
       }
     },error=> {
       console.log(error)
@@ -501,6 +531,223 @@ goToRemarks(){
 
 openFile(data){
   window.open(data)
+}
+
+onDelete(){
+
+}
+
+
+onRestore(data){
+
+  console.log(data)
+  
+
+  Swal.fire({
+    title: 'Are you sure',
+    text: 'Restore this vendor profile',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+
+  }).then((result) => {
+
+    if (result.value) {
+      const date = new Date();
+      const notify = {
+        rid: data.rid,
+        title: 'Account Deleted'+' '+data.name, 
+        description: 'Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was deleted !',
+        category: 'Deleted vendor profile',
+        date: date,
+        view: false
+      };
+
+      this.notification.create(notify).subscribe(resp=> {
+        
+      },error=> {
+        console.log(error)
+      });
+
+
+      var profile = []
+      this.delProfileService.findByRid(data.rid).subscribe(data=> {
+        profile = data;
+
+        if(profile.length !==0){
+          profile[0].slot = null;
+          profile[0].slot_Price = null;
+          this.profileService.create(profile[0]).subscribe(data=> {
+            console.log(data)
+          },error=> {
+            console.log(error)
+          })
+        }
+
+      })
+
+
+      //Deleting Payment Service --------------------------------------------------------------------
+
+      this.delPaymentService.findByRid(data.rid).subscribe(resp=> {
+        this.paymentRid = resp;
+      
+
+        if (this.paymentRid.length > 0){
+          for (let i = 0; i < this.paymentRid.length; i++){
+            this.paymentService.create(this.paymentRid[i]).subscribe(data=> {
+              console.log(data)
+
+              this.delPaymentService.delete(this.paymentRid[i].id).subscribe(data=> {
+                console.log(data);
+              }, error=> {
+                console.log(error)
+              })
+
+            },error=> {
+              console.log(error)
+            })
+           
+          }
+        }
+      }, err=> {
+        console.log(err)
+      })
+
+
+      //Deleting Payment Service -----------------------------------------------------------------------------
+
+      var relative = [];
+      this.delRelativeService.findByrid(data.rid).subscribe(data=> {
+        relative = data;
+
+        if (relative.length !== 0){
+
+          for (let i = 0; i<relative.length; i++){
+            this.relativeService.createRelative(relative[i]).subscribe(data=> {
+              console.log(data)
+              this.delRelativeService.delete(relative[i].id).subscribe(data=> {
+                console.log(data)
+              },error=> {
+                console.log(error)
+              })
+
+            },error=> {
+              console.log(error)
+            })
+        
+          }
+        }
+      })
+
+      //Deleting Attachment Service ---------------------------------------------------------------------------
+
+      var attachments = [];
+
+      this.delAttachmentService.findByVendorid(data.rid).subscribe(data=> {
+        attachments = data;
+
+        if (attachments.length !== 0){
+          for (let i =0; i<attachments.length;i++){
+            this.attachmentService.create(attachments[i]).subscribe(data=> {
+              console.log(data)
+
+              this.delAttachmentService.delete(attachments[i].id).subscribe(data=> {
+                console.log(data);
+              },error=> {
+                console.log(error)
+              })
+
+
+            },error=> {
+              console.log(error)
+            })
+        
+          }
+        }
+      })
+
+
+      //Deleting Remark Service ---------------------------------------------------------------------------------
+
+      var remark = []
+      this.delRemarksService.findByRid(data.rid).subscribe(data=> {
+        remark = data;
+
+        if (remark.length !== 0){
+
+          this.remarkService.create(remark[0]).subscribe(data=> {
+            console.log(data)
+
+            this.delRemarksService.delete(remark[0].id).subscribe(data=> {
+              console.log(data)
+            }, error=> {
+              console.log(error)
+            })
+
+
+          },error=> {
+            console.log(error)
+          })
+        
+        }
+      })
+
+
+      //Deleting Photo Service ----------------------------------------------------------------------------------
+
+      var photo = []
+      this.delPhotoService.findByRid(data.rid).subscribe(data=> {
+        photo = data;
+
+        if (photo.length !== 0){
+          this.photoService.create(photo[0]).subscribe(data=> {
+            console.log(data);
+
+            this.delPhotoService.delete(photo[0].id).subscribe(data=> {
+              console.log(data)
+            }, error=> {
+              console.log(error)
+            })
+
+          },error=> {
+            console.log(error)
+          })
+      
+        }
+      })
+
+
+
+      //Deleting profile Service ---------------------------------------------------------------------------------
+   
+    
+
+      this.delProfileService.delete(data.id).subscribe(resp=> {
+
+        Swal.fire(
+          'Removed!',
+          'Vendor Profile removed successfully.',
+          'success'
+        )
+        
+        this.router.navigate(['/deleted-records'])
+        
+      },err=> {
+        Swal.fire("Cannot Delete Profile","Please Check and Try Again!","error")
+      });
+
+
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Vendor Profile is still in our database.',
+        'error'
+      )
+    }
+  });
+
 }
 
 

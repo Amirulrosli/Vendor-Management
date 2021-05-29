@@ -51,6 +51,11 @@
 
         </mat-toolbar>
 
+        <mat-card class="search-card">
+            <input [(ngModel)]="searchKey" type="text" placeholder="Search for IC, name, phone number, etc....." class="location-input"/>
+            <button (click)="applyFilter()" class="location-button" mat-raised-button>Submit</button>
+        </mat-card>
+
 
 
         <div class ="mat-elevation-z8" style="margin-top: 10px;">

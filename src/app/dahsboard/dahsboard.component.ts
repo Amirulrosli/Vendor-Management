@@ -440,6 +440,8 @@ displayedLocationColumns: string[] = [
           profile = data;
 
           if(profile.length !==0){
+            profile[0].slot = null;
+            profile[0].slot_Price = null;
             this.delProfileService.create(profile[0]).subscribe(data=> {
               console.log(data)
             },error=> {
