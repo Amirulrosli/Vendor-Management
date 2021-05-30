@@ -702,7 +702,7 @@ margin-top: 10px;
 .second-row-1{
   position: relative;
   left: 50%;
-  top: -220px;
+  top: -280px;
   width: 50%;
 }
 
@@ -876,5 +876,21 @@ margin-top: 10px;
 .data-name {
   color: black;
   text-align: center;
+}
+
+.searchBtn{
+  background-color: blueviolet;
+  height: 40px;
+  width: 80px;
+}
+.clearBtn{
+  background-color: transparent;
+  color: gray;
+  margin-left: 10px;
+  box-shadow: none;
+}
+
+.clearBtn:hover{
+  color: black;
 }
 

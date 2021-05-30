@@ -26,6 +26,12 @@ import { attachmentService } from '../services/Attachment.service';
 import { remarkService } from '../services/remark.service';
 import { photoService } from '../services/photo.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DelremarkService } from '../servicesDeleted/remark.service';
+import { DelprofileService } from '../servicesDeleted/profile.service';
+import { DelpaymentService } from '../servicesDeleted/payment.service';
+import { DelattachmentService } from '../servicesDeleted/Attachment.service';
+import { DelphotoService } from '../servicesDeleted/photo.service';
+import { DelrelativeService } from '../servicesDeleted/relative.service';
 
 
 
@@ -46,7 +52,7 @@ export class VendorProfileComponent implements OnInit {
   email:any;
   retrieveData:any;
   paymentHistory:any;
-  paymentList: Payment[];
+  paymentList: any = [];
   paymentData: any;
   retrieveDataLength:any;
   list:any[];
@@ -134,21 +140,23 @@ export class VendorProfileComponent implements OnInit {
   photoArray: any = []
   profilePhoto: any;
   uploadFile = false;
+  paymentRid: any = [];
+  slotRid: any = [];
   
 
   fileUploadForm: FormGroup;
-  fileInputLabel: string
+  fileInputLabel: string;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
    displayedColumns: string[] = [
+    'email',
     'payment_Date',
     'due_Date',
     'price',
     'send_Email',
-    'email'
   
   ];
   
@@ -172,8 +180,16 @@ export class VendorProfileComponent implements OnInit {
     private attachmentService: attachmentService,
     private remarkService: remarkService,
     private photoService: photoService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
 
+
+    //deleted records
+    private delRemarkService: DelremarkService,
+    private delProfileService: DelprofileService,
+    private delPaymentService: DelpaymentService,
+    private delAttachmentService: DelattachmentService,
+    private delPhotoService:DelphotoService,
+    private delRelativeService: DelrelativeService
 
   ) {
     const compId = this.route.snapshot.paramMap.get('rid')
@@ -232,6 +248,11 @@ export class VendorProfileComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+  clearSearch(){
+    this.searchKey = "";
+    this.paymentData.filter = this.searchKey.trim().toLowerCase();
+  }
+
   //identify if user is admin
   identifyRole(){
     this.accountRole = localStorage.getItem("role")
@@ -273,13 +294,7 @@ export class VendorProfileComponent implements OnInit {
 
 
   print(){
-    if (this.opened == true){
-      this.opened = false;
-      this.close = true;
-      Swal.fire("INFO: Closing The Navigation","Closing the navigation pane provide better print display, Please click the 'Print' icon again to continue","info")
-    } else{
-      window.print();
-    }
+    this.router.navigate(['/vendor-details/'+this.id])
   }
 
   sendEmail(){
@@ -298,25 +313,18 @@ export class VendorProfileComponent implements OnInit {
   refreshData(){
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
-     
- 
-
-      this.paymentList = this.paymentHistory.map(item=> {
-        return{
-          id: item.id,
-          ...item as Payment
-        }
-      });
+      this.paymentList = data;
 
 
       console.log(this.paymentList)
 
       for (let i = 0; i<this.paymentList.length;i++){
-        const paymentOldDate = this.paymentList[i].payment_Date;
-        const dueOldDate = this.paymentList[i].due_Date;
+        var newDate = new Date (this.paymentList[i].payment_Date);
+        var dueDate = new Date (this.paymentList[i].due_Date);
+    
 
-        let payment = this.datePipe.transform(paymentOldDate,'dd-MM-yyyy')
-        let due = this.datePipe.transform(dueOldDate,'dd-MM-yyyy')
+        let payment = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm')
+        let due = this.datePipe.transform(dueDate,'dd/MM/YYYY HH:mm')
 
         this.paymentList[i].payment_Date = payment;
         this.paymentList[i].due_Date = due;
@@ -337,86 +345,343 @@ export class VendorProfileComponent implements OnInit {
   }
 
 
+  onDelete(){
+  
+    var rid = localStorage.getItem('rid');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This process is irreversible. Vendor Profile Will be mark as discontinued/deleted',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+
+    }).then((result) => {
+
+      if (result.value) {
+        const date = new Date();
+        const notify = {
+          rid: rid,
+          title: 'Account Deleted'+' '+this.username, 
+          description: 'Vendor profile with \n name: '+this.username+'\n Account ID: '+this.id+'\n was deleted !',
+          category: 'Deleted vendor profile',
+          date: date,
+          view: false
+        };
+  
+        this.notification.create(notify).subscribe(resp=> {
+          
+        },error=> {
+          console.log(error)
+        });
+
+
+        var profile = []
+        this.profiles.findByRid(this.id).subscribe(data=> {
+          profile = data;
+
+          if(profile.length !==0){
+            profile[0].slot = null;
+            profile[0].slot_Price = null;
+            this.delProfileService.create(profile[0]).subscribe(data=> {
+              console.log(data)
+            },error=> {
+              console.log(error)
+            })
+          }
+
+        })
+
+
+        //Deleting Payment Service --------------------------------------------------------------------
+
+        this.payment.findByRid(this.rid).subscribe(resp=> {
+          this.paymentRid = resp;
+        
+
+          if (this.paymentRid.length > 0){
+            for (let i = 0; i < this.paymentRid.length; i++){
+              this.delPaymentService.create(this.paymentRid[i]).subscribe(data=> {
+                console.log(data)
+
+                this.payment.delete(this.paymentRid[i].id).subscribe(data=> {
+                  console.log(data);
+                }, error=> {
+                  console.log(error)
+                })
+
+              },error=> {
+                console.log(error)
+              })
+             
+            }
+          }
+        }, err=> {
+          console.log(err)
+        })
+
+
+        //Updating Slot Service------------------------------------------------------------
+
+        this.slotService.findByRid(this.id).subscribe(resp=> {  
+          this.slotRid = resp;
+
+          if (this.slotRid.length !== 0){
+
+            this.slotRid[0].rid = null;      
+            this.slotRid[0].taken = false;      
+              this.slotService.update(this.slotRid[0].id,this.slotRid[0]).subscribe(data=> {
+                console.log(data);
+              },error=> {
+                console.log(error)
+              })
+            
+          }
+        },error=> {
+          console.log(error)
+        })
+
+
+        //Deleting Payment Service -----------------------------------------------------------------------------
+
+        var relative = [];
+        this.relativeService.findByrid(this.id).subscribe(data=> {
+          relative = data;
+
+          if (relative.length !== 0){
+
+            for (let i = 0; i<relative.length; i++){
+              this.delRelativeService.createRelative(relative[i]).subscribe(data=> {
+                console.log(data)
+                this.relativeService.delete(relative[i].id).subscribe(data=> {
+                  console.log(data)
+                },error=> {
+                  console.log(error)
+                })
+
+              },error=> {
+                console.log(error)
+              })
+          
+            }
+          }
+        })
+
+        //Deleting Attachment Service ---------------------------------------------------------------------------
+
+        var attachments = [];
+
+        this.attachmentService.findByVendorid(this.id).subscribe(data=> {
+          attachments = data;
+
+          if (attachments.length !== 0){
+            for (let i =0; i<attachments.length;i++){
+              this.delAttachmentService.create(attachments[i]).subscribe(data=> {
+                console.log(data)
+
+                this.attachmentService.delete(attachments[i].id).subscribe(data=> {
+                  console.log(data);
+                },error=> {
+                  console.log(error)
+                })
+
+
+              },error=> {
+                console.log(error)
+              })
+          
+            }
+          }
+        })
+
+
+        //Deleting Remark Service ---------------------------------------------------------------------------------
+
+        var remark = []
+        this.remarkService.findByRid(this.id).subscribe(data=> {
+          remark = data;
+
+          if (remark.length !== 0){
+
+            this.delRemarkService.create(remark[0]).subscribe(data=> {
+              console.log(data)
+
+              this.remarkService.delete(remark[0].id).subscribe(data=> {
+                console.log(data)
+              }, error=> {
+                console.log(error)
+              })
+
+
+            },error=> {
+              console.log(error)
+            })
+          
+          }
+        })
+
+
+        //Deleting Photo Service ----------------------------------------------------------------------------------
+
+        var photo = []
+        this.photoService.findByRid(this.id).subscribe(data=> {
+          photo = data;
+
+          if (photo.length !== 0){
+            this.delPhotoService.create(photo[0]).subscribe(data=> {
+              console.log(data);
+
+              this.photoService.delete(photo[0].id).subscribe(data=> {
+                console.log(data)
+              }, error=> {
+                console.log(error)
+              })
+
+            },error=> {
+              console.log(error)
+            })
+        
+          }
+        })
+
+
+
+        //Deleting profile Service ---------------------------------------------------------------------------------
+     
+      
+
+        this.profiles.delete(this.retrieveData[0].id).subscribe(resp=> {
+
+          Swal.fire(
+            'Removed!',
+            'Vendor Profile removed successfully.',
+            'success'
+          )
+          
+          this.router.navigate(['/dashboard']);
+          
+          
+        },err=> {
+          Swal.fire("Cannot Delete Profile","Please Check and Try Again!","error")
+        });
+
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Vendor Profile is still in our database.',
+          'error'
+        )
+      }
+    });
+
+  }
+
+
   retrieveProfile(){
 
     this.profiles.findByRid(this.id).subscribe(array=> {
       this.retrieveData = array
-      this.username = this.retrieveData[0].name;
-      this.slot = this.retrieveData[0].slot
-      this.address = this.retrieveData[0].address;
-      this.price = this.retrieveData[0].slot_Price;
-      this.email = this.retrieveData[0].email
-      this.vendorIC = this.retrieveData[0].IC_Number
-      this.phoneNo = this.retrieveData[0].phone;
-      this.rent_Date = this.retrieveData[0].rent_Date;
-      this.rid = this.retrieveData[0].rid;
-      this.contract = this.retrieveData[0].contract;
 
-      if (this.contract){
-        this.contract="Contract"
-      } else {
-        this.contract = "Non-Contract";
-      }
-      this.vendorID = this.id
-      this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
-  
+      if (this.retrieveData !== 0){
 
-      this.retrieveSlot(this.slot)
+        this.username = this.retrieveData[0].name;
+        this.slot = this.retrieveData[0].slot
 
-      //overdue days
-      this.nextDate = this.retrieveData[0].latest_Due_Date
-      this.nextPayment = this.datePipe.transform(this.nextDate,'MM/dd/yyyy') 
-      this.nextPay = this.datePipe.transform(this.nextPayment, 'dd LLLL yyyy')
-
-      this.dateToday = new Date()
-      this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')
-
-      if (this.nextPayment !== null){
-        var parsedNextDate = parseDate(this.nextPayment)
-        var parsedToday = parseDate(this.today)
-  
-        console.log("today: "+ parsedToday)
-        console.log("latest Payment Date: " + parsedNextDate)
-  
-        var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
-        this.overdueDays = overdueTime / (1000 * 3600 * 24);
-        this.overdue = this.overdueDays
-  
-        console.log(this.overdueDays)
-  
-        var noOverdue = this.overdueDays - this.overdue
-        this.finalOverdue = this.overdue
-        
-  
-        if(this.overdueDays < 0){
-          this.finalOverdue = noOverdue;
-          console.log(this.finalOverdue);
+        if (this.slot==null){
+          this.slot="N/A"
         }
-      } else {
-        this.finalOverdue = 0;
-        this.nextPay = "N/A"
+        this.address = this.retrieveData[0].address;
+        this.price = this.retrieveData[0].slot_Price;
+
+        if (this.price == null){
+          this.price = 0
+        }
+        this.email = this.retrieveData[0].email
+        this.vendorIC = this.retrieveData[0].IC_Number
+        this.phoneNo = this.retrieveData[0].phone;
+        this.rent_Date = this.retrieveData[0].rent_Date;
+        this.rid = this.retrieveData[0].rid;
+        this.contract = this.retrieveData[0].contract;
+  
+        if (this.contract){
+          this.contract="Contract"
+        } else {
+          this.contract = "Non-Contract";
+        }
+        this.vendorID = this.id
+        this.latestPaymentDate = this.retrieveData[0].latest_Payment_Date
+    
+  
+        this.retrieveSlot(this.slot)
+  
+        //overdue days
+        this.nextDate = this.retrieveData[0].latest_Due_Date
+        this.nextPayment = this.datePipe.transform(this.nextDate,'MM/dd/yyyy') 
+        this.nextPay = this.datePipe.transform(this.nextPayment, 'dd LLLL yyyy')
+  
+        this.dateToday = new Date()
+        this.today = this.datePipe.transform(this.dateToday,'MM/dd/yyyy')
+  
+        if (this.nextPayment !== null){
+          var parsedNextDate = parseDate(this.nextPayment)
+          var parsedToday = parseDate(this.today)
+    
+          console.log("today: "+ parsedToday)
+          console.log("latest Payment Date: " + parsedNextDate)
+    
+          var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
+          this.overdueDays = overdueTime / (1000 * 3600 * 24);
+          this.overdue = this.overdueDays
+    
+          console.log(this.overdueDays)
+    
+          var noOverdue = this.overdueDays - this.overdue
+          this.finalOverdue = this.overdue
+          
+    
+          if(this.overdueDays < 0){
+            this.finalOverdue = noOverdue;
+            console.log(this.finalOverdue);
+          }
+        } else {
+          this.finalOverdue = 0;
+          this.nextPay = "N/A"
+        }
+       
+  
+        //parse to date
+        function parseDate(str) {
+          var mdy = str.split('/');
+          return new Date(mdy[2], mdy[0]-1, mdy[1]);
       }
-     
+  
 
-      //parse to date
-      function parseDate(str) {
-        var mdy = str.split('/');
-        return new Date(mdy[2], mdy[0]-1, mdy[1]);
-    }
-
+      }
+    
     })
 
   }
 
   retrieveSlot(slot){
-    this.slotService.findBySlot(slot).subscribe(data=> {
+    try{
+
+      this.slotService.findBySlot(slot).subscribe(data=> {
         this.slotArray = data;
         console.log(this.slotArray)
-        this.location = this.slotArray[0].location;
+        if (this.slotArray.length !== 0){
+          this.location = this.slotArray[0].location;
+        }
+        
 
     },error=> {
       console.log(error)
     })
+
+    } catch (error){
+      console.log(error)
+    }
+   
   }
 
   addPayment(){
@@ -489,12 +754,12 @@ export class VendorProfileComponent implements OnInit {
   }
 
   onChange(data){
-    console.log(data)
+
     const date = data;
     const year = date.substring(0,4);
     const month = date.substring(5,7);
     const day = date.substring(8,10);
-    const fullDate = day+"-"+month+"-"+year;
+    const fullDate = day+"/"+month+"/"+year;
     console.log(fullDate)
     this.paymentData.filter = fullDate.trim().toLowerCase();
   }
@@ -583,24 +848,28 @@ export class VendorProfileComponent implements OnInit {
     this.relativeService.findByrid(this.rid).subscribe(data=> {
       this.relativeArray = data;
       console.log(this.relativeArray)
+      if (this.relativeArray.length !== 0){
 
-      for (let i = 0; i<this.relativeArray.length; i++){
-        if (this.relativeArray[i].relationship == "spouse") {
+        for (let i = 0; i<this.relativeArray.length; i++){
+          if (this.relativeArray[i].relationship == "spouse") {
+  
+            this.spouseArray.push(this.relativeArray[i])
+  
+            this.spouseName = this.spouseArray[i].name;
+            this.spouseIC = this.spouseArray[i].IC_Number.substring(0,2);
+            this.spouseNumber = this.spouseArray[i].IC_Number.substring(3,9);
+            this.spouseRid = this.spouseArray[i].rid;
+            this.spouseRelationship = this.spouseArray[i].relationship;
+            this.spouseID = this.spouseArray[i].id;
+  
+          } else {
+  
+            this.childArray.push(this.relativeArray[i])
+          }
+  
 
-          this.spouseArray.push(this.relativeArray[i])
-
-          this.spouseName = this.spouseArray[i].name;
-          this.spouseIC = this.spouseArray[i].IC_Number.substring(0,2);
-          this.spouseNumber = this.spouseArray[i].IC_Number.substring(3,9);
-          this.spouseRid = this.spouseArray[i].rid;
-          this.spouseRelationship = this.spouseArray[i].relationship;
-          this.spouseID = this.spouseArray[i].id;
-
-        } else {
-
-          this.childArray.push(this.relativeArray[i])
-        }
-
+      }
+     
 
       }
 
@@ -839,7 +1108,7 @@ export class VendorProfileComponent implements OnInit {
   onDeleteChild(id){
     Swal.fire({
       title: 'Are you sure?',
-      text: 'This process is irreversible. Deleting the location may cause data loss',
+      text: 'This process is irreversible. Deleting the child details may cause data loss',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, go ahead.',

@@ -111,6 +111,7 @@
     <br>
 
     <select style="color: black;"  formControlName="location" (change)="showSlot()" class="role-selection" name="location" placeholder="Select Location">
+        
         <option value="{{locationField}}" selected hidden>{{locationField}}</option>
         <option *ngFor="let locationData of locationArray" value="{{locationData.location}}">{{locationData.location}}</option>
     </select>

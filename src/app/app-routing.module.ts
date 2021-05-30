@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './notification/notification.component';
 import { RoleGuard } from './role.guard';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
+import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
 import { VendorProfileComponent } from './vendor-profile/vendor-profile.component';
 const routes: Routes = [
   {
@@ -84,6 +85,10 @@ const routes: Routes = [
     path: 'deleted-profile/:rid', component: DeletedProfileComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'vendor-details/:rid', component: VendorDetailsComponent,
+    canActivate: [AuthGuard]
+  },
   
 
 
@@ -109,5 +114,6 @@ export const routingComponents =
   EditUserComponent,
   DeletedRecordsComponent,
   EditSlotComponent,
-  CreateSlotComponent
+  CreateSlotComponent,
+  VendorDetailsComponent
 ]

@@ -1,64 +1,199 @@
 <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
-    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">close</mat-icon></mat-button>
+    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
     <span class="titleTxt">Vendor Details</span>
+
+    <mat-icon class="print-icon" (click)="printPage()">print</mat-icon>
 
   </mat-toolbar>
   <br>
 
-  <mat-label>Account ID:</mat-label>                    
-  <br>
-  <input [ngModel]="rid" type="text" placeholder="Enter Name.." disabled/>
+  <div class="print-media">
+
+    <img class="logo" src="assets/Jabatan-Bandaran-Logo.png" alt="logo" width="350px">
+
+    <h2 class="titleTxt-1">Personal Details</h2>
+    <div class="line"></div>
+
+    <img *ngIf="profilePicture" class="account-image" [src]="profilePicture" alt="profilePicture"/>
+    <img *ngIf="!profilePicture" class="account-image" src="assets/profile-1.png" alt="profilePicture"/>
+
+    <div class="head">
   
-  <br>
-
-
-
-    <mat-label>Vendor Name:</mat-label>                    
-    <br>
-    <input [ngModel]="name" type="text" placeholder="Enter Name.." disabled/>
+      <mat-label>Account ID:</mat-label>                    
+      <input [ngModel]="rid" type="text" placeholder="Enter Name.." disabled/>
+      <div class="line"></div>
+      <br>
+        <mat-label>Vendor Name:</mat-label>                    
+        <input [ngModel]="name" type="text" placeholder="Enter Name.." disabled/>
+        <div class="line"></div>
+        <br>
+        <mat-label>IC Number:</mat-label>    
+        <input [ngModel]="IC_Number"  type="text" placeholder="Enter IC Number" disabled/>
+        <div class="line"></div>
     
-    <br>
-    <mat-label>IC Number:</mat-label>
-    <br>
-
-
-    <input [ngModel]="IC_Number"  type="text" placeholder="Enter IC Number" disabled/>
+        <br>
+        <mat-label>Email Address:</mat-label>
     
+        <input  [ngModel]="email"   type="email" placeholder="Enter Email Address" disabled/>
+        <div class="line"></div>
+        <br>
 
-    <br>
-    <mat-label>Email Address:</mat-label>
-    <br>
+    </div>
 
-    <input  [ngModel]="email"   type="email" placeholder="Enter Email Address" disabled/>
+    <div class="head-2">
 
-    <br>
-    <mat-label>Phone Number:</mat-label>
-    <br>
-
-    <input  [ngModel]="phone"   type="number" placeholder="phone no." disabled>
-    
-    <br>
-    <mat-label>Registration Date:</mat-label>
-    <br>
-
-    <input  [ngModel]="rent_Date"   type="date" placeholder="Enter Date" disabled>
-    
-    <br>
-    <mat-label>Slot No.</mat-label>
-    <br>
-                
-      <mat-list role="list" *ngIf="slotArray.length !== 0" style="margin-bottom:10px;">
-          <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);"*ngFor="let data of slotArray; let i = index" role="listitem">
-            <mat-icon style="color:purple">where_to_vote</mat-icon>
-              <mat-label>{{data.slot_Number}}</mat-label>
-          </mat-list-item>
-      </mat-list>
+      
+      <mat-label>Address</mat-label>
+      <br>
+                  
+      <input  [ngModel]="address"   type="text" placeholder="Enter Address.." disabled>
+  
+      <div class="line"></div>
 
       <br>
 
-    <mat-label>Slot Price.</mat-label>
+      <mat-label>Phone Number:</mat-label>
+      <br>
+  
+      <input  [ngModel]="phone"   type="number" placeholder="phone no." disabled>
+      
+      <div class="line"></div>
+      <br>
+
+      <mat-label>Registration Date:</mat-label>
+      <br>
+  
+      <input  [ngModel]="rent_Date"   type="date" placeholder="Enter Date" disabled>
+      
+      <div class="line"></div>
+      <br>
+
+      <mat-label>Contract/Non-contract:</mat-label>
+      <br>
+                  
+      <input  [ngModel]="contract"   type="text" placeholder="contract" disabled>
+  
+      <div class="line"></div>
+      <br>
+
+         
+      <mat-label>Slot Location:</mat-label>
+      <br>
+                  
+      <input  [ngModel]="slotLocation"   type="text" placeholder="Enter Slot No." disabled>
+  
+      <div class="line"></div>
+      <br>
+      
+      <mat-label>Slot No:</mat-label>
+      <br>
+                  
+      <input  [ngModel]="slot"   type="text" placeholder="Enter Slot No." disabled>
+  
+      <div class="line"></div>
+      <br>
+  
+      <mat-label>Slot Price ($):</mat-label>
+      <br>
+  
+      <input  [ngModel]="slot_Price"  type="number" placeholder="Slot Price ($)" disabled>
+      
+      <div class="line"></div>
+      <br>
+
+
+    </div>
     <br>
 
-    <input  [ngModel]="slot_Price"  type="number" placeholder="Slot Price ($)" disabled>
+    <h2 class="titleTxt-1">Spouse and Child Details</h2>
+    <div class="line"></div>
+   <br>
+
+
+   <table id="childTable" style="width:95%; font-size: 14px;margin-left: 20px;">
+    <tr>
+      <th>Child / Spouse No.</th>
+      <th>Name</th>
+      <th>IC Number</th>
+      <th>Relationship</th>
+    </tr>
+    <tr *ngFor="let data of relativeArray; let i = index">
+      <td style="color: black">{{i+1}}.</td>
+      <td style="color: black">{{data.name}}</td>
+      <td style="color: black">{{data.IC_Number}}</td>
+      <td style="color: black">{{data.relationship}}</td>
+    </tr>
+  </table>
+  <br>
+  <br>
+  <div class="line"> </div>
+  <br>
+  <br>
+  <h2 class="titleTxt-1">Payment History</h2>
+  <div class="line"></div>
+  <br>
+
+  <table id="childTable" style="width:95%; font-size: 14px;margin-left: 20px;">
+    <tr>
+      <th>Receipt ID.</th>
+      <th>Payment Date</th>
+      <th>Due Date</th>
+      <th>Notification</th>
+      <th>Amount Paid</th>
+      <th>Email</th>
+    </tr>
+    <tr *ngFor="let data of paymentArray; let i = index">
+      <td style="color: black">{{data.paymentID}}</td>
+      <td style="color: black">{{data.payment_Date}}</td>
+      <td style="color: black">{{data.due_Date}}</td>
+      <td style="color: black">
+
+
+        <span *ngIf="data.send_Email==true">Sent</span>
+        <span *ngIf="data.send_Email==false">Not Delivered</span>
+      
+      </td>
+      <td style="color: black;">${{data.price}}</td>
+      <td style="color: black;">{{data.email}}</td>
+    </tr>
+  </table>
+  <br>
+  <br>
+
+  <h2 class="titleTxt-1">Attachment</h2>
+  <div class="line"></div>
+  <br>
+
+  <table id="childTable" style="width:95%; font-size: 14px;margin-left: 20px;">
+    <tr>
+      <th>ID.</th>
+      <th>Document Name</th>
+      <th>Type</th>
+      <th>Date Uploaded</th>
+      <th>Folder</th>
+    </tr>
+    <tr *ngFor="let data of attachmentArray; let i = index">
+      <td style="color: black">{{i+1}}</td>
+      <td style="color: black">{{data.name}}</td>
+      <td style="color: black">{{data.type}}</td>
+      <td style="color: black;">{{data.date_Uploaded}}</td>
+      <td style="color: black;">{{data.link}}</td>
+    </tr>
+  </table>
+  <br>
+  <br>
+
+  <h2 class="titleTxt-1">Remarks</h2>
+  <div class="line"></div>
+  <br>
+  <textarea [(ngModel)]="remarksDescription" class="text-area-1" placeholder="Enter remark.." disabled>
     
-    <br>
+  </textarea>
+
+
+
+
+
+     
+  </div>
+ 

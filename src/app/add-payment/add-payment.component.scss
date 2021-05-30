@@ -10,14 +10,32 @@ mat-sidenav-content{
 .search-card{
     background-color: white;
     margin-top: 20px;
-    width: 600px;
+    width: 700px;
     display: block;
     margin-right: auto;
     margin-left: auto;
+    margin-bottom: 100px;
+    border: 1px solid rgb(235, 235, 235);
     // align-self: center;
     
 }
 
+.role-selection{
+
+  background: rgba(128, 128, 128, 0.158);
+  box-shadow: none;
+  height: 38px;
+  width: 98%;
+  border: none;
+  border-radius: 5px;
+  padding-left: 5px;
+  margin-bottom: 15px;
+
+}
+
+mat-list{
+  border: 1px solid rgb(238, 238, 238);
+}
 .mat-form-field-appearance-outline .mat-form-field-outline {
     color: purple !important;
   }
@@ -47,18 +65,21 @@ mat-sidenav-content{
 //   }
 
   input{
-    background: rgba(128, 128, 128, 0.158);
+    background: rgb(235, 235, 235);
     box-shadow: none;
     height: 38px;
-    width: 100%;
+    width: 98%;
     border: none;
     border-radius: 5px;
     padding-left: 5px;
     margin-bottom: 20px;
+    margin-top: 10px;
+    border: 1px solid rgb(196, 196, 196);
 }
 
   .mat-label-form{
     text-align: left;
+    margin-left: 0px;
     color: black;
 
   }
@@ -78,6 +99,15 @@ mat-sidenav-content{
     height: 40px;
     background-color: rgb(105, 2, 173) ;
 }
+.submitBtn-1{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  width: 300px;
+  height: 40px;
+  background-color: rgb(211, 43, 226) ;
+}
 
 .titleTxt{
   margin-left: 20px;
@@ -85,6 +115,27 @@ mat-sidenav-content{
   color: rgb(90, 38, 133);
 }
 
+.titleTxt-1{
+  margin-left: 5px;
+  margin-bottom: 5px;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.descTxt{
+
+  margin-left: 5px;
+  margin-bottom: 5px;
+  color: rgb(112, 112, 112);
+  font-size: 14px;
+
+}
+
+.info-message{
+  color:red;
+  font-size: 12px;
+}
 
 .selection{
     background: rgba(128, 128, 128, 0.158);

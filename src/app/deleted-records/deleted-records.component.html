@@ -53,7 +53,9 @@
 
         <mat-card class="search-card">
             <input [(ngModel)]="searchKey" type="text" placeholder="Search for IC, name, phone number, etc....." class="location-input"/>
-            <button (click)="applyFilter()" class="location-button" mat-raised-button>Submit</button>
+            <button (click)="applyFilter()" class="location-button" mat-raised-button>Search <mat-icon>search</mat-icon></button>
+            <span (click)="retrieveProfile()" class="resetInfo-1">Reset</span>
+            
         </mat-card>
 
 
@@ -61,7 +63,16 @@
         <div class ="mat-elevation-z8" style="margin-top: 10px;">
       
             <mat-table [dataSource]="listData" matSort>
-      
+                
+              <ng-container  matColumnDef="link">
+                <mat-header-cell *matHeaderCellDef mat-sort-header ></mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+
+                    <img class="profile-pic" *ngIf="element.link" src="{{element.link}}" alt="profilePic" />
+                    <img class="profile-pic" *ngIf="!element.link" src="assets/profile-1.png" alt="profilePic" />
+
+                </mat-cell>
+            </ng-container>
       
               <ng-container  matColumnDef="payment_Date">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >Latest Payment Date</mat-header-cell>
@@ -85,11 +96,11 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header >Phone No.</mat-header-cell>
                     <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.phone}}</mat-cell>
                 </ng-container>
+                <ng-container matColumnDef="DeletedAt">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header >Date Deleted</mat-header-cell>
+                  <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.createdAt}}</mat-cell>
+              </ng-container>
         
-                <ng-container matColumnDef="slot">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header >Slot</mat-header-cell>
-                    <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot}}</mat-cell>
-                </ng-container>
         
         
          
@@ -98,8 +109,8 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                     
-                      <button mat-raised-button class="editBtn" (click)="restoreProfile(row)">Restore</button>
-                      <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="deleteSlot(row)"><mat-icon>delete</mat-icon></button>
+                      <button mat-raised-button class="editBtn" (click)="onRestore(row)">Restore</button>
+                      <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
                     </mat-cell>
         
                     

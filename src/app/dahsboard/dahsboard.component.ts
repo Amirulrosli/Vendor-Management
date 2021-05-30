@@ -152,6 +152,11 @@ export class DahsboardComponent implements OnInit {
   notificationField = "All";
   dateFilter: any;
   filteredArray: any = [];
+  discontinued: any = [];
+  discontinuedlength: any;
+  delPaymentArray: any = [];
+  totalPayment = 0;
+  paymentSeries: any =[]
 
 
 
@@ -406,10 +411,10 @@ displayedLocationColumns: string[] = [
 
   onDelete(data){
   
-
+    var rid = localStorage.getItem('rid');
     Swal.fire({
       title: 'Are you sure?',
-      text: 'This process is irreversible.',
+      text: 'This process is irreversible. Vendor Profile Will be mark as discontinued/deleted',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, go ahead.',
@@ -420,7 +425,7 @@ displayedLocationColumns: string[] = [
       if (result.value) {
         const date = new Date();
         const notify = {
-          rid: data.rid,
+          rid: rid,
           title: 'Account Deleted'+' '+data.name, 
           description: 'Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was deleted !',
           category: 'Deleted vendor profile',
@@ -952,7 +957,12 @@ displayedLocationColumns: string[] = [
           this.paymentData = data;
           this.paidLength = this.paymentData.length;
 
+          this.delProfileService.findAll().subscribe(data=> {
 
+            this.discontinued = data;
+            this.discontinuedlength = this.discontinued.length;
+
+          var discontinueCount = parseInt(this.discontinuedlength);
           var overdue = parseInt(this.overdueLength);
           var paid = parseInt(this.paidLength);
 
@@ -964,7 +974,7 @@ displayedLocationColumns: string[] = [
               palette: 'palette3'
             },
            
-            series: [paid,2,overdue],
+            series: [paid,discontinueCount,overdue],
             chart: {
               height: 400,
               width: 500,
@@ -986,7 +996,11 @@ displayedLocationColumns: string[] = [
               }
             ]
           };
-  
+          
+        },error=>{
+          console.log(error);
+          return;
+        })
           
         },error=> {
           console.log(error);
@@ -1011,24 +1025,45 @@ displayedLocationColumns: string[] = [
 
     var payment = [];
     var dateArray = [];
+    var totalPayment = 0;
+    this.totalPayment = 0;
+    this.paymentSeries = [];
 
     this.paymentService.findAll().subscribe(data=> {
       this.paymentArray = data;
-      console.log(this.paymentArray)
-
-      var paymentLength = this.paymentArray.length;
-      var requested = 0;
-      var totalPayment = 0;
-
-      if (paymentLength-1 > 8){
-        requested = paymentLength-9
-      }
+      
 
       if(this.paymentArray !== 0){
 
+
+        this.delPaymentService.findAll().subscribe(res=> {
+          this.delPaymentArray = res;
+         
+          if (this.delPaymentArray.length !== 0){
+
+            console.log(this.paymentArray)
+  
+            for (let i =0; i<this.delPaymentArray.length; i++){
+           
+              this.totalPayment += parseInt(this.delPaymentArray[i].price);
+           
+            }
+
+
+
+            
+        var paymentLength = this.paymentArray.length;
+        var requested = 0;
+  
+        if (paymentLength-1 > 8){
+          requested = paymentLength-9
+        }
+
+        console.log(this.paymentArray)
+
         for (let i = paymentLength-1; i>=requested;i--){
        
-          payment.push(this.paymentArray[i].price)
+          this.paymentSeries.push(this.paymentArray[i].price)
 
           const newDate = new Date(this.paymentArray[i].createdAt);
           let latest_date = this.datePipe.transform(newDate,'dd/MM HH:mm')
@@ -1039,8 +1074,9 @@ displayedLocationColumns: string[] = [
           totalPayment += parseInt(this.paymentArray[i].price);
         }
 
+        totalPayment += this.totalPayment;
 
-        
+    
       this.linechartOptions = {
 
         theme: {
@@ -1049,7 +1085,7 @@ displayedLocationColumns: string[] = [
      
         series1: [{
           name: "Payment ($):",
-          data: payment,
+          data: this.paymentSeries,
         },
           
         ],
@@ -1094,6 +1130,112 @@ displayedLocationColumns: string[] = [
           }
         }
       };
+  
+      } else {
+            
+        var paymentLength = this.paymentArray.length;
+        var requested = 0;
+  
+        if (paymentLength-1 > 8){
+          requested = paymentLength-9
+        }
+
+        console.log(this.paymentArray)
+
+        for (let i = paymentLength-1; i>=requested;i--){
+       
+          this.paymentSeries.push(this.paymentArray[i].price)
+
+          const newDate = new Date(this.paymentArray[i].createdAt);
+          let latest_date = this.datePipe.transform(newDate,'dd/MM HH:mm')
+          dateArray.push(latest_date)
+        }
+
+        for(let i = 0; i< paymentLength; i++){
+          totalPayment += parseInt(this.paymentArray[i].price);
+        }
+
+        console.log(payment)
+        console.log(totalPayment)
+
+    
+      this.linechartOptions = {
+
+        theme: {
+          palette: 'palette8'
+        },
+     
+        series1: [{
+          name: "Payment ($):",
+          data: this.paymentSeries,
+        },
+          
+        ],
+
+       
+      
+        chart: {
+          height: 330,
+          width: 460,
+          type: "line",
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: "straight"
+        },
+        title: {
+          text: "Latest Income Trend",
+          align: "left",
+          
+        },
+        
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            opacity: 0.8
+          }
+        },
+        xaxis: {
+          categories: dateArray,
+          title: {
+            text: "Total Income: $" + totalPayment,
+            style:{
+              color: "black",
+              fontFamily: "Sans-Serif",
+              fontSize: "17px"
+            }, 
+          }
+        }
+      };
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }, error=> {
+          console.log(error)
+        })
+  
+      
+
 
 
       }

@@ -23,6 +23,10 @@ export class DelpaymentService {
         return this.http.post(baseURL,data)
     }
 
+    findByPaymentID(paymentID): Observable<any> {
+        return this.http.get(`${baseURL}/payment/${paymentID}`)
+    }
+
     update(id,data): Observable<any> {
         return this.http.put(`${baseURL}/${id}`,data)
     }

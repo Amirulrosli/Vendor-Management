@@ -67,9 +67,15 @@ mat-sidenav {
 }
 
 .titleTxt{
+    margin-top:-5px;
     margin-left: 40px;
 }
 
+.titleTxt-1{
+    margin-left: 20px;
+    margin-bottom: -3px;
+    font-size: 16px;
+}
 .toggle{
     color: white !important;
     cursor: pointer;
@@ -78,6 +84,138 @@ mat-sidenav {
 .error-message{
     color: red;
 }
+
+.logo{
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+
+.line{
+    border-bottom: 1px solid rgb(238, 238, 238);
+    width: 98%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.account-image{
+
+    width: 130px;
+    height: 170px;
+    border: 1px solid rgb(219, 219, 219);
+    object-fit: cover;
+    margin-left: 20px;
+    margin-top: 20px;
+
+}
+
+@media print {
+    button{
+        display: none;
+    }
+
+    .mat-toolbar{
+        display: none;
+    }
+}
+
+.head{
+
+    position:relative;
+    left: 25%;
+    top: -180px;
+    width:70%;
+    mat-label{
+        font-size: 14px;
+        font-weight: bold;
+    }
+    input{
+        width:60%;
+        margin-bottom: 3px;
+        margin-top: 3px;
+        display: block;
+        margin-left: 30%;
+        margin-right: auto;
+        margin-top:-30px;
+
+    }
+
+}
+
+.head-2{
+    margin-top: -180px;
+
+    input{
+        margin-bottom: 10px;
+    }
+
+    mat-label{
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
+
+.print-media{
+    width: 95%;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    border-left: 1px solid rgb(241, 241, 241);
+    border-right: 1px solid rgb(241, 241, 241);
+
+}
+
+
+#childTable {
+    margin-top:20px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #childTable td, #childTable th {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  #childTable tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #childTable tr:hover {background-color: #ddd;}
+  
+  #childTable th {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    text-align: left;
+    background-color: rgb(124, 122, 122);
+    color: white;
+  }
+
+  .text-area-1{
+    background: rgba(226, 226, 226, 0.158);
+    border: 1px solid rgb(204, 204, 204) !important;
+    box-shadow: none;
+    width: 92%;
+    height: 280px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+  }
+
+  .print-icon{
+      position:absolute;
+      right: 60px;
+      font-size: 38px;
+      top: 12px;
+      cursor: pointer;
+      color: rgb(255, 255, 255);
+  }
 
 
   

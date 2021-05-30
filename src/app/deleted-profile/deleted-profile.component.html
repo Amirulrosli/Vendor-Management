@@ -36,7 +36,7 @@
 
             
             <button *ngIf="!viewOnly" class="button-1" mat-raised-button (click)="onRestore(profileData)">Restore Profile</button>
-            <button *ngIf="!viewOnly" class="button-2" mat-raised-button (click)="onDelete()">Delete<mat-icon>delete</mat-icon></button>
+            <button *ngIf="!viewOnly" class="button-2" mat-raised-button (click)="onDelete(profileData)">Delete<mat-icon>delete</mat-icon></button>
           
 
         </div>
@@ -63,11 +63,16 @@
            
                 <h1 class="titles">Payment History</h1>
                 <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(173, 173, 173); margin-left:20px;margin-top:-10px;">Deleted Payment History</p>
-    
+                
                 <mat-card class="search-card-1">
+                    
+                <input style="width:75%; border-bottom: 1px solid gray;" type="text" [(ngModel)]="searchKey" placeholder="Search Reciept ID.."/>
+                <button mat-raised-button class="searchBtn" (click)="applyFilter()">Search</button>
+                <button  mat-raised-button class="clearBtn" (click)="clearSearch()">Reset</button> <br>
+
                     <mat-label style="color: black;">Enter Date: </mat-label>
-                    <input type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
-                    <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
+                    <input type="date" style="width:20%" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+                    <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;left:10px;color: black; position: relative; top: 5px;">closed</mat-icon>
               </mat-card>
               <br>
     
@@ -75,7 +80,10 @@
     
                 
                     <mat-table [dataSource]="paymentData" matSort>
-           
+                        <ng-container  matColumnDef="paymentID">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >Reciept ID</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >{{element.paymentID}}</mat-cell>
+                        </ng-container>
                         <ng-container  matColumnDef="payment_Date">
                             <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
                             <mat-cell *matCellDef="let element" >{{element.payment_Date}}</mat-cell>
@@ -126,12 +134,14 @@
                             </mat-footer-cell>
                           </ng-container>
                           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="viewing(row.rid)"></mat-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
                           <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
                         </mat-table>
     
                         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
                       </div>
+                      <br>
+                      <br>
             </div>       
     
     

@@ -39,6 +39,11 @@ export class paymentService {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
+    findByPaymentID(paymentID): Observable<any> {
+        console.log(paymentID)
+        return this.http.get(`${baseURL}/payment/${paymentID}`)
+    }
+
     findSent(): Observable<any> {
         return this.http.get(`${baseURL}/sent/sent`)
     }

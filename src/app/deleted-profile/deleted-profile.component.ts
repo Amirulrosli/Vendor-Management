@@ -57,6 +57,7 @@ export class DeletedProfileComponent implements OnInit {
   vendorname: any;
   email:any;
   descriptionRemarks:any;
+  searchKey: any;
 
 
   showRemarks = false;
@@ -79,6 +80,7 @@ export class DeletedProfileComponent implements OnInit {
   color5 = '#919191'
 
   displayedColumns: string[] = [
+    'paymentID',
     'payment_Date',
     'due_Date',
     'price',
@@ -102,7 +104,7 @@ export class DeletedProfileComponent implements OnInit {
   price:any;
   paymentRid: any =[];
   profileData: any;
-  searchKey:any;
+
   
 
 
@@ -161,14 +163,19 @@ export class DeletedProfileComponent implements OnInit {
 
   }
 
-  applyFilter(){
-
-  }
-
 
   transform(url: string) {
     if (!url) return null;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  applyFilter(){
+    this.paymentData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  clearSearch(){
+    this.searchKey = "";
+    this.paymentData.filter = this.searchKey.trim().toLowerCase();
   }
 
 
@@ -533,19 +540,16 @@ openFile(data){
   window.open(data)
 }
 
-onDelete(){
-
-}
-
-
-onRestore(data){
+onDelete(data){
 
   console.log(data)
+  var rid = localStorage.getItem('rid');
+  var accName = localStorage.getItem('username')
   
 
   Swal.fire({
     title: 'Are you sure',
-    text: 'Restore this vendor profile',
+    text: 'Permanently delete this profile from the database',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Yes',
@@ -556,9 +560,174 @@ onRestore(data){
     if (result.value) {
       const date = new Date();
       const notify = {
-        rid: data.rid,
-        title: 'Account Deleted'+' '+data.name, 
-        description: 'Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was deleted !',
+        rid: rid,
+        title: 'Permanently Deleted Vendor Profile: '+' '+data.name, 
+        description: 'Deleted Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was permanently deleted by '+accName,
+        category: 'Deleted vendor profile (Permanent)',
+        date: date,
+        view: false
+      };
+
+      this.notification.create(notify).subscribe(resp=> {
+        
+      },error=> {
+        console.log(error)
+      });
+
+
+
+      //Deleting Payment Service --------------------------------------------------------------------
+
+      this.delPaymentService.findByRid(data.rid).subscribe(resp=> {
+        this.paymentRid = resp;
+      
+
+        if (this.paymentRid.length > 0){
+          for (let i = 0; i < this.paymentRid.length; i++){
+ 
+              this.delPaymentService.delete(this.paymentRid[i].id).subscribe(data=> {
+                console.log(data);
+              }, error=> {
+                console.log(error)
+              })
+          }
+        }
+      }, err=> {
+        console.log(err)
+      })
+
+
+      //Deleting Payment Service -----------------------------------------------------------------------------
+
+      var relative = [];
+      this.delRelativeService.findByrid(data.rid).subscribe(data=> {
+        relative = data;
+
+        if (relative.length !== 0){
+
+          for (let i = 0; i<relative.length; i++){
+   
+              this.delRelativeService.delete(relative[i].id).subscribe(data=> {
+                console.log(data)
+              },error=> {
+                console.log(error)
+              })
+          }
+        }
+      })
+
+      //Deleting Attachment Service ---------------------------------------------------------------------------
+
+      var attachments = [];
+
+      this.delAttachmentService.findByVendorid(data.rid).subscribe(data=> {
+        attachments = data;
+
+        if (attachments.length !== 0){
+          for (let i =0; i<attachments.length;i++){
+              this.delAttachmentService.delete(attachments[i].id).subscribe(data=> {
+                console.log(data);
+              },error=> {
+                console.log(error)
+              })
+        
+          }
+        }
+      })
+
+
+      //Deleting Remark Service ---------------------------------------------------------------------------------
+
+      var remark = []
+      this.delRemarksService.findByRid(data.rid).subscribe(data=> {
+        remark = data;
+
+        if (remark.length !== 0){
+
+            this.delRemarksService.delete(remark[0].id).subscribe(data=> {
+              console.log(data)
+            }, error=> {
+              console.log(error)
+            })
+
+        
+        }
+      })
+
+
+      //Deleting Photo Service ----------------------------------------------------------------------------------
+
+      var photo = []
+      this.delPhotoService.findByRid(data.rid).subscribe(data=> {
+        photo = data;
+
+        if (photo.length !== 0){
+
+            this.delPhotoService.delete(photo[0].id).subscribe(data=> {
+              console.log(data)
+            }, error=> {
+              console.log(error)
+            })
+      
+        }
+      })
+
+
+
+      //Deleting profile Service ---------------------------------------------------------------------------------
+   
+    
+
+      this.delProfileService.delete(data.id).subscribe(resp=> {
+
+        Swal.fire(
+          'Removed!',
+          'Deleted Vendor Profile removed successfully.',
+          'success'
+        )
+        
+        this.router.navigate(['/deleted-records'])
+        
+      },err=> {
+        Swal.fire("Cannot Delete Profile","Please Check and Try Again!","error")
+      });
+
+
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire(
+        'Cancelled',
+        'Vendor Profile is still in our deleted database.',
+        'error'
+      )
+    }
+  });
+
+}
+
+
+onRestore(data){
+
+  console.log(data)
+  
+  var rid = localStorage.getItem('rid');
+  var accName = localStorage.getItem('username')
+
+  Swal.fire({
+    title: 'Are you sure to restore this profile?',
+    text: 'Restore this deleted vendor profile from deleted',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes',
+    cancelButtonText: 'No'
+
+  }).then((result) => {
+
+    if (result.value) {
+      const date = new Date();
+      const notify = {
+        rid: rid,
+        title: 'Deleted Profile Restored'+' '+data.name, 
+        description: 'Deleted Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was restored by '+accName,
         category: 'Deleted vendor profile',
         date: date,
         view: false
@@ -727,8 +896,8 @@ onRestore(data){
       this.delProfileService.delete(data.id).subscribe(resp=> {
 
         Swal.fire(
-          'Removed!',
-          'Vendor Profile removed successfully.',
+          'Restored!',
+          'Vendor Profile restored successfully.',
           'success'
         )
         
@@ -742,7 +911,7 @@ onRestore(data){
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire(
         'Cancelled',
-        'Vendor Profile is still in our database.',
+        'Vendor Profile is still in our deleted database.',
         'error'
       )
     }

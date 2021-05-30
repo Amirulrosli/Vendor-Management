@@ -67,7 +67,7 @@
 
             
             <button *ngIf="!viewOnly" class="button-1" mat-raised-button (click)="onEdit()">Update Profile </button>
-            <button *ngIf="!viewOnly" class="button-2" mat-raised-button (click)="viewDetails()">View Details<mat-icon>launch</mat-icon></button>
+            <button *ngIf="!viewOnly" class="button-2" mat-raised-button (click)="onDelete()">Delete Profile<mat-icon>delete</mat-icon></button>
           
 
         </div>
@@ -122,9 +122,14 @@
             <h1 class="titles">Payment History</h1>
 
             <mat-card class="search-card-1">
+             
+                <input style="width:75%; border-bottom: 1px solid gray;" type="text" [(ngModel)]="searchKey" placeholder="Search Reciept ID.."/>
+                <button mat-raised-button class="searchBtn" (click)="applyFilter()">Search</button>
+                <button  mat-raised-button class="clearBtn" (click)="clearSearch()">Reset</button> <br>
+
                 <mat-label style="color: black;">Enter Date: </mat-label>
-                <input type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
-                <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
+                <input style="width: 30%;" type="date" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+                <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;left: 10px;color: black; position: relative; top: 5px;">closed</mat-icon>
           </mat-card>
 
         
@@ -134,7 +139,11 @@
 
             
                 <mat-table [dataSource]="paymentData" matSort>
-       
+                    <ng-container  matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header >Receipt ID</mat-header-cell>
+                        <mat-cell *matCellDef="let element" >{{element.paymentID}}</mat-cell>
+                    </ng-container>
+        
                     <ng-container  matColumnDef="payment_Date">
                         <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
                         <mat-cell *matCellDef="let element" >{{element.payment_Date}}</mat-cell>
@@ -143,26 +152,19 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
                         <mat-cell *matCellDef="let element" >{{element.due_Date}}</mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="email">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
-                        <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
-                    </ng-container>
                     <ng-container matColumnDef="price">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</mat-header-cell>
                         <mat-cell *matCellDef="let element" >${{element.price}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="send_Email">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Send</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Notification</mat-header-cell>
                         <mat-cell *matCellDef="let element" >
 
-                        <mat-icon style="color: red;" *ngIf="element.send_Email==false">closed</mat-icon>
-                        <mat-icon style="color: green;" *ngIf="element.send_Email==true">done</mat-icon>
+                            <span style="color: red; position: relative;top:-5px;" *ngIf="element.send_Email==false">Not Delivered <mat-icon style="color: red; position: relative;top:7px;" *ngIf="element.send_Email==false">refresh</mat-icon></span>
+                            <span  style="color: rgb(83, 86, 255); position: relative;top:-5px;" *ngIf="element.send_Email==true">Sent <mat-icon style="color: rgb(83, 86, 255); position: relative;top:7px;" *ngIf="element.send_Email==true">done</mat-icon></span> 
                         </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="overdue">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
-                        <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
-                    </ng-container>
+            
         
             
             
@@ -295,7 +297,7 @@
 
         <div *ngIf="showSpouse == true" class="history">
 
-            <h1 class="titleTxt">Spouse Details <span><mat-icon *ngIf="!viewOnly" (click)="onEditSpouse()" style="margin-left: 5px;color: gray;cursor:pointer;">edit</mat-icon></span></h1>
+            <h1 class="titleTxt">Spouse Details</h1>
 
             <div *ngFor="let spouseArray of spouseArray">
 
@@ -319,6 +321,8 @@
                 <mat-label *ngIf="editSpouse==true" class="IC-Dash">-</mat-label>
                 <input style="background-color: rgb(227, 255, 227); margin-left:0px;width: 34%" *ngIf="editSpouse==true" class="input-profile" [(ngModel)]="spouseNumber" type="text" placeholder="Spouse IC Number"><span *ngIf="editSpouse==true"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
                 <br>
+
+                <button *ngIf="editSpouse==false && !viewOnly" style="margin-left: 40px; margin-top:10px; background-color: blueviolet;"mat-raised-button (click)="onEditSpouse()">Edit Spouse<span style="position:relative; top: 5px;left:5px;"><mat-icon>edit</mat-icon></span></button>
 
                 <button style="margin-left: 40px; background-color: blueviolet;" *ngIf="editSpouse==true" mat-raised-button (click)="submitSpouse()">Save Changes</button>
                 
