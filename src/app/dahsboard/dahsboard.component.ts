@@ -49,6 +49,7 @@ import { DelprofileService } from '../servicesDeleted/profile.service';
 import { DelattachmentService } from '../servicesDeleted/Attachment.service';
 import { DelrelativeService } from '../servicesDeleted/relative.service';
 import { DelremarkService } from '../servicesDeleted/remark.service';
+import { environment } from 'src/environments/environment';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;

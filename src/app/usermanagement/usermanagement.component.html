@@ -136,7 +136,7 @@
         <th>Action</th>
       </tr>
       <tr *ngFor="let data of locationArray; let i = index">
-        <td style="color: black;text-align: center;">{{i}}</td>
+        <td style="color: black;text-align: center;">{{i+1}}</td>
         <td style="color: black">{{data.location}} <br> 
           <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
         <input *ngIf="showEdit==true && number==i" [(ngModel)]=newLocation type="text" class="edit-input" placeholder="Enter location..."/>
@@ -146,7 +146,7 @@
         <td><button *ngIf="showEdit==false" mat-raised-button class="delBtn" (click)="editLocation(i)">Edit</button>
           <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: blueviolet;" class="delBtn" (click)="saveLocation(i)">Save Changes</button>
           <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53);" class="delBtn" (click)="cancelLocation()">Cancel</button>
-        <mat-icon class="del-icon" (click)="deleteLocation(data.id)">delete</mat-icon>
+        <mat-icon class="del-icon" (click)="deleteLocation(data)">delete</mat-icon>
         </td>
       </tr>
     </table>
@@ -179,15 +179,15 @@
 
         <ng-container  matColumnDef="id">
           <mat-header-cell *matHeaderCellDef mat-sort-header >ID</mat-header-cell>
-          <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.id}}</mat-cell>
+          <mat-cell class="matcell" *matCellDef="let element" >{{element.id}}</mat-cell>
       </ng-container>
           <ng-container  matColumnDef="slot_Number">
               <mat-header-cell *matHeaderCellDef mat-sort-header >Slot No.</mat-header-cell>
-              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Number}}</mat-cell>
+              <mat-cell class="matcell" *matCellDef="let element"  >{{element.slot_Number}}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="slot_Price">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Price ($)</mat-header-cell>
-              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Price}}</mat-cell>
+              <mat-cell class="matcell" *matCellDef="let element"  >{{element.slot_Price}}</mat-cell>
           </ng-container>
           <!-- <ng-container matColumnDef="gender">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
@@ -195,12 +195,12 @@
         </ng-container> -->
           <ng-container matColumnDef="location">
               <mat-header-cell *matHeaderCellDef mat-sort-header >Location</mat-header-cell>
-              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.location}}</mat-cell>
+              <mat-cell class="matcell" *matCellDef="let element"  >{{element.location}}</mat-cell>
           </ng-container>
   
           <ng-container matColumnDef="taken">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Available</mat-header-cell>
-              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+              <mat-cell class="matcell" *matCellDef="let element">
                 <p style="color:green; margin-top:10px;" *ngIf="element.taken == false">Available</p>
                 <p style="color: red;  margin-top:10px;" *ngIf="element.taken == true">Taken</p>
               </mat-cell>

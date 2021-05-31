@@ -154,6 +154,7 @@ export class VendorProfileComponent implements OnInit {
     'due_Date',
     'price',
     'send_Email',
+    'createdAt',
     'actions'
 
   ];
@@ -326,11 +327,14 @@ export class VendorProfileComponent implements OnInit {
       for (let i = 0; i<this.paymentList.length;i++){
         var newDate = new Date (this.paymentList[i].payment_Date);
         var dueDate = new Date (this.paymentList[i].due_Date);
+        var created = new Date (this.paymentList[i].createdAt);
     
 
         let payment = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm')
         let due = this.datePipe.transform(dueDate,'dd/MM/YYYY HH:mm')
+        let create = this.datePipe.transform(created,'dd/MM/YYYY HH:mm')
 
+        this.paymentList[i].createdAt = create;
         this.paymentList[i].payment_Date = payment;
         this.paymentList[i].due_Date = due;
       }

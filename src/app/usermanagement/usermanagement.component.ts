@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { CreateSlotComponent } from '../create-slot/create-slot.component';
 import { CreateUserComponent } from '../create-user/create-user.component';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import { EditSlotComponent } from '../edit-slot/edit-slot.component';
 import { EditUserComponent } from '../edit-user/edit-user.component';
 import { NotificationComponent } from '../notification/notification.component';
 import { Account } from '../services/account.model';
@@ -21,6 +22,7 @@ import { attachmentService } from '../services/Attachment.service';
 import { locationService } from '../services/location.service';
 import { notificationService } from '../services/notification.service';
 import { photoService } from '../services/photo.service';
+import { profileService } from '../services/profile.service';
 import { Slot } from '../services/slot.model';
 import { slotService } from '../services/slot.service';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
@@ -117,7 +119,8 @@ export class UsermanagementComponent implements OnInit {
     private locationService: locationService,
     private datePipe: DatePipe,
     private slotService: slotService,
-    private photoService: photoService
+    private photoService: photoService,
+    private profileService: profileService
 
   ) {
     this.close = false;
@@ -402,6 +405,20 @@ export class UsermanagementComponent implements OnInit {
     
   }
 
+  editSlot(data) {
+    this.dialog.open(EditSlotComponent, {
+      width: "600px",
+      height: "70%",
+      panelClass: 'edit-modalbox',
+      data: {
+        dataKey: data
+      }
+    }).afterClosed().subscribe(data=> {
+      this.getSlot();
+      this.locationRefresh();
+    })
+  }
+
 
 
 
@@ -515,8 +532,9 @@ export class UsermanagementComponent implements OnInit {
   }
 
 
-  deleteLocation(id){
-
+  deleteLocation(data){
+      const id = data.id;
+      const location = data.location;
       console.log(id)
   
       Swal.fire({
@@ -531,13 +549,54 @@ export class UsermanagementComponent implements OnInit {
   
         if (result.value){
           this.locationService.delete(id).subscribe(resp=> {
+
+            var slotArray = []
+            this.slotService.findByLocation(location).subscribe(data=> {
+              slotArray = data;
+
+              if (slotArray.length !== 0){
+
+                for (let i = 0; i<slotArray.length; i++){
+
+                  if (slotArray[i].taken){
+                    var profileArray = [];
+                    this.profileService.findByRid(slotArray[i].rid).subscribe(data=> {
+                      profileArray = data;
+
+                      profileArray[0].slot = null;
+                      profileArray[0].slot_Price = null;
+
+                      this.profileService.update(profileArray[0].id,profileArray[0]).subscribe(data=> {
+                        console.log(data)
+                      })
+                    })
+
+                    this.slotService.delete(slotArray[i].id).subscribe(data=> {
+                      console.log(data)
+                    })
+
+                    
+                  } else {
+                    this.slotService.delete(slotArray[i].id).subscribe(data=> {
+                      console.log(data)
+                    })
+                  }
+                  
+
+                  
+
+
+                }
+              }
+            })
   
             Swal.fire(
               'Removed!',
               'Successfully remove location',
               'success'
             )
-            this.locationRefresh();
+            this.nav2();
+            
             
           },err=> {
             Swal.fire(
@@ -718,6 +777,10 @@ export class UsermanagementComponent implements OnInit {
     }
 
     deleteSlot(data){
+
+      var taken = data.taken;
+      var slotRid = data.rid;
+
       console.log(data)
       Swal.fire({
         title: 'Are you sure?',
@@ -746,7 +809,30 @@ export class UsermanagementComponent implements OnInit {
     
                                 this.dataArray[0].total_Slot = this.slotArray.length;
                                 this.locationService.update(this.dataArray[0].id, this.dataArray[0]).subscribe(resp=> {
-                                console.log(resp)
+                                  
+                                  if (taken){
+
+                                    var profileArray = []
+                                    this.profileService.findByRid(slotRid).subscribe(data=> {
+                                      profileArray = data;
+                                      
+                                      profileArray[0].slot = null;
+                                      profileArray[0].slot_Price = null;
+
+                                      this.profileService.update(profileArray[0].id,profileArray[0]).subscribe(data=> {
+                                        console.log(data)
+                                      },error=> {
+                                        console.log(error)
+                                      })
+  
+  
+                                    })
+
+                                  }
+                           
+
+
+
                                 this.locationRefresh();
                                 }, error=> {
                                   console.log(error)

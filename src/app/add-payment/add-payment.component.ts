@@ -423,25 +423,61 @@ compareData(dueDate){
          this.profile.update(this.list.id,this.list).subscribe(array =>{
           console.log("successfully update profile");
         })
-  
+        var payment = []
         this.payment.create(this.info).subscribe(array => {
-          console.log("successfully create payment");
-    
-          this.dateField=undefined;
-          this.selectField = "";
-          this.slotField = "";
-          this.priceField = undefined;
-          this.vendorField = "";
-          this.monthField = "1";
-          this.typeReceipt = "Auto";
-          this.list = [];
-          this.dataList = [];
-          this.myControl.reset();
-          this.showReceiptField = false;
-          this.receiptNo="";
+          payment = array;
+          console.log(payment);
 
-        
-          this.alert.successNotification();
+          Swal.fire({
+            title: 'Do you want payment receipt? ',
+            text: 'Do you want to continue to generate the payment receipt',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Generate Receipt',
+            cancelButtonText: 'No'
+      
+          }).then((result) => {
+
+            if (result.value){
+
+              this.dateField=undefined;
+              this.selectField = "";
+              this.slotField = "";
+              this.priceField = undefined;
+              this.vendorField = "";
+              this.monthField = "1";
+              this.typeReceipt = "Auto";
+              this.list = [];
+              this.dataList = [];
+              this.myControl.reset();
+              this.showReceiptField = false;
+              this.receiptNo="";
+
+              this.router.navigate(['/receipt/'+array.paymentID])
+
+
+            } else if (result.dismiss === Swal.DismissReason.cancel){
+              this.dateField=undefined;
+              this.selectField = "";
+              this.slotField = "";
+              this.priceField = undefined;
+              this.vendorField = "";
+              this.monthField = "1";
+              this.typeReceipt = "Auto";
+              this.list = [];
+              this.dataList = [];
+              this.myControl.reset();
+              this.showReceiptField = false;
+              this.receiptNo="";
+    
+            
+              this.alert.successNotification();
+              return;
+            }
+
+          })
+    
+         
 
     
         },error => {

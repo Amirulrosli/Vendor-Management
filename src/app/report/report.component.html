@@ -18,7 +18,7 @@
     <div class="line"></div>
 
     <br>
-    <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+    <table id="childTable" style="width:95%; font-size: 14px;margin-left: 20px;">
         <tr style="color:black;font-weight: bold;">
           <th>No.</th>
           <th>Vendor RID</th>
@@ -140,7 +140,7 @@
         <tr *ngFor="let data of slotArray; let i = index">
           <td style="color: black">{{i+1}}.</td>
           <td style="color: black">
-            <span *ngIf="data.name">{{data.name}}</span>
+            <span *ngIf="data.name">{{data.rid}}</span>
             <span *ngIf="!data.name">N/A</span>
         </td>
           <td style="color: black">
@@ -149,7 +149,7 @@
         </td>
         
           <td style="color: black">{{data.slot_Number}}</td>
-          <td style="color: black">{{data.slot_Price}}</td>
+          <td style="color: black">${{data.slot_Price}}</td>
           <td style="color: black">{{data.location}}</td>
           <td style="color: black">
             <span *ngIf="data.taken==false" style="color:rgb(0, 99, 0)">Available</span>
@@ -190,11 +190,16 @@
       <br>
       <br>
       <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      
       
       <!--Start Deleted Records---------------------------------------------------------------------------------------->
 
 
-      <h2 class="titleTxt-1"><span style="color:red">[Deleted] </span> Vendor Records</h2>
+      <h2 class="titleTxt-1">Deleted Vendor Records</h2>
       <div class="line"></div>
       <br>
       <br>
@@ -203,7 +208,7 @@
 
 
       <br>
-      <table id="childTable" style="width:95%; font-size: 16px;margin-left: 10px;">
+      <table id="childTable" style="width:95%; font-size: 14.5px;margin-left: 20px;">
           <tr style="color:black;font-weight: bold;">
             <th>No.</th>
             <th>Vendor RID</th>
