@@ -67,6 +67,11 @@ export class ReportComponent implements OnInit {
     this.getPayment();
     this.getRelative();
     this.getSlot();
+
+    setTimeout(() =>{
+
+      this.printPage();
+    },400)
   }
 
   printPage(){
