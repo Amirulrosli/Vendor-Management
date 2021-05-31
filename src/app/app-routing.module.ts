@@ -15,6 +15,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { EmailComponent } from './email/email.component';
 import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ReceiptComponent } from './receipt/receipt.component';
+import { ReportComponent } from './report/report.component';
 import { RoleGuard } from './role.guard';
 import { UsermanagementComponent } from './usermanagement/usermanagement.component';
 import { VendorDetailsComponent } from './vendor-details/vendor-details.component';
@@ -89,6 +91,15 @@ const routes: Routes = [
     path: 'vendor-details/:rid', component: VendorDetailsComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'receipt/:id', component: ReceiptComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'report', component: ReportComponent,
+    canActivate: [AuthGuard]
+  },
+  
   
 
 
@@ -115,5 +126,7 @@ export const routingComponents =
   DeletedRecordsComponent,
   EditSlotComponent,
   CreateSlotComponent,
-  VendorDetailsComponent
+  VendorDetailsComponent,
+  ReceiptComponent,
+  ReportComponent
 ]

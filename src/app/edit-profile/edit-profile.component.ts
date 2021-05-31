@@ -386,15 +386,15 @@ export class EditProfileComponent implements OnInit {
           console.log(this.data.dataKey.slot)
 
           this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
-            this.oldSlotArray = data[0];
+            this.oldSlotArray = data;
 
             if (this.oldSlotArray.length !== 0){
 
               var oldModel = {
-                id: this.oldSlotArray.id,
+                id: this.oldSlotArray[0].id,
                 rid: null,
-                slot_Number: this.oldSlotArray.slot_Number,
-                location: this.oldSlotArray.location,
+                slot_Number: this.oldSlotArray[0].slot_Number,
+                location: this.oldSlotArray[0].location,
                 taken: false,
               }
   

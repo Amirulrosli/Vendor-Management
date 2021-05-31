@@ -1,0 +1,345 @@
+<mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
+    <span class="titleTxt">Generated Report</span>
+    <mat-icon class="print-icon" (click)="printPage()">print</mat-icon>
+
+  </mat-toolbar>
+  <br>
+
+  <div class="print-media">
+
+    <img class="logo" src="assets/Jabatan-Bandaran-Logo.png" alt="logo" width="350px"/>
+
+    <h2 class="titleTxt-1">Generated Vendor Records</h2>
+    <div class="line"></div>
+    <br>
+    <br>
+    <h2 class="titleTxt-1">Vendor Profile</h2>
+    <div class="line"></div>
+
+    <br>
+    <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+        <tr style="color:black;font-weight: bold;">
+          <th>No.</th>
+          <th>Vendor RID</th>
+          <th>Name:</th>
+
+          <th>IC Number:</th>
+
+          <th>Address:</th>
+          <th>Phone No.</th>
+          <th>Email address:</th>
+          <th>Registration Date:</th>
+          <th>Overdue/Paid:</th>
+          <th>Type:</th>
+        </tr>
+        <tr *ngFor="let data of profileArray; let i = index">
+          <td style="color: black">{{i+1}}.</td>
+          <td style="color: black">{{data.rid}}</td>
+          <td style="color: black">{{data.name}}</td>
+          <td style="color: black">{{data.IC_Number}}</td>
+          <td style="color: black">{{data.address}}</td>
+          <td style="color: black">{{data.phone}}</td>
+          <td style="color: black">{{data.email}}</td>
+          <td style="color: black">{{data.rent_Date}}</td>
+          <td style="color: black">
+            <span *ngIf="data.overdue==null">N/A</span>
+            <span *ngIf="data.overdue==true" style="color:red">Overdue</span>
+            <span *ngIf="data.overdue==false" style="color:rgb(33, 90, 0)">Paid</span>
+        </td>
+          <td style="color: black">
+            <span *ngIf="data.contract==true" style="color:blueviolet">Contract</span>
+            <span *ngIf="data.contract==false">Non-contract</span>
+        </td>
+        </tr>
+      </table>
+      <br>
+      <br>
+
+      <h2 class="titleTxt-1">Vendor Relatives</h2>
+      <div class="line"></div>
+
+      <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+        <tr style="color:black;font-weight: bold;">
+          <th>No.</th>
+          <th>Vendor RID</th>
+          <th>Vendor name</th>
+          <th>Relative Name</th>
+          <th>Relative IC No.</th>
+          <th>Relationship</th>
+          
+        </tr>
+        <tr *ngFor="let data of relativeArray; let i = index">
+          <td style="color: black">{{i+1}}.</td>
+          
+          <td style="color: black">{{data.rid}}</td>
+          <td style="color: black">{{data.vendorname}}</td>
+          <td style="color: black">
+            <span *ngIf="data.name">{{data.name}}</span>
+            <span *ngIf="!data.name">N/A</span>
+        </td>
+
+          <td style="color: black">{{data.IC_Number}}
+            <span *ngIf="data.IC_Number">{{data.IC_Number}}</span>
+            <span *ngIf="!data.IC_Number">N/A</span>
+        </td>
+          
+          <td style="color: black">{{data.relationship}}</td>
+        </tr>
+      </table>
+
+
+
+
+      <br>
+      <br>
+      <h2 class="titleTxt-1">Vendor Payment History</h2>
+      <div class="line"></div>
+      <br>
+
+      <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+        <tr style="color:black;font-weight: bold;">
+          <th>No.</th>
+          <th>Vendor RID</th>
+          <th>Reciept ID. </th>
+          <th>Name</th>
+          <th>Slot No.</th>
+          <th>Payment Date.</th>
+          <th>Due Date.</th>
+          <th>Amount Paid:</th>
+        </tr>
+        <tr *ngFor="let data of paymentArray; let i = index">
+          <td style="color: black">{{i+1}}.</td>
+          <td style="color: black">{{data.rid}}</td>
+          <td style="color: black">{{data.paymentID}}</td>
+          <td style="color: black">{{data.name}}</td>
+          <td style="color: black">{{data.slot}}</td>
+          <td style="color: black">{{data.payment_Date}}</td>
+          <td style="color: black">{{data.due_Date}}</td>
+          <td style="color: black">${{data.price}}</td>
+        </tr>
+      </table>
+
+      <br>
+      <br>
+
+      <h2 class="titleTxt-1">Slot Details</h2>
+      <div class="line"></div>
+      <br>
+
+      <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+        <tr style="color:black;font-weight: bold;">
+          <th>No.</th>
+          <th>Vendor RID</th>
+          <th>Vendor name</th>
+          <th>Slot No.</th>
+          <th>Slot Price: </th>
+          <th>Location: </th>
+          <th>Availability:</th>
+        </tr>
+        <tr *ngFor="let data of slotArray; let i = index">
+          <td style="color: black">{{i+1}}.</td>
+          <td style="color: black">
+            <span *ngIf="data.name">{{data.name}}</span>
+            <span *ngIf="!data.name">N/A</span>
+        </td>
+          <td style="color: black">
+            <span *ngIf="data.name">{{data.name}}</span>
+            <span *ngIf="!data.name">N/A</span>
+        </td>
+        
+          <td style="color: black">{{data.slot_Number}}</td>
+          <td style="color: black">{{data.slot_Price}}</td>
+          <td style="color: black">{{data.location}}</td>
+          <td style="color: black">
+            <span *ngIf="data.taken==false" style="color:rgb(0, 99, 0)">Available</span>
+            <span *ngIf="data.taken==true" style="color:red">Taken</span>
+        </td>
+        </tr>
+      </table>
+      <br>
+      <br>
+
+      <h2 class="titleTxt-1">Attachment Details</h2>
+      <div class="line"></div>
+      <br>
+
+
+      <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+        <tr style="color:black;font-weight: bold;">
+          <th>No.</th>
+          <th>Vendor RID</th>
+          <th>Vendor name</th>
+          <th>Doc. Name:</th>
+          <th>Doc. Type </th>
+          <th>Date Uploaded: </th>
+          <th>Folder:</th>
+        </tr>
+        <tr *ngFor="let data of attachmentArray; let i = index">
+          <td style="color: black">{{i+1}}.</td>
+          <td style="color: black">{{data.rid}}</td>
+          <td style="color: black">{{data.username}}</td>
+          <td style="color: black">{{data.name}}</td>
+          <td style="color: black">{{data.type}}</td>
+          <td style="color: black">{{data.date_Uploaded}}</td>
+          <td style="color: black">{{data.link}}</td>
+        
+        </tr>
+      </table>
+
+      <br>
+      <br>
+      <br>
+      
+      <!--Start Deleted Records---------------------------------------------------------------------------------------->
+
+
+      <h2 class="titleTxt-1"><span style="color:red">[Deleted] </span> Vendor Records</h2>
+      <div class="line"></div>
+      <br>
+      <br>
+      <h2 class="titleTxt-1"> <span style="color:red;">[Deleted]</span> Vendor Profile</h2>
+      <div class="line"></div>
+
+
+      <br>
+      <table id="childTable" style="width:95%; font-size: 16px;margin-left: 10px;">
+          <tr style="color:black;font-weight: bold;">
+            <th>No.</th>
+            <th>Vendor RID</th>
+            <th>Name:</th>
+  
+            <th>IC Number:</th>
+  
+            <th>Address:</th>
+            <th>Phone No.</th>
+            <th>Email address:</th>
+            <th>Registration Date:</th>
+            <th>Overdue/Paid:</th>
+            <th>Type:</th>
+          </tr>
+          <tr *ngFor="let data of delprofileArray; let i = index">
+            <td style="color: black">{{i+1}}.</td>
+            <td style="color: black">{{data.rid}}</td>
+            <td style="color: black">{{data.name}}</td>
+            <td style="color: black">{{data.IC_Number}}</td>
+            <td style="color: black">{{data.address}}</td>
+            <td style="color: black">{{data.phone}}</td>
+            <td style="color: black">{{data.email}}</td>
+            <td style="color: black">{{data.rent_Date}}</td>
+            <td style="color: black">
+              <span *ngIf="data.overdue==null">N/A</span>
+              <span *ngIf="data.overdue==true" style="color:red">Overdue</span>
+              <span *ngIf="data.overdue==false" style="color:rgb(33, 90, 0)">Paid</span>
+          </td>
+            <td style="color: black">
+              <span *ngIf="data.contract==true"  style="color:blueviolet">Contract</span>
+              <span *ngIf="data.contract==false">Non-contract</span>
+          </td>
+          </tr>
+        </table>
+        <br>
+        <br>
+  
+        <h2 class="titleTxt-1"><span style="color:red">[Deleted]</span> Vendor Relatives</h2>
+        <div class="line"></div>
+  
+        <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+          <tr style="color:black;font-weight: bold;">
+            <th>No.</th>
+            <th>Vendor RID</th>
+            <th>Vendor name</th>
+            <th>Relative Name</th>
+            <th>Relative IC No.</th>
+            <th>Relationship</th>
+            
+          </tr>
+          <tr *ngFor="let data of delrelativeArray; let i = index">
+            <td style="color: black">{{i+1}}.</td>
+            
+            <td style="color: black">{{data.rid}}</td>
+            <td style="color: black">{{data.vendorname}}</td>
+            <td style="color: black">{{data.name}}</td>
+            <td style="color: black">{{data.IC_Number}}</td>
+            <td style="color: black">{{data.relationship}}</td>
+          </tr>
+        </table>
+  
+  
+  
+  
+        <br>
+        <br>
+        <h2 class="titleTxt-1"><span style="color:red">[Deleted]</span> Vendor Payment History</h2>
+        <div class="line"></div>
+        <br>
+  
+        <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+          <tr style="color:black;font-weight: bold;">
+            <th>No.</th>
+            <th>Vendor RID</th>
+            <th>Reciept ID. </th>
+            <th>Name</th>
+            <th>Slot No.</th>
+            <th>Payment Date.</th>
+            <th>Due Date.</th>
+            <th>Amount Paid:</th>
+          </tr>
+          <tr *ngFor="let data of delpaymentArray; let i = index">
+            <td style="color: black">{{i+1}}.</td>
+            <td style="color: black">{{data.rid}}</td>
+            <td style="color: black">{{data.paymentID}}</td>
+            <td style="color: black">{{data.name}}</td>
+            <td style="color: black">{{data.slot}}</td>
+            <td style="color: black">{{data.payment_Date}}</td>
+            <td style="color: black">{{data.due_Date}}</td>
+            <td style="color: black">${{data.price}}</td>
+          </tr>
+        </table>
+  
+
+        <br>
+        <br>
+  
+        <h2 class="titleTxt-1"><span style="color:red">[Deleted] </span> Attachment Details</h2>
+        <div class="line"></div>
+        <br>
+  
+  
+        <table id="childTable" style="width:95%; font-size: 16px;margin-left: 20px;">
+          <tr style="color:black;font-weight: bold;">
+            <th>No.</th>
+            <th>Vendor RID</th>
+            <th>Vendor name</th>
+            <th>Doc. Name:</th>
+            <th>Doc. Type </th>
+            <th>Date Uploaded: </th>
+            <th>Folder:</th>
+          </tr>
+          <tr *ngFor="let data of delattachmentArray; let i = index">
+            <td style="color: black">{{i+1}}.</td>
+            <td style="color: black">{{data.rid}}</td>
+            <td style="color: black">{{data.username}}</td>
+            <td style="color: black">{{data.name}}</td>
+            <td style="color: black">{{data.type}}</td>
+            <td style="color: black">{{data.date_Uploaded}}</td>
+            <td style="color: black">{{data.link}}</td>
+          
+          </tr>
+        </table>
+  
+        <br>
+        <br>
+        <br>
+
+
+
+
+
+
+
+
+
+
+
+  </div>

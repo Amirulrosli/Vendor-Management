@@ -34,7 +34,7 @@
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt"></span>
             <mat-icon *ngIf="!viewOnly" type="button" (click)="sendEmail()" class="send">send</mat-icon>
-            <mat-icon *ngIf="!viewOnly" type="button" class="print-1" (click)="print()">print</mat-icon>
+            <mat-icon *ngIf="!viewOnly" type="button" class="print-1" (click)="goToPrint()">print</mat-icon>
 
             <div class="name-inline" (click)="retrieveID(profileName)">
                 <p class="username" style="color:white" >{{profileName}}</p>
@@ -166,28 +166,22 @@
                     </ng-container>
             
         
-            
-            
-                    <!-- <ng-container matColumnDef="actions">
-                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                        <mat-cell *matCellDef="let row">
-                          <button mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
-                       
-                         
-                          <button mat-icon-button color="warn" (click)="onDelete(row.id)"><mat-icon>delete</mat-icon></button>
-                        
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                        <mat-cell *matCellDef="let element" >
+
+                            <span><mat-icon (click)="goToReceipt(element)" style="font-size:30px;color: blueviolet; position: relative;top:7px; cursor: pointer">move_to_inbox</mat-icon></span>
                         </mat-cell>
+                    </ng-container>
             
-                        
-                      </ng-container>
-             -->
+            
                       <ng-container matColumnDef="noData">
                         <mat-footer-cell *matFooterCellDef colspan="6">
-                          No data available.
+                            --End of List--
                         </mat-footer-cell>
                       </ng-container>
-                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="viewing(row.rid)"></mat-row>
+                      <mat-header-row *matHeaderRowDef="displayedDataColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayedDataColumns;"></mat-row>
                       <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
                     </mat-table>
 
@@ -461,165 +455,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-
-
-    <div id="forPrint" class="forPrint" style="background-color: white; width: 100%">
-            
-        <div class="img-1">
-            <img class="accountIcon" style="margin-left: 20px;" src="assets/profile.png"/>
-            <div class="profile">
-            <h2>{{username}}</h2>
-            <p>{{vendorID}}</p>
-            </div>
-        </div>
-
-        <div class="rent">
-           VMS: reg - {{rent_Date}}
-        </div>
-        
-
-        <h3 style="margin-left: 20px; color: black; font-weight: bolder">Vendor Information</h3>
-
-        <div class="user-1" style="width: 100%;border-bottom: 1px solid rgba(0, 0, 0, 0.089);">
-            <table style="width:98%; color: black;">
-                <tr>
-                  <th>Acc No.</th>
-                  <th>Vendor Name</th>
-                  <th>IC Number</th>
-                  <th>Email Address</th>
-                  <th>Phone Number</th>
-                  <th>Slot Taken</th>
-                  <th>Slot Price</th>
-                  <th>Latest Payment</th>
-                </tr>
-                <tr>
-                  <td>{{vendorID}}</td>
-                  <td>{{username}}</td>
-                  <td>{{vendorIC}}</td>
-                  <td>{{email}}</td>
-                  <td>{{phoneNo}}</td>
-                  <td>{{slot}}</td>
-                  <td>${{price}}</td>
-                  <td>{{latestPaymentDate}}</td>
-                </tr>
-              </table>
-
-        </div>
-
-        <h3 style="margin-left: 20px; margin-top: 20px; color: black; font-weight: bolder">Payment History</h3>
-
-
-        <div class ="mat-elevation-z8" >
-
-        
-            <mat-table [dataSource]="paymentData" matSort>
-   
-                <ng-container  matColumnDef="payment_Date">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.payment_Date}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="due_Date">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.due_Date}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="price">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >${{element.price}}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="send_Email">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Send</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >
-
-                    <mat-icon style="color: red;" *ngIf="element.send_Email==false">closed</mat-icon>
-                    <mat-icon style="color: green;" *ngIf="element.send_Email==true">done</mat-icon>
-                    </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="overdue">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
-                    <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
-                </ng-container>
-    
-        
-        
-                <!-- <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      <button mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
-                   
-                     
-                      <button mat-icon-button color="warn" (click)="onDelete(row.id)"><mat-icon>delete</mat-icon></button>
-                    
-                    </mat-cell>
-        
-                    
-                  </ng-container>
-         -->
-                  <ng-container matColumnDef="noData">
-                    <mat-footer-cell *matFooterCellDef colspan="6">
-                      No data available.
-                    </mat-footer-cell>
-                  </ng-container>
-                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayedColumns;"  (click)="viewing(row.rid)"></mat-row>
-                  <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
-                </mat-table>
-
-                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10000" showFirstLastButtons></mat-paginator>
-              </div>
-              
-
-        
-    </div>
-
-
-
-              
-
-
-              
-      
-     
-       
-
-
-
-
-
-
-
-
-
-
-
-
-        
+    </div>        
     </mat-sidenav-content>
     </mat-sidenav-container>
 

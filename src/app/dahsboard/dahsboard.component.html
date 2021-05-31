@@ -54,6 +54,7 @@
           <span *ngIf="showSlotField==true" (click)="refreshLocation()" class="resetInfo-1">Reset</span>
           <span *ngIf="showPayment==true" (click)="refreshPayment()" class="resetInfo-1">Reset</span>
           <span *ngIf="showRelative==true"(click)="getRelative()" class="resetInfo-1">Reset</span>
+         
         </div>
         
         <div class="name-inline" (click)="retrieveID(username)" >
@@ -75,6 +76,7 @@
 
       <p class="titleTxt">Dashboard</p>
       <p class="descTxt">Information management & Intelligence</p>
+      <button class="print-report" mat-button (click)="goToReport()"><mat-icon >print</mat-icon></button>
  
     <!-- Filter // ---------------------->
 
@@ -213,7 +215,7 @@
     
               <ng-container matColumnDef="noData">
                 <mat-footer-cell *matFooterCellDef colspan="6">
-                  No data available.
+                  --End of List--
                 </mat-footer-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -234,13 +236,13 @@
           
               <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Vendor Name (Owner)</mat-header-cell>
-                  <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                  <mat-cell class="matcell" *matCellDef="let element">
                   <span  style="color:rgb(65, 65, 65)">{{element.name}}</span></mat-cell>
               </ng-container>
   
               <ng-container  matColumnDef="location" >
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Location</mat-header-cell>
-                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                <mat-cell class="matcell" *matCellDef="let element" >
                   <mat-icon *ngIf="element.taken==false" style="color:rgb(39, 39, 39); margin-right: 5px;">location_on</mat-icon>
                   <mat-icon *ngIf="element.taken==true" style="color:rgb(39, 39, 39); margin-right: 5px;">location_off</mat-icon>
                   <span style="color: rgb(39, 39, 39);">{{element.location}}</span></mat-cell>
@@ -248,12 +250,12 @@
   
               <ng-container matColumnDef="slot_Number">
                 <mat-header-cell  *matHeaderCellDef mat-sort-header>Slot No.</mat-header-cell>
-                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Number}}</mat-cell>
+                <mat-cell class="matcell" *matCellDef="let element"  >{{element.slot_Number}}</mat-cell>
             </ng-container>
   
               <ng-container matColumnDef="slot_Price">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Slot Price</mat-header-cell>
-                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                <mat-cell class="matcell" *matCellDef="let element" >
                $ {{element.slot_Price}}
                
                 </mat-cell>
@@ -266,7 +268,7 @@
   
             <ng-container matColumnDef="taken">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Availability</mat-header-cell>
-              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+              <mat-cell class="matcell" *matCellDef="let element">
                 <span style="margin-right: 5px; color: rgb(255, 133, 133)  ; margin-top: -10x;" *ngIf="element.taken==true">Taken <mat-icon style="position: relative;top:5px;">event_busy</mat-icon></span>
                 <span style="margin-right: 5px; color: rgb(105, 7, 197); margin-top: -10px;" *ngIf="element.taken==false">Available <mat-icon  style="position: relative;top:5px;">event_available</mat-icon></span>
               </mat-cell>
@@ -274,7 +276,7 @@
   
               <ng-container matColumnDef="overdue">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+                <mat-cell class="matcell" *matCellDef="let element">
                   <span style="margin-right: 5px; color: red;" *ngIf="element.overdue==true">Overdue</span> <mat-icon style="color: red;" *ngIf="element.overdue==true">query_builder</mat-icon>
                   <span style="margin-right: 5px; color: green;" *ngIf="element.overdue==false">Paid</span><mat-icon style="color: green;" *ngIf="element.overdue==false">done</mat-icon>
                   <span style="margin-right: 5px; color: rgb(8, 0, 78);" *ngIf="element.overdue!==true && element.overdue!==false">N/A</span>
@@ -284,11 +286,7 @@
               <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let row">
-                    <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
-                 
-                   
-                    <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
-                    <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(110, 110, 110)" (click)="onEmail(row)"><mat-icon>contact_mail</mat-icon></button>
+                    <button *ngIf="!viewOnly && row.name" mat-icon-button style="color:rgb(112, 112, 112)" (click)="viewing(row.rid)"><mat-icon>launch</mat-icon></button>
                   </mat-cell>
       
                   
@@ -296,7 +294,7 @@
       
                 <ng-container matColumnDef="noData">
                   <mat-footer-cell *matFooterCellDef colspan="6">
-                    No data available.
+                    --End of List--
                   </mat-footer-cell>
                 </ng-container>
 
@@ -373,11 +371,10 @@
                 <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
-                   
                      
-                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
-                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(110, 110, 110)" (click)="onEmail(row)"><mat-icon>contact_mail</mat-icon></button>
+            
+                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="goToReceipt(row)"><mat-icon>move_to_inbox</mat-icon></button>
+                   
                     </mat-cell>
         
                     
@@ -385,7 +382,7 @@
         
                   <ng-container matColumnDef="noData">
                     <mat-footer-cell *matFooterCellDef colspan="6">
-                      No data available.
+                      --End of List--
                     </mat-footer-cell>
                   </ng-container>
   
@@ -441,11 +438,8 @@
                   <ng-container matColumnDef="actions">
                       <mat-header-cell *matHeaderCellDef></mat-header-cell>
                       <mat-cell *matCellDef="let row">
-                        <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
+                        <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="viewing(row.rid)"><mat-icon>launch</mat-icon></button>
                      
-                       
-                        <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
-                        <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(110, 110, 110)" (click)="onEmail(row)"><mat-icon>contact_mail</mat-icon></button>
                       </mat-cell>
           
                       

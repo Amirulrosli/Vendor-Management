@@ -505,10 +505,10 @@ onRestore(data){
           if (this.paymentRid.length > 0){
             for (let i = 0; i < this.paymentRid.length; i++){
               this.paymentService.create(this.paymentRid[i]).subscribe(data=> {
-                console.log(data)
+              
   
                 this.delPaymentService.delete(this.paymentRid[i].id).subscribe(data=> {
-                  console.log(data);
+                
                 }, error=> {
                   console.log(error)
                 })

@@ -288,12 +288,21 @@ displayedLocationColumns: string[] = [
 
   }
 
+  goToReceipt(element){
+    console.log(element)
+    this.router.navigate(['/receipt/'+element.paymentID])
+  }
+
   getLocation(){
     this.locationService.findAll().subscribe(data=> {
       this.locationArray = data;
     },error=> {
       console.log(this.locationArray)
     })
+  }
+
+  goToReport(){
+    this.router.navigate(['/report'])
   }
 
   //identify if user is admin

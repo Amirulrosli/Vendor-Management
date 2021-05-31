@@ -53,7 +53,7 @@ export class VendorProfileComponent implements OnInit {
   retrieveData:any;
   paymentHistory:any;
   paymentList: any = [];
-  paymentData: any;
+  paymentData: MatTableDataSource<any>;
   retrieveDataLength:any;
   list:any[];
   close;
@@ -147,18 +147,20 @@ export class VendorProfileComponent implements OnInit {
   fileUploadForm: FormGroup;
   fileInputLabel: string;
 
-  @ViewChild(MatSort) sort:MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-
-   displayedColumns: string[] = [
+  displayedDataColumns: string[] = [
     'email',
     'payment_Date',
     'due_Date',
     'price',
     'send_Email',
-  
+    'actions'
+
   ];
+
+  @ViewChild(MatSort) sort:MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   
 
 
@@ -243,6 +245,11 @@ export class VendorProfileComponent implements OnInit {
 
   }
 
+  goToReceipt(element){
+    console.log(element)
+    this.router.navigate(['/receipt/'+element.paymentID])
+  }
+
   transform(url: string) {
     if (!url) return null;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -293,7 +300,7 @@ export class VendorProfileComponent implements OnInit {
 
 
 
-  print(){
+  goToPrint(){
     this.router.navigate(['/vendor-details/'+this.id])
   }
 
@@ -316,8 +323,6 @@ export class VendorProfileComponent implements OnInit {
       this.paymentList = data;
 
 
-      console.log(this.paymentList)
-
       for (let i = 0; i<this.paymentList.length;i++){
         var newDate = new Date (this.paymentList[i].payment_Date);
         var dueDate = new Date (this.paymentList[i].due_Date);
@@ -330,9 +335,8 @@ export class VendorProfileComponent implements OnInit {
         this.paymentList[i].due_Date = due;
       }
 
-   
 
-      this.paymentData = new MatTableDataSource(this.paymentList);
+      this.paymentData = new MatTableDataSource(this.paymentHistory);
       this.paymentData.sort = this.sort;
       this.paymentData.paginator = this.paginator;
 
@@ -402,10 +406,10 @@ export class VendorProfileComponent implements OnInit {
           if (this.paymentRid.length > 0){
             for (let i = 0; i < this.paymentRid.length; i++){
               this.delPaymentService.create(this.paymentRid[i]).subscribe(data=> {
-                console.log(data)
+               
 
                 this.payment.delete(this.paymentRid[i].id).subscribe(data=> {
-                  console.log(data);
+                  
                 }, error=> {
                   console.log(error)
                 })

@@ -766,10 +766,10 @@ onRestore(data){
         if (this.paymentRid.length > 0){
           for (let i = 0; i < this.paymentRid.length; i++){
             this.paymentService.create(this.paymentRid[i]).subscribe(data=> {
-              console.log(data)
+           
 
               this.delPaymentService.delete(this.paymentRid[i].id).subscribe(data=> {
-                console.log(data);
+               
               }, error=> {
                 console.log(error)
               })
@@ -820,10 +820,10 @@ onRestore(data){
         if (attachments.length !== 0){
           for (let i =0; i<attachments.length;i++){
             this.attachmentService.create(attachments[i]).subscribe(data=> {
-              console.log(data)
+          
 
               this.delAttachmentService.delete(attachments[i].id).subscribe(data=> {
-                console.log(data);
+                
               },error=> {
                 console.log(error)
               })

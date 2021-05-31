@@ -92,7 +92,7 @@ mat-sidenav {
 }
 
 .line{
-    border-bottom: 1px solid rgb(238, 238, 238);
+    border-bottom: 1px solid rgb(218, 218, 218);
     width: 98%;
     display: block;
     margin-right: auto;
@@ -161,8 +161,8 @@ mat-sidenav {
     margin-right: auto;
     margin-left: auto;
     display: block;
-    border-left: 1px solid rgb(241, 241, 241);
-    border-right: 1px solid rgb(241, 241, 241);
+    border-left: 1px solid rgb(218, 218, 218);
+    border-right: 1px solid rgb(218, 216, 216);
 
 }
 
@@ -187,8 +187,8 @@ mat-sidenav {
     padding-top: 10px;
     padding-bottom: 5px;
     text-align: left;
-    background-color: rgb(124, 122, 122);
-    color: white;
+    background-color: rgb(199, 199, 199);
+    color: rgb(0, 0, 0);
   }
 
   .text-area-1{
@@ -211,8 +211,8 @@ mat-sidenav {
   .print-icon{
       position:absolute;
       right: 60px;
-      font-size: 38px;
-      top: 12px;
+      font-size: 30px;
+      top: 14px;
       cursor: pointer;
       color: rgb(255, 255, 255);
   }
