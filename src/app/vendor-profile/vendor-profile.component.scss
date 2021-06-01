@@ -223,7 +223,7 @@ mat-sidenav-content{
   top:100px;
 
   h2{
-    font-size: 35px;
+    font-size: 22px;
   }
 
   p{
@@ -273,7 +273,7 @@ mat-sidenav-content{
   background-color: rgb(194, 0, 194);
 
   position: absolute;
-  left: 60%;
+  left: 70%;
   top: 120px;
 }
 
@@ -281,7 +281,7 @@ mat-sidenav-content{
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid white ;
   position: absolute;
-  left: 70%;
+  left: 80%;
   top: 120px;
 }
 
@@ -702,7 +702,7 @@ margin-top: 10px;
 .second-row-1{
   position: relative;
   left: 50%;
-  top: -220px;
+  top: -280px;
   width: 50%;
 }
 
@@ -769,13 +769,31 @@ margin-top: 10px;
   .deleteImage{
     color: rgb(255, 0, 0);
     position: relative;
-    left: 30px;
+    left: 50px;
     top: -20px;
     visibility: hidden;
   }
 
 
 
+
+
+}
+
+
+
+.open{
+  color: rgba(44, 44, 44, 0.596);
+  font-size: 60px;
+  position: relative;
+  left: 120px;
+  top: -100px;
+  visibility: hidden;
+  cursor: pointer;
+}
+
+.open:hover{
+  color:black;
 }
 
 .attach-container:hover{
@@ -785,9 +803,14 @@ margin-top: 10px;
     cursor: pointer;
     color: rgb(255, 0, 0);
     position: relative;
-    left: 30px;
+    left: 50px;
     top: -20px;
     font-size: 35px;
+  }
+
+  .open{
+    visibility: visible;
+    cursor: pointer;
   }
 
 }
@@ -816,6 +839,7 @@ margin-top: 10px;
   border: 1px solid rgb(204, 204, 204) !important;
   box-shadow: none;
   width: 93%;
+  height: 280px;
   margin-left: 40px;
   border: none;
   border-radius: 5px;
@@ -834,3 +858,39 @@ margin-top: 10px;
   background-color: rgb(255, 49, 49);
   
 }
+
+.toggle{
+  cursor: pointer;
+}
+
+.add{
+  color: black;
+  cursor: pointer;
+}
+
+.add:hover{
+ 
+  color: blueviolet;
+}
+
+.data-name {
+  color: black;
+  text-align: center;
+}
+
+.searchBtn{
+  background-color: blueviolet;
+  height: 40px;
+  width: 80px;
+}
+.clearBtn{
+  background-color: transparent;
+  color: gray;
+  margin-left: 10px;
+  box-shadow: none;
+}
+
+.clearBtn:hover{
+  color: black;
+}
+

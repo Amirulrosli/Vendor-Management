@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment'
 
-const baseURL="http://localhost:3000/api/relative"
+const baseURL=environment.apiURL+"/api/relative"
 
 
 @Injectable({
@@ -40,6 +41,13 @@ export class relativeService {
 
     findByIC(IC_Number): Observable<any> {
         return this.http.get(`${baseURL}/IC/${IC_Number}`)
+    }
+
+    findSpouseOnly():Observable<any> {
+        return this.http.get(`${baseURL}/spouse/spouse`)
+    }
+    findChildOnly():Observable<any> {
+        return this.http.get(`${baseURL}/child/child`)
     }
 
 }

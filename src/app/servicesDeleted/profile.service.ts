@@ -1,35 +1,27 @@
 import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment'
 
-const baseURL=environment.apiURL+"/api/photo"
-
+const baseURL=environment.apiURL+"/api/delprofiles"
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class photoService {
-
-    public notifyData:any;
+export class DelprofileService {
     constructor( private http : HttpClient){}
-
-
-    baseURL(){
-        return environment.apiURL;
-    }
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
     findOne(id): Observable <any> {
-        return this.http.get(`${baseURL}/id/${id}`)
+        return this.http.get(`${baseURL}/${id}`)
     }
 
-    upload(form): Observable<any> {
-        console.log(form)
-        return this.http.post('http://localhost:3000/photo/uploadfile', form)
+    create(data): Observable<any> {
+        console.log(data)
+        return this.http.post(baseURL,data)
     }
 
     update(id,data): Observable<any> {
@@ -44,16 +36,24 @@ export class photoService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
+    findByIC(IC): Observable<any> {
+        return this.http.get(`${baseURL}/IC/${IC}`)
+    }
+
+    updateLatestPayment(id, data): Observable<any> {
+        return this.http.put(`${baseURL}/${id}`,data)
+    }
+
     findByRid(rid): Observable<any> {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
-    create(data): Observable<any> {
-        console.log(data)
-        return this.http.post(baseURL,data)
+    findAllOverdue(): Observable<any> {
+        return this.http.get(`${baseURL}/overdue`)
     }
 
+    findAllPaid(): Observable<any> {
+        return this.http.get(`${baseURL}/paid`)
+    }
     
-
-
 }

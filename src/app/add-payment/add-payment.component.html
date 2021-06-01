@@ -49,22 +49,17 @@
         </mat-toolbar>
      
         <mat-card class="search-card">
-            
 
+                <h2 class="titleTxt-1">Add Payment</h2>
+                <p class="descTxt">Add Payment By entering Vendor IC Number</p>
+            
+                <br>
+                <br>
                 <mat-label class="mat-label-form">IC number:</mat-label>
                 <br>
 
-                <!-- <input type="text"
-                    placeholder="Enter IC Number"
-                    [ngModel]="selectField"
-                    [matAutocomplete]="auto" onChange="onChange(ic)">
-                <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let data of retrieveData" value="{{data.IC_Number}}" (click)="onChange(data.id)">
-                    {{data.IC_Number}}
-                </mat-option>
-                </mat-autocomplete> -->
                 <form>
-                <input style="color: black;width:80%" type="text"
+                <input style="color: black;width:88%; margin: 0px;background-color: rgb(243, 243, 243); border-bottom: 1px solid rgb(121, 121, 121);" type="text"
                 placeholder="Enter IC Number..."
                 aria-label="Number"
                 [formControl]="myControl"
@@ -77,46 +72,110 @@
                 </mat-autocomplete>
                 <button style="background-color: #6902AD;" mat-raised-button (click)="set()" [disabled]="ifSet">Set</button>
                 </form>
-
-                <!-- <select [(ngModel)]="selectField" placeholder="Select IC Number" (change)="onChange($event.target.value)" label="" class="selection" name="IC" placeholder="No.">
-                    <option *ngFor="let data of retrieveData" value="{{data.id}}">{{data.IC_Number}}</option>
-                </select> -->
+                <br>
                 <br>
 
-                <mat-label class="mat-label-form"> Vendor Name:</mat-label>
+                <p class="info-message" *ngIf="dataList.length == 0"> *Enter IC Number First To Proceed</p>
+          
                 <br>
-                <!-- <input type="text" placeholder="Enter Name.."/> -->
-                <input [(ngModel)]="vendorField" [hidden]="list.length!==0" placeholder="vendor name" style="color: black; font-weight: 500; margin-top: 5px;" value="{{list.name}}" disabled/>
-                <mat-list role="list" *ngIf="list.length !== 0" style="margin-bottom:10px;">
-                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
-                        <mat-icon style="color:purple">account_circle</mat-icon>
-                           <mat-label >{{list.name}}</mat-label>
-                    </mat-list-item>
-                </mat-list>
+        <div *ngIf="dataList.length !==0">
+                <mat-label class="mat-label-form">Receipt No:</mat-label>
+                <p class="info-message">*Please choose type of receipt number below</p>
+             
+
+                <select style="color: rgb(0, 0, 0);" (change)="showReceipt()" class="role-selection" [(ngModel)]="typeReceipt" placeholder="Select Location">
+        
+                    <option value="Auto" style="color:red" selected>Auto-Generated</option>
+                    <option value="Enter">Enter Number Manually</option>
+                </select>
+                
                 <br>
-                <mat-label class="mat-label-form">Slot Number:</mat-label>
-                <br>
-                <input [(ngModel)]="slotField" [hidden]="list.length!==0" placeholder="Slot No." value="{{list.slot}}" type="text" disabled/>
-                <mat-list role="list" *ngIf="list.length !== 0" style="margin-bottom:10px;">
-                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
-                        <mat-icon style="color:purple">where_to_vote</mat-icon>
-                           <mat-label>{{list.slot}}</mat-label>
-                    </mat-list-item>
-                </mat-list>
-                <br>
+                <p class="info-message" style="margin-bottom: -10px;" *ngIf="showReceiptField==true">Enter Receipt No.</p>
+
+                <input *ngIf="showReceiptField==true" placeholder="Enter Receipt No" [(ngModel)]="receiptNo" type="text"/>
+
+                <br *ngIf="showReceiptField==true" >
+                <br *ngIf="showReceiptField==true" >
+
                 <mat-label class="mat-label-form">Payment Date:</mat-label>
                 <br>
                 <input [(ngModel)]="dateField" type="date"/>
                 <br>
+
                 <mat-label class="mat-label-form">Price:</mat-label>
+                <mat-label class="mat-label-form" style="position:relative; left: 78%;">Pay For (month(s)):</mat-label>
                 <br>
-                <input placeholder="$" [(ngModel)]="priceField" type="number"/>
+                <input [hidden]="dataList.length!==0" style="width:82%" placeholder="$" [(ngModel)]="priceField" value="{{dataList.slot_Price}}" type="number"/>
+
+
+                <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;  width:82%; display: inline-block;">
+                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                        <mat-icon style="color:purple">attach_money</mat-icon>
+                           <mat-label> ${{dataList.slot_Price}}</mat-label>
+
+                    </mat-list-item>
+                    
+                </mat-list>
+
+                <mat-label style="color:black; margin-left: 10px; font-weight: bold;">X</mat-label>
+                <input style="width:10%;margin-left: 10px;" placeholder="Enter Month" [(ngModel)]="monthField" type="number"/>
                 <!-- <input type="text"(blur)="transformAmount($event)" [(ngModel)]="formattedAmount"  /> -->
                 <br>
-                <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Submit</button>
+                <br>
+
+                <mat-label class="mat-label-form"> Vendor Name:</mat-label>
+                <br>
+               
+               
+                <input [(ngModel)]="vendorField" [hidden]="dataList.length!==0" placeholder="vendor name" style="color: black; font-weight: 500; margin-top: 5px;" value="{{dataList.name}}" disabled/>
+                <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;">
+                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                        <mat-icon style="color:purple">account_circle</mat-icon>
+                           <mat-label style="margin-left: 8px;"> {{dataList.name}}</mat-label>
+                    </mat-list-item>
+                </mat-list>
+                <br>
+                
+
+                <mat-label class="mat-label-form">Location:</mat-label>
+                <br>
+                <input [(ngModel)]="locationField" [hidden]="dataList.length!==0" placeholder="Location..." value="{{dataList.location}}" type="text" disabled/>
+                <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;">
+                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                        <mat-icon style="color:purple">where_to_vote</mat-icon>
+                           <mat-label style="margin-left: 6px;">{{dataList.location}}</mat-label>
+                    </mat-list-item>
+                </mat-list>
+
+                <br>
+              
+                <mat-label class="mat-label-form">Slot Number:</mat-label>
+                <br>
+                <input [(ngModel)]="slotField" [hidden]="dataList.length!==0" placeholder="Slot No." value="{{dataList.slot}}" type="text" disabled/>
+                <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;">
+                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                        <mat-icon style="color:purple">gps_fixed</mat-icon>
+                           <mat-label style="margin-left: 8px;"> {{dataList.slot}}</mat-label>
+                    </mat-list-item>
+                </mat-list>
+          
+                <br>
+
+                
+                <br>
+             
+                <br>
+                <br>
+            
+                <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Save Payment</button>
+                <br>
+                <button mat-raised-button (click)="cancel()">Cancel</button>
+                <br>
+                <br>
+            </div>
             
         </mat-card>
-       
+
 
 
 

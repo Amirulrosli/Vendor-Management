@@ -220,13 +220,13 @@ export class AddVendorComponent implements OnInit {
       forIC: ['',[Validators.required]],
       IC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
       email: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]],
-      phone:['',[Validators.required]],
+      phone:['',[Validators.required,, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(7), Validators.maxLength(7)]],
       rent_Date: ['',[Validators.required]],
       slot:['',[Validators.required]],
       slotprice:['',[Validators.required]],
-      spouseName: ['',[Validators.required,Validators.maxLength(100)]],
-      spIC: ['',[Validators.required]],
-      spouseIC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
+      spouseName: ['',[Validators.maxLength(100)]],
+      spIC: [''],
+      spouseIC_Number:['',[Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
       childName: ['',[Validators.maxLength(100)]],
       chIC: [''],
       childIC_Number:[''],
@@ -354,11 +354,6 @@ export class AddVendorComponent implements OnInit {
 
   async submit(){
 
-    if (this.slotArray.length == 0 || this.childArray.length == 0){
-      Swal.fire("Failed to create vendor","Please check and try again, Click 'Add' to add child details",'error')
-      return;
-    }
-
 
    if(!this.registrationForm.valid){
       Swal.fire("Failed to create vendor","Please Check and try again!",'error')
@@ -380,7 +375,11 @@ export class AddVendorComponent implements OnInit {
       const spouseName = this.registrationForm.value.spouseName;
       const spIC = this.registrationForm.value.spIC;
       const nextSpIC= this.registrationForm.value.spouseIC_Number;
-      const spouseIC_Number = spIC+"-"+nextSpIC;
+      var spouseIC_Number = "";
+      if (nextSpIC !== ""){
+       spouseIC_Number = spIC+"-"+nextSpIC;
+      }
+  
       const contract = this.registrationForm.value.contract;
 
       this.profile.findByIC(IC_Number).subscribe(async data=> {
@@ -415,17 +414,23 @@ export class AddVendorComponent implements OnInit {
           const taken = true;
           var slotData = [];
 
-          var relative = {
-            rid: rid,
-            name: spouseName,
-            IC_Number: spouseIC_Number,
-            relationship: "spouse"
+          console.log(spouseName)
+
+          if (spouseName !=="" || spouseName !== null){
+            var relative = {
+              rid: rid,
+              name: spouseName,
+              IC_Number: spouseIC_Number,
+              relationship: "spouse"
+            }
+            this.relativeService.createRelative(relative).subscribe(data=> {  //save spouse
+              console.log("spouse successfully created")
+            },error=> {
+              console.log(error)
+            })
           }
-          this.relativeService.createRelative(relative).subscribe(data=> {  //save spouse
-            console.log("spouse successfully created")
-          },error=> {
-            console.log(error)
-          })
+
+         if (this.childArray.length !==0){
           for (let i = 0; i<this.childArray.length;i++){                           //Save Child array
             this.childArray[i].rid = rid;
 
@@ -435,6 +440,8 @@ export class AddVendorComponent implements OnInit {
               console.log(error)
             })
           }
+         }
+
           this.Slot.findBySlot(slot).subscribe(data=> {                     //find slot
             slotData = data;
 
@@ -461,13 +468,14 @@ export class AddVendorComponent implements OnInit {
             console.log(error)
             return;
           })
-          
-          this.accountRid = localStorage.getItem('rid')
+
+          var accountRID = localStorage.getItem('rid');
+          var accountName = localStorage.getItem('username')
 
           const notify = {
-            rid: this.accountRid,
+            rid: accountRID,
             title: 'New Vendor Added Name: '+name, 
-            description: 'New vendor has been successfully added name '+name+'\n with IC Number: '+IC_Number,
+            description: 'New vendor has been successfully added name '+name+'\n with IC Number: '+IC_Number+' by '+accountName,
             category: 'New Vendor Added: '+name,
             date: this.date,
             view: false
@@ -559,7 +567,12 @@ export class AddVendorComponent implements OnInit {
     var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
 
 
- 
+    console.log(childName)
+
+    if (childName == null){
+      Swal.fire("Cannot Add Child, Empty Field","Please Fill in the field to add child",'error')
+      return;
+    }
 
     if(childName !== "" && chIC !=="" && childIC_Number !== ""){
 

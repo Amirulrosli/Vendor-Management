@@ -14,6 +14,7 @@ import {map, startWith, withLatestFrom} from 'rxjs/operators';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
 import { accountService } from '../services/account.service';
 import { photoService } from '../services/photo.service';
+import { slotService } from '../services/slot.service';
 
 
 
@@ -63,6 +64,12 @@ export class AddPaymentComponent implements OnInit {
   // date: Date;
   accountRid: string;
   listNotifyArray: any = [];
+  typeReceipt: any = "Auto";
+  showReceiptField = false;
+  receiptNo: any;
+  monthField: any = 1;
+  dataList: any = []
+  paymentArray: any = []
 
   constructor(
     private router: Router,
@@ -73,7 +80,8 @@ export class AddPaymentComponent implements OnInit {
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
     private accountService: accountService,
-    private photoService: photoService
+    private photoService: photoService,
+    private slotService: slotService
   ) {
     this.close = false;
 
@@ -85,6 +93,8 @@ export class AddPaymentComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.showReceiptField = false;
 
     this.retrievePhoto()
 
@@ -139,10 +149,28 @@ export class AddPaymentComponent implements OnInit {
   filter(value: string): string[]{
    this.ifSet = false;
    this.list = [];
+   this.dataList = [];
+   if (value == null){
+     return;
+   }
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
   }
+
+  showReceipt(){
+    if (this.typeReceipt == "Auto"){
+      this.showReceiptField = false;
+    } else if (this.typeReceipt == "Enter") {
+      this.showReceiptField = true;
+    }
+
+
+
+
+
+
+  } 
 
   
 
@@ -189,10 +217,38 @@ set(){
       this.ifSet = false;
       this.vendorField = "";
       this.slotField="";
+      this.list = [];
+      this.myList = [];
       Swal.fire('No Result Found','Please Check your IC Number and Try again','error')
     } else {
+
+      this.dataList = this.myList[0];
+
+      if (this.dataList.slot == null || this.dataList.slot == ""){
+        this.ifSet = false;
+        this.vendorField = "";
+        this.slotField="";
+        this.dataList = [];
+        this.list = [];
+        Swal.fire('No Result Found','Slot taken by profile is not found, please register vendor slot number to proceed','error')
+        return;
+      }
+
       this.ifSet = true;
       this.list = this.myList[0];
+    
+      var slotArray = []
+      this.slotService.findBySlot(this.dataList.slot).subscribe(data=> {
+        slotArray = data;
+
+        if (slotArray.length !==0){
+          this.dataList.location = slotArray[0].location;
+        }
+      })
+
+    
+
+      
     }
   })
 }
@@ -215,7 +271,7 @@ compareData(dueDate){
 
   try{
 
-    this.payment.findByRid(this.list.rid).subscribe(data=> {
+    this.payment.findByRid(this.list.rid).subscribe(data=> {  //check if payment field is empty
       
       this.userData = data;
 
@@ -243,7 +299,7 @@ compareData(dueDate){
         var newDueDate;
         var newPrice;
         var newYear;
-        for(let i = 0; i<this.userData.length;i++){  //loops for latest payment
+        for(let i = 0; i<this.userData.length;i++){  //loops for latest payment & due Date and display it to profiles
         
           var date = new Date(this.userData[i].payment_Date);
           var day = date.getDate();
@@ -318,115 +374,14 @@ compareData(dueDate){
             console.log("set 4")
           }
 
-          // if (day <= newDay){ //15<14
-          //   if (month <= newMonth){ //month low
-          //     if (year <= newYear){
-
-          //       newDate = newDate;
-          //       newDay = newDay;
-          //       newMonth = newMonth;
-          //       newYear = newYear;
-          //       newDueDate = newDueDate;
-          //       newPrice = newPrice;
-          //       console.log("set 1")
-                
-          //     } else {
-
-          //       newDate = date;
-          //       newDay = day;
-          //       newMonth = month;
-          //       newYear = year;
-          //       newDueDate = this.userData[i].due_Date;
-          //       newPrice = this.userData[i].price;
-          //       console.log("set 4")
-          //     }
-
-          //   } else if (year <= newYear) {
-                
-          //     newDate = newDate;
-          //     newDay = newDay;
-          //     newMonth = newMonth;
-          //     newYear = newYear;
-          //     newDueDate = newDueDate;
-          //     newPrice = newPrice;
-          //     console.log("set 1")
-
-          //   } else {
-
-          //     newDate = date;
-          //     newDay = day;
-          //     newMonth = month;
-          //     newYear = year;
-          //     newDueDate = this.userData[i].due_Date;
-          //     newPrice = this.userData[i].price;
-          //     console.log("set 4")
-
-          //   }
-          // } else if (month < newMonth) { //4vs3
-          //   if (year <= newYear){ //2021
-          //     newDate = newDate;
-          //     newDay = newDay;
-          //     newMonth = newMonth;
-          //     newYear = newYear;
-          //     newDueDate = newDueDate;
-          //     newPrice = newPrice;
-          //     console.log("set 1")
-
-          //   } else {
-          //     newDate = date;
-          //     newDay = day;
-          //     newMonth = month;
-          //     newYear = year;
-          //     newDueDate = this.userData[i].due_Date;
-          //     newPrice = this.userData[i].price;
-          //     console.log("set 4")
-          //   }
-          // } else if (month == newMonth){
-
-          //   if (year < newYear){
-          //     newDate = newDate;
-          //     newDay = newDay;
-          //     newMonth = newMonth;
-          //     newYear = newYear;
-          //     newDueDate = newDueDate;
-          //     newPrice = newPrice;
-          //     console.log("set 1")
-          //   } else {
-          //     newDate = date;
-          //     newDay = day;
-          //     newMonth = month;
-          //     newYear = year;
-          //     newDueDate = this.userData[i].due_Date;
-          //     newPrice = this.userData[i].price;
-          //     console.log("set 4")
-          //   }
-
-          // } else if (year < newYear){ 
-   
-          //   newDate = newDate;
-          //   newDay = newDay;
-          //   newMonth = newMonth;
-          //   newYear = newYear;
-          //   newDueDate = newDueDate;
-          //   newPrice = newPrice;
-          //   console.log("set 1")
-
-          // } else {
-          //     newDate = date;
-          //     newDay = day;
-          //     newMonth = month;
-          //     newYear = year;
-          //     newDueDate = this.userData[i].due_Date;
-          //     newPrice = this.userData[i].price;
-          //     console.log("set 4")
-          // }
         }
         this.list.latest_Payment_Date = newDate;
         this.list.latest_Due_Date = newDueDate;
         this.list.latest_Payment = newPrice;
       }
 
-      this.info = {
+      this.info = {          
+        paymentID: this.receiptNo,               //create info payment 
         payment_Date: this.dateField, 
         due_Date: dueDate,  
         email: this.list.email,
@@ -435,7 +390,7 @@ compareData(dueDate){
         price: this.priceField
       }
   
-      this.lastPayment ={
+      this.lastPayment ={                         //update latest payment  
         latest_Payment_Date: this.dateField
       }
 
@@ -473,20 +428,61 @@ compareData(dueDate){
          this.profile.update(this.list.id,this.list).subscribe(array =>{
           console.log("successfully update profile");
         })
-  
+        var payment = []
         this.payment.create(this.info).subscribe(array => {
-          console.log("successfully create payment");
+          payment = array;
+          console.log(payment);
+
+          Swal.fire({
+            title: 'Do you want payment receipt? ',
+            text: 'Do you want to continue to generate the payment receipt',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Generate Receipt',
+            cancelButtonText: 'No'
+      
+          }).then((result) => {
+
+            if (result.value){
+
+              this.dateField=undefined;
+              this.selectField = "";
+              this.slotField = "";
+              this.priceField = undefined;
+              this.vendorField = "";
+              this.monthField = "1";
+              this.typeReceipt = "Auto";
+              this.list = [];
+              this.dataList = [];
+              this.myControl.reset();
+              this.showReceiptField = false;
+              this.receiptNo="";
+
+              this.router.navigate(['/receipt/'+array.paymentID])
+
+
+            } else if (result.dismiss === Swal.DismissReason.cancel){
+              this.dateField=undefined;
+              this.selectField = "";
+              this.slotField = "";
+              this.priceField = undefined;
+              this.vendorField = "";
+              this.monthField = "1";
+              this.typeReceipt = "Auto";
+              this.list = [];
+              this.dataList = [];
+              this.myControl.reset();
+              this.showReceiptField = false;
+              this.receiptNo="";
     
-          this.dateField=undefined;
-          this.selectField = "";
-          this.slotField = "";
-          this.priceField = undefined;
-          this.vendorField = "";
-          this.myControl.reset();
-       
-          this.list = [];
-        
-          this.alert.successNotification();
+            
+              this.alert.successNotification();
+              return;
+            }
+
+          })
+    
+         
 
     
         },error => {
@@ -507,18 +503,92 @@ compareData(dueDate){
 }
 
   submit(){
+
+
     this.formStatus = true;
+    this.priceField = this.dataList.slot_Price;
+
+    var price = parseInt(this.priceField);        //calculate amount paid
+    var total_Price = price * this.monthField;
+    this.priceField = total_Price;
+
+
+
+
+    if (this.typeReceipt == "Enter"){            //Chack if Receipt no is auto or manual
+
+      if (this.receiptNo == "" || this.receiptNo == null || this.receiptNo == undefined){
+        Swal.fire("Add Payment Failed","Please Enter your receipt number except for auto generate.",'error')
+        return;
+      } 
+
+    } else {
+      if (this.typeReceipt == "Auto"){
+        this.receiptNo = null;
+      }
+    }
+
+
+
+
+
+    if (this.monthField < 1){           //if month is less than 1 , month jadikan 1 month
+      this.monthField = 1;
+    }
   
     //add one month to date
-    var dueDate = this.addMonths(new Date (this.dateField),1);
+    var dueDate = this.addMonths(new Date (this.dateField),this.monthField);      //create due date depending on months
     // let latest_dueDate = this.datePipe.transform(dueDate, 'dd-MM-yyyy');
 
     return new Promise (async (resolve)=> {
 
-      var compare = await this.compareData(dueDate); 
+
+      if (this.typeReceipt == "Enter"){
+        this.payment.findByPaymentID(this.receiptNo).subscribe(async data=> {         //check if payment ID is existed or not
+          this.paymentArray = data;
+  
+          if (this.paymentArray.length !== 0){
+            Swal.fire("Add Payment Failed","Duplicated Payment Receipt No., Please try Again!",'error')
+            return;
+          } else {
+
+            var compare = await this.compareData(dueDate);            //start comparing and creating payments
+
+          }
+
+        },error=> {
+          console.log(error)
+        })
+        
+      } else {
+
+        var compare = await this.compareData(dueDate);      
+
+      }
+  
+
+
 
     })
     
+  }
+
+
+
+  cancel(){
+    this.dateField=undefined;
+    this.selectField = "";
+    this.slotField = "";
+    this.priceField = undefined;
+    this.vendorField = "";
+    this.monthField = "1";
+    this.typeReceipt = "Auto";
+    this.list = [];
+    this.dataList = [];
+    this.myControl.reset();
+    this.showReceiptField = false;
+    this.receiptNo="";
+
   }
 
   failed(){

@@ -1,0 +1,326 @@
+
+        <mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+
+            <mat-button class="toggle" (click)="back()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
+            <span class="titleTxt">{{vendorname}} (Deleted)</span>
+            
+            <div class="name-inline" (click)="retrieveID(username)">
+                <p class="username" style="color:white;">{{username}}</p>
+                <p class="role" style="color:white;">{{role}}</p>
+      
+            </div>
+
+            <img *ngIf="photoArray.length==0" class="profile-photo" (click)="retrieveID(username)" src="assets/profile.jpg" alt="profilePIC">
+            <img *ngIf="photoArray.length!==0" class="profile-photo" [src]="profilePhoto" (click)="retrieveID(username)" alt="profilePhoto-real"/>
+            
+            <mat-icon style="color:white;" matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
+            <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
+
+        </mat-toolbar>
+
+
+        <div class="divDesign" >
+
+            <div class="user-image">
+                <img *ngIf="proPicArray.length==0" class="accountIcon" src="assets/profile-1.png"/>
+                <img *ngIf="proPicArray.length!==0" [src]="profilePic" class="accountIcon-1" alt="image-propic"/>
+            </div>
+
+            <div class="user-data">
+                <h2>{{vendorname}} <span style="color:red"> (Deleted) </span></h2>
+                <p>{{email}}<br> 
+                </p>
+                <br>
+
+            </div>
+
+            
+            <button *ngIf="!viewOnly" class="button-1" mat-raised-button (click)="onRestore(profileData)">Restore Profile</button>
+            <button *ngIf="!viewOnly" class="button-2" mat-raised-button (click)="onDelete(profileData)">Delete<mat-icon>delete</mat-icon></button>
+          
+
+        </div>
+
+        <div class="back-2">
+            <div class="navigation-1">
+
+                <button mat-button [style.background]="buttonColor1" [style.color]="color1" class="paymentHistory" (click)="goToPayment()"><mat-icon  [style.color]="color1" >payment</mat-icon> Payment History</button>
+          
+                <button mat-button [style.background]="buttonColor2" [style.color]="color2"  class="paymentHistory" (click)="goToFullProfile()"><mat-icon [style.color]="color2">account_circle</mat-icon>Full Profile</button>
+                
+                <button mat-button [style.background]="buttonColor3" [style.color]="color3"  class="paymentHistory" (click)="goToSpouse()" ><mat-icon [style.color]="color3">supervisor_account</mat-icon>Spouse & Child Details</button>
+      
+                <button mat-button [style.background]="buttonColor4" [style.color]="color4"  class="paymentHistory" (click)="goToAttachment()"><mat-icon [style.color]="color4"> attach_file</mat-icon> Attachments</button>
+                
+                <button mat-button [style.background]="buttonColor5" [style.color]="color5"  class="paymentHistory" (click)="goToRemarks()"><mat-icon [style.color]="color5"> add_comment</mat-icon>Remarks</button>
+
+            </div>
+
+
+
+            <div *ngIf="showPayment==true" class="history">
+ 
+           
+                <h1 class="titles">Payment History</h1>
+                <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(173, 173, 173); margin-left:20px;margin-top:-10px;">Deleted Payment History</p>
+                
+                <mat-card class="search-card-1">
+                    
+                <input style="width:75%; border-bottom: 1px solid gray;" type="text" [(ngModel)]="searchKey" placeholder="Search Reciept ID.."/>
+                <button mat-raised-button class="searchBtn" (click)="applyFilter()">Search</button>
+                <button  mat-raised-button class="clearBtn" (click)="clearSearch()">Reset</button> <br>
+
+                    <mat-label style="color: black;">Enter Date: </mat-label>
+                    <input type="date" style="width:20%" [(ngModel)]="dateFilter" (change)="onChange($event.target.value)" placeholder="enter date"/>
+                    <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;left:10px;color: black; position: relative; top: 5px;">closed</mat-icon>
+              </mat-card>
+              <br>
+    
+                <div class ="mat-elevation-z8" >
+    
+                
+                    <mat-table [dataSource]="paymentData" matSort>
+                        <ng-container  matColumnDef="paymentID">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >Reciept ID</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >{{element.paymentID}}</mat-cell>
+                        </ng-container>
+                        <ng-container  matColumnDef="payment_Date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >Payment Date</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >{{element.payment_Date}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="due_Date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >{{element.due_Date}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >{{element.email}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="price">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Amount Paid</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >${{element.price}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="send_Email">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Notification</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >
+    
+                            <span style="color: red; position: relative;top:-5px;" *ngIf="element.send_Email==false">Not Delivered <mat-icon style="color: red; position: relative;top:7px;" *ngIf="element.send_Email==false">closed</mat-icon></span>
+                            <span  style="color: rgb(83, 86, 255); position: relative;top:-5px;" *ngIf="element.send_Email==true">Sent <mat-icon style="color: rgb(83, 86, 255); position: relative;top:7px;" *ngIf="element.send_Email==true">done</mat-icon></span> 
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="overdue">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Overdue</mat-header-cell>
+                            <mat-cell *matCellDef="let element" >{{element.overdue}}</mat-cell>
+                        </ng-container>
+            
+                
+                
+                        <!-- <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                              <button mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
+                           
+                             
+                              <button mat-icon-button color="warn" (click)="onDelete(row.id)"><mat-icon>delete</mat-icon></button>
+                            
+                            </mat-cell>
+                
+                            
+                          </ng-container>
+                 -->
+                          <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                              No data available.
+                            </mat-footer-cell>
+                          </ng-container>
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
+                          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
+                        </mat-table>
+    
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+                      </div>
+                      <br>
+                      <br>
+            </div>       
+    
+    
+    
+            <div *ngIf="showProfile==true" class="history history-1">
+    
+                <h1 class="titleTxt-1">Personal Details</h1>
+                <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(173, 173, 173);margin-top:-10px;">Deleted Personal Details</p>
+           
+                <br>
+    
+                <mat-label class="text-profile">Account ID:</mat-label>                    
+                <br>
+                <input class="input-profile" [(ngModel)]="rid" type="text" placeholder="Enter Name.." disabled/><span><mat-icon class="icon-profile">account_box</mat-icon></span>
+                
+                <br>
+              
+              
+              
+                  <mat-label class="text-profile">Vendor Name:</mat-label>                    
+                  <br>
+                  <input  class="input-profile" [(ngModel)]="vendorname" type="text" placeholder="Enter Name.." disabled/><span><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+                  
+                  <br>
+                  <mat-label class="text-profile">IC Number:</mat-label>
+                  <br>
+              
+              
+                  <input  class="input-profile" [(ngModel)]="vendorIC"  type="text" placeholder="Enter IC Number" disabled/><span><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+                  
+              
+                  <br>
+                  <mat-label class="text-profile">Email Address:</mat-label>
+                  <br>
+              
+                  <input  class="input-profile" [(ngModel)]="email"   type="email" placeholder="Enter Email Address" disabled/><span><mat-icon class="icon-profile">chat_bubble</mat-icon></span>
+              
+                  <br>
+                  <br>
+                  <mat-label class="text-profile">Contract/Non-contract:</mat-label>
+                  <br>
+              
+                  <input style="background-color: #c4ffc4;" class="input-profile" [(ngModel)]="contract"   type="text" placeholder="Enter contract" disabled/><span><mat-icon class="icon-profile">list_alt</mat-icon></span>
+              
+    
+                  <div class="second-row">
+                  <mat-label class="text-profile">Phone Number:</mat-label>
+                  <br>
+              
+                  <input  class="input-profile"  [(ngModel)]="phoneNo"   type="number" placeholder="phone no." disabled><span><mat-icon class="icon-profile">  call</mat-icon></span>
+                  <br>
+    
+      
+    
+                    <mat-label class="text-profile">Registration Date:</mat-label>
+                    <br>
+                
+                    <input  class="input-profile" [(ngModel)]="rent_Date"   type="date" placeholder="Enter Date" disabled><span><mat-icon class="icon-profile">date_range</mat-icon></span>
+                    
+                    <br>
+                       
+                    <mat-label class="text-profile">Address:</mat-label>
+                    <br>
+                
+                    <input  class="input-profile" [(ngModel)]="address"  type="text" placeholder="address.." disabled><span><mat-icon class="icon-profile">gps_fixed</mat-icon></span>
+                    
+                    <br>
+            
+    
+                  </div>
+                
+                
+    
+    
+    
+            </div>
+    
+    
+    
+            <div *ngIf="showSpouse == true" class="history">
+    
+                    <h1 class="titleTxt-1">Relative Details</h1>
+                    <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(173, 173, 173);margin-top: -10px;">Deleted Relative Details</p>
+                
+                    <table id="childTable" style="width:95%; margin-left:40px; font-size: 14px;">
+                        <tr>
+                          <th>No.</th>
+                          <th>Name</th>
+                          <th>IC Number</th>
+                          <th>Relationship</th>
+                        </tr>
+                        <tr *ngFor="let data of relativeArray; let i = index">
+                          <td style="color: black">{{i}}</td>
+                          <td style="color: black">{{data.name}} <br>
+                            <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
+                            <input *ngIf="showEdit==true && number==i" [(ngModel)]=newChildName type="text" class="edit-input" placeholder="Enter child Name..."/>
+                        
+                        </td>
+                          <td style="color: black">{{data.IC_Number}} <br>
+                            <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
+                            <input *ngIf="showEdit==true && number==i" [(ngModel)]=newChildICNumber type="text" class="edit-input" placeholder="Enter IC Number (XX-XXXXXX)..."/>
+      
+                        </td>
+                        <td  style="color: black">
+                            {{data.relationship}}
+                        </td>
+                        </tr>
+                      </table>
+                
+    
+    
+            </div>
+            <div *ngIf="showAttachment==true" class="history">
+    
+                <h1 class="titleTxt-1">Attachments</h1>
+                <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(185, 185, 185)">Upload Necessary Image for Vendor</p>
+                
+                <div *ngIf="attachmentDataArray.length == 0" class="not-found">
+                    <img src="assets/not found.gif" width="230px"/>
+                    <p style="color: purple; text-align: center">No Image Found</p>
+                </div>
+                <div class="image-container" *ngIf="attachmentDataArray.length !==0; let i = index" >
+    
+                    <div class="attach-container" *ngFor="let data of attachmentDataArray">
+ 
+                        <mat-icon class="open" (click)="openFile(data.link)">open_with</mat-icon>
+                        <img *ngIf="data.application==false" class="attachment-2" src="{{data.link}}" alt="image"/>
+                        <embed *ngIf="data.application==true" class="attachment-2" [src]="transform(data.link)"/>
+                        <p class="data-name">{{data.name}}</p>
+                        
+                    </div>
+    
+                </div>
+        <br>
+        <br>
+                <br>
+              
+    
+            </div>
+    
+    
+            <div *ngIf="showRemarks==true" class="history">
+    
+                <h1 class="titleTxt-1">Remarks</h1>
+                <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(173, 173, 173);margin-top: -10px;">Deleted Remarks Details</p>
+              
+                <div *ngIf="RemarksArray.length == 0" class="not-found">
+                    <img src="assets/not found.gif" width="230px"/>
+                    <p style="color: purple; text-align: center">No Remarks</p>
+                </div>
+    
+                <textarea *ngIf="RemarksArray.length !== 0"  [(ngModel)]="descriptionRemarks" class="text-area-1" placeholder="Enter remark.." disabled></textarea>
+    
+            </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        </div>
+        
+
+
+        

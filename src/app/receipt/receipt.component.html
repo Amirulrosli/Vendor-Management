@@ -1,0 +1,97 @@
+
+<mat-toolbar class="mat-toolbar"> <!--Toolbar C-->
+    <mat-button class="toggle" (click)="closeModal()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
+    <span class="titleTxt">Generated Receipt</span>
+    <mat-icon class="print-icon" (click)="printPage()">print</mat-icon>
+
+  </mat-toolbar>
+  <br>
+
+  <div class="print-media">
+
+    <img class="logo" src="assets/Jabatan-Bandaran-Logo.png" alt="logo" width="320px"/>
+    <br>
+    <div class="line"></div>
+    <br>
+    <table id="childTable" style="width:70%; font-size: 13px;margin-left: 10px;">
+        <tr style="color:black;font-weight: bold;">
+          <th colspan="2" style="border: 1px solid rgb(0, 0, 0);">Receipt:</th>
+        </tr>
+        <tr>
+            <td style="color: black">Invoice No. : </td>
+            <td style="color: black">{{paymentID}}</td>
+        </tr>
+        <tr>
+          <td style="color: black">Date: </td>
+          <td style="color: black">{{createdDate}}</td>
+        </tr>
+
+    </table>
+
+    <table id="childTable" style="width:70%; font-size: 13px;margin-left: 10px;">
+        <tr style="color:black;font-weight: bold;">
+            <th colspan="2" style="border: 1px solid rgb(0, 0, 0);">Receipt To: </th>
+          </tr>
+        <tr>
+          <td style="color: black">Name: </td>
+          <td style="color: black">{{name}}</td>
+        </tr>
+
+        <tr>
+            <td style="color: black">IC_Number: </td>
+            <td style="color: black">{{IC_Number}}</td>
+          </tr>
+          
+        <tr>
+            <td style="color: black">Email Address: </td>
+            <td style="color: black">{{email}}</td>
+          </tr>
+      </table>
+    
+    <br>
+      
+    <table id="childTable" style="width:96%; font-size: 13px;margin-left: 10px;">
+        <tr style="color:black;font-weight: bold;">
+            <th colspan="5" style="border: 1px solid rgb(0, 0, 0);">Payment:</th>
+          </tr>
+
+          <tr style="color:black;font-weight: bold;">
+            <th>Slot No.</th>
+            <th>Slot Price: </th>
+            <th>Paid From: </th>
+            <th>Paid Until: </th>
+            <th>Amount Paid:</th>
+          </tr>
+        <tr>
+          <td style="color: black">{{slot}}</td>
+          <td style="color: black">${{slot_Price}}</td>
+          <td style="color: black">{{payment_Date}}</td>
+          <td style="color: black">{{due_Date}}</td>
+          <td style="color: black">$ {{price}}</td>
+
+        </tr>
+
+      </table>
+
+      <table id="childTable" style="width:70%; font-size: 14px;margin-left: 10px;">
+
+          <tr style="color:black;font-weight: bold;">
+            <td style="color: blueviolet">Total Amount Paid: </td>
+            <td>${{price}}</td>
+  
+          </tr>
+      </table>
+      <br>
+
+      <mat-label>Signature/Cop: </mat-label>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      
+      <div class="line-sig"></div>
+      <br>
+      <div class="line"> </div>
+</div>

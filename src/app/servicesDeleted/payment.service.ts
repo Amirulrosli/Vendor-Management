@@ -3,20 +3,20 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
 
-const baseURL= environment.apiURL+"/api/loginState"
+const baseURL=environment.apiURL+"/api/delpayments"
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class loginStateService {
+export class DelpaymentService {
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-    findOne(id): Observable <any> {
-        return this.http.get(`${baseURL}/${id}`)
+    findOne(rid): Observable <any> {
+        return this.http.get(`${baseURL}/${rid}`)
     }
 
     create(data): Observable<any> {
@@ -24,12 +24,12 @@ export class loginStateService {
         return this.http.post(baseURL,data)
     }
 
-    findOnline(): Observable<any> {
-        return this.http.get(`${baseURL}/user/online`)
+    findByPaymentID(paymentID): Observable<any> {
+        return this.http.get(`${baseURL}/payment/${paymentID}`)
     }
 
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/update/${id}`,data)
+        return this.http.put(`${baseURL}/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -40,13 +40,17 @@ export class loginStateService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    deletebyRid(rid): Observable<any>{
-        return this.http.delete(`${baseURL}/rid/${rid}`)
-    }
-
     findByRid(rid): Observable<any> {
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
-    
+
+    findSent(): Observable<any> {
+        return this.http.get(`${baseURL}/sent/sent`)
+    }
+
+    findNotDelivered(): Observable<any> {
+        return this.http.get(`${baseURL}/deliver/deliver`)
+    }
+
     
 }

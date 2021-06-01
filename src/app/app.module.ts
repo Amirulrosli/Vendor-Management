@@ -33,6 +33,9 @@ import { DeletedRecordsComponent } from './deleted-records/deleted-records.compo
 import { SideProfileComponent } from './side-profile/side-profile.component';
 import { CreateSlotComponent } from './create-slot/create-slot.component';
 import { EditSlotComponent } from './edit-slot/edit-slot.component';
+import { DeletedProfileComponent } from './deleted-profile/deleted-profile.component';
+import { ReceiptComponent } from './receipt/receipt.component';
+import { ReportComponent } from './report/report.component';
 
 
  
@@ -56,7 +59,10 @@ import { EditSlotComponent } from './edit-slot/edit-slot.component';
     DeletedRecordsComponent,
     SideProfileComponent,
     CreateSlotComponent,
-    EditSlotComponent
+    EditSlotComponent,
+    DeletedProfileComponent,
+    ReceiptComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

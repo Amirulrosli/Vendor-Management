@@ -3,14 +3,14 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment';
 
-const baseURL=environment.apiURL+"/api/photo"
+const baseURL=environment.apiURL+"/api/delphoto"
 
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class photoService {
+export class DelphotoService {
 
     public notifyData:any;
     constructor( private http : HttpClient){}
@@ -52,6 +52,7 @@ export class photoService {
         console.log(data)
         return this.http.post(baseURL,data)
     }
+
 
     
 

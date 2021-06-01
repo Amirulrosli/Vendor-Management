@@ -3,33 +3,28 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
 
-const baseURL= environment.apiURL+"/api/loginState"
+const baseURL=environment.apiURL+"/api/delrelative"
+
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class loginStateService {
+export class DelrelativeService {
+
     constructor( private http : HttpClient){}
 
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-    findOne(id): Observable <any> {
-        return this.http.get(`${baseURL}/${id}`)
-    }
 
-    create(data): Observable<any> {
+    createRelative(data): Observable<any> {
         console.log(data)
         return this.http.post(baseURL,data)
     }
 
-    findOnline(): Observable<any> {
-        return this.http.get(`${baseURL}/user/online`)
-    }
-
     update(id,data): Observable<any> {
-        return this.http.put(`${baseURL}/update/${id}`,data)
+        return this.http.put(`${baseURL}/${id}`,data)
     }
 
     deleteAll(): Observable<any>{
@@ -40,13 +35,19 @@ export class loginStateService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    deletebyRid(rid): Observable<any>{
-        return this.http.delete(`${baseURL}/rid/${rid}`)
+    findByrid(rid): Observable<any> {
+        return this.http.get(`${baseURL}/${rid}`)
     }
 
-    findByRid(rid): Observable<any> {
-        return this.http.get(`${baseURL}/rid/${rid}`)
+    findByIC(IC_Number): Observable<any> {
+        return this.http.get(`${baseURL}/IC/${IC_Number}`)
     }
-    
-    
+
+    findSpouseOnly():Observable<any> {
+        return this.http.get(`${baseURL}/spouse/spouse`)
+    }
+    findChildOnly():Observable<any> {
+        return this.http.get(`${baseURL}/child/child`)
+    }
+
 }

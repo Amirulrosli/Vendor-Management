@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
+import { environment } from 'src/environments/environment';
 
-const baseURL="http://localhost:3000/api/attachment"
+const baseURL=environment.apiURL+"/api/attachment"
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class attachmentService {
     constructor( private http : HttpClient){}
 
     baseURL(){
-        return "http://localhost:3000";
+        return environment.apiURL;
     }
 
     findAll(): Observable<any> {

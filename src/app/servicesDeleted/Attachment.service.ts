@@ -3,18 +3,16 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment';
 
-const baseURL=environment.apiURL+"/api/photo"
+const baseURL=environment.apiURL+"/api/delattachment"
 
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class photoService {
+export class DelattachmentService {
 
-    public notifyData:any;
     constructor( private http : HttpClient){}
-
 
     baseURL(){
         return environment.apiURL;
@@ -23,13 +21,14 @@ export class photoService {
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-    findOne(id): Observable <any> {
-        return this.http.get(`${baseURL}/id/${id}`)
+
+    uploadFile(formData): Observable<any> {
+        return this.http.post('http://localhost:3000/uploadfile', formData)
     }
 
-    upload(form): Observable<any> {
-        console.log(form)
-        return this.http.post('http://localhost:3000/photo/uploadfile', form)
+    create(data): Observable<any> {
+        console.log(data)
+        return this.http.post(baseURL,data)
     }
 
     update(id,data): Observable<any> {
@@ -44,16 +43,11 @@ export class photoService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    findByRid(rid): Observable<any> {
-        return this.http.get(`${baseURL}/rid/${rid}`)
+    findByid(id): Observable<any> {
+        return this.http.get(`${baseURL}/id/${id}`)
     }
-
-    create(data): Observable<any> {
-        console.log(data)
-        return this.http.post(baseURL,data)
+    findByVendorid(vendor_rid): Observable<any> {
+        return this.http.get(`${baseURL}/vendor_rid/${vendor_rid}`)
     }
-
-    
-
 
 }

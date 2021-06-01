@@ -38,6 +38,18 @@ import { accountService } from '../services/account.service';
 import { loginStateService } from '../services/loginState.service';
 import { OnlineModel } from '../services/online.model';
 import { photoService } from '../services/photo.service';
+import { Slot } from '../services/slot.model';
+import { locationService } from '../services/location.service';
+import { relativeService } from '../services/relative.service';
+import { attachmentService } from '../services/Attachment.service';
+import { remarkService } from '../services/remark.service';
+import { DelphotoService } from '../servicesDeleted/photo.service';
+import { DelpaymentService } from '../servicesDeleted/payment.service';
+import { DelprofileService } from '../servicesDeleted/profile.service';
+import { DelattachmentService } from '../servicesDeleted/Attachment.service';
+import { DelrelativeService } from '../servicesDeleted/relative.service';
+import { DelremarkService } from '../servicesDeleted/remark.service';
+import { environment } from 'src/environments/environment';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -121,8 +133,6 @@ export class DahsboardComponent implements OnInit {
   paymentArray: any = [];
   loginStateArray: any = [];
   loginProfile: any = [];
-  loginArray: any = []
-  loginModel: OnlineModel[];
   photoArray: any = [];
   profilePhoto:any;
   profileID: any;
@@ -135,6 +145,29 @@ export class DahsboardComponent implements OnInit {
   accountRid: string;
   listNotifyArray: any = [];
   
+  takenSlotArray: any = [];
+  availableSlotArray: any = [];
+  locationField = "All";
+  locationArray: any = [];
+  paymentTableArray: any = []
+  spouseArray: any = [];
+  spouseField = "All";
+
+  showPayment = false;
+  showRelative = false;
+  showVendor = true;
+  notificationField = "All";
+  dateFilter: any;
+  filteredArray: any = [];
+  discontinued: any = [];
+  discontinuedlength: any;
+  delPaymentArray: any = [];
+  totalPayment = 0;
+  paymentSeries: any =[]
+
+
+
+
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -165,17 +198,36 @@ export class DahsboardComponent implements OnInit {
    
   ]
 displayedLocationColumns: string[] = [
-    "IC_Number",
     "location",
     "slot_Number",
     "slot_Price",
-    "name",
     "taken",
+    "name",
     "overdue",
     "actions",
   ]
- 
- 
+
+  displayedPaymentsColumns: string[] = [
+    "slot_Number",
+    'Price',
+    "payment_Date",
+    "due_Date",
+    "send_Email",
+    "name",
+    "email",
+    "actions"
+  ]
+
+  displayedRelativeColumns: string [] = [
+    "IC_Number",
+    "name",
+    "relationship",
+    "vendorName",
+    "Updated_At",
+    "actions"
+
+  ]
+
   
   constructor(
     private router: Router,
@@ -186,10 +238,25 @@ displayedLocationColumns: string[] = [
     private notification: notificationService,
     private changeDetectorRefs: ChangeDetectorRef,
     private slot: slotService,
-    private payment: paymentService,
+    private paymentService: paymentService,
     private accountService: accountService,
     private loginStateService: loginStateService,
-    private photoService: photoService
+    private photoService: photoService,
+    private locationService: locationService,
+    private relativeService: relativeService,
+    private attachmentService: attachmentService,
+    private remarkService: remarkService,
+
+
+
+    //Service for deleted records
+
+    private delPhotoService: DelphotoService,
+    private delPaymentService: DelpaymentService,
+    private delProfileService: DelprofileService,
+    private delAttachmentService: DelattachmentService,
+    private delRelativeService: DelrelativeService,
+    private delRemarkService: DelremarkService
   ) { 
 
     this.close = false;
@@ -199,7 +266,13 @@ displayedLocationColumns: string[] = [
 
   ngOnInit(): void {
 
+    this.showVendor = true;
+    this.notificationField = "All";
+    this.spouseField = "All"
+    this.showRelative = false;
     this.showSlotField = false;
+    this.showPayment = false;
+
 
    this.retrievePhoto()
     this.showPieChart = false;
@@ -216,10 +289,27 @@ displayedLocationColumns: string[] = [
     this.createPieChart();
     this.createLineChart();
     this.findOnlineUser();
+    this.getLocation();
 
 
 
+  }
 
+  goToReceipt(element){
+    console.log(element)
+    this.router.navigate(['/receipt/'+element.paymentID])
+  }
+
+  getLocation(){
+    this.locationService.findAll().subscribe(data=> {
+      this.locationArray = data;
+    },error=> {
+      console.log(this.locationArray)
+    })
+  }
+
+  goToReport(){
+    this.router.navigate(['/report'])
   }
 
   //identify if user is admin
@@ -337,10 +427,10 @@ displayedLocationColumns: string[] = [
 
   onDelete(data){
   
-
+    var rid = localStorage.getItem('rid');
     Swal.fire({
       title: 'Are you sure?',
-      text: 'This process is irreversible.',
+      text: 'This process is irreversible. Vendor Profile Will be mark as discontinued/deleted',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, go ahead.',
@@ -351,7 +441,7 @@ displayedLocationColumns: string[] = [
       if (result.value) {
         const date = new Date();
         const notify = {
-          rid: data.rid,
+          rid: rid,
           title: 'Account Deleted'+' '+data.name, 
           description: 'Vendor profile with \n name: '+data.name+'\n Account ID: '+data.rid+'\n was deleted !',
           category: 'Deleted vendor profile',
@@ -360,43 +450,185 @@ displayedLocationColumns: string[] = [
         };
   
         this.notification.create(notify).subscribe(resp=> {
-          console.log(resp)
+          
         },error=> {
           console.log(error)
         });
 
-        this.payment.findByRid(data.rid).subscribe(resp=> {
+
+        var profile = []
+        this.profiles.findByRid(data.rid).subscribe(data=> {
+          profile = data;
+
+          if(profile.length !==0){
+            profile[0].slot = null;
+            profile[0].slot_Price = null;
+            this.delProfileService.create(profile[0]).subscribe(data=> {
+              console.log(data)
+            },error=> {
+              console.log(error)
+            })
+          }
+
+        })
+
+
+        //Deleting Payment Service --------------------------------------------------------------------
+
+        this.paymentService.findByRid(data.rid).subscribe(resp=> {
           this.paymentRid = resp;
-          console.log(resp)
+        
 
           if (this.paymentRid.length > 0){
             for (let i = 0; i < this.paymentRid.length; i++){
-              this.payment.delete(this.paymentRid[i].id).subscribe(data=> {
-                console.log(data);
-              }, error=> {
+              this.delPaymentService.create(this.paymentRid[i]).subscribe(data=> {
+                console.log(data)
+
+                this.paymentService.delete(this.paymentRid[i].id).subscribe(data=> {
+                  console.log(data);
+                }, error=> {
+                  console.log(error)
+                })
+
+              },error=> {
                 console.log(error)
               })
+             
             }
           }
         }, err=> {
           console.log(err)
         })
 
-        this.slot.findByRid(data.rid).subscribe(resp=> {  //testing delete slot
+
+        //Updating Slot Service------------------------------------------------------------
+
+        this.slot.findByRid(data.rid).subscribe(resp=> {  
           this.slotRid = resp;
 
-          if (this.slotRid.length > 0){
-            for (let i = 0 ; i <this.slotRid.length; i++){
-              this.slot.delete(this.slotRid[i].id).subscribe(data=> {
+          if (this.slotRid.length !== 0){
+
+            this.slotRid[0].rid = null;      
+            this.slotRid[0].taken = false;      
+              this.slot.update(this.slotRid[0].id,this.slotRid[0]).subscribe(data=> {
                 console.log(data);
               },error=> {
                 console.log(error)
               })
-            }
+            
           }
         },error=> {
           console.log(error)
         })
+
+
+        //Deleting Payment Service -----------------------------------------------------------------------------
+
+        var relative = [];
+        this.relativeService.findByrid(data.rid).subscribe(data=> {
+          relative = data;
+
+          if (relative.length !== 0){
+
+            for (let i = 0; i<relative.length; i++){
+              this.delRelativeService.createRelative(relative[i]).subscribe(data=> {
+                console.log(data)
+                this.relativeService.delete(relative[i].id).subscribe(data=> {
+                  console.log(data)
+                },error=> {
+                  console.log(error)
+                })
+
+              },error=> {
+                console.log(error)
+              })
+          
+            }
+          }
+        })
+
+        //Deleting Attachment Service ---------------------------------------------------------------------------
+
+        var attachments = [];
+
+        this.attachmentService.findByVendorid(data.rid).subscribe(data=> {
+          attachments = data;
+
+          if (attachments.length !== 0){
+            for (let i =0; i<attachments.length;i++){
+              this.delAttachmentService.create(attachments[i]).subscribe(data=> {
+                console.log(data)
+
+                this.attachmentService.delete(attachments[i].id).subscribe(data=> {
+                  console.log(data);
+                },error=> {
+                  console.log(error)
+                })
+
+
+              },error=> {
+                console.log(error)
+              })
+          
+            }
+          }
+        })
+
+
+        //Deleting Remark Service ---------------------------------------------------------------------------------
+
+        var remark = []
+        this.remarkService.findByRid(data.rid).subscribe(data=> {
+          remark = data;
+
+          if (remark.length !== 0){
+
+            this.delRemarkService.create(remark[0]).subscribe(data=> {
+              console.log(data)
+
+              this.remarkService.delete(remark[0].id).subscribe(data=> {
+                console.log(data)
+              }, error=> {
+                console.log(error)
+              })
+
+
+            },error=> {
+              console.log(error)
+            })
+          
+          }
+        })
+
+
+        //Deleting Photo Service ----------------------------------------------------------------------------------
+
+        var photo = []
+        this.photoService.findByRid(data.rid).subscribe(data=> {
+          photo = data;
+
+          if (photo.length !== 0){
+            this.delPhotoService.create(photo[0]).subscribe(data=> {
+              console.log(data);
+
+              this.photoService.delete(photo[0].id).subscribe(data=> {
+                console.log(data)
+              }, error=> {
+                console.log(error)
+              })
+
+            },error=> {
+              console.log(error)
+            })
+        
+          }
+        })
+
+
+
+        //Deleting profile Service ---------------------------------------------------------------------------------
+     
+      
 
         this.profiles.delete(data.id).subscribe(resp=> {
 
@@ -410,9 +642,12 @@ displayedLocationColumns: string[] = [
           this.retrieveSlot();
           this.notifyNumber();
           this.paid();
+          this.createChart();
+          this.createPieChart();
+          this.createLineChart();
           
         },err=> {
-          console.log(err)
+          Swal.fire("Cannot Delete Profile","Please Check and Try Again!","error")
         });
 
 
@@ -449,6 +684,9 @@ displayedLocationColumns: string[] = [
         this.overDue();
         this.retrieveSlot();
         this.paid();
+        this.createLineChart();
+        this.createChart();
+        this.createPieChart();
       });
     }, error=> {
       console.log(error)
@@ -471,6 +709,9 @@ displayedLocationColumns: string[] = [
         this.overDue();
         this.retrieveSlot();
         this.paid();
+        this.createLineChart();
+        this.createChart();
+        this.createPieChart();
     })
   }
 
@@ -515,7 +756,12 @@ displayedLocationColumns: string[] = [
 
 
   refreshData(){
+    this.showVendor = true;
+    this.showRelative = false;
     this.showSlotField = false;
+    this.showPayment = false;
+    this.searchForField = "Vendor";
+    this.selectSlotField = "All"
     this.selectField = "All"
     this.profiles.findAll().subscribe(array=> {
       this.retrieveData = array
@@ -759,7 +1005,12 @@ displayedLocationColumns: string[] = [
           this.paymentData = data;
           this.paidLength = this.paymentData.length;
 
+          this.delProfileService.findAll().subscribe(data=> {
 
+            this.discontinued = data;
+            this.discontinuedlength = this.discontinued.length;
+
+          var discontinueCount = parseInt(this.discontinuedlength);
           var overdue = parseInt(this.overdueLength);
           var paid = parseInt(this.paidLength);
 
@@ -771,7 +1022,7 @@ displayedLocationColumns: string[] = [
               palette: 'palette3'
             },
            
-            series: [paid,2,overdue],
+            series: [paid,discontinueCount,overdue],
             chart: {
               height: 400,
               width: 500,
@@ -793,7 +1044,11 @@ displayedLocationColumns: string[] = [
               }
             ]
           };
-  
+          
+        },error=>{
+          console.log(error);
+          return;
+        })
           
         },error=> {
           console.log(error);
@@ -818,24 +1073,45 @@ displayedLocationColumns: string[] = [
 
     var payment = [];
     var dateArray = [];
+    var totalPayment = 0;
+    this.totalPayment = 0;
+    this.paymentSeries = [];
 
-    this.payment.findAll().subscribe(data=> {
+    this.paymentService.findAll().subscribe(data=> {
       this.paymentArray = data;
-      console.log(this.paymentArray)
-
-      var paymentLength = this.paymentArray.length;
-      var requested = 0;
-      var totalPayment = 0;
-
-      if (paymentLength-1 > 8){
-        requested = paymentLength-9
-      }
+      
 
       if(this.paymentArray !== 0){
 
+
+        this.delPaymentService.findAll().subscribe(res=> {
+          this.delPaymentArray = res;
+         
+          if (this.delPaymentArray.length !== 0){
+
+            console.log(this.paymentArray)
+  
+            for (let i =0; i<this.delPaymentArray.length; i++){
+           
+              this.totalPayment += parseInt(this.delPaymentArray[i].price);
+           
+            }
+
+
+
+            
+        var paymentLength = this.paymentArray.length;
+        var requested = 0;
+  
+        if (paymentLength-1 > 8){
+          requested = paymentLength-9
+        }
+
+        console.log(this.paymentArray)
+
         for (let i = paymentLength-1; i>=requested;i--){
-          console.log(this.paymentArray[i])
-          payment.push(this.paymentArray[i].price)
+       
+          this.paymentSeries.push(this.paymentArray[i].price)
 
           const newDate = new Date(this.paymentArray[i].createdAt);
           let latest_date = this.datePipe.transform(newDate,'dd/MM HH:mm')
@@ -846,8 +1122,9 @@ displayedLocationColumns: string[] = [
           totalPayment += parseInt(this.paymentArray[i].price);
         }
 
+        totalPayment += this.totalPayment;
 
-        
+    
       this.linechartOptions = {
 
         theme: {
@@ -856,7 +1133,7 @@ displayedLocationColumns: string[] = [
      
         series1: [{
           name: "Payment ($):",
-          data: payment,
+          data: this.paymentSeries,
         },
           
         ],
@@ -901,6 +1178,112 @@ displayedLocationColumns: string[] = [
           }
         }
       };
+  
+      } else {
+            
+        var paymentLength = this.paymentArray.length;
+        var requested = 0;
+  
+        if (paymentLength-1 > 8){
+          requested = paymentLength-9
+        }
+
+        console.log(this.paymentArray)
+
+        for (let i = paymentLength-1; i>=requested;i--){
+       
+          this.paymentSeries.push(this.paymentArray[i].price)
+
+          const newDate = new Date(this.paymentArray[i].createdAt);
+          let latest_date = this.datePipe.transform(newDate,'dd/MM HH:mm')
+          dateArray.push(latest_date)
+        }
+
+        for(let i = 0; i< paymentLength; i++){
+          totalPayment += parseInt(this.paymentArray[i].price);
+        }
+
+        console.log(payment)
+        console.log(totalPayment)
+
+    
+      this.linechartOptions = {
+
+        theme: {
+          palette: 'palette8'
+        },
+     
+        series1: [{
+          name: "Payment ($):",
+          data: this.paymentSeries,
+        },
+          
+        ],
+
+       
+      
+        chart: {
+          height: 330,
+          width: 460,
+          type: "line",
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: "straight"
+        },
+        title: {
+          text: "Latest Income Trend",
+          align: "left",
+          
+        },
+        
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            opacity: 0.8
+          }
+        },
+        xaxis: {
+          categories: dateArray,
+          title: {
+            text: "Total Income: $" + totalPayment,
+            style:{
+              color: "black",
+              fontFamily: "Sans-Serif",
+              fontSize: "17px"
+            }, 
+          }
+        }
+      };
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }, error=> {
+          console.log(error)
+        })
+  
+      
+
 
 
       }
@@ -961,207 +1344,443 @@ retrievePhoto(){
   })
 }
 
+viewTable(){
 
 
-onChange(value) {
   var searchFor = this.searchForField;
-  var statusField = this.selectField;
+  this.selectSlotField = "All";
+  this.locationField = "All";
+  this.selectSlotField = "All";
+  if (searchFor == "Vendor"){
+    this.showVendor = true;
+    this.showSlotField = false;
+    this.showPayment = false;
+    this.showRelative = false;
 
-  switch (searchFor){
-    case "Vendor": {
+    this.refreshData();
 
-      this.showSlotField = false;
-      if (statusField == "All"){
-        this.refreshData();
-        break;
-      } else if (statusField == "Overdue"){
-        this.retrieveOverdue();
-        break;
-      } else if (statusField == "Paid") {
-        this.retrievePaid();
-        break;
-      } else {
-        break;
-      }
-      
-    
-    }
+  } else if (searchFor == "Location") {
+    this.showSlotField = true;
+    this.showRelative = false;
+    this.showPayment = false;
+    this.showVendor = false;
+    this.refreshLocation();
 
-    case "Location": {
+  } else if (searchFor == "Payment"){
+    this.showSlotField = false;
+    this.showPayment = true;
+    this.showRelative = false;
+    this.showVendor = false;
+    this.refreshPayment();
 
-      this.showSlotField = true;
-      var selectSlot = this.selectSlotField
+  } else if (searchFor == "Relative"){
+    console.log("relative")
+    this.showSlotField = false;
+    this.showPayment = false;
+    this.showRelative = true;
+    this.showVendor = false;
+    this.getRelative()
 
-      switch(statusField) {
-
-        case "All": {
-          if (selectSlot == "All"){
-            
-            break;
-          } else if (selectSlot == "Taken"){
-           
-            break;
-          } else {
-         
-            break;
-          }
-        } 
-        case "Overdue": {
-
-          if (selectSlot== "All"){
-            break;
-          } else if (selectSlot == "True"){
-            break;
-          } else {
-            break;
-          }
-          
-        }
-
-        case "Paid": {
-          if (selectSlot == "All"){
-            break;
-          } else if (selectSlot == "True"){
-            break;
-          } else {
-            break;
-          }
-        }
-
-      }
-
-      break;
-    
-
-    }
-
-    case "Payment": {
-      this.showSlotField = false;
-      this.retrievePaid();
-      break;
-    }
-
-    case "Spouse": {
-      this.showSlotField = false;
-      this.retrievePaid();
-      break;
-    }
-
-    case "Child": {
-      this.showSlotField = false;
-      this.retrievePaid();
-      break;
-    }
+  } else {
+    return;
   }
 }
 
 
-// retrieveAllSlot(condition){
-  
-//     if (condition == "Taken"){
-//     condition = true;
-//     } else if (condition == "Available"){
-//       condition = false;
-//     }
+refreshLocation(){
+  this.searchKey = "";
+  this.selectField = "All";
+  this.selectSlotField = "All";
 
-//     if (condition == "All"){
+  this.slot.findAll().subscribe(data=> {
 
-//       this.slot.findAll().subscribe(data=> {
-//         this.switchAllSlot = data;
-
-//         if (this.switchAllSlot.length !== 0){
+    this.switchAllSlot = data;
 
 
-//           for (let i = 0 ; i< this.switchAllSlot.length; i++){
-//             var rid = this.switchAllSlot[i].rid;
-//             var profileArray = [];
-//             this.profiles.findByRid(rid).subscribe(data=> {
-//               profileArray = data;
-
-//               if (profileArray.length == 0 || this.switchAllSlot[i].taken==false){
-//                 this.switchAllSlot[i].name = "N/A";
-//                 this.switchAllSlot[i].overdue = "N/A";
-//                 this.switchAllSlot[i].IC_Number = "N/A";
-
-//               }
-//               else {
-//                 this.switchAllSlot[i].name = profileArray[0].name;
-//                 this.switchAllSlot[i].overdue = profileArray[0].overdue;
-//                 this.switchAllSlot[i].IC_Number = profileArray[0].IC_Number;
-//               }
-              
-
-          
-//             })
-//           }
-
-//           this.refreshSlot();
-
-
-//         }
-//         else {
-//           return;
-//         }
-//       })
-
-//     } else {
-
+    if (this.switchAllSlot.length !== 0){
      
+        for (let i =0 ; i<this.switchAllSlot.length; i++){
 
-//       console.log(condition)
+          var rid = this.switchAllSlot[i].rid
+        
+          var profile = [];
+          this.profiles.findByRid(rid).subscribe(data => {
+              profile = data;
+
+              if(profile.length == 0){
+                this.switchAllSlot[i].IC_Number = "";
+                this.switchAllSlot[i].name = "";
+                this.switchAllSlot[i].overdue = "N/A";
+              } else {
+                this.switchAllSlot[i].IC_Number = profile[0].IC_Number;
+                this.switchAllSlot[i].name = profile[0].name;
+                this.switchAllSlot[i].overdue = profile[0].overdue;
+              }
+
+              
+          })
+        }
+
+        this.filteredArray = this.switchAllSlot;
+
+        this.listData = new MatTableDataSource(this.switchAllSlot);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+
+
+    } else {
+      
+      this.listData = new MatTableDataSource(this.switchAllSlot);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+    }
+
+  })
+
+}
+
+
+refreshPayment() {
+  this.searchKey = "";
+  this.dateFilter = "";
+  this.notificationField = "All";
+
+  this.paymentService.findAll().subscribe(data=> {
+    this.paymentTableArray = data;
+
+    if (this.paymentTableArray !== 0){
+
+      for (let i = 0; i<this.paymentTableArray.length;i++){
+        var rid = this.paymentTableArray[i].rid;
+        var paymentDate = new Date (this.paymentTableArray[i].payment_Date);
+        var dueDate = new Date (this.paymentTableArray[i].due_Date);
+
+        let latestPayment = this.datePipe.transform(paymentDate,'dd/MM/YY HH:mm');
+        let latestDue = this.datePipe.transform(dueDate, 'dd/MM/YY HH:mm')
+
+        this.paymentTableArray[i].payment_Date = latestPayment;
+        this.paymentTableArray[i].due_Date = latestDue;
+
+        var profile = [];
+
+        this.profiles.findByRid(rid).subscribe(data=> {
+          profile = data;
+
+          if(profile.length == 0){
+            this.paymentTableArray[i].IC_Number = "";
+            this.paymentTableArray[i].name = "";
+            this.paymentTableArray[i].overdue = "N/A";
+            this.paymentTableArray[i].slot_Number = "";
+          } else {
+            this.paymentTableArray[i].IC_Number = profile[0].IC_Number;
+            this.paymentTableArray[i].name = profile[0].name;
+            this.paymentTableArray[i].overdue = profile[0].overdue;
+            this.paymentTableArray[i].slot_Number = profile[0].slot;
+          }
+
+        })
+        
+      }
 
       
-//       this.slot.findbytaken(condition).subscribe(data=> {
-//         this.switchAllSlot = data;
 
-//         if (this.switchAllSlot.length !== 0){
+      this.listData = new MatTableDataSource(this.paymentTableArray);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
 
 
-//           for (let i = 0 ; i< this.switchAllSlot.length; i++){
-//             var rid = this.switchAllSlot[i].rid;
-//             var profileArray = [];
-//             this.profiles.findByRid(rid).subscribe(data=> {
-//               profileArray = data;
+    } else {
+      this.listData = new MatTableDataSource(this.paymentTableArray);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+      return;
+    }
+  })
 
-//               if (profileArray.length == 0){
-//                 this.switchAllSlot[i].name = "N/A";
-//                 this.switchAllSlot[i].overdue = "N/A";
-//                 this.switchAllSlot[i].IC_Number = "N/A";
+}
 
-//               } else {
-//                 this.switchAllSlot[i].name = profileArray[0].name;
-//                 this.switchAllSlot[i].status = profileArray[0].status;
-//                 this.switchAllSlot[i].IC_Number = profileArray[0].IC_Number;
-//               }
+getRelative(){
+  this.searchKey = "";
+  this.spouseField ="All";
 
-             
+  this.relativeService.findAll().subscribe(data=> {
+    this.spouseArray = data;
+
+
+    if (this.spouseArray.length !== 0){
+
+      for (let i = 0 ; i<this.spouseArray.length;i++){
+
+        var rid = this.spouseArray[i].rid
+    
+        var newDate = new Date(this.spouseArray[i].updatedAt);
+      
+        let myDate = this.datePipe.transform(newDate,'dd/MM/YY HH:mm');
+        this.spouseArray[i].updatedAt = myDate;
+        var profile = []
+
+        this.profiles.findByRid(rid).subscribe(data=> {
+          profile = data;
+
+
+          if(profile.length == 0){
+            this.spouseArray[i].vendorIC_Number = "";
+            this.spouseArray[i].vendorName = "";
+            this.spouseArray[i].overdue = "N/A";
+      
+          } else {
+            this.spouseArray[i].vendorIC_Number = profile[0].IC_Number;
+            this.spouseArray[i].vendorName = profile[0].name;
+            this.spouseArray[i].overdue = profile[0].overdue;
+          }
+
+
+
+
+
+
+        })
+
+
+      }
+  
+
+      this.listData = new MatTableDataSource(this.spouseArray);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+
+
+     
+    } else {
+
+      this.listData = new MatTableDataSource(this.spouseArray);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+    }
+
+
+  })
+
+}
+
+overdueSlotFilter(){
+  var array = [];
+  var filter = this.filteredArray;
+  console.log(this.filteredArray)
+  
+  if (this.selectField == "All"){
+
+    this.listData = new MatTableDataSource(this.filteredArray);
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
+    this.changeDetectorRefs.detectChanges();
+
+
+  } else if (this.selectField == "Overdue"){
+    console.log("Overdue")
+
+    
+    if (filter.length !== 0){
+
+      for (let i = 0; i< filter.length; i++){
+        var condition = filter[i];
+        console.log(condition)
+        if (filter[i].overdue == true){
+          array.push(filter[i]);
+          
+        }
+  
+      }
+
+      console.log(array)
+
+      this.listData = new MatTableDataSource(array);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+    }
+    
+  
+  } else if ("Paid") {
+
+    console.log("Paid")
+
+    if (filter.length !== 0){
+
+      for (let i = 0; i< filter.length; i++){
+        console.log(filter[i].overdue)
+        if (filter[i].overdue == false){
+          array.push(filter[i]);
+          
+        }
+  
+      }
+
+      console.log(array)
+
+      this.listData = new MatTableDataSource(array);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+    }
+
+  }
+  
+ 
+ 
+}
+
+slotAvailability(){
+  var availArray = [];
+  var newArray = this.switchAllSlot;
+  if (this.selectSlotField == "All"){
+
+    this.listData = new MatTableDataSource(this.switchAllSlot);
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
+    this.changeDetectorRefs.detectChanges();
+
+
+
+  } else if (this.selectSlotField == "Taken"){
+
+    if (newArray.length !==0){
+
+      for (let i = 0; i<newArray.length; i++){
+
+
+        if (newArray[i].taken==true){
+          availArray.push(newArray[i])
+        }
+      }
+      
+      this.filteredArray = availArray;
+      console.log(availArray)
+
+      if (this.selectField !=="All"){
+        this.overdueSlotFilter();
+      } else {
+
+
+        this.listData = new MatTableDataSource(availArray);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+
+      }
+    
+     
+
+
+    } 
+
+
+
+  }else if (this.selectSlotField == "Available"){
+
+
+    if (newArray.length !==0){
+
+      for (let i = 0; i<newArray.length; i++){
+
+
+        if (newArray[i].taken==false){
+          availArray.push(newArray[i])
+        }
+      }
+
+      this.filteredArray = availArray;
+      
+      if (this.selectField !=="All"){
+        this.overdueSlotFilter();
+      } else {
+
 
         
-//             })
-//           }
+      this.listData = new MatTableDataSource(availArray);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+      }
+    
 
-//           this.refreshSlot();
-//         } else {
-//           return;
-//         }
-//       })
 
-//     }
+    } 
+      
+  }
+}
 
+showTable(){
+
+  this.selectField = "All"
+
+  if (this.locationField=="All"){
+    this.refreshLocation();
+  } else {
+
+
+    this.slot.findByLocation(this.locationField).subscribe(data=> {
+
+      this.switchAllSlot = data;
+  
+  
+      if (this.switchAllSlot.length !== 0){
+       
+          for (let i =0 ; i<this.switchAllSlot.length; i++){
+  
+            var rid = this.switchAllSlot[i].rid
+          
+            var profile = [];
+            this.profiles.findByRid(rid).subscribe(data => {
+                profile = data;
+  
+                if(profile.length == 0){
+                  this.switchAllSlot[i].IC_Number = "";
+                  this.switchAllSlot[i].name = "";
+                  this.switchAllSlot[i].overdue = "N/A";
+                } else {
+                  this.switchAllSlot[i].IC_Number = profile[0].IC_Number;
+                  this.switchAllSlot[i].name = profile[0].name;
+                  this.switchAllSlot[i].overdue = profile[0].overdue;
+                }
+  
+                
+            })
+          }
+
+          this.filteredArray = this.switchAllSlot;
+          console.log(this.filteredArray)
+
+          if (this.selectSlotField !== "All"){
+            this.slotAvailability();
+          } else {
+
+            
+          this.listData = new MatTableDataSource(this.switchAllSlot);
+          this.listData.sort = this.sort;
+          this.listData.paginator = this.paginator;
+          this.changeDetectorRefs.detectChanges();
+          }
+  
+  
+      } else {
+        
+        this.listData = new MatTableDataSource(this.switchAllSlot);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+      }
+  
+    })
+
+  }
  
-// }
-
-
-
-
-refreshSlot(){
-
-  console.log(this.switchAllSlot)
-  this.listData = new MatTableDataSource(this.switchAllSlot);
-  this.listData.sort = this.sort;
-  this.listData.paginator = this.paginator;
-  this.changeDetectorRefs.detectChanges();
-
 }
 
 
@@ -1169,7 +1788,333 @@ refreshSlot(){
 
 
 
+overdueFilter(){
+  
+  var searchFor = this.searchForField;
+  var status = this.selectField;
+  
 
+  if (searchFor == "Vendor"){
+    
+
+
+    switch (status){
+      case "Overdue": {
+
+
+        this.retrieveOverdue();
+
+
+        break;
+      }
+
+      case "Paid": {
+
+        this.retrievePaid();
+        break;
+      }
+
+      case "All": {
+        this.refreshData();
+      }
+    }
+
+  
+
+  } else {
+    return;
+  }
+
+
+}
+
+
+notificationFilter(){
+
+
+  if (this.notificationField == "All"){
+    this.refreshPayment();
+  } else if (this.notificationField == "Sent"){
+
+    
+
+    
+    
+  this.paymentService.findSent().subscribe(data=> {
+    this.paymentTableArray = data;
+   
+    if (this.paymentTableArray !== 0){
+
+      for (let i = 0; i<this.paymentTableArray.length;i++){
+        var rid = this.paymentTableArray[i].rid;
+        
+        var paymentDate = new Date (this.paymentTableArray[i].payment_Date);
+        var dueDate = new Date (this.paymentTableArray[i].due_Date);
+
+        let latestPayment = this.datePipe.transform(paymentDate,'dd/MM/YY HH:mm');
+        let latestDue = this.datePipe.transform(dueDate, 'dd/MM/YY HH:mm')
+
+        this.paymentTableArray[i].payment_Date = latestPayment;
+        this.paymentTableArray[i].due_Date = latestDue;
+
+        var profile = [];
+
+        this.profiles.findByRid(rid).subscribe(data=> {
+          profile = data;
+
+          if(profile.length == 0){
+            this.paymentTableArray[i].IC_Number = "";
+            this.paymentTableArray[i].name = "";
+            this.paymentTableArray[i].overdue = "N/A";
+            this.paymentTableArray[i].slot_Number = "";
+          } else {
+            this.paymentTableArray[i].IC_Number = profile[0].IC_Number;
+            this.paymentTableArray[i].name = profile[0].name;
+            this.paymentTableArray[i].overdue = profile[0].overdue;
+            this.paymentTableArray[i].slot_Number = profile[0].slot;
+          }
+
+        })
+        
+      }
+
+    
+      
+
+      this.listData = new MatTableDataSource(this.paymentTableArray);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+
+
+    } else {
+      this.listData = new MatTableDataSource(this.paymentTableArray);
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.changeDetectorRefs.detectChanges();
+      return;
+    }
+  })
+
+
+    
+
+
+
+
+
+
+
+  } else if (this.notificationField == "NotDelivered"){
+
+
+    this.paymentService.findNotDelivered().subscribe(data=> {
+      this.paymentTableArray = data;
+    
+  
+      if (this.paymentTableArray !== 0){
+  
+        for (let i = 0; i<this.paymentTableArray.length;i++){
+          var rid = this.paymentTableArray[i].rid;
+          var paymentDate = new Date (this.paymentTableArray[i].payment_Date);
+          var dueDate = new Date (this.paymentTableArray[i].due_Date);
+  
+          let latestPayment = this.datePipe.transform(paymentDate,'dd/MM/YY HH:mm');
+          let latestDue = this.datePipe.transform(dueDate, 'dd/MM/YY HH:mm')
+  
+          this.paymentTableArray[i].payment_Date = latestPayment;
+          this.paymentTableArray[i].due_Date = latestDue;
+  
+          var profile = [];
+  
+          this.profiles.findByRid(rid).subscribe(data=> {
+            profile = data;
+  
+            if(profile.length == 0){
+              this.paymentTableArray[i].IC_Number = "";
+              this.paymentTableArray[i].name = "";
+              this.paymentTableArray[i].overdue = "N/A";
+              this.paymentTableArray[i].slot_Number = "";
+            } else {
+              this.paymentTableArray[i].IC_Number = profile[0].IC_Number;
+              this.paymentTableArray[i].name = profile[0].name;
+              this.paymentTableArray[i].overdue = profile[0].overdue;
+              this.paymentTableArray[i].slot_Number = profile[0].slot;
+            }
+  
+          })
+          
+        }
+  
+
+  
+        this.listData = new MatTableDataSource(this.paymentTableArray);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+  
+  
+      } else {
+        this.listData = new MatTableDataSource(this.paymentTableArray);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+        return;
+      }
+    })
+  
+  
+      
+
+  }
+
+}
+
+spouseFilter(){
+
+  if (this.spouseField == "All"){
+
+  this.getRelative();
+
+  } else if (this.spouseField == "Spouse") {
+    
+    this.relativeService.findSpouseOnly().subscribe(data=> {
+      this.spouseArray = data;
+  
+  
+      if (this.spouseArray.length !== 0){
+  
+        for (let i = 0 ; i<this.spouseArray.length;i++){
+  
+          var rid = this.spouseArray[i].rid
+      
+          var newDate = new Date(this.spouseArray[i].updatedAt);
+        
+          let myDate = this.datePipe.transform(newDate,'dd/MM/YY HH:mm');
+          this.spouseArray[i].updatedAt = myDate;
+          var profile = []
+  
+          this.profiles.findByRid(rid).subscribe(data=> {
+            profile = data;
+  
+  
+            if(profile.length == 0){
+              this.spouseArray[i].vendorIC_Number = "";
+              this.spouseArray[i].vendorName = "";
+              this.spouseArray[i].overdue = "N/A";
+        
+            } else {
+              this.spouseArray[i].vendorIC_Number = profile[0].IC_Number;
+              this.spouseArray[i].vendorName = profile[0].name;
+              this.spouseArray[i].overdue = profile[0].overdue;
+            }
+  
+  
+  
+  
+  
+  
+          })
+  
+  
+        }
+    
+      
+        this.listData = new MatTableDataSource(this.spouseArray);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+  
+  
+       
+      } else {
+     
+        this.listData = new MatTableDataSource(this.spouseArray);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+      }
+  
+  
+    })
+    
+
+
+
+  }else if (this.spouseField == "Child") {
+
+
+    this.relativeService.findChildOnly().subscribe(data=> {
+      this.spouseArray = data;
+  
+  
+      if (this.spouseArray.length !== 0){
+  
+        for (let i = 0 ; i<this.spouseArray.length;i++){
+  
+          var rid = this.spouseArray[i].rid
+      
+          var newDate = new Date(this.spouseArray[i].updatedAt);
+        
+          let myDate = this.datePipe.transform(newDate,'dd/MM/YY HH:mm');
+          this.spouseArray[i].updatedAt = myDate;
+          var profile = []
+  
+          this.profiles.findByRid(rid).subscribe(data=> {
+            profile = data;
+  
+  
+            if(profile.length == 0){
+              this.spouseArray[i].vendorIC_Number = "";
+              this.spouseArray[i].vendorName = "";
+              this.spouseArray[i].overdue = "N/A";
+        
+            } else {
+              this.spouseArray[i].vendorIC_Number = profile[0].IC_Number;
+              this.spouseArray[i].vendorName = profile[0].name;
+              this.spouseArray[i].overdue = profile[0].overdue;
+            }
+  
+  
+  
+  
+  
+  
+          })
+  
+  
+        }
+    
+     
+        this.listData = new MatTableDataSource(this.spouseArray);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+  
+  
+       
+      } else {
+     
+        this.listData = new MatTableDataSource(this.spouseArray);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+        this.changeDetectorRefs.detectChanges();
+      }
+  
+  
+    })
+
+  }
+}
+
+
+
+onChangeDate(){
+  var newDate = this.datePipe.transform(this.dateFilter,'dd/MM/YY')
+
+
+  this.listData.filter = newDate.trim().toLowerCase();
+}
 
 
 

@@ -180,25 +180,38 @@ export class EditProfileComponent implements OnInit {
       slotprice: this.data.dataKey.slot_Price,
       address: this.data.dataKey.address,
       contract: this.data.dataKey.contract,
-      location: this.data.dataKey.location
+      location: ""
       
     }
 
-    this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
-      this.slotDataArray = data[0];
-      editProfile.location = this.slotDataArray.location;
-      this.compareLocation = this.slotDataArray.location;
+    if (this.data.dataKey.slot !== null){
+
+      this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
+        this.slotDataArray = data[0];
+        editProfile.location = this.slotDataArray.location;
+        this.compareLocation = this.slotDataArray.location;
+        
+        this.registrationForm.setValue(editProfile)
       
-      this.registrationForm.setValue(editProfile)
-    
+  
+  
+        this.slotField = this.slotDataArray.slot_Number;
+        this.registrationForm.controls['slot'].setValue(this.slotField);
+        this.getLocation();
+        this.showSlot();
+  
+      })
 
+    } else {
 
-      this.slotField = this.slotDataArray.slot_Number;
-      this.registrationForm.controls['slot'].setValue(this.slotField);
+      this.registrationForm.setValue(editProfile);
       this.getLocation();
       this.showSlot();
 
-    })
+      
+    }
+
+
 
     this.retrievePhoto();
 
@@ -276,8 +289,14 @@ export class EditProfileComponent implements OnInit {
 
     this.Slot.findByLocation(location).subscribe(data=> {
       this.slotData = data;
-      if(this.slotData.length == 0){
+
+      if (this.slotData == null){
         this.slotArray = [];
+        return;
+
+      } else if(this.slotData.length == 0){
+        this.slotArray = [];
+        return;
       } 
 
       for(let i = 0; i<this.slotData.length; i++){
@@ -362,25 +381,30 @@ export class EditProfileComponent implements OnInit {
 
       this.profile.update(profileModel.id,profileModel).subscribe(data=> {
 
-        
 
         if (slot !== this.data.dataKey.slot){
           console.log(this.data.dataKey.slot)
 
           this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
-            this.oldSlotArray = data[0];
+            this.oldSlotArray = data;
 
-            var oldModel = {
-              id: this.oldSlotArray.id,
-              rid: null,
-              slot_Number: this.oldSlotArray.slot_Number,
-              location: this.oldSlotArray.location,
-              taken: false,
+            if (this.oldSlotArray.length !== 0){
+
+              var oldModel = {
+                id: this.oldSlotArray[0].id,
+                rid: null,
+                slot_Number: this.oldSlotArray[0].slot_Number,
+                location: this.oldSlotArray[0].location,
+                taken: false,
+              }
+  
+              this.Slot.update(oldModel.id,oldModel).subscribe(data=> {
+                console.log("update old done")
+              })
+              
             }
 
-            this.Slot.update(oldModel.id,oldModel).subscribe(data=> {
-              console.log("update old done")
-            })
+         
           })
         }
 
