@@ -9,6 +9,8 @@ import { notificationService } from '../services/notification.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { accountService } from '../services/account.service';
 import { ThrowStmt } from '@angular/compiler';
+import { DelphotoService } from '../servicesDeleted/photo.service';
+import { photoService } from '../services/photo.service';
 
 
 @Component({
@@ -31,6 +33,7 @@ export class AllNotificationComponent implements OnInit {
   notifyData:any;
   time: any = [];
   notifyNo: any;
+
   searchKey: any;
   notificationLength: any;
   dateFilter: any;
@@ -67,7 +70,8 @@ export class AllNotificationComponent implements OnInit {
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
     private datePipe: DatePipe,
-    private Account: accountService
+    private Account: accountService,
+    private photoService: photoService
     ) {
 
     this.opened = false;
@@ -88,10 +92,22 @@ export class AllNotificationComponent implements OnInit {
     this.notification.findAll().subscribe(data=> {
       this.notificationList = data;
       this.notificationLength = this.notificationList.length;
+
       
       if (this.role == "Staff") {   
         for (let i = 0; i < this.notificationList.length; i++) {
+
           if(this.rid == this.notificationList[i].rid){
+            var photoArray = []
+            this.photoService.findByRid(this.notificationList[i].rid).subscribe(data=> {
+              photoArray = data;
+
+              if (photoArray.length !==0){
+                var baseURL = this.photoService.baseURL();
+                var link = baseURL+"/"+photoArray[0].link;
+                this.notificationList[i].link = link;
+              }
+            })
 
             this.staffNotif.push(this.notificationList[i]);
           }
@@ -100,14 +116,29 @@ export class AllNotificationComponent implements OnInit {
         this.listData = new MatTableDataSource(this.staffNotif);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
       }else if (this.role == "Administrator") {
+        
+        for (let i = 0; i < this.notificationList.length; i++) {
+          var photoArray = []
+          this.photoService.findByRid(this.notificationList[i].rid).subscribe(data=> {
+            photoArray = data;
+
+            if (photoArray.length !==0){
+              var baseURL = this.photoService.baseURL();
+              var link = baseURL+"/"+photoArray[0].link;
+              this.notificationList[i].link = link;
+            }
+          })          
+        }
+
         this.listData = new MatTableDataSource(this.notificationList);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
       }
 
 
-
+      //link accounts
       for (let i = 0; i < this.notificationList.length; i++) { 
         // console.log(data[i].rid);
 
@@ -117,20 +148,12 @@ export class AllNotificationComponent implements OnInit {
           this.accountRole = accounts[0].role
           this.notificationList[i].username = this.username;
           this.notificationList[i].role = this.accountRole;
+
         });
         
 
       }
-
-      // this.account.findByRid(this.notificationList.rid).subscribe(username=>{
-
-      // })
-
       this.loopData();
-
-      // this.listData = new MatTableDataSource(this.notificationList);
-      // this.listData.sort = this.sort;
-      // this.listData.paginator = this.paginator;
     })
 
    

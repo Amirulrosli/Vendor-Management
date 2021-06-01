@@ -47,8 +47,10 @@
                       <!-- <div class="example-element-weight"> {{element.title}} </div> -->
                     <!-- </div> -->
                     <div class="iconDiv" style="margin-right: 40px;">
-                      <mat-icon class="icon" *ngIf="element.role=='Staff'">account_circle</mat-icon>
-                      <mat-icon class="iconAdmin" *ngIf="element.role=='Administrator'">supervised_user_circle</mat-icon>
+                      <!-- <mat-icon class="icon" *ngIf="element.role=='Staff'">account_circle</mat-icon> -->
+                      <img class="profile-pic" *ngIf="element.link" src="{{element.link}}" alt="profilePic" />
+                      <img class="profile-pic" *ngIf="!element.link" src="assets/profile-1.png" alt="profilePic" />
+                      <!-- <mat-icon class="iconAdmin" *ngIf="element.role=='Administrator'">supervised_user_circle</mat-icon> -->
                       <p style="margin-top: -10px;">{{element.rid}}</p>
                     </div>
                    

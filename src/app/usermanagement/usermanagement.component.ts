@@ -553,6 +553,27 @@ export class UsermanagementComponent implements OnInit {
       console.log(compare)
 
       if (compare.length == 0){
+        //notify
+        var accountRid = localStorage.getItem('rid');
+        var date = new Date();
+        console.log(this.locationName)
+
+        const notify = {
+          rid: accountRid,
+          title: 'New Location Added'+' '+this.locationName, 
+          description: 'New location added with \n the name: '+this.locationName,
+          category: 'Vendor Payment',
+          date: date,
+          view: false
+        };
+
+        this.notification.create(notify).subscribe(data=> {                     //create notification
+          console.log("notification created")
+        },error=> {
+          console.log(error)
+        })
+
+
         this.locationService.create(location).subscribe(result=> {
           Swal.fire('Location Added','Succesfully added location','success')
           this.locationName = "";

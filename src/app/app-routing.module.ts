@@ -71,7 +71,7 @@ const routes: Routes = [
   },
   {
     path: 'deleted-records', component: DeletedRecordsComponent,
-    canActivate: [AuthGuard, RoleGuard, AdminGuard]
+    canActivate: [AuthGuard, RoleGuard]
   },
 
   {
