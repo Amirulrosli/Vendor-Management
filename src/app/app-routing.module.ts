@@ -47,7 +47,7 @@ const routes: Routes = [
   },
   {
     path: 'allnotification', component: AllNotificationComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, RoleGuard]
   },
   {
     path: 'email', component: EmailComponent,

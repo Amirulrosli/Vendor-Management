@@ -68,6 +68,8 @@ export class EditUserComponent implements OnInit {
 
     
   };
+  accountRole: any;
+  isAdmin: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -146,6 +148,26 @@ export class EditUserComponent implements OnInit {
     this.accountForm.setValue(account);
 
     this.retrievePhoto();
+    this.identifyRole();
+
+
+  }
+
+   //identify if user is admin
+   identifyRole(){
+    this.accountRole = localStorage.getItem("role")
+
+    if (this.accountRole == "Administrator") {
+      console.log(this.accountRole)
+      this.isAdmin = true;
+    } else{
+      this.isAdmin = false;
+    }
+
+    if (this.accountRole == "View-only") {
+      this.isAdmin = false;
+      // this.viewOnly = true;
+    }
 
 
   }

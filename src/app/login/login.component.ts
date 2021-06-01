@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit {
         this.showMessage = false;
         Swal.fire({
           title: 'You have successfully logged in',
-          text: 'Welcome Back,'+account.username,
+          text: 'Welcome Back, '+account.username,
           imageUrl: 'assets/AISimple.png',
           imageHeight:280,
           imageWidth:350

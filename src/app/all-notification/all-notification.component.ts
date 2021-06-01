@@ -8,6 +8,7 @@ import { NotificationComponent } from '../notification/notification.component';
 import { notificationService } from '../services/notification.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { accountService } from '../services/account.service';
+import { ThrowStmt } from '@angular/compiler';
 
 
 @Component({
@@ -40,10 +41,16 @@ export class AllNotificationComponent implements OnInit {
     'title',
     // 'description',
     'category',
+    // 'username'
     // 'date',
     // 'time'
 
   ];
+  viewNotification: any = [];
+  listNotify: any = [];
+  date: Date;
+  // accountRid: string;
+  listNotifyArray: any = [];
 
   
   @ViewChild(MatSort) sort:MatSort;
@@ -51,6 +58,10 @@ export class AllNotificationComponent implements OnInit {
 
   listData: MatTableDataSource<any>;
   accountRid: any;
+  rid: string;
+  role: string;
+  staffNotif: any = [];
+  accountRole: any;
 
   constructor(private location: Location,
     private notification: notificationService,
@@ -67,20 +78,48 @@ export class AllNotificationComponent implements OnInit {
 
     this.notifyNumber();
 
+    this.rid = localStorage.getItem('rid')
+    this.role = localStorage.getItem('role')
+
+    // this.Account.findByRid(this.rid).subscribe(data=>{
+    //   console.log(data)
+    // })
+
     this.notification.findAll().subscribe(data=> {
       this.notificationList = data;
       this.notificationLength = this.notificationList.length;
+      
+      if (this.role == "Staff") {   
+        for (let i = 0; i < this.notificationList.length; i++) {
+          if(this.rid == this.notificationList[i].rid){
 
-      for (let i = 0; i < this.notificationList.length; i++) {
-        console.log(data[i].rid);
+            this.staffNotif.push(this.notificationList[i]);
+          }
+        }
+        // console.log(this.staffNotif)
+        this.listData = new MatTableDataSource(this.staffNotif);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      }else if (this.role == "Administrator") {
+        this.listData = new MatTableDataSource(this.notificationList);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      }
+
+
+
+      for (let i = 0; i < this.notificationList.length; i++) { 
+        // console.log(data[i].rid);
 
         this.accountRid = data[i].rid
         this.Account.findByRid(this.accountRid).subscribe(accounts=>{
-          // this.username = account.username
-          console.log(accounts)
+          this.username = accounts[0].username 
+          this.accountRole = accounts[0].role
+          this.notificationList[i].username = this.username;
+          this.notificationList[i].role = this.accountRole;
         });
-
         
+
       }
 
       // this.account.findByRid(this.notificationList.rid).subscribe(username=>{
@@ -89,9 +128,9 @@ export class AllNotificationComponent implements OnInit {
 
       this.loopData();
 
-      this.listData = new MatTableDataSource(this.notificationList);
-      this.listData.sort = this.sort;
-      this.listData.paginator = this.paginator;
+      // this.listData = new MatTableDataSource(this.notificationList);
+      // this.listData.sort = this.sort;
+      // this.listData.paginator = this.paginator;
     })
 
    
@@ -131,9 +170,41 @@ export class AllNotificationComponent implements OnInit {
   }
 
   public notifyNumber(){
-    this.notification.findByView().subscribe(data=> {
-        this.notifyData = data;
-        this.notifyNo = this.notifyData.length;
+    this.listNotifyArray = [];
+
+    this.date = new Date();
+    var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
+
+    this.role = localStorage.getItem("role");
+    this.accountRid = localStorage.getItem('rid')
+    this.notification.findByView().subscribe(data => {
+      this.viewNotification = data;
+
+      if(this.role  == "Staff" || this.role == "View-only"){
+        for (let i = 0; i < this.viewNotification.length; i++) {
+          if(this.viewNotification[i].rid == this.accountRid){
+            var newDate = this.viewNotification[i].date;
+            let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+
+              if (latest_Date == today){
+                this.listNotifyArray.push(this.viewNotification[i])
+              }
+            this.notifyNo = this.listNotifyArray.length;
+          }
+        } 
+        
+      }else if (this.role == "Administrator"){
+        for (let i = 0; i < this.viewNotification.length; i++){
+          var newDate = this.viewNotification[i].date;
+          let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+          if (latest_Date == today) {
+            this.listNotifyArray.push(this.viewNotification);
+          }
+          this.notifyNo = this.listNotifyArray.length;
+        }
+
+      }
+
     })
   }
 

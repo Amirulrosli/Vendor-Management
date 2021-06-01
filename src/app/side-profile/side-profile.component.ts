@@ -7,6 +7,10 @@ import { EditUserComponent } from '../edit-user/edit-user.component';
 import { Router } from '@angular/router';
 import { loginStateService } from '../services/loginState.service';
 import { photoService } from '../services/photo.service';
+import Swal from 'sweetalert2';
+import { MatSlidePanel } from 'ngx-mat-slide-panel';
+
+
 
 
 
@@ -42,7 +46,9 @@ export class SideProfileComponent implements OnInit {
     private router: Router,
     private accountService: accountService,
     private loginState: loginStateService,
-    private photoService: photoService
+    private photoService: photoService,
+    private slidePanel: MatSlidePanel,
+
 
 
   ) { }
@@ -91,6 +97,11 @@ goToDashboard(){
   this.router.navigate(["/dashboard"]);
 }
 
+goToNotifications(){
+  this.slidePanel.dismiss();
+  this.router.navigate(["/allnotification"]);
+}
+
 logout(){
 
   // this.accountService.update(this.updateAccount.id,this.updateAccount).subscribe(data=> {
@@ -112,7 +123,17 @@ logout(){
     this.loginState.update(this.updateAccount.id, loginState).subscribe(data => {
       console.log(data)
       localStorage.clear();
-      window.location.reload();
+      Swal.fire({
+        title: 'User Logged Out',
+        // text: 'Please Log in',
+        imageUrl: 'assets/AISimple.png',
+        imageHeight:280,
+        imageWidth:350
+      })
+      this.slidePanel.dismiss();
+      this.router.navigate(['/login']);
+      // window.location.reload();
+      
       // this.authGuard.getState(this.updateAccount.rid)
     })
   })

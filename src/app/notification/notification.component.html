@@ -1,19 +1,19 @@
 <mat-label style="color: black; font-weight: bold;"> Today </mat-label>
-<button style="color: rgb(157, 157, 157);" (click)="showNotification()" class="submitBtn button-1" mat-button>View All Notification</button>
+<button *ngIf="!viewOnly" style="color: rgb(157, 157, 157);" (click)="showNotification()" class="submitBtn button-1" mat-button>View All Notification</button>
 
-<img *ngIf="listData.length==0" src="assets/not found.gif" alt="No data available" width="300px"/>
-<p *ngIf="listData.length==0" class="no-message">No new notification available</p>
+<img *ngIf="listDataArray.length==0" src="assets/not found.gif" alt="No data available" width="300px"/>
+<p *ngIf="listDataArray.length==0" class="no-message">No new notification available</p>
 <mat-accordion *ngIf="listData.length!==0">
   
-    <mat-expansion-panel *ngFor="let data of listData; let i = index" >
+    <mat-expansion-panel *ngFor="let data of listDataArray; let i = index" >
       <mat-expansion-panel-header style="height: 100px;">
         <mat-icon class="close" (click)="close(data.id)">close</mat-icon>
         
-        <mat-panel-title>
+        <mat-panel-title style="margin: 10px">
           {{data.title}}
         </mat-panel-title>
-        <mat-panel-description>
-          {{data.date}}
+        <mat-panel-description style="margin-left: 0px;">
+          
         </mat-panel-description>
       </mat-expansion-panel-header>
   
@@ -25,7 +25,7 @@
       <br>
       <mat-panel-description style="color:white;">
 
-        {{data.date}}
+        {{notifDate}}
 
       </mat-panel-description>
     </mat-expansion-panel>
