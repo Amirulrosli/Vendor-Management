@@ -6,11 +6,24 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
 import { notificationService } from '../services/notification.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import { accountService } from '../services/account.service';
+import { ThrowStmt } from '@angular/compiler';
+import { DelphotoService } from '../servicesDeleted/photo.service';
+import { photoService } from '../services/photo.service';
+
 
 @Component({
   selector: 'app-all-notification',
   templateUrl: './all-notification.component.html',
-  styleUrls: ['./all-notification.component.scss']
+  styleUrls: ['./all-notification.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class AllNotificationComponent implements OnInit {
 
@@ -20,29 +33,45 @@ export class AllNotificationComponent implements OnInit {
   notifyData:any;
   time: any = [];
   notifyNo: any;
+
   searchKey: any;
   notificationLength: any;
   dateFilter: any;
+  username: any;
   displayedColumns: string[] = [
     'id',
+    // 'rid',
     'title',
-    'description',
+    // 'description',
     'category',
-    'date',
-    'time'
+    // 'username'
+    // 'date',
+    // 'time'
 
   ];
+  viewNotification: any = [];
+  listNotify: any = [];
+  date: Date;
+  // accountRid: string;
+  listNotifyArray: any = [];
 
   
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   listData: MatTableDataSource<any>;
+  accountRid: any;
+  rid: string;
+  role: string;
+  staffNotif: any = [];
+  accountRole: any;
 
   constructor(private location: Location,
     private notification: notificationService,
     private slidePanel: MatSlidePanel,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private Account: accountService,
+    private photoService: photoService
     ) {
 
     this.opened = false;
@@ -53,16 +82,81 @@ export class AllNotificationComponent implements OnInit {
 
     this.notifyNumber();
 
+    this.rid = localStorage.getItem('rid')
+    this.role = localStorage.getItem('role')
+
+    // this.Account.findByRid(this.rid).subscribe(data=>{
+    //   console.log(data)
+    // })
+
     this.notification.findAll().subscribe(data=> {
       this.notificationList = data;
       this.notificationLength = this.notificationList.length;
 
-      this.loopData();
+      
+      if (this.role == "Staff") {   
+        for (let i = 0; i < this.notificationList.length; i++) {
 
-      this.listData = new MatTableDataSource(this.notificationList);
-      this.listData.sort = this.sort;
-      this.listData.paginator = this.paginator;
+          if(this.rid == this.notificationList[i].rid){
+            var photoArray = []
+            this.photoService.findByRid(this.notificationList[i].rid).subscribe(data=> {
+              photoArray = data;
+
+              if (photoArray.length !==0){
+                var baseURL = this.photoService.baseURL();
+                var link = baseURL+"/"+photoArray[0].link;
+                this.notificationList[i].link = link;
+              }
+            })
+
+            this.staffNotif.push(this.notificationList[i]);
+          }
+        }
+        // console.log(this.staffNotif)
+        this.listData = new MatTableDataSource(this.staffNotif);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+
+      }else if (this.role == "Administrator") {
+        
+        for (let i = 0; i < this.notificationList.length; i++) {
+          var photoArray = []
+          this.photoService.findByRid(this.notificationList[i].rid).subscribe(data=> {
+            photoArray = data;
+
+            if (photoArray.length !==0){
+              var baseURL = this.photoService.baseURL();
+              var link = baseURL+"/"+photoArray[0].link;
+              this.notificationList[i].link = link;
+            }
+          })          
+        }
+
+        this.listData = new MatTableDataSource(this.notificationList);
+        this.listData.sort = this.sort;
+        this.listData.paginator = this.paginator;
+      }
+
+
+      //link accounts
+      for (let i = 0; i < this.notificationList.length; i++) { 
+        // console.log(data[i].rid);
+
+        this.accountRid = data[i].rid
+        this.Account.findByRid(this.accountRid).subscribe(accounts=>{
+          this.username = accounts[0].username 
+          this.accountRole = accounts[0].role
+          this.notificationList[i].username = this.username;
+          this.notificationList[i].role = this.accountRole;
+
+        });
+        
+
+      }
+      this.loopData();
     })
+
+   
 
   }
 
@@ -99,9 +193,41 @@ export class AllNotificationComponent implements OnInit {
   }
 
   public notifyNumber(){
-    this.notification.findByView().subscribe(data=> {
-        this.notifyData = data;
-        this.notifyNo = this.notifyData.length;
+    this.listNotifyArray = [];
+
+    this.date = new Date();
+    var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
+
+    this.role = localStorage.getItem("role");
+    this.accountRid = localStorage.getItem('rid')
+    this.notification.findByView().subscribe(data => {
+      this.viewNotification = data;
+
+      if(this.role  == "Staff" || this.role == "View-only"){
+        for (let i = 0; i < this.viewNotification.length; i++) {
+          if(this.viewNotification[i].rid == this.accountRid){
+            var newDate = this.viewNotification[i].date;
+            let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+
+              if (latest_Date == today){
+                this.listNotifyArray.push(this.viewNotification[i])
+              }
+            this.notifyNo = this.listNotifyArray.length;
+          }
+        } 
+        
+      }else if (this.role == "Administrator"){
+        for (let i = 0; i < this.viewNotification.length; i++){
+          var newDate = this.viewNotification[i].date;
+          let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+          if (latest_Date == today) {
+            this.listNotifyArray.push(this.viewNotification);
+          }
+          this.notifyNo = this.listNotifyArray.length;
+        }
+
+      }
+
     })
   }
 

@@ -109,8 +109,8 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                     
-                      <button mat-raised-button class="editBtn" (click)="onRestore(row)">Restore</button>
-                      <button mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
+                      <button *ngIf="isAdmin" mat-raised-button class="editBtn" (click)="onRestore(row)">Restore</button>
+                      <button *ngIf="isAdmin" mat-icon-button style="color:rgb(112, 112, 112); margin-left: 10px;" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
                     </mat-cell>
         
                     

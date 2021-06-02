@@ -426,9 +426,9 @@ export class EditProfileComponent implements OnInit {
 
             this.Slot.update(slotModel.id, slotModel).subscribe(data=> {
               var date = new Date();
-
+              var accountRID = localStorage.getItem('rid');
               const notify = {
-                rid: this.data.dataKey.rid,
+                rid: accountRID,
                 title: 'Profile Account Update for'+' '+this.data.dataKey.name, 
                 description: 'Vendor profile has been updated to '+profileModel.name+'\n with Account ID: '+profileModel.rid,
                 category: 'Updated vendor profile',

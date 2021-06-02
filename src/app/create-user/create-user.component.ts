@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { accountService } from '../services/account.service';
 import { loginStateService } from '../services/loginState.service';
+import { notificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-create-user',
@@ -73,13 +74,16 @@ export class CreateUserComponent implements OnInit {
     
   };
   updateAccount: any;
+  accountRid: string;
+  accountUsername: string;
 
   constructor(
 
     private formbuilder: FormBuilder,
     private dialog: MatDialog,
     private accountService: accountService,
-    private loginStateService: loginStateService
+    private loginStateService: loginStateService,
+    private notification: notificationService
 
   ) { 
 
@@ -205,6 +209,26 @@ submit(){
                   rid : result.rid,
                   login_state : false
                 }
+
+                this.accountRid = localStorage.getItem('rid');
+                // this.accountUsername = localStorage.getItem('username');
+                const date = new Date();
+                const notify = {
+                  rid: this.accountRid,
+                  title: 'User Account Created'+' '+account.username, 
+                  description: 'User Account with \n name: '+account.username+'\n Account ID: '+result.rid+'\n was created !',
+                  category: 'Created user account',
+                  date: date,
+                  view: false
+                };
+
+                this.notification.create(notify).subscribe(resp=> {
+                  console.log(resp)
+                },error=> {
+                  console.log(error)
+                });
+
+
               
                 this.loginStateService.create(loginState).subscribe(data => {
                   console.log(data)

@@ -63,10 +63,10 @@
 
       <br>
 
-    <mat-label>Password</mat-label>
+    <mat-label *ngIf="isAdmin">Password</mat-label>
     <br>
 
-    <input formControlName="password" type="password" placeholder="Enter Password">
+    <input *ngIf="isAdmin" formControlName="password" type="password" placeholder="Enter Password">
     
     <div *ngFor="let error of errorMessages.password">
         <ng-container *ngIf="accountForm.controls['password']?.hasError(error.type)">
@@ -76,10 +76,10 @@
 
     <br>
 
-    <mat-label>Re-enter Password</mat-label>
+    <mat-label *ngIf="isAdmin">Re-enter Password</mat-label>
     <br>
 
-    <input formControlName="repassword" type="password" placeholder="Re-Enter Password">
+    <input *ngIf="isAdmin" formControlName="repassword" type="password" placeholder="Re-Enter Password">
     
     <div *ngFor="let error of errorMessages.repassword">
         <ng-container *ngIf="accountForm.controls['repassword']?.hasError(error.type)">
@@ -91,18 +91,18 @@
         <small class="error-message">Password does not Match</small>
       </ng-container>
 
-      <ng-container *ngIf="!accountForm.hasError('mismatchedPasswords') && accountForm.controls.repassword.valid">
+      <ng-container  *ngIf="!accountForm.hasError('mismatchedPasswords') && accountForm.controls.repassword.valid && isAdmin">
         <small class="green-message">Password Match</small>
       </ng-container>
     <br>
     <br>
 
     
-    <mat-label>Role / User Access</mat-label>
+    <mat-label *ngIf="isAdmin">Role / User Access</mat-label>
     <br>
 
 
-    <select style="color: black;" formControlName="role" class="role-selection" name="role" placeholder="Select Role">
+    <select *ngIf="isAdmin" style="color: black;" formControlName="role" class="role-selection" name="role" placeholder="Select Role">
         <option *ngFor="let myRoles of myRoles" value="{{myRoles.role}}">{{myRoles.role}}</option>
     </select>
     

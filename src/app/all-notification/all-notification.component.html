@@ -23,60 +23,79 @@
         <mat-icon (click)="clear()" style=" cursor:pointer; margin-top: 10px;color: black; position:relative; top:5px;">closed</mat-icon>
       </mat-card>
 
-
-      <div class ="mat-elevation-z8" style="margin-top: 20px;">
-        <mat-table [dataSource]="listData" matSort>
-          <ng-container  matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-            <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.id}}</mat-cell>
-        </ng-container>
-            <ng-container  matColumnDef="title">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.title}}</mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="description">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.description}}</mat-cell>
-            </ng-container>
-            <!-- <ng-container matColumnDef="gender">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
-              <mat-cell *matCellDef="let element"  (click)="goToDetails(element.id)">{{element.gender}}</mat-cell>
-          </ng-container> -->
-            <ng-container matColumnDef="category">
-                <mat-header-cell *matHeaderCellDef mat-sort-header >Category</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.category}}</mat-cell>
-            </ng-container>
-    
-            <!-- <ng-container matColumnDef="dob">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Date of Birth</mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.dob}}</mat-cell>
-            </ng-container> -->
-            <ng-container matColumnDef="date">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
-                <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.date}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="time">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
-              <mat-cell *matCellDef="let element" (click)="viewing(element.rid)" >{{element.time}}</mat-cell>
-          </ng-container>
-            <!-- <ng-container matColumnDef="id">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Phone.No</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
-          </ng-container> -->
-    
-    
-              <ng-container matColumnDef="noData">
-                <mat-footer-cell *matFooterCellDef colspan="6">
-                  No data available.
-                </mat-footer-cell>
+          <!-- table -->
+          <div class ="mat-elevation-z8" style="margin-top: 20px;">
+              
+            <table mat-table
+                  [dataSource]="listData" multiTemplateDataRows
+                  class="mat-elevation-z8">
+              <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+                <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
               </ng-container>
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;" ></mat-row>
-              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></mat-footer-row>
-            </mat-table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+
+              <!-- Expanded Content Column -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                  <div class="example-element-detail"
+                      [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <!-- <div class="example-element-diagram"> -->
+                      <!-- <div class="example-element-position"> {{element.title}} </div> -->
+                      <!-- <div class="example-element-rid"> {{element.rid}} </div> -->
+
+                      <!-- <div class="example-element-name"> {{element.title}} </div> -->
+                      <!-- <div class="example-element-weight"> {{element.title}} </div> -->
+                    <!-- </div> -->
+                    <div class="iconDiv" style="margin-right: 40px;">
+                      <!-- <mat-icon class="icon" *ngIf="element.role=='Staff'">account_circle</mat-icon> -->
+                      <img class="profile-pic" *ngIf="element.link" src="{{element.link}}" alt="profilePic" />
+                      <img class="profile-pic" *ngIf="!element.link" src="assets/profile-1.png" alt="profilePic" />
+                      <!-- <mat-icon class="iconAdmin" *ngIf="element.role=='Administrator'">supervised_user_circle</mat-icon> -->
+                      <p style="margin-top: -10px;">{{element.rid}}</p>
+                    </div>
+                   
+                    <div class="example-element-description" style="float: left; padding-right: 60px;">
+                     <p class="details">User account:</p> 
+                     <p> {{element.username}}</p>
+                     <p class="details">Account role:</p>
+                     <p>{{element.role}}</p>
+                    </div>
+                    
+                    <div class="example-element-description" style="float: right; padding-right: 40px;">
+                      <!-- <p class="title">{{element.title}}</p> -->
+                      <p class="details">Category:</p>
+                      <p>{{element.category}}</p>
+                      <p class="details">Description:</p>
+                      <p>{{element.description}}</p> 
+                     </div>
+
+                     <div class="example-element-description" style="float: right;">
+                      <p class="details">Date:</p>
+                      <p>{{element.date}}</p>
+                      <p class="details">Time:</p>
+                      <p>{{element.time}}</p>
+                      <!-- <p class="dateTime"><span class="details">Date: </span>{{element.date}}</p>   -->
+                      <!-- <p><span class="details">Time: </span>{{element.time}}</p>  -->
+                     </div>
+                    
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+                  class="example-element-row"
+                  [class.example-expanded-row]="expandedElement === element"
+                  (click)="expandedElement = expandedElement === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+              
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="25" showFirstLastButtons></mat-paginator>
+          
           </div>
+
 
       </mat-sidenav-content>
     </mat-sidenav-container>

@@ -139,6 +139,12 @@ export class VendorProfileComponent implements OnInit {
   profilePic: any;
   photoArray: any = []
   profilePhoto: any;
+  viewNotification: any = [];
+  listNotify: any = [];
+  date: Date;
+  accountRid: string;
+  listNotifyArray: any = [];
+  
   uploadFile = false;
   paymentRid: any = [];
   slotRid: any = [];
@@ -158,6 +164,7 @@ export class VendorProfileComponent implements OnInit {
     'actions'
 
   ];
+  role: string;
 
   @ViewChild(MatSort) sort:MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -744,9 +751,41 @@ export class VendorProfileComponent implements OnInit {
   }
 
   public notifyNumber(){
-    this.notification.findByView().subscribe(data=> {
-        this.notifyData = data;
-        this.notifyNo = this.notifyData.length;
+    this.listNotifyArray = [];
+
+    this.date = new Date();
+    var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
+
+    this.role = localStorage.getItem("role");
+    this.accountRid = localStorage.getItem('rid')
+    this.notification.findByView().subscribe(data => {
+      this.viewNotification = data;
+
+      if(this.role  == "Staff" || this.role == "View-only"){
+        for (let i = 0; i < this.viewNotification.length; i++) {
+          if(this.viewNotification[i].rid == this.accountRid){
+            var newDate = this.viewNotification[i].date;
+            let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+
+              if (latest_Date == today){
+                this.listNotifyArray.push(this.viewNotification[i])
+              }
+            this.notifyNo = this.listNotifyArray.length;
+          }
+        } 
+        
+      }else if (this.role == "Administrator"){
+        for (let i = 0; i < this.viewNotification.length; i++){
+          var newDate = this.viewNotification[i].date;
+          let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+          if (latest_Date == today) {
+            this.listNotifyArray.push(this.viewNotification);
+          }
+          this.notifyNo = this.listNotifyArray.length;
+        }
+
+      }
+
     })
   }
 

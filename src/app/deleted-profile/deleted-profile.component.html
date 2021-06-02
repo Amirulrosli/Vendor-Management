@@ -35,8 +35,8 @@
             </div>
 
             
-            <button *ngIf="!viewOnly" class="button-1" mat-raised-button (click)="onRestore(profileData)">Restore Profile</button>
-            <button *ngIf="!viewOnly" class="button-2" mat-raised-button (click)="onDelete(profileData)">Delete<mat-icon>delete</mat-icon></button>
+            <button *ngIf="isAdmin" class="button-1" mat-raised-button (click)="onRestore(profileData)">Restore Profile</button>
+            <button *ngIf="isAdmin" class="button-2" mat-raised-button (click)="onDelete(profileData)">Delete<mat-icon>delete</mat-icon></button>
           
 
         </div>

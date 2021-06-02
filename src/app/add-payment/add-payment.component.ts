@@ -59,12 +59,18 @@ export class AddPaymentComponent implements OnInit {
   photoArray: any = [];
   profilePhoto:any;
   profileID: any;
+  viewNotification: any = [];
+  listNotify: any = [];
+  // date: Date;
+  accountRid: string;
+  listNotifyArray: any = [];
   typeReceipt: any = "Auto";
   showReceiptField = false;
   receiptNo: any;
   monthField: any = 1;
-  dataList: any = []
-  paymentArray: any = []
+  dataList: any = [];
+  paymentArray: any = [];
+  vendorProfile: any =[];
 
   constructor(
     private router: Router,
@@ -437,6 +443,35 @@ compareData(dueDate){
             cancelButtonText: 'No'
       
           }).then((result) => {
+            
+            //notification
+            this.accountRid = localStorage.getItem('rid');
+            var date = new Date();
+
+            console.log(this.list.rid)
+
+            this.profile.findByRid(this.list.rid).subscribe(data =>{
+              this.vendorProfile = data;
+
+              // console.log(this.vendorProfile);
+
+              const notify = {
+                rid: this.accountRid,
+                title: 'Vendor Payment for'+' '+this.vendorProfile[0].name, 
+                description: 'Vendor Payment with \n the name: '+this.vendorProfile[0].name+'\n Account ID: '+this.vendorProfile[0].rid+'\n was made !',
+                category: 'Vendor Payment',
+                date: date,
+                view: false
+              };
+
+              this.notification.create(notify).subscribe(data=> {                     //create notification
+                console.log("notification created")
+              },error=> {
+                console.log(error)
+              })
+
+            })
+            
 
             if (result.value){
 
@@ -594,9 +629,41 @@ compareData(dueDate){
 
     
   public notifyNumber(){
-    this.notification.findByView().subscribe(data=> {
-        this.notifyData = data;
-        this.notifyNo = this.notifyData.length;
+    this.listNotifyArray = [];
+
+    this.date = new Date();
+    var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
+
+    this.role = localStorage.getItem("role");
+    this.accountRid = localStorage.getItem('rid')
+    this.notification.findByView().subscribe(data => {
+      this.viewNotification = data;
+
+      if(this.role  == "Staff" || this.role == "View-only"){
+        for (let i = 0; i < this.viewNotification.length; i++) {
+          if(this.viewNotification[i].rid == this.accountRid){
+            var newDate = this.viewNotification[i].date;
+            let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+
+              if (latest_Date == today){
+                this.listNotifyArray.push(this.viewNotification[i])
+              }
+            this.notifyNo = this.listNotifyArray.length;
+          }
+        } 
+        
+      }else if (this.role == "Administrator"){
+        for (let i = 0; i < this.viewNotification.length; i++){
+          var newDate = this.viewNotification[i].date;
+          let latest_Date = this.datePipe.transform(newDate, 'dd-MM-yyyy');
+          if (latest_Date == today) {
+            this.listNotifyArray.push(this.viewNotification);
+          }
+          this.notifyNo = this.listNotifyArray.length;
+        }
+
+      }
+
     })
   }
 
