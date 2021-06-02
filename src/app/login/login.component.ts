@@ -49,7 +49,10 @@ export class LoginComponent implements OnInit {
           this.loginDate = new Date();
           this.updateAccount = data[0];
           this.updateAccount.last_Login = this.loginDate;
-          localStorage.setItem('rid',this.updateAccount.rid)
+          // localStorage.setItem('rid',this.updateAccount.rid)
+
+          sessionStorage.setItem('rid',this.updateAccount.rid);
+
           console.log(this.updateAccount)
 
           this.accountService.update(this.updateAccount.id,this.updateAccount).subscribe(data=> {
@@ -75,8 +78,12 @@ export class LoginComponent implements OnInit {
         })
 
         
-        localStorage.setItem("username",account.username);
-        localStorage.setItem("role",account.role)
+        // localStorage.setItem("username",account.username);
+        sessionStorage.setItem("username",account.username);
+
+        sessionStorage.setItem("role",account.role);
+
+        // localStorage.setItem("role",account.role)
 
         var user = {
           username: account.username,

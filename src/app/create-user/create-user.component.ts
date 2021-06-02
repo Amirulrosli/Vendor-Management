@@ -210,8 +210,8 @@ submit(){
                   login_state : false
                 }
 
-                this.accountRid = localStorage.getItem('rid');
-                // this.accountUsername = localStorage.getItem('username');
+                this.accountRid = sessionStorage.getItem('rid');
+                // this.accountUsername = sessionStorage.getItem('username');
                 const date = new Date();
                 const notify = {
                   rid: this.accountRid,

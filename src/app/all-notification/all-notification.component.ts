@@ -82,8 +82,8 @@ export class AllNotificationComponent implements OnInit {
 
     this.notifyNumber();
 
-    this.rid = localStorage.getItem('rid')
-    this.role = localStorage.getItem('role')
+    this.rid = sessionStorage.getItem('rid')
+    this.role = sessionStorage.getItem('role')
 
     // this.Account.findByRid(this.rid).subscribe(data=>{
     //   console.log(data)
@@ -198,8 +198,8 @@ export class AllNotificationComponent implements OnInit {
     this.date = new Date();
     var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
 
-    this.role = localStorage.getItem("role");
-    this.accountRid = localStorage.getItem('rid')
+    this.role = sessionStorage.getItem("role");
+    this.accountRid = sessionStorage.getItem('rid')
     this.notification.findByView().subscribe(data => {
       this.viewNotification = data;
 

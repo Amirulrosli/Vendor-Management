@@ -314,7 +314,7 @@ displayedLocationColumns: string[] = [
 
   //identify if user is admin
   identifyRole(){
-    this.accountRole = localStorage.getItem("role")
+    this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
       console.log(this.accountRole)
@@ -427,7 +427,7 @@ displayedLocationColumns: string[] = [
 
   onDelete(data){
   
-    var rid = localStorage.getItem('rid');
+    var rid = sessionStorage.getItem('rid');
     Swal.fire({
       title: 'Are you sure?',
       text: 'This process is irreversible. Vendor Profile Will be mark as discontinued/deleted',
@@ -721,8 +721,8 @@ displayedLocationColumns: string[] = [
     this.date = new Date();
     var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
 
-    this.role = localStorage.getItem("role");
-    this.accountRid = localStorage.getItem('rid')
+    this.role = sessionStorage.getItem("role");
+    this.accountRid = sessionStorage.getItem('rid')
     this.notification.findByView().subscribe(data => {
       this.viewNotification = data;
 
@@ -786,8 +786,8 @@ displayedLocationColumns: string[] = [
 
     })
 
-    this.username = localStorage.getItem("username");
-    this.role = localStorage.getItem("role")
+    this.username = sessionStorage.getItem("username");
+    this.role = sessionStorage.getItem("role")
     this.searchKey = "";
 
 
@@ -1329,7 +1329,7 @@ displayedLocationColumns: string[] = [
 
 
 retrievePhoto(){
-  var accountRID = localStorage.getItem('rid');
+  var accountRID = sessionStorage.getItem('rid');
   this.photoService.findByRid(accountRID).subscribe(data=> {
     this.photoArray = data;
 

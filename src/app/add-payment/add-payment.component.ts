@@ -100,8 +100,8 @@ export class AddPaymentComponent implements OnInit {
     this.retrievePhoto()
 
     
-    this.username = localStorage.getItem("username");
-    this.role = localStorage.getItem("role")
+    this.username = sessionStorage.getItem("username");
+    this.role = sessionStorage.getItem("role")
     
     this.identifyRole();
     this.notifyNumber();
@@ -445,7 +445,7 @@ compareData(dueDate){
           }).then((result) => {
             
             //notification
-            this.accountRid = localStorage.getItem('rid');
+            this.accountRid = sessionStorage.getItem('rid');
             var date = new Date();
 
             console.log(this.list.rid)
@@ -634,8 +634,8 @@ compareData(dueDate){
     this.date = new Date();
     var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
 
-    this.role = localStorage.getItem("role");
-    this.accountRid = localStorage.getItem('rid')
+    this.role = sessionStorage.getItem("role");
+    this.accountRid = sessionStorage.getItem('rid')
     this.notification.findByView().subscribe(data => {
       this.viewNotification = data;
 
@@ -707,7 +707,7 @@ openSideProfile(id){
 }
 
 retrievePhoto(){
-  var accountRID = localStorage.getItem('rid');
+  var accountRID = sessionStorage.getItem('rid');
   this.photoService.findByRid(accountRID).subscribe(data=> {
     this.photoArray = data;
 
