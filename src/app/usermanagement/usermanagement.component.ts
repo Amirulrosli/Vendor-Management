@@ -9,6 +9,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 import { CreateSlotComponent } from '../create-slot/create-slot.component';
 import { CreateUserComponent } from '../create-user/create-user.component';
@@ -21,8 +22,10 @@ import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { locationService } from '../services/location.service';
 import { notificationService } from '../services/notification.service';
+import { paymentService } from '../services/payment.service';
 import { photoService } from '../services/photo.service';
 import { profileService } from '../services/profile.service';
+import { relativeService } from '../services/relative.service';
 import { Slot } from '../services/slot.model';
 import { slotService } from '../services/slot.service';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
@@ -43,6 +46,7 @@ export class UsermanagementComponent implements OnInit {
   opened = true
   notifyData: any = [];
   notifyNo: any;
+  backupURL:any;
   link: any;
   username: any;
   role: string;
@@ -51,6 +55,7 @@ export class UsermanagementComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   dateFilter: any;
   selectField: any = "All"
+  findProfile: any = []
 
   displayedColumns: string[] = [
     
@@ -88,8 +93,13 @@ export class UsermanagementComponent implements OnInit {
   slotArray: any = [];
   dataArray:any = []
   photoArray: any = [];
+  paymentDataArray: any =[]
   profilePhoto:any;
   profileID: any;
+  updateText: any="Click Run Backup to backing up data";
+  locationDataArray: any = [];
+  slotDataArray: any = [];
+  accountDataArray: any = [];
 
   displayedSlotColumns: string [] = [
     'id',
@@ -104,6 +114,7 @@ export class UsermanagementComponent implements OnInit {
   retrieveData: any = [];
   profileArray: any;
   locationField: any = "All";
+  relativeDataArray: any = [];
 
   constructor(
     private router: Router,
@@ -120,7 +131,10 @@ export class UsermanagementComponent implements OnInit {
     private datePipe: DatePipe,
     private slotService: slotService,
     private photoService: photoService,
-    private profileService: profileService
+    private profileService: profileService,
+    private paymentService: paymentService,
+    private relativeService: relativeService
+    
 
   ) {
     this.close = false;
@@ -466,6 +480,7 @@ export class UsermanagementComponent implements OnInit {
     this.showBackup = true;
     this.showSlot = false;
     this.showUser = false;
+    this.backupURL = environment.backupURL;
   }
 
 
@@ -924,6 +939,285 @@ retrievePhoto(){
   },error=> {
     console.log(error)
   })
+}
+
+
+runBackup(){
+
+  var backupURL = environment.backupURL;
+  var profileArray = [];
+
+  //Profile Backup
+
+  this.profileService.findAll().subscribe(data=> {
+    profileArray = data;
+
+    if (profileArray.length !==0){
+      
+      for (let i =0; i<profileArray.length;i++){
+
+        var url = backupURL+"/api/profiles";
+        var IC = profileArray[i].IC_Number;
+        console.log(url)
+
+        
+        this.http.get(`${url}/IC/${IC}`).subscribe(data=> {
+          this.findProfile = data;
+
+          if (this.findProfile.length == 0){
+
+            this.http.post(url,profileArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up Profile data: "+i
+            })
+
+          } else {
+
+            this.http.put(`${url}/update/${this.findProfile[0].id}`,profileArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update Profile data: "+i
+            })
+
+
+          }
+
+        },error=> {
+          console.log(error)
+        })
+
+      
+      }
+    }
+  },erro=> {
+    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    return;
+  })
+
+
+
+  //location
+  var locationArray = [];
+  this.locationService.findAll().subscribe(data=> {
+    locationArray = data;
+
+    if (locationArray.length !== 0){
+
+      for (let i = 0; i<locationArray.length;i++){
+
+        var locationURL = backupURL+"/api/location";
+        var location = locationArray[i].location;
+        console.log(locationURL+"   "+location)
+       
+
+        this.http.get(`${locationURL}/location/${location}`).subscribe(data=> {
+          this.locationDataArray = data;
+
+          if (this.locationDataArray.length == 0){
+            this.http.post(locationURL,locationArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up Location data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${locationURL}/id/${this.locationDataArray[0].id}`,locationArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update Location data: "+i
+            })
+
+          }
+        })
+
+
+      }
+    }
+  },error=>{
+    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    return;
+  })
+
+
+  //payment --------------------------------------------------------
+
+  var paymentArray = [];
+
+  this.paymentService.findAll().subscribe(data=> {
+    paymentArray = data;
+
+    if (paymentArray.length !==0){
+
+
+      for (let i = 0; i<paymentArray.length;i++){
+
+        var paymentURL = backupURL+"/api/payments";
+        var paymentID = paymentArray[i].paymentID;
+        console.log(paymentURL+"   "+paymentID)
+       
+
+        this.http.get(`${paymentURL}/payment/${paymentID}`).subscribe(data=> {
+          this.paymentDataArray = data;
+
+          if (this.paymentDataArray.length == 0){
+            this.http.post(paymentURL,paymentArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up Payment data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${paymentURL}/${this.paymentDataArray[0].id}`,paymentArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update payment data: "+i
+            })
+
+          }
+        })
+
+
+      }
+
+    }
+  })
+
+
+
+  //Slot
+
+
+  var slotArray = [];
+
+  this.slotService.findAll().subscribe(data=> {
+    slotArray = data;
+
+    if (slotArray.length !==0){
+
+
+      for (let i = 0; i<slotArray.length;i++){
+
+        var slotURL = backupURL+"/api/slots";
+        var slotNo = slotArray[i].slot_Number;
+        console.log(slotURL+"   "+slotNo)
+       
+
+        this.http.get(`${slotURL}/slot/${slotNo}`).subscribe(data=> {
+          this.slotDataArray = data;
+
+          if (this.slotDataArray.length == 0){
+            this.http.post(slotURL,slotArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up slot data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${slotURL}/update/${this.slotDataArray[0].id}`,slotArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update slot data: "+i
+            })
+
+          }
+        })
+
+
+      }
+
+    }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    return;
+  })
+
+
+  //user account
+
+
+
+  
+  var accountArray = [];
+
+  this.accountService.findAll().subscribe(data=> {
+    accountArray = data;
+
+    if (accountArray.length !==0){
+
+
+      for (let i = 0; i<accountArray.length;i++){
+
+        var accountURL = backupURL+"/api/account";
+        var accountRID = accountArray[i].rid;
+        console.log(accountURL+"   "+accountRID)
+       
+
+        this.http.get(`${accountURL}/rid/${accountRID}`).subscribe(data=> {
+          this.accountDataArray = data;
+
+          if (this.accountDataArray.length == 0){
+            this.http.post(accountURL,accountArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up account data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${accountURL}/id/${this.accountDataArray[0].id}`,accountArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update account data: "+i
+            })
+
+          }
+        })
+
+
+      }
+
+    }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    return;
+  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
 }
 
 

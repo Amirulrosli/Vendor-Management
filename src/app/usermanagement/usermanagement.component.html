@@ -41,6 +41,10 @@
         <span (click)="getUser()" class="resetInfo-1">Reset</span>
       </div>
 
+      <div *ngIf="showBackup==true" class="search-bar-dashboard">
+        <h2 style="color:black;margin-top: -20px; font-weight: bold; font-size: 18px;">Backup Data</h2>
+      </div>
+
 
       <div *ngIf="showSlot==true" class="search-bar-dashboard">
         <input class="searchbar-1" [(ngModel)]="locationKey" type="Text" placeholder="Search for location"/>
@@ -303,8 +307,25 @@
           </mat-table>
           <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
         </div>
+        <div *ngIf="showBackup==true">
+          
+          <h3 class="titleTxt" style="font-size: 16px; color: purple;margin-top: -30px" >Disaster Management</h3>
+          <p  class="descTxt">Run Backup now to backing up data</p>
 
+          
+        <mat-card *ngIf="showBackup==true" class="search-card-2">
+          <button (click)="runBackup()" class="location-button" mat-raised-button>Run Backup</button>
+          <br>
+          <br>
+          <mat-label style="color:black;font-weight: bold; margin-left: 20px;">Storage Backup: </mat-label><span style="color: rgb(78, 78, 78); margin-left: 5px;"> {{backupURL}}</span>
+          <br>
+          <br>
+          <textarea class="textarea" [(ngModel)]="updateText" style="width: 95%" disabled>
 
+          </textarea>
+        </mat-card>
+
+        </div>
 
         
 
