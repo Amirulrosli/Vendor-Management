@@ -381,34 +381,6 @@ export class UsermanagementComponent implements OnInit {
     });
   }
 
-  submit(){
-
-    const username = "Amirulrosli";
-    const password = "Amirulrosli133@";
-    const email = "meerros8100@gmail.com";
-    const IC_Number = "01-119328"
-    const role = "Administrator"
-    var newDate = new Date();
-    const last_login = newDate;
-
-
-    var account1 = {
-      username: username,
-      password: password,
-      email: email,
-      IC_Number: IC_Number,
-      role: role,
-      last_Login: last_login
-    }
-
-    this.account.createAccount(account1).subscribe(data=> {
-      console.log(data)
-    }, error=> {
-      console.log(error)
-    })
-  }
-
-
   onFilterChange(value) {
     switch (value){
       case "All": {
