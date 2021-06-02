@@ -4,6 +4,7 @@ import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment';
 
 const baseURL=environment.apiURL+"/api/photo"
+const base = environment.apiURL
 
 
 @Injectable({
@@ -29,7 +30,7 @@ export class photoService {
 
     upload(form): Observable<any> {
         console.log(form)
-        return this.http.post('http://localhost:3000/photo/uploadfile', form)
+        return this.http.post(`${base}/photo/uploadfile`, form)
     }
 
     update(id,data): Observable<any> {

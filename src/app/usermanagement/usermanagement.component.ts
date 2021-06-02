@@ -123,6 +123,7 @@ export class UsermanagementComponent implements OnInit {
   profileArray: any;
   locationField: any = "All";
   relativeDataArray: any = [];
+  attachmentDataArray: any = [];
   // accountRid: string;
 
   constructor(
@@ -142,7 +143,8 @@ export class UsermanagementComponent implements OnInit {
     private photoService: photoService,
     private profileService: profileService,
     private paymentService: paymentService,
-    private relativeService: relativeService
+    private relativeService: relativeService,
+  
     
 
   ) {
@@ -1217,6 +1219,105 @@ runBackup(){
     Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
     return;
   })
+
+
+  //Attachment
+
+
+  var attachmentArray = [];
+
+  this.attachment.findAll().subscribe(data=> {
+    attachmentArray = data;
+
+    if (attachmentArray.length !==0){
+
+
+      for (let i = 0; i<attachmentArray.length;i++){
+
+        var attachmentURL = backupURL+"/api/attachment";
+        var attachmentID = attachmentArray[i].id;
+        console.log(attachmentURL+"   "+attachmentID)
+       
+
+        this.http.get(`${attachmentURL}/id/${attachmentID}`).subscribe(data=> {
+          this.attachmentDataArray = data;
+
+          if (this.attachmentDataArray.length == 0){
+            this.http.post(attachmentURL,attachmentArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up attachment data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${attachmentURL}/update/${this.attachmentDataArray[0].id}`,attachmentArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update attachment data: "+i
+            })
+
+          }
+        })
+
+
+      }
+
+    }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    return;
+  })
+
+
+
+
+
+    //relative
+
+
+    var relativeArray = [];
+
+    this.relativeService.findAll().subscribe(data=> {
+      relativeArray = data;
+  
+      if (relativeArray.length !==0){
+  
+  
+        for (let i = 0; i<relativeArray.length;i++){
+  
+          var relativeURL = backupURL+"/api/relative";
+          var relativeID = relativeArray[i].id;
+          console.log(relativeURL+"   "+relativeID)
+         
+  
+          this.http.get(`${relativeURL}/${relativeID}`).subscribe(data=> {
+            this.relativeDataArray = data;
+  
+            if (this.relativeDataArray.length == 0){
+              this.http.post(relativeURL,relativeArray[i]).subscribe(data=> {
+                console.log(data);
+                this.updateText += "\n"+"Successfully Back up relative data: "+i
+              })
+            } else {
+  
+  
+              this.http.put(`${relativeURL}/${this.relativeDataArray[0].id}`,relativeArray[i]).subscribe(data=> {
+           
+                console.log(data);
+                this.updateText += "\n"+"Successfully update relative data: "+i
+              })
+  
+            }
+          })
+  
+  
+        }
+  
+      }
+    },error=> {
+      Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+      return;
+    })
 
 
 
