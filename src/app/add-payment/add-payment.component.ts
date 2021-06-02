@@ -126,7 +126,7 @@ export class AddPaymentComponent implements OnInit {
 
     //identify if user is admin
     identifyRole(){
-      this.accountRole = localStorage.getItem("role")
+      this.accountRole = sessionStorage.getItem("role")
   
       if (this.accountRole == "Administrator") {
         console.log(this.accountRole)

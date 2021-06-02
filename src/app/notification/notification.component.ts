@@ -120,7 +120,7 @@ export class NotificationComponent implements OnInit {
 {
       // if (this.role == "Staff") {
       //try
-      // this.accountRid = localStorage.getItem('rid');
+      // this.accountRid = sessionStorage.getItem('rid');
       // console.log(this.accountRid)
       // this.notification.findByRid(this.accountRid).subscribe(data =>{
       //   this.notifRid = data[0].rid;
@@ -257,7 +257,7 @@ export class NotificationComponent implements OnInit {
     // // }
     
     // else{
-    //   this.accountRid = localStorage.getItem('rid');
+    //   this.accountRid = sessionStorage.getItem('rid');
     //   this.notification.findByRid(this.accountRid).subscribe(data =>{
     //     this.notifRid = data;
     //     console.log(this.notifRid);
