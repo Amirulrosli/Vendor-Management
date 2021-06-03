@@ -21,6 +21,7 @@ import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { locationService } from '../services/location.service';
+import { loginStateService } from '../services/loginState.service';
 import { notificationService } from '../services/notification.service';
 import { paymentService } from '../services/payment.service';
 import { photoService } from '../services/photo.service';
@@ -97,9 +98,6 @@ export class UsermanagementComponent implements OnInit {
   profilePhoto:any;
   profileID: any;
   updateText: any="Click Run Backup to backing up data";
-  locationDataArray: any = [];
-  slotDataArray: any = [];
-  accountDataArray: any = [];
   viewNotification: any = [];
   listNotify: any = [];
   // date: Date;
@@ -124,6 +122,15 @@ export class UsermanagementComponent implements OnInit {
   locationField: any = "All";
   relativeDataArray: any = [];
   attachmentDataArray: any = [];
+  locationDataArray: any = [];
+  slotDataArray: any = [];
+  accountDataArray: any = [];
+  loginStateDataArray: any = [];
+
+
+  notificationDataArray: any = [];
+  photoDataArray: any = [];
+  remarkDataArray: any = [];
   // accountRid: string;
 
   constructor(
@@ -144,6 +151,7 @@ export class UsermanagementComponent implements OnInit {
     private profileService: profileService,
     private paymentService: paymentService,
     private relativeService: relativeService,
+    private loginService: loginStateService
   
     
 
@@ -1360,6 +1368,105 @@ runBackup(){
     })
 
 
+    
+
+
+
+    
+    //loginstate
+
+
+    var loginArray = [];
+
+    this.loginService.findAll().subscribe(data=> {
+      loginArray = data;
+  
+      if (loginArray.length !==0){
+  
+  
+        for (let i = 0; i<loginArray.length;i++){
+  
+          var loginURL = backupURL+"/api/relative";
+          var loginRID = loginArray[i].rid;
+          console.log(loginURL+"   "+loginRID)
+         
+  
+          this.http.get(`${loginURL}/rid/${loginRID}`).subscribe(data=> {
+            this.loginStateDataArray = data;
+  
+            if (this.loginStateDataArray.length == 0){
+              this.http.post(loginURL,loginArray[i]).subscribe(data=> {
+                console.log(data);
+                this.updateText += "\n"+"Successfully Back up login data: "+i
+              })
+            } else {
+  
+  
+              this.http.put(`${loginURL}/update/${this.loginStateDataArray[0].id}`,loginArray[i]).subscribe(data=> {
+           
+                console.log(data);
+                this.updateText += "\n"+"Successfully update login state data: "+i
+              })
+  
+            }
+          })
+  
+  
+        }
+  
+      }
+    },error=> {
+      Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+      return;
+    })
+
+
+        //photo---------------------------------------
+
+
+        var photoArray = [];
+
+        this.photoService.findAll().subscribe(data=> {
+          photoArray = data;
+      
+          if (photoArray.length !==0){
+      
+      
+            for (let i = 0; i<photoArray.length;i++){
+      
+              var photoURL = backupURL+"/api/photo";
+              var photoRID = photoArray[i].rid;
+              console.log(photoURL+"   "+photoRID)
+             
+      
+              this.http.get(`${photoURL}/rid/${photoRID}`).subscribe(data=> {
+                this.photoDataArray = data;
+      
+                if (this.photoDataArray.length == 0){
+                  this.http.post(photoURL,photoArray[i]).subscribe(data=> {
+                    console.log(data);
+                    this.updateText += "\n"+"Successfully Back up photo data: "+i
+                  })
+                } else {
+      
+      
+                  this.http.put(`${photoURL}/update/${this.photoDataArray[0].id}`,photoArray[i]).subscribe(data=> {
+               
+                    console.log(data);
+                    this.updateText += "\n"+"Successfully update photo data: "+i
+                  })
+      
+                }
+              })
+      
+      
+            }
+      
+          }
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+          return;
+        })
 
 
 
