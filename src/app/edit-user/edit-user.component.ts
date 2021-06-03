@@ -157,7 +157,7 @@ export class EditUserComponent implements OnInit {
 
    //identify if user is admin
    identifyRole(){
-    this.accountRole = localStorage.getItem("role")
+    this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
       console.log(this.accountRole)
@@ -233,11 +233,11 @@ saveChanges(){
 
 
       if (this.usernameArray.length == 0){
-        var localaccount = localStorage.getItem('username');
+        var localaccount = sessionStorage.getItem('username');
 
         if (localaccount==this.data.dataKey.username){
-          localStorage.removeItem('username');
-          localStorage.setItem('username',username);
+          sessionStorage.removeItem('username');
+          sessionStorage.setItem('username',username);
         }
 
         //notify
@@ -363,7 +363,7 @@ upload(){
     Swal.fire('Upload Failed','Please Try again','error')
   } else {
     console.log(this.fileUploadForm)
-    var accountRID = localStorage.getItem('rid')
+    var accountRID = sessionStorage.getItem('rid')
 
     if (this.profileID !== ""){
        this.photoService.delete(this.profileID).subscribe(data=> {

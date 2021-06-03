@@ -4,7 +4,7 @@ import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment';
 
 const baseURL=environment.apiURL+"/api/delattachment"
-
+const base = environment.apiURL;
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +23,7 @@ export class DelattachmentService {
     }
 
     uploadFile(formData): Observable<any> {
-        return this.http.post('http://localhost:3000/uploadfile', formData)
+        return this.http.post(`${base}/uploadfile`, formData)
     }
 
     create(data): Observable<any> {

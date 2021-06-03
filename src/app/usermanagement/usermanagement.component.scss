@@ -251,6 +251,15 @@ div.mat-elevation-z8{
       margin-left: auto;
   }
 
+  .search-card-2{
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      background-color: white;
+      width: 50%;
+      height: 300px;
+  }
+
   
  .slot-button{
     margin-left: 80px;
@@ -277,4 +286,13 @@ div.mat-elevation-z8{
     border-radius: 5px;
     padding-left: 5px;
 
+}
+
+
+.textarea{
+    color: gray;
+    height: 180px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
 }

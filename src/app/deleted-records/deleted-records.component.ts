@@ -107,8 +107,8 @@ export class DeletedRecordsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.username = localStorage.getItem("username");
-    this.role = localStorage.getItem("role")
+    this.username = sessionStorage.getItem("username");
+    this.role = sessionStorage.getItem("role")
     
     this.notifyNumber();
     this.identifyRole();
@@ -208,7 +208,7 @@ this.accountService.findByUsername(username).subscribe(data=> {
 }
 
 retrievePhoto(){
-var accountRID = localStorage.getItem('rid');
+var accountRID = sessionStorage.getItem('rid');
 this.photoService.findByRid(accountRID).subscribe(data=> {
 this.photoArray = data;
 
@@ -229,8 +229,8 @@ public notifyNumber(){
   this.date = new Date();
   var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
 
-  this.role = localStorage.getItem("role");
-  this.accountRid = localStorage.getItem('rid')
+  this.role = sessionStorage.getItem("role");
+  this.accountRid = sessionStorage.getItem('rid')
   this.notification.findByView().subscribe(data => {
     this.viewNotification = data;
 
@@ -284,7 +284,7 @@ openNotification(){
 
 
 identifyRole(){
-  this.accountRole = localStorage.getItem("role")
+  this.accountRole = sessionStorage.getItem("role")
 
   if (this.accountRole == "Administrator") {
     console.log(this.accountRole)
@@ -308,8 +308,8 @@ viewing(rid){
 onDelete(data){
 
   console.log(data)
-  var rid = localStorage.getItem('rid');
-  var accName = localStorage.getItem('username')
+  var rid = sessionStorage.getItem('rid');
+  var accName = sessionStorage.getItem('username')
   
 
   Swal.fire({
@@ -474,8 +474,8 @@ onRestore(data){
 
   console.log(data)
   
-  var rid = localStorage.getItem('rid');
-  var accName = localStorage.getItem('username')
+  var rid = sessionStorage.getItem('rid');
+  var accName = sessionStorage.getItem('username')
 
   Swal.fire({
     title: 'Are you sure to restore this profile?',

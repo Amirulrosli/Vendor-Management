@@ -240,8 +240,8 @@ export class VendorProfileComponent implements OnInit {
 
   
 
-    this.profileName = localStorage.getItem('username');
-    this.profileRole = localStorage.getItem('role');
+    this.profileName = sessionStorage.getItem('username');
+    this.profileRole = sessionStorage.getItem('role');
 
     this.showAddChild = false;
     this.baseURL = this.attachmentService.baseURL();
@@ -270,7 +270,7 @@ export class VendorProfileComponent implements OnInit {
 
   //identify if user is admin
   identifyRole(){
-    this.accountRole = localStorage.getItem("role")
+    this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
       console.log(this.accountRole)
@@ -362,7 +362,7 @@ export class VendorProfileComponent implements OnInit {
 
   onDelete(){
   
-    var rid = localStorage.getItem('rid');
+    var rid = sessionStorage.getItem('rid');
     Swal.fire({
       title: 'Are you sure?',
       text: 'This process is irreversible. Vendor Profile Will be mark as discontinued/deleted',
@@ -756,8 +756,8 @@ export class VendorProfileComponent implements OnInit {
     this.date = new Date();
     var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
 
-    this.role = localStorage.getItem("role");
-    this.accountRid = localStorage.getItem('rid')
+    this.role = sessionStorage.getItem("role");
+    this.accountRid = sessionStorage.getItem('rid')
     this.notification.findByView().subscribe(data => {
       this.viewNotification = data;
 
@@ -1325,7 +1325,7 @@ export class VendorProfileComponent implements OnInit {
 
 
 retrieveID(profileName){
-  var localaccount = localStorage.getItem('username')
+  var localaccount = sessionStorage.getItem('username')
   this.accountService.findByUsername(localaccount).subscribe(data=> {
     this.profileArray = data;
     console.log(this.profileArray)
@@ -1350,7 +1350,7 @@ upload(){
   } else {
     console.log(this.fileUploadForm.value.uploadedImage)
     console.log(this.fileUploadForm.value.name)
-    var accountRID = localStorage.getItem('rid')
+    var accountRID = sessionStorage.getItem('rid')
     const formData = new FormData()
     formData.append('image',this.fileUploadForm.value.uploadedImage);
     formData.append('vendor_rid',this.rid)
@@ -1497,7 +1497,7 @@ submitRemarks(){
 
   const description = this.description;
   console.log(this.description)
-  const account_rid = localStorage.getItem('rid');
+  const account_rid = sessionStorage.getItem('rid');
   const rid = this.id;
 
 
@@ -1555,7 +1555,7 @@ submitRemarks(){
 
 
 retrieveProfilePic(){
-  var accountRID = localStorage.getItem('rid');
+  var accountRID = sessionStorage.getItem('rid');
   this.photoService.findByRid(accountRID).subscribe(data=> {
     this.picArray = data;
     console.log(this.picArray)

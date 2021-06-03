@@ -108,7 +108,7 @@ logout(){
 
   // })
   
-  this.rid = localStorage.getItem("rid")
+  this.rid = sessionStorage.getItem("rid")
 
   this.loginState.findByRid(this.rid).subscribe(data =>{
     this.updateAccount = data[0] 
@@ -122,7 +122,7 @@ logout(){
   
     this.loginState.update(this.updateAccount.id, loginState).subscribe(data => {
       console.log(data)
-      localStorage.clear();
+      sessionStorage.clear();
       Swal.fire({
         title: 'User Logged Out',
         // text: 'Please Log in',
@@ -146,7 +146,7 @@ logout(){
 
 
 retrievePhoto(){
-  var accountRID = localStorage.getItem('rid');
+  var accountRID = sessionStorage.getItem('rid');
   this.photoService.findByRid(accountRID).subscribe(data=> {
     this.photoArray = data;
 

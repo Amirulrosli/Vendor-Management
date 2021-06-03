@@ -147,8 +147,8 @@ export class DeletedProfileComponent implements OnInit {
     console.log(this.rid)
     this.showPayment = true;
 
-    this.username = localStorage.getItem("username");
-    this.role = localStorage.getItem("role")
+    this.username = sessionStorage.getItem("username");
+    this.role = sessionStorage.getItem("role")
     
     this.notifyNumber();
     this.identifyRole();
@@ -346,7 +346,7 @@ this.accountService.findByUsername(username).subscribe(data=> {
 }
 
 retrievePhoto(){
-var accountRID = localStorage.getItem('rid');
+var accountRID = sessionStorage.getItem('rid');
 this.photoService.findByRid(accountRID).subscribe(data=> {
 this.photoArray = data;
 
@@ -390,7 +390,7 @@ openNotification(){
 
 
 identifyRole(){
-  this.accountRole = localStorage.getItem("role")
+  this.accountRole = sessionStorage.getItem("role")
 
   if (this.accountRole == "Administrator") {
     console.log(this.accountRole)
@@ -543,8 +543,8 @@ openFile(data){
 onDelete(data){
 
   console.log(data)
-  var rid = localStorage.getItem('rid');
-  var accName = localStorage.getItem('username')
+  var rid = sessionStorage.getItem('rid');
+  var accName = sessionStorage.getItem('username')
   
 
   Swal.fire({
@@ -709,8 +709,8 @@ onRestore(data){
 
   console.log(data)
   
-  var rid = localStorage.getItem('rid');
-  var accName = localStorage.getItem('username')
+  var rid = sessionStorage.getItem('rid');
+  var accName = sessionStorage.getItem('username')
 
   Swal.fire({
     title: 'Are you sure to restore this profile?',

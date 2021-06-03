@@ -211,8 +211,8 @@ export class AddVendorComponent implements OnInit {
     this.retrievePhoto();
 
     
-    this.username = localStorage.getItem("username");
-    this.role = localStorage.getItem("role")
+    this.username = sessionStorage.getItem("username");
+    this.role = sessionStorage.getItem("role")
     
     this.registrationForm = this.formbuilder.group({
       name: ['',[Validators.required,Validators.maxLength(100)]],
@@ -263,7 +263,7 @@ export class AddVendorComponent implements OnInit {
 
    //identify if user is admin
    identifyRole(){
-    this.accountRole = localStorage.getItem("role")
+    this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
       console.log(this.accountRole)
@@ -469,8 +469,8 @@ export class AddVendorComponent implements OnInit {
             return;
           })
 
-          var accountRID = localStorage.getItem('rid');
-          var accountName = localStorage.getItem('username')
+          var accountRID = sessionStorage.getItem('rid');
+          var accountName = sessionStorage.getItem('username')
 
           const notify = {
             rid: accountRID,
@@ -523,8 +523,8 @@ export class AddVendorComponent implements OnInit {
     this.date = new Date();
     var today = this.datePipe.transform(this.date,'dd-MM-yyyy'); 
 
-    this.role = localStorage.getItem("role");
-    this.accountRid = localStorage.getItem('rid')
+    this.role = sessionStorage.getItem("role");
+    this.accountRid = sessionStorage.getItem('rid')
     this.notification.findByView().subscribe(data => {
       this.viewNotification = data;
 
@@ -672,7 +672,7 @@ retrieveID(username){
 }
 
 retrievePhoto(){
-  var accountRID = localStorage.getItem('rid');
+  var accountRID = sessionStorage.getItem('rid');
   this.photoService.findByRid(accountRID).subscribe(data=> {
     this.photoArray = data;
 

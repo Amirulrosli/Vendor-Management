@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate {
 
       return new Promise ((resolve, rejects) =>{
         setTimeout(() =>{
-        this.rid = localStorage.getItem("rid")
+        this.rid = sessionStorage.getItem("rid")
         console.log(this.rid)
         this.login.findByRid(this.rid).subscribe(data=> {
           

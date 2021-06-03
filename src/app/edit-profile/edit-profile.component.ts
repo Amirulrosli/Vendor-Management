@@ -426,7 +426,7 @@ export class EditProfileComponent implements OnInit {
 
             this.Slot.update(slotModel.id, slotModel).subscribe(data=> {
               var date = new Date();
-              var accountRID = localStorage.getItem('rid');
+              var accountRID = sessionStorage.getItem('rid');
               const notify = {
                 rid: accountRID,
                 title: 'Profile Account Update for'+' '+this.data.dataKey.name, 
@@ -511,7 +511,7 @@ export class EditProfileComponent implements OnInit {
       Swal.fire('Upload Failed','Please Try again','error')
     } else {
       console.log(this.fileUploadForm)
-      var accountRID = localStorage.getItem('rid')
+      var accountRID = sessionStorage.getItem('rid')
 
       if (this.profileID !== ""){
          this.photoService.delete(this.profileID).subscribe(data=> {

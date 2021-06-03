@@ -24,7 +24,7 @@ export class AdminGuard implements CanActivate {
 
     return new Promise ((resolve, rejects) => {
       setTimeout(() =>{
-        this.accountRole = localStorage.getItem("role")
+        this.accountRole = sessionStorage.getItem("role")
         
         if (this.accountRole == "Administrator") {
           console.log("accepted")

@@ -48,7 +48,7 @@ export class NotificationComponent implements OnInit {
 
    //identify if user is admin
    identifyRole(){
-    this.accountRole = localStorage.getItem("role")
+    this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
       console.log(this.accountRole)
@@ -66,11 +66,11 @@ export class NotificationComponent implements OnInit {
   }
 
   getNotification(){
-    this.accountRid = localStorage.getItem('rid')
+    this.accountRid = sessionStorage.getItem('rid')
     this.date = new Date();
     var today = this.datePipe.transform(this.date,'dd-MM-yyyy')
 
-    this.role = localStorage.getItem('role')
+    this.role = sessionStorage.getItem('role')
     this.notificationService.findByView().subscribe(data=> {
       this.viewNotification = data;
       console.log(this.viewNotification)
@@ -120,7 +120,7 @@ export class NotificationComponent implements OnInit {
 {
       // if (this.role == "Staff") {
       //try
-      // this.accountRid = localStorage.getItem('rid');
+      // this.accountRid = sessionStorage.getItem('rid');
       // console.log(this.accountRid)
       // this.notification.findByRid(this.accountRid).subscribe(data =>{
       //   this.notifRid = data[0].rid;
@@ -257,7 +257,7 @@ export class NotificationComponent implements OnInit {
     // // }
     
     // else{
-    //   this.accountRid = localStorage.getItem('rid');
+    //   this.accountRid = sessionStorage.getItem('rid');
     //   this.notification.findByRid(this.accountRid).subscribe(data =>{
     //     this.notifRid = data;
     //     console.log(this.notifRid);
