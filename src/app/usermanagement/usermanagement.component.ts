@@ -644,7 +644,7 @@ export class UsermanagementComponent implements OnInit {
             })
 
          //notify
-        var accountRid = localStorage.getItem('rid');
+        var accountRid = sessionStorage.getItem('rid');
         var date = new Date();
         // console.log(data.location)
 
@@ -743,7 +743,7 @@ export class UsermanagementComponent implements OnInit {
   
         if (compare.length == 0){
           //notify
-          var accountRid = localStorage.getItem('rid');
+          var accountRid = sessionStorage.getItem('rid');
           var date = new Date();
           // console.log(this.locationArray[i].location);
           // console.log(this.newLocation);
@@ -892,7 +892,7 @@ export class UsermanagementComponent implements OnInit {
             var location = data.location;
             var slotNumber = data.slot_Number
             //notify
-            var accountRid = localStorage.getItem('rid');
+            var accountRid = sessionStorage.getItem('rid');
             var date = new Date();
             // console.log(location);
             // console.log(slotNumber);
