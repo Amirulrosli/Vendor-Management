@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { locationService } from '../services/location.service';
+import { notificationService } from '../services/notification.service';
 import { profileService } from '../services/profile.service';
 import { slotService } from '../services/slot.service';
 
@@ -45,6 +46,7 @@ export class EditSlotComponent implements OnInit {
     private formbuilder: FormBuilder,
     private slotService: slotService,
     private profileService: profileService,
+    private notification: notificationService
   
 
     
@@ -107,6 +109,7 @@ export class EditSlotComponent implements OnInit {
       locationArray = data;
 
       if (locationArray.length !== 0){
+
         var number = parseInt(locationArray[0].total_Slot);
         var calculate = number-1;
         locationArray[0].total_Slot =calculate;
@@ -155,6 +158,28 @@ export class EditSlotComponent implements OnInit {
         location: location,
         taken: taken
       }
+
+    
+      //notify
+      var accountRid = localStorage.getItem('rid');
+      var date = new Date();
+      // console.log(location);
+      // console.log(slot_Number);
+
+      const notify = {
+      rid: accountRid,
+      title: 'Slot update for: '+' '+slot_Number, 
+      description: 'New Slot details update \n for the location '+location+' with the the number: '+slot_Number,
+      category: 'Slot Update',
+      date: date,
+      view: false
+      };
+
+      this.notification.create(notify).subscribe(data=> {                     //create notification
+        console.log("notification created")
+      },error=> {
+        console.log(error)
+      })
 
       if (taken){
 

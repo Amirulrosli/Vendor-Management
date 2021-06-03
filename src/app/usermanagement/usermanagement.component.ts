@@ -562,7 +562,7 @@ export class UsermanagementComponent implements OnInit {
           rid: accountRid,
           title: 'New Location Added'+' '+this.locationName, 
           description: 'New location added with \n the name: '+this.locationName,
-          category: 'Vendor Payment',
+          category: 'New Location Added',
           date: date,
           view: false
         };
@@ -653,6 +653,26 @@ export class UsermanagementComponent implements OnInit {
                 }
               }
             })
+
+         //notify
+        var accountRid = localStorage.getItem('rid');
+        var date = new Date();
+        // console.log(data.location)
+
+        const notify = {
+          rid: accountRid,
+          title: 'Location Deleted:'+' '+ location, 
+          description: 'Location with \n the name: '+location+' has been deleted!',
+          category: 'Location Removal',
+          date: date,
+          view: false
+        };
+
+        this.notification.create(notify).subscribe(data=> {                     //create notification
+          console.log("notification created")
+        },error=> {
+          console.log(error)
+        })
   
             Swal.fire(
               'Removed!',
@@ -674,7 +694,7 @@ export class UsermanagementComponent implements OnInit {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire(
             'Cancelled',
-            'User Account is still in the database.',
+            'Location is still in the database.',
             'error'
           )
         }
@@ -733,8 +753,29 @@ export class UsermanagementComponent implements OnInit {
         console.log(compare)
   
         if (compare.length == 0){
+          //notify
+          var accountRid = localStorage.getItem('rid');
+          var date = new Date();
+          // console.log(this.locationArray[i].location);
+          // console.log(this.newLocation);
+
+          const notify = {
+            rid: accountRid,
+            title: 'Location Updated:'+' '+this.locationArray[i].location, 
+            description: 'Location with \n the name: '+this.locationArray[i].location+' has been changed to the name: '+this.newLocation,
+            category: 'Location Update',
+            date: date,
+            view: false
+          };
+
+          this.notification.create(notify).subscribe(data=> {                     //create notification
+            console.log("notification created")
+          },error=> {
+            console.log(error)
+          })
+
           this.locationService.update(this.locationArray[i].id,location).subscribe(result=> {
-            Swal.fire('Location Updated','Succesfully Update the location','success')
+            Swal.fire('Location Updated','Succesfully Updated the location','success')
             this.locationName = "";
             this.locationRefresh();
             this.showEdit = false;
@@ -859,8 +900,28 @@ export class UsermanagementComponent implements OnInit {
         if (result.value){
 
           this.slotService.delete(data.id).subscribe(resp=> {
-
             var location = data.location;
+            var slotNumber = data.slot_Number
+            //notify
+            var accountRid = localStorage.getItem('rid');
+            var date = new Date();
+            // console.log(location);
+            // console.log(slotNumber);
+
+            const notify = {
+              rid: accountRid,
+              title: 'Slot Deleted:'+' '+location, 
+              description: 'Slot: '+slotNumber+ ' \n' + 'from the location '+location+' has been deleted! ',
+              category: 'Slot Removal',
+              date: date,
+              view: false
+            };
+
+            this.notification.create(notify).subscribe(data=> {                     //create notification
+              console.log("notification created")
+            },error=> {
+              console.log(error)
+            })
 
             this.slotService.findByLocation(data.location).subscribe(data=> {
               this.slotArray = data;

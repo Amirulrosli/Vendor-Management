@@ -1,7 +1,7 @@
 import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
 import { NotificationComponent } from '../notification/notification.component';
@@ -65,6 +65,7 @@ export class AllNotificationComponent implements OnInit {
   role: string;
   staffNotif: any = [];
   accountRole: any;
+  
 
   constructor(private location: Location,
     private notification: notificationService,
@@ -79,6 +80,13 @@ export class AllNotificationComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
+    // this.listData.sort = this.sort;
+
+    // const sortState: Sort = {active: 'column', direction: 'desc'};
+    // this.sort.active = sortState.active;
+    // this.sort.direction = sortState.direction;
+    // this.sort.sortChange.emit(sortState);
 
     this.notifyNumber();
 

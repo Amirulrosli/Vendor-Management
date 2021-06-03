@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { locationService } from '../services/location.service';
+import { notificationService } from '../services/notification.service';
 import { slotService } from '../services/slot.service';
 
 @Component({
@@ -38,7 +39,8 @@ export class CreateSlotComponent implements OnInit {
     private locationService: locationService,
     private dialog: MatDialog,
     private formbuilder: FormBuilder,
-    private slotService: slotService
+    private slotService: slotService,
+    private notification: notificationService
   ) { 
 
   }
@@ -98,6 +100,28 @@ export class CreateSlotComponent implements OnInit {
         console.log(slotArray)
 
         if (slotArray.length == 0){
+          
+          //notify
+          var accountRid = localStorage.getItem('rid');
+          var date = new Date();
+          // console.log(location);
+          // console.log(slot_Number);
+
+          const notify = {
+            rid: accountRid,
+            title: 'New Slot Added for: '+' '+location, 
+            description: 'New Slot added \n for the location '+location+' with the the number: '+slot_Number,
+            category: 'New Slot Added',
+            date: date,
+            view: false
+          };
+
+          this.notification.create(notify).subscribe(data=> {                     //create notification
+            console.log("notification created")
+          },error=> {
+            console.log(error)
+          })
+
           this.slotService.create(slot).subscribe(resp=> {
 
             //update total slot  - location table

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { accountService } from '../services/account.service';
+import { notificationService } from '../services/notification.service';
 import { photoService } from '../services/photo.service';
 
 @Component({
@@ -76,7 +77,8 @@ export class EditUserComponent implements OnInit {
     private formbuilder: FormBuilder,
     private dialog: MatDialog,
     private accountService: accountService,
-    private photoService: photoService
+    private photoService: photoService,
+    private notification: notificationService
   ) { }
 
   ngOnInit(): void {
@@ -237,6 +239,27 @@ saveChanges(){
           localStorage.removeItem('username');
           localStorage.setItem('username',username);
         }
+
+        //notify
+        var accountRid = localStorage.getItem('rid');
+        // var accountRid = sessionStorage.getItem('rid');
+        var date = new Date();
+        // console.log(this.locationName)
+
+        const notify = {
+          rid: accountRid,
+          title: 'Account info updated for'+' '+username, 
+          description: 'Account info update for account with \n the username: '+username,
+          category: 'Account Info Updated',
+          date: date,
+          view: false
+        };
+
+        this.notification.create(notify).subscribe(data=> {                     //create notification
+          console.log("notification created")
+        },error=> {
+          console.log(error)
+        })
        
 
             this.accountService.update(id, account).subscribe(result=> {
@@ -257,6 +280,26 @@ saveChanges(){
           this.accountService.update(id, account).subscribe(result=> {
             console.log(result)
             Swal.fire("Account Updated","Successfully update the user account","success")
+            //notify
+            var accountRid = localStorage.getItem('rid');
+            // var accountRid = sessionStorage.getItem('rid');
+            var date = new Date();
+            // console.log(this.locationName)
+
+            const notify = {
+              rid: accountRid,
+              title: 'Account info updated for'+' '+username, 
+              description: 'Account info update for account with \n the username: '+username,
+              category: 'Account Info Updated',
+              date: date,
+              view: false
+            };
+
+            this.notification.create(notify).subscribe(data=> {                     //create notification
+              console.log("notification created")
+            },error=> {
+              console.log(error)
+            })
             this.closeModal();
             return;
           },error=> {
