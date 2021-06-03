@@ -192,6 +192,9 @@ openSideProfile(id){
     data: {
       dataKey: id,
     }
+  }).afterDismissed().subscribe(data=> {
+    this.username = sessionStorage.getItem("username");
+    this.role = sessionStorage.getItem("role")
   })
 
 }
