@@ -1312,6 +1312,8 @@ displayedLocationColumns: string[] = [
         data: {
           dataKey: id,
         }
+      }).afterDismissed().subscribe(data=> {
+        this.refreshData();
       })
 
   }

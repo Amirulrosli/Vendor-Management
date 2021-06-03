@@ -229,34 +229,6 @@ export class UsermanagementComponent implements OnInit {
 
   }
 
-  upload(){
-    if (!this.fileUploadForm.value.uploadedImage){
-      Swal.fire('Upload Failed','Please Try again','error')
-    } else {
-      console.log(this.fileUploadForm.value.uploadedImage)
-      const formData = new FormData()
-      formData.append('image',this.fileUploadForm.value.uploadedImage);
-      formData.append('vendor_rid','123')
-      formData.append('account_rid','111');
-
-      // this.attachment.uploadFile(formData).subscribe(data=> {
-      //   console.log(data)
-      // })
-
-
-      this.http
-      .post<any>('http://localhost:3000/uploadfile',formData).subscribe(response => {
-        console.log(response);
-        if (response.statusCode === 200) {
-          this.fileInputLabel = undefined;
-        }
-      }, er => {
-        console.log(er);
-        alert(er.error.error);
-      });
-    }
-  }
-
   openNav(){
     this.close = false;
     this.opened = true;
@@ -431,6 +403,8 @@ export class UsermanagementComponent implements OnInit {
           dataKey: data
         }
       }).afterClosed().subscribe(data=> {
+        this.username = sessionStorage.getItem("username")
+        this.role = sessionStorage.getItem("role");
         this.getUser();
       })
     
@@ -947,6 +921,11 @@ export class UsermanagementComponent implements OnInit {
         data: {
           dataKey: id,
         }
+      }).afterDismissed().subscribe(data=> {
+
+        this.username = sessionStorage.getItem("username")
+        this.role = sessionStorage.getItem("role");
+
       })
 
   }
