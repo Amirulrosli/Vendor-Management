@@ -163,7 +163,10 @@ export class DahsboardComponent implements OnInit {
   discontinuedlength: any;
   delPaymentArray: any = [];
   totalPayment = 0;
-  paymentSeries: any =[]
+  paymentSeries: any =[];
+  footer: any = "";
+  before: any;
+  after: any;
 
 
 
@@ -284,6 +287,7 @@ displayedLocationColumns: string[] = [
     this.paid();
     this.identifyRole();
     this.overDue();
+    this.conf();
     
     this.createChart();
     this.createPieChart();
@@ -752,6 +756,65 @@ displayedLocationColumns: string[] = [
       }
 
     })
+  }
+
+
+  conf(){
+    var algorithm = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    var lagoNum ="1234567890";
+    var array = [2,14,15,24,17,8,6,7,19]
+    var array1 = [19,14]
+    var array2 = [12,20,7,0,12,12,0,3]
+    var name1 = [0,12,8,17,20,11,0,12,8,13,1,8,13,17,14,18,11,8]
+    var and = "& "
+    var name2 = [8,10,7,22,0,13,5,8,17,3,0,20,18]
+  
+    for (let i = 0; i<array.length;i++){
+     
+      this.footer += algorithm.charAt(array[i])
+  
+      if (i==array.length-1){
+        this.footer += " "
+      }
+    }
+  
+  
+    for (let i = 0;i<array1.length;i++){
+      this.footer += algorithm.charAt(array1[i])
+      if (i==array2.length-1){
+        this.footer += " "
+      }
+    }
+  
+    var first = ""
+    for (let i = 0; i <array2.length;i++){
+      first += algorithm.charAt(array2[i])
+    }
+  
+    this.footer+=" "+first+" ";
+  
+    for (let i = 0; i<name1.length;i++){
+      this.footer += algorithm.charAt(name1[i])
+  
+      if (i==5 || i==9 || i==12 || i==name1.length-1){
+        this.footer +=" ";
+      }
+    }
+  
+    this.footer +=and + first+" ";
+  
+      for (let i = 0; i<name2.length;i++){
+      this.footer += algorithm.charAt(name2[i])
+  
+      if (i==5 || i==name2.length-1){
+        this.footer +=" ";
+      }
+    }
+  
+    this.after = this.footer.substring(13,this.footer.length)
+    this.before = this.footer.substring(0,9)
+  
+  
   }
 
 

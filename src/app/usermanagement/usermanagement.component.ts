@@ -27,8 +27,15 @@ import { paymentService } from '../services/payment.service';
 import { photoService } from '../services/photo.service';
 import { profileService } from '../services/profile.service';
 import { relativeService } from '../services/relative.service';
+import { remarkService } from '../services/remark.service';
 import { Slot } from '../services/slot.model';
 import { slotService } from '../services/slot.service';
+import { DelattachmentService } from '../servicesDeleted/Attachment.service';
+import { DelpaymentService } from '../servicesDeleted/payment.service';
+import { DelphotoService } from '../servicesDeleted/photo.service';
+import { DelprofileService } from '../servicesDeleted/profile.service';
+import { DelrelativeService } from '../servicesDeleted/relative.service';
+import { DelremarkService } from '../servicesDeleted/remark.service';
 import { SideProfileComponent } from '../side-profile/side-profile.component';
 
 
@@ -126,12 +133,18 @@ export class UsermanagementComponent implements OnInit {
   slotDataArray: any = [];
   accountDataArray: any = [];
   loginStateDataArray: any = [];
-
-
-  notificationDataArray: any = [];
   photoDataArray: any = [];
+  notificationDataArray: any = [];
   remarkDataArray: any = [];
-  // accountRid: string;
+
+  //DeletedDatabase -----------------------------------
+  delrelativeDataArray: any = [];
+  delprofileDataArray: any = [];
+  delpaymentDataArray: any = [];
+  delphotoDataArray: any = [];
+  delattachmentDataArray: any = [];
+  delremarkDataArray: any = [];
+
 
   constructor(
     private router: Router,
@@ -151,7 +164,18 @@ export class UsermanagementComponent implements OnInit {
     private profileService: profileService,
     private paymentService: paymentService,
     private relativeService: relativeService,
-    private loginService: loginStateService
+    private loginService: loginStateService,
+    private remarkService: remarkService,
+
+    //deleted database
+
+    private delAttachmentService: DelattachmentService,
+    private delPaymentService: DelpaymentService,
+    private delPhotoService: DelphotoService,
+    private delProfileService: DelprofileService,
+    private delRelativeService: DelrelativeService,
+    private delRemarkService: DelremarkService
+
   
     
 
@@ -1028,7 +1052,7 @@ retrievePhoto(){
 }
 
 
-runBackup(){
+async runBackup(){
 
   var backupURL = environment.backupURL;
   var profileArray = [];
@@ -1056,6 +1080,7 @@ runBackup(){
          
               console.log(data);
               this.updateText += "\n"+"Successfully Back up Profile data: "+i
+
             })
 
           } else {
@@ -1069,15 +1094,21 @@ runBackup(){
 
           }
 
+
+          if (i==profileArray.length-1){
+            this.updateText+="\n"+"Done back up profile data [100%]"
+          }
+
         },error=> {
-          console.log(error)
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
         })
 
       
       }
     }
   },erro=> {
-    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
     return;
   })
 
@@ -1115,13 +1146,23 @@ runBackup(){
             })
 
           }
+
+          if (i==locationArray.length-1){
+            this.updateText+="\n"+"Done back up location data [100%]"
+          }
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
         })
+
+       
 
 
       }
     }
   },error=>{
-    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
     return;
   })
 
@@ -1161,13 +1202,27 @@ runBackup(){
             })
 
           }
+
+          if (i==paymentArray.length-1){
+            this.updateText+="\n"+"Done back up payment data [100%]"
+          }
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
         })
+
+
 
 
       }
 
     }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+    return;
   })
+
 
 
 
@@ -1207,6 +1262,16 @@ runBackup(){
             })
 
           }
+
+          
+        if (i==slotArray.length-1){
+          this.updateText+="\n"+"Done back up slot data [100%]"
+        }
+
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
         })
 
 
@@ -1214,7 +1279,7 @@ runBackup(){
 
     }
   },error=> {
-    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
     return;
   })
 
@@ -1257,6 +1322,15 @@ runBackup(){
             })
 
           }
+
+          if (i==accountArray.length-1){
+            this.updateText+="\n"+"Done back up account data [100%]"
+          }
+
+          
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
         })
 
 
@@ -1264,7 +1338,7 @@ runBackup(){
 
     }
   },error=> {
-    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
     return;
   })
 
@@ -1305,8 +1379,14 @@ runBackup(){
             })
 
           }
-        })
 
+          if (i==attachmentArray.length-1){
+            this.updateText+="\n"+"Done back up attachment data [100%]"
+          }
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+        })
 
       }
 
@@ -1356,8 +1436,17 @@ runBackup(){
               })
   
             }
-          })
+
+            if (i==relativeArray.length-1){
+              this.updateText+="\n"+"Done back up relative data [100%]"
+            }
   
+            
+          },error=> {
+            Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          })
+
+       
   
         }
   
@@ -1373,7 +1462,7 @@ runBackup(){
 
 
     
-    //loginstate
+    //loginstate---------------------------------------------------------------
 
 
     var loginArray = [];
@@ -1386,7 +1475,7 @@ runBackup(){
   
         for (let i = 0; i<loginArray.length;i++){
   
-          var loginURL = backupURL+"/api/relative";
+          var loginURL = backupURL+"/api/loginState";
           var loginRID = loginArray[i].rid;
           console.log(loginURL+"   "+loginRID)
          
@@ -1409,14 +1498,23 @@ runBackup(){
               })
   
             }
-          })
+
+            if (i==loginArray.length-1){
+              this.updateText+="\n"+"Done back up login state data [100%]"
+            }
   
+            
+          },error=>{
+            Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          })
+
+         
   
         }
   
       }
     },error=> {
-      Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+      Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
       return;
     })
 
@@ -1457,22 +1555,518 @@ runBackup(){
                   })
       
                 }
-              })
+
+                if (i==photoArray.length-1){
+                  this.updateText+="\n"+"Done back up photo data [100%]"
+                }
       
+                
+              },error=> {
+                Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+                return;
+              })
+
+           
       
             }
       
           }
         },error=> {
-          Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
+        })
+
+
+
+        //notification--------------------------------------------
+
+        
+        var notificationArray = [];
+
+        this.notification.findAll().subscribe(data=> {
+          notificationArray = data;
+      
+          if (notificationArray.length !==0){
+      
+      
+            for (let i = 0; i<notificationArray.length;i++){
+      
+              var notificationURL = backupURL+"/api/notifications";
+              var notificationID = notificationArray[i].id;
+              console.log(notificationURL+"   "+notificationID)
+             
+      
+              this.http.get(`${notificationURL}/${notificationID}`).subscribe(data=> {
+                this.notificationDataArray = data;
+      
+                if (this.notificationDataArray.length == 0){
+                  this.http.post(notificationURL,notificationArray[i]).subscribe(data=> {
+                    console.log(data);
+                    this.updateText += "\n"+"Successfully Back up notification data: "+i
+                  })
+                } else {
+      
+      
+                  this.http.put(`${notificationURL}/update/${this.notificationDataArray[0].id}`,notificationArray[i]).subscribe(data=> {
+               
+                    console.log(data);
+                    this.updateText += "\n"+"Successfully update notification data: "+i
+                  })
+      
+                }
+
+                
+              if (i==notificationArray.length-1){
+                this.updateText+="\n"+"Done back up notification data [100%]"
+              }
+      
+
+              },error=> {
+                Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+                return;
+              })
+      
+            }
+      
+          }
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
           return;
         })
 
 
 
 
+        //Remark--------------------------------------------
 
 
+        
+         var remarkArray = [];
+
+         this.remarkService.findAll().subscribe(data=> {
+           remarkArray = data;
+       
+           if (remarkArray.length !==0){
+       
+       
+             for (let i = 0; i<remarkArray.length;i++){
+       
+               var remarkURL = backupURL+"/api/remark";
+               var remarkRID = remarkArray[i].rid;
+
+               console.log(remarkURL+"   "+remarkRID)
+              
+       
+               this.http.get(`${remarkURL}/rid/${remarkRID}`).subscribe(data=> {
+                 this.remarkDataArray = data;
+       
+                 if (this.remarkDataArray.length == 0){
+                   this.http.post(remarkURL,remarkArray[i]).subscribe(data=> {
+                     console.log(data);
+                     this.updateText += "\n"+"Successfully Back up remark data: "+i
+                   })
+                 } else {
+       
+       
+                   this.http.put(`${remarkURL}/id/${this.remarkDataArray[0].id}`,remarkArray[i]).subscribe(data=> {
+                
+                     console.log(data);
+                     this.updateText += "\n"+"Successfully update remark data: "+i
+                   })
+       
+                 }
+
+                          
+                 if (i==remarkArray.length-1){
+                     this.updateText+="\n"+"Done back up remark data [100%]"
+                 }
+
+               },error=> {
+                   Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error');
+                   return;
+               })
+       
+       
+             }
+       
+           }
+         },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+           return;
+         })
+ 
+
+
+//Deleted database backup -----------------------------------------------------------------------------------------------
+
+
+
+
+  //DelAttachment
+
+
+  var delattachmentArray = [];
+
+  this.delAttachmentService.findAll().subscribe(data=> {
+    delattachmentArray = data;
+
+    if (delattachmentArray.length !==0){
+
+
+      for (let i = 0; i<delattachmentArray.length;i++){
+
+        var delattachmentURL = backupURL+"/api/delattachment";
+        var delattachmentID = delattachmentArray[i].id;
+        console.log(delattachmentURL+"   "+delattachmentID)
+       
+
+        this.http.get(`${delattachmentURL}/id/${delattachmentID}`).subscribe(data=> {
+          this.delattachmentDataArray = data;
+
+          if (this.delattachmentDataArray.length == 0){
+            this.http.post(delattachmentURL,delattachmentArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up deleted attachment data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${delattachmentURL}/update/${this.delattachmentDataArray[0].id}`,delattachmentArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update deleted attachment data: "+i
+            })
+
+          }
+
+          if (i==delattachmentArray.length-1){
+            this.updateText+="\n"+"Done back up deleted attachment data [100%]"
+          }
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
+        })
+
+        
+     
+
+      }
+
+    }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+    return;
+  })
+
+
+
+
+  //delPayment -----------------------------------------
+
+  var delpaymentArray = [];
+
+  this.delPaymentService.findAll().subscribe(data=> {
+    delpaymentArray = data;
+
+    if (delpaymentArray.length !==0){
+
+
+      for (let i = 0; i<delpaymentArray.length;i++){
+
+        var delpaymentURL = backupURL+"/api/delpayments";
+        var delpaymentID = delpaymentArray[i].paymentID;
+        console.log(delpaymentURL+"   "+delpaymentID)
+       
+
+        this.http.get(`${delpaymentURL}/payment/${delpaymentID}`).subscribe(data=> {
+          this.delpaymentDataArray = data;
+
+          if (this.delpaymentDataArray.length == 0){
+            this.http.post(delpaymentURL,delpaymentArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up deleted Payment data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${delpaymentURL}/${this.delpaymentDataArray[0].id}`,delpaymentArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update deleted payment data: "+i
+            })
+
+          }
+
+                  
+        if (i==delpaymentArray.length-1){
+          this.updateText+="\n"+"Done back up deleted payment data [100%]"
+        }
+        
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
+        })
+
+
+
+
+      }
+
+    }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+    return;
+  })
+
+
+
+
+
+  //deleted photo
+
+
+  var delphotoArray = [];
+
+  this.delPhotoService.findAll().subscribe(data=> {
+    delphotoArray = data;
+
+    if (delphotoArray.length !==0){
+
+
+      for (let i = 0; i<delphotoArray.length;i++){
+
+        var delphotoURL = backupURL+"/api/delphoto";
+        var delphotoRID = delphotoArray[i].rid;
+        console.log(delphotoURL+"   "+delphotoRID)
+       
+
+        this.http.get(`${delphotoURL}/rid/${delphotoRID}`).subscribe(data=> {
+          this.delphotoDataArray = data;
+
+          if (this.delphotoDataArray.length == 0){
+            this.http.post(delphotoURL,delphotoArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up deleted photo data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${delphotoURL}/update/${this.delphotoDataArray[0].id}`,delphotoArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update deleted photo data: "+i
+            })
+
+          }
+
+            
+        if (i==delphotoArray.length-1){
+          this.updateText+="\n"+"Done back up deleted photo data [100%]"
+        }
+
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error');
+          return;
+        })
+
+
+      
+      }
+
+    }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+    return;
+  })
+
+
+  //deleted profile service
+
+  var delprofileArray = [];
+
+  this.delProfileService.findAll().subscribe(data=> {
+    delprofileArray = data;
+
+    if (delprofileArray.length !==0){
+      
+      for (let i =0; i<delprofileArray.length;i++){
+
+        var delurl = backupURL+"/api/delprofiles";
+        var delIC = delprofileArray[i].IC_Number;
+        console.log(delurl)
+
+        
+        this.http.get(`${delurl}/IC/${delIC}`).subscribe(data=> {
+          this.delprofileDataArray = data;
+
+          if (this.delprofileDataArray.length == 0){
+
+            this.http.post(delurl,delprofileArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up deleted Profile data: "+i
+            })
+
+          } else {
+
+            this.http.put(`${delurl}/update/${this.delprofileDataArray[0].id}`,delprofileArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update deleted Profile data: "+i
+            })
+
+
+          }
+
+           
+        if (i==delprofileArray.length-1){
+          this.updateText+="\n"+"Done back up deleted profile data [100%]"
+        }
+
+          
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+          return;
+        })
+
+       
+
+      
+      }
+    }
+  },erro=> {
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+    return;
+  })
+
+
+
+  // deleted relative
+
+
+  var delrelativeArray = [];
+
+  this.delRelativeService.findAll().subscribe(data=> {
+    delrelativeArray = data;
+
+    if (delrelativeArray.length !==0){
+
+
+      for (let i = 0; i<delrelativeArray.length;i++){
+
+        var delrelativeURL = backupURL+"/api/delrelative";
+        var delrelativeID = delrelativeArray[i].id;
+        console.log(delrelativeURL+"   "+delrelativeID)
+       
+
+        this.http.get(`${delrelativeURL}/${delrelativeID}`).subscribe(data=> {
+          this.delrelativeDataArray = data;
+
+          if (this.delrelativeDataArray.length == 0){
+            this.http.post(delrelativeURL,delrelativeArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up deleted relative data: "+i
+            })
+          } else {
+
+
+            this.http.put(`${delrelativeURL}/${this.delrelativeDataArray[0].id}`,delrelativeArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update deleted relative data: "+i
+            })
+
+          }
+
+          if (i==delrelativeArray.length-1){
+            this.updateText+="\n"+"Done back up deleted relative data [100%]"
+          }
+
+        },error=> {
+          Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+        })
+
+
+
+     
+
+
+      }
+
+    }
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please check devices and try again','error')
+    return;
+  })
+
+  
+
+  //deleted remark------------
+
+
+  var delremarkArray = [];
+
+  this.delRemarkService.findAll().subscribe(data=> {
+    delremarkArray = data;
+
+    if (delremarkArray.length !==0){
+
+
+      for (let i = 0; i<delremarkArray.length;i++){
+
+        var delremarkURL = backupURL+"/api/delremark";
+        var delremarkRID = delremarkArray[i].rid;
+
+        console.log(delremarkURL+"   "+delremarkRID)
+       
+
+        this.http.get(`${delremarkURL}/rid/${delremarkRID}`).subscribe(data=> {
+          this.delremarkDataArray = data;
+
+          if (this.delremarkDataArray.length == 0){
+            
+            this.http.post(delremarkURL,delremarkArray[i]).subscribe(data=> {
+              console.log(data);
+              this.updateText += "\n"+"Successfully Back up deleted remark data: "+i
+            })
+
+          } else {
+
+
+            this.http.put(`${delremarkURL}/id/${this.delremarkDataArray[0].id}`,delremarkArray[i]).subscribe(data=> {
+         
+              console.log(data);
+              this.updateText += "\n"+"Successfully update deleted remark data: "+i
+            })
+
+          }
+
+          if (i==delremarkArray.length-1){
+            this.updateText+="\n"+"Done back up deleted remark data [100%]"
+          }
+          
+        },error=> {
+            Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error');
+            return;
+        })
+
+        
+     
+
+      }
+
+    }
+  },error=> {
+   Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+    return;
+  })
+
+
+
+  await Swal.fire('This may take a while','Data backup is in progress','info')
 
 
 

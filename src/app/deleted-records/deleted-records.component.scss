@@ -78,6 +78,17 @@ mat-sidenav-content{
     // margin-right: 60px;
 
  }
+
+
+ #hide{
+  position: absolute;
+  bottom:0px;
+  color: black;
+  left: 20%;
+  visibility: hidden;
+}
+
+
  .editBtn{
    background-color: blueviolet;
  }
@@ -125,6 +136,7 @@ mat-sidenav-content{
   margin-right: 50%;
   margin-left: auto;
 }
+
 
  
  

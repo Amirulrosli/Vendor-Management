@@ -208,11 +208,21 @@ onChange(deviceValue) {
 set(){
 
   console.log(this.myControl.value)
+  if (this.myControl.value == ""){
+    this.ifSet = false;
+    this.vendorField = "";
+    this.slotField="";
+    this.list = [];
+    this.myList = [];
+    Swal.fire('No Result Found','Please Check your IC Number and Try again','error')
+    return;
+  }
 
   this.profile.findByIC(this.myControl.value).subscribe(array =>{
  
     this.myList = array;
     console.log(this.myList)
+
 
     if (this.myList.length == 0){
       this.ifSet = false;
