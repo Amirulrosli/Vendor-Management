@@ -241,8 +241,8 @@ saveChanges(){
         }
 
         //notify
-        var accountRid = localStorage.getItem('rid');
-        // var accountRid = sessionStorage.getItem('rid');
+      
+        var accountRid = sessionStorage.getItem('rid');
         var date = new Date();
         // console.log(this.locationName)
 
@@ -281,10 +281,10 @@ saveChanges(){
             console.log(result)
             Swal.fire("Account Updated","Successfully update the user account","success")
             //notify
-            var accountRid = localStorage.getItem('rid');
-            // var accountRid = sessionStorage.getItem('rid');
+         
+           var accountRid = sessionStorage.getItem('rid');
             var date = new Date();
-            // console.log(this.locationName)
+            
 
             const notify = {
               rid: accountRid,

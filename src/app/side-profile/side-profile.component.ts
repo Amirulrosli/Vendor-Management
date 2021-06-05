@@ -89,6 +89,8 @@ export class SideProfileComponent implements OnInit {
     }).afterClosed().subscribe(data=> {
       this.getUser();
       this.retrievePhoto();
+      this.slidePanel.dismiss();
+
     })
   
 }
