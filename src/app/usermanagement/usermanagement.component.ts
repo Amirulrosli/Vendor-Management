@@ -134,7 +134,7 @@ export class UsermanagementComponent implements OnInit {
   accountDataArray: any = [];
   loginStateDataArray: any = [];
   photoDataArray: any = [];
-  notificationDataArray: any = [];
+  noDataArray: any = [];
   remarkDataArray: any = [];
 
   //DeletedDatabase -----------------------------------
@@ -197,6 +197,8 @@ export class UsermanagementComponent implements OnInit {
     this.username = sessionStorage.getItem("username")
     this.role = sessionStorage.getItem("role");
     this.getUser();
+
+
   }
 
   getUser(){
@@ -1016,6 +1018,8 @@ export class UsermanagementComponent implements OnInit {
         }
       }).afterDismissed().subscribe(data=> {
 
+        this.getUser();
+
         this.username = sessionStorage.getItem("username")
         this.role = sessionStorage.getItem("role");
 
@@ -1371,7 +1375,7 @@ async runBackup(){
             })
           } else {
 
-
+            console.log(attachmentArray[i])
             this.http.put(`${attachmentURL}/update/${this.attachmentDataArray[0].id}`,attachmentArray[i]).subscribe(data=> {
          
               console.log(data);
@@ -1414,11 +1418,11 @@ async runBackup(){
         for (let i = 0; i<relativeArray.length;i++){
   
           var relativeURL = backupURL+"/api/relative";
-          var relativeID = relativeArray[i].id;
+          var relativeID = relativeArray[i].IC_Number
           console.log(relativeURL+"   "+relativeID)
          
   
-          this.http.get(`${relativeURL}/${relativeID}`).subscribe(data=> {
+          this.http.get(`${relativeURL}/IC/${relativeID}`).subscribe(data=> {
             this.relativeDataArray = data;
   
             if (this.relativeDataArray.length == 0){
@@ -1585,6 +1589,7 @@ async runBackup(){
 
         this.notification.findAll().subscribe(data=> {
           notificationArray = data;
+          
       
           if (notificationArray.length !==0){
       
@@ -1593,13 +1598,12 @@ async runBackup(){
       
               var notificationURL = backupURL+"/api/notifications";
               var notificationID = notificationArray[i].id;
-              console.log(notificationURL+"   "+notificationID)
-             
+              console.log(notificationURL+"/"+notificationID)
       
-              this.http.get(`${notificationURL}/${notificationID}`).subscribe(data=> {
-                this.notificationDataArray = data;
+              this.http.get(`${notificationURL}/find/${notificationID}`).subscribe(data=> {
+                this.noDataArray = data;
       
-                if (this.notificationDataArray.length == 0){
+                if (this.noDataArray == null || this.noDataArray.length == 0){
                   this.http.post(notificationURL,notificationArray[i]).subscribe(data=> {
                     console.log(data);
                     this.updateText += "\n"+"Successfully Back up notification data: "+i
@@ -1607,7 +1611,7 @@ async runBackup(){
                 } else {
       
       
-                  this.http.put(`${notificationURL}/update/${this.notificationDataArray[0].id}`,notificationArray[i]).subscribe(data=> {
+                  this.http.put(`${notificationURL}/update/${this.noDataArray.id}`,notificationArray[i]).subscribe(data=> {
                
                     console.log(data);
                     this.updateText += "\n"+"Successfully update notification data: "+i
@@ -1958,13 +1962,13 @@ async runBackup(){
       for (let i = 0; i<delrelativeArray.length;i++){
 
         var delrelativeURL = backupURL+"/api/delrelative";
-        var delrelativeID = delrelativeArray[i].id;
+        var delrelativeID = delrelativeArray[i].IC_Number;
         console.log(delrelativeURL+"   "+delrelativeID)
        
 
-        this.http.get(`${delrelativeURL}/${delrelativeID}`).subscribe(data=> {
+        this.http.get(`${delrelativeURL}/IC/${delrelativeID}`).subscribe(data=> {
           this.delrelativeDataArray = data;
-
+          console.log(data)
           if (this.delrelativeDataArray.length == 0){
             this.http.post(delrelativeURL,delrelativeArray[i]).subscribe(data=> {
               console.log(data);
@@ -1973,7 +1977,7 @@ async runBackup(){
           } else {
 
 
-            this.http.put(`${delrelativeURL}/${this.delrelativeDataArray[0].id}`,delrelativeArray[i]).subscribe(data=> {
+            this.http.put(`${delrelativeURL}/update/${this.delrelativeDataArray[0].id}`,delrelativeArray[i]).subscribe(data=> {
          
               console.log(data);
               this.updateText += "\n"+"Successfully update deleted relative data: "+i

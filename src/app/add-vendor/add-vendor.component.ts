@@ -497,6 +497,7 @@ export class AddVendorComponent implements OnInit {
           this.slot="";
           this.slotprice="";
           this.registrationForm.reset();
+          this.childArray = [];
           Swal.fire('Successfully created vendor','Data have been saved','success')
         },
         error=> {

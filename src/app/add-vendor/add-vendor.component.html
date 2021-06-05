@@ -210,7 +210,7 @@
                               <th>Action</th>
                             </tr>
                             <tr *ngFor="let data of childArray; let i = index">
-                              <td style="color: rgb(0, 0, 0)">{{i}}</td>
+                              <td style="color: rgb(0, 0, 0)">{{i+1}}</td>
                               <td style="color: black">{{data.name}}</td>
                               <td style="color: black">{{data.IC_Number}}</td>
                               <td><button mat-raised-button class="delBtn" (click)="clearChild(i)">Clear</button></td>
