@@ -161,7 +161,7 @@ export class EditSlotComponent implements OnInit {
 
     
       //notify
-      var accountRid = localStorage.getItem('rid');
+      var accountRid = sessionStorage.getItem('rid');
       var date = new Date();
       // console.log(location);
       // console.log(slot_Number);
