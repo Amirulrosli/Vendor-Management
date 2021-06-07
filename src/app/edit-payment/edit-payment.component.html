@@ -1,0 +1,97 @@
+<mat-toolbar class="toolbar"> <!--Toolbar C-->
+
+    <mat-button class="toggle" ><mat-icon class="toggle">close</mat-icon></mat-button>
+    <span class="titleTxt">Edit Payment</span>   
+    <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
+
+</mat-toolbar>
+
+    <div *ngIf="dataList">
+        <br>
+        <br>
+
+        <mat-label class="mat-label-form">Receipt No:</mat-label>
+
+        <input placeholder="Enter Receipt No" [(ngModel)]="receiptNo" type="text"/>
+        <p style="color:#ff3535; margin-left: 10px;">*Receipt No. Cannot be edited</p>
+
+        <br>
+       
+
+        <mat-label class="mat-label-form">Payment Date:</mat-label>
+        <br>
+        <input [(ngModel)]="dateField" type="date"/>
+        <br>
+
+        <mat-label class="mat-label-form">Price:</mat-label>
+        <mat-label class="mat-label-form" style="position:relative; left: 76%;">Pay For (month(s)):</mat-label>
+        <br>
+        <input [hidden]="dataList.length!==0" style="width:82%" placeholder="$" [(ngModel)]="priceField" value="{{dataList.slot_Price}}" type="number"/>
+
+
+        <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;  width:82%; display: inline-block;">
+            <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                <mat-icon style="color:purple">attach_money</mat-icon>
+                   <mat-label> ${{dataList.slot_Price}}</mat-label>
+
+            </mat-list-item>
+            
+        </mat-list>
+
+        <mat-label style="color:black; margin-left: 10px; font-weight: bold;">X</mat-label>
+        <input style="width:10%;margin-left: 10px;" placeholder="Enter Month" [(ngModel)]="monthField" type="number"/>
+        <!-- <input type="text"(blur)="transformAmount($event)" [(ngModel)]="formattedAmount"  /> -->
+        <br>
+        <br>
+
+        <mat-label class="mat-label-form"> Vendor Name:</mat-label>
+        <br>
+       
+       
+        <input [(ngModel)]="vendorField" [hidden]="dataList.length!==0" placeholder="vendor name" style="color: black; font-weight: 500; margin-top: 5px;" value="{{dataList.name}}" disabled/>
+        <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;">
+            <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                <mat-icon style="color:purple">account_circle</mat-icon>
+                   <mat-label style="margin-left: 8px;"> {{dataList.name}}</mat-label>
+            </mat-list-item>
+        </mat-list>
+        <br>
+        
+
+        <mat-label class="mat-label-form">Location:</mat-label>
+        <br>
+        <input [(ngModel)]="locationField" [hidden]="dataList.length!==0" placeholder="Location..." value="{{dataList.location}}" type="text" disabled/>
+        <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;">
+            <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                <mat-icon style="color:purple">where_to_vote</mat-icon>
+                   <mat-label style="margin-left: 6px;">{{dataList.location}}</mat-label>
+            </mat-list-item>
+        </mat-list>
+
+        <br>
+      
+        <mat-label class="mat-label-form">Slot Number:</mat-label>
+        <br>
+        <input [(ngModel)]="slotField" [hidden]="dataList.length!==0" placeholder="Slot No." value="{{dataList.slot}}" type="text" disabled/>
+        <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;">
+            <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                <mat-icon style="color:purple">gps_fixed</mat-icon>
+                   <mat-label style="margin-left: 8px;"> {{dataList.slot}}</mat-label>
+            </mat-list-item>
+        </mat-list>
+  
+        <br>
+
+        
+        <br>
+     
+        <br>
+        <br>
+    
+        <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Save Payment</button>
+        <br>
+        <button mat-raised-button class="cancelBtn" (click)="cancel()">Cancel</button>
+        <br>
+        <br>
+    </div>
+

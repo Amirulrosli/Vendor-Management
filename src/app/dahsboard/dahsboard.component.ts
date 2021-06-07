@@ -211,6 +211,7 @@ displayedLocationColumns: string[] = [
   ]
 
   displayedPaymentsColumns: string[] = [
+    "Receipt ID",
     "slot_Number",
     'Price',
     "payment_Date",

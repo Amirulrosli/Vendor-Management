@@ -179,7 +179,8 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                         <mat-cell *matCellDef="let element" >
 
-                            <span><mat-icon (click)="goToReceipt(element)" style="font-size:30px;color: blueviolet; position: relative;top:7px; cursor: pointer">move_to_inbox</mat-icon></span>
+                            <span><mat-icon (click)="goToReceipt(element)" style="font-size:30px;color: blueviolet; position: relative;top:3px; cursor: pointer">move_to_inbox</mat-icon></span>
+                            <span><button style=" position: relative;left: 30px; background-color: rgb(105, 105, 105);" mat-raised-button (click)="goToPaymentEdit(element)">Edit<mat-icon style="font-size:20px;margin-left: 5px;color: rgb(255, 255, 255);">edit</mat-icon></button></span>
                         </mat-cell>
                     </ng-container>
             
@@ -300,67 +301,96 @@
 
         <div *ngIf="showSpouse == true" class="history">
 
-            <h1 class="titleTxt">Spouse Details</h1>
+            <div class="first-row-1">
 
-            <div *ngFor="let spouseArray of spouseArray">
+                <h1 class="titleTxt">Spouse Details</h1>
 
-                <mat-label class="text-profile">Spouse Name:</mat-label>
-                <br>
-            
-                <input  *ngIf="editSpouse==false" class="input-profile" value="{{spouseArray.name}}" type="text" placeholder="Spouse Name" disabled><span *ngIf="editSpouse==false"><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+     
+
+                <mat-label *ngIf="editSpouse==true" class="text-profile">Spouse Name:</mat-label>
+                <br *ngIf="editSpouse==true">
                 
-                <input style="background-color: rgb(228, 255, 228);" *ngIf="editSpouse==true" class="input-profile" [(ngModel)]="spouseName" type="text" placeholder="Spouse Name"><span *ngIf="editSpouse==true"><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
-                <br>
+                <input style="background-color: rgb(241, 241, 241);" *ngIf="editSpouse==true" class="input-profile" [(ngModel)]="spouseName" type="text" placeholder="Spouse Name"><span *ngIf="editSpouse==true"><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+                <br *ngIf="editSpouse==true">
             
-                <mat-label class="text-profile">Spouse IC Number:</mat-label>
-                <br>
-            
-                <input  *ngIf="editSpouse==false" class="input-profile" value="{{spouseArray.IC_Number}}" type="text" placeholder="Spouse IC Number" disabled><span *ngIf="editSpouse==false"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+                <mat-label *ngIf="editSpouse==true" class="text-profile">Spouse IC Number:</mat-label>
+                <br *ngIf="editSpouse==true">
                 
                 <select *ngIf="editSpouse==true" style="color: black;" [(ngModel)]="spouseIC" class="selection-IC" name="IC" placeholder="No.">
                     <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
                 </select>
 
                 <mat-label *ngIf="editSpouse==true" class="IC-Dash">-</mat-label>
-                <input style="background-color: rgb(227, 255, 227); margin-left:0px;width: 34%" *ngIf="editSpouse==true" class="input-profile" [(ngModel)]="spouseNumber" type="text" placeholder="Spouse IC Number"><span *ngIf="editSpouse==true"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
-                <br>
+                <input style="background-color: rgb(240, 240, 240); margin-left:0px;width: 34%" *ngIf="editSpouse==true" class="input-profile" [(ngModel)]="spouseNumber" type="text" placeholder="Spouse IC Number"><span *ngIf="editSpouse==true"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+                <br *ngIf="editSpouse==true">
 
-                <button *ngIf="editSpouse==false && !viewOnly" style="margin-left: 40px; margin-top:10px; background-color: blueviolet;"mat-raised-button (click)="onEditSpouse()">Edit Spouse<span style="position:relative; top: 5px;left:5px;"><mat-icon>edit</mat-icon></span></button>
+                <button *ngIf="editSpouse==false && !viewOnly" style="margin-left: 40px; margin-top:10px; background-color: blueviolet;"mat-raised-button (click)="onSpouse()">Add Spouse<span style="position:relative; top: 5px;left:5px;"><mat-icon>edit</mat-icon></span></button>
 
                 <button style="margin-left: 40px; background-color: blueviolet;" *ngIf="editSpouse==true" mat-raised-button (click)="submitSpouse()">Save Changes</button>
                 
                 <button style="background-color: rgb(255, 72, 72);margin-left: 5px;" *ngIf="editSpouse==true" mat-raised-button (click)="cancelSpouse()">Cancel</button>
 
+                <table id="childTable" style="width:95%; font-size: 14px;">
+                    <tr>
+                      <th>Spouse No.</th>
+                      <th>Name</th>
+                      <th>IC Number</th>
+                      <th *ngIf="!viewOnly">Action</th>
+                    </tr>
+                    <tr *ngFor="let data of spouseArray; let i = index">
+                      <td style="color: black">{{i+1}}</td>
+                      <td style="color: black">{{data.name}} <br>
+                        <p  *ngIf="showEditSpouse==true && numberSpouse==i" style="color: gray; font-size: 13px;">Change To: </p>
+                        <input *ngIf="showEditSpouse==true && numberSpouse==i" [(ngModel)]=newSpouseName type="text" class="edit-input" placeholder="Enter spouse Name..."/>
+                    
+                    </td>
+                      <td style="color: black">{{data.IC_Number}} <br>
+                        <p  *ngIf="showEditSpouse==true && numberSpouse==i" style="color: gray; font-size: 13px;">Change To: </p>
+                        <input *ngIf="showEditSpouse==true && numberSpouse==i" [(ngModel)]=newSpouseICNumber type="text" class="edit-input" placeholder="Enter Spouse IC Number (XX-XXXXXX)..."/>
+  
+                    </td>
+       
+                      <td *ngIf="!viewOnly">
+                        <button *ngIf="showEditSpouse==true && numberSpouse==i" mat-raised-button style="background-color: blueviolet;" class="delBtn" (click)="saveSpouse(data,i)">Save Changes</button>
+                        <button *ngIf="showEditSpouse==true && numberSpouse==i" mat-raised-button style="background-color: rgb(255, 53, 53); margin-left:10px;" class="delBtn" (click)="cancelSaveSpouse()">Cancel</button>
+                          <button *ngIf="showEditSpouse==false && !viewOnly" mat-raised-button style="background-color: rgb(80, 80, 80);" class="delBtn" (click)="onEditSpouse(data,i)">Edit</button>
+                          <button *ngIf="showEditSpouse==false && !viewOnly" mat-raised-button style="margin-left: 10px;background-color: rgb(255, 1, 1);" class="delBtn" (click)="onDeleteSpouse(data.id)">Delete</button>
+                    </td>
+                    </tr>
+                  </table>
+
+
             </div>
 
+            
             <div class="second-row-1">
 
-                <h1 class="titleTxt-1">Child Details</h1>
+                <h1 class="titleTxt">Child Details</h1>
 
-                <button *ngIf="showAddChild==false && !viewOnly" style="margin-left: 10px; background-color: blueviolet;"mat-raised-button (click)="showChild()">Add Child <span style="position:relative; top: 5px;left:5px;"><mat-icon>add</mat-icon></span></button>
+                <button *ngIf="showAddChild==false && !viewOnly" style="margin-left: 40px; background-color: blueviolet;"mat-raised-button (click)="showChild()">Add Child <span style="position:relative; top: 5px;left:5px;"><mat-icon>add</mat-icon></span></button>
                 <br>
 
-                <mat-label *ngIf="showAddChild==true" style="margin-left: 10px"  class="text-profile">Child Name:</mat-label>
+                <mat-label *ngIf="showAddChild==true" class="text-profile">Child Name:</mat-label>
                 <br  *ngIf="showAddChild==true">
             
-                <input *ngIf="showAddChild==true" [(ngModel)]="childName" style="margin-left: 10px;width: 88%" class="input-profile" type="text" placeholder="Child Name"><span *ngIf="showAddChild==true" ><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
+                <input *ngIf="showAddChild==true" [(ngModel)]="childName" class="input-profile" type="text" placeholder="Child Name"><span *ngIf="showAddChild==true" ><mat-icon class="icon-profile">supervisor_account</mat-icon></span>
                 <br *ngIf="showAddChild==true">
               
-                <mat-label *ngIf="showAddChild==true" style="margin-left: 10px"  class="text-profile">Child IC Number:</mat-label>
+                <mat-label *ngIf="showAddChild==true" class="text-profile">Child IC Number:</mat-label>
                 <br *ngIf="showAddChild==true">
             
                 
-                <select *ngIf="showAddChild==true" style="color: black; margin-left: 10px;" [(ngModel)]="childIC" class="selection-IC" name="IC" placeholder="No.">
+                <select *ngIf="showAddChild==true" style="color: black;" [(ngModel)]="childIC" class="selection-IC" name="IC" placeholder="No.">
                     <option *ngFor="let value of value" value="{{value.id}}">{{value.id}}</option>
                 </select>
 
                 <mat-label *ngIf="showAddChild==true" class="IC-Dash">-</mat-label>
-                <input *ngIf="showAddChild==true" style="background-color: rgb(227, 255, 227); margin-left:0px;width: 77%" class="input-profile" [(ngModel)]="childNumber" type="text" placeholder="Enter child IC Number"><span *ngIf="showAddChild==true"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
+                <input *ngIf="showAddChild==true" style="background-color: rgb(227, 255, 227); margin-left:0px;width: 34%" class="input-profile" [(ngModel)]="childNumber" type="text" placeholder="Enter child IC Number"><span *ngIf="showAddChild==true"><mat-icon class="icon-profile">assignment_turned_in</mat-icon></span>
                 <br *ngIf="showAddChild==true">
-                <button *ngIf="showAddChild==true" style="margin-left: 10px; background-color: blueviolet;"mat-raised-button (click)="submitChild()">Add</button>
+                <button *ngIf="showAddChild==true" style="margin-left: 40px; background-color: blueviolet;"mat-raised-button (click)="submitChild()">Add</button>
                 <button *ngIf="showAddChild==true" style="margin-left: 10px; background-color: rgba(243, 243, 243, 0); color:rgb(53, 53, 53);box-shadow: none;"mat-raised-button (click)="cancelChild()">Cancel</button>
             
-                <table id="childTable" style="width:98%; font-size: 14px;">
+                <table id="childTable" style="width:95%; font-size: 14px;">
                     <tr>
                       <th>Child No.</th>
                       <th>Name</th>
@@ -382,14 +412,17 @@
        
                       <td *ngIf="!viewOnly">
                         <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: blueviolet;" class="delBtn" (click)="saveChild(data,i)">Save Changes</button>
-                        <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53); margin-right:3px;" class="delBtn" (click)="cancelSaveChild()">Cancel</button>
+                        <button *ngIf="showEdit==true && number==i" mat-raised-button style="background-color: rgb(255, 53, 53); margin-left:10px;" class="delBtn" (click)="cancelSaveChild()">Cancel</button>
                           <button *ngIf="showEdit==false && !viewOnly" mat-raised-button style="background-color: rgb(80, 80, 80);" class="delBtn" (click)="onEditChild(data,i)">Edit</button>
-                          <button *ngIf="showEdit==false && !viewOnly" mat-raised-button style="margin-left: 5px;background-color: rgb(255, 1, 1);" class="delBtn" (click)="onDeleteChild(data.id)">Delete</button>
+                          <button *ngIf="showEdit==false && !viewOnly" mat-raised-button style="margin-left: 10px;background-color: rgb(255, 1, 1);" class="delBtn" (click)="onDeleteChild(data.id)">Delete</button>
                     </td>
                     </tr>
                   </table>
 
+                  <br>
+
             </div>
+            <br>
          
             
 

@@ -36,6 +36,7 @@ import { EditSlotComponent } from './edit-slot/edit-slot.component';
 import { DeletedProfileComponent } from './deleted-profile/deleted-profile.component';
 import { ReceiptComponent } from './receipt/receipt.component';
 import { ReportComponent } from './report/report.component';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 
 
  
@@ -62,7 +63,8 @@ import { ReportComponent } from './report/report.component';
     EditSlotComponent,
     DeletedProfileComponent,
     ReceiptComponent,
-    ReportComponent
+    ReportComponent,
+    EditPaymentComponent
   ],
   imports: [
     BrowserModule,

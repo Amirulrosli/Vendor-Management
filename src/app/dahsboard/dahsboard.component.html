@@ -317,6 +317,12 @@
 
 
               <mat-table [dataSource]="listData" matSort *ngIf="showPayment == true" >
+
+                <ng-container matColumnDef="Receipt ID">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Receipt ID</mat-header-cell>
+                  <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.paymentID}}</mat-cell>
+              </ng-container>
+  
                 
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>

@@ -136,6 +136,7 @@
                     <form [formGroup]="registrationForm">
 
                         <p style="color:black; font-size: 16px; font-weight: bold;">Spouse Details <span style="font-size: 14px; color:rgb(0, 0, 112);"> (Optional) </span></p>
+                        <p style="color: purple; font-size: 12px;">*User can add spouse detail by clicking "Add Spouse" button.</p>
         
                         <mat-label>Spouse Name:</mat-label>                    
                         <br>
@@ -165,7 +166,26 @@
                         </div>
 
                         <br>
+                        <button mat-raised-button class="addBtn" (click)="AddSpouse()"><mat-icon style="color: white; margin-right: 5px;">add_circle_outline</mat-icon>Add Spouse</button>
                         <br>
+                        <table *ngIf="spouseArray.length !==0" id="childTable" style="width:98%;">
+                          <tr>
+                            <th>Spouse No.</th>
+                            <th>Name</th>
+                            <th>IC Number</th>
+                            <th>Action</th>
+                          </tr>
+                          <tr *ngFor="let data of spouseArray; let i = index">
+                            <td style="color: rgb(0, 0, 0)">{{i+1}}</td>
+                            <td style="color: black">{{data.name}}</td>
+                            <td style="color: black">{{data.IC_Number}}</td>
+                            <td><button mat-raised-button class="delBtn" (click)="clearSpouse(i)">Clear</button></td>
+                          </tr>
+                        </table>
+      
+                      <br>
+                      <br>
+                      <br>
 
                         <p style="color:black; font-size: 16px; font-weight: bold;">Child Details <span style="font-size: 14px; color:rgb(0, 0, 112);"> (Optional) </span></p>
                         <p style="color: purple; font-size: 12px;">*User can add child detail by clicking "Add" button.</p>

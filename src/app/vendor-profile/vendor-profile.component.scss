@@ -602,8 +602,8 @@ margin-top: 10px;
 #childTable tr:hover {background-color: #ddd;}
 
 #childTable th {
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: left;
   background-color: rgb(124, 122, 122);
   color: white;
@@ -613,13 +613,6 @@ margin-top: 10px;
     background-color: rgb(255, 82, 82);
 }
 
-
-.second-row-1{
-  position: relative;
-  left: 50%;
-  top: -280px;
-  width: 50%;
-}
 
 .selection-IC{
   background: rgba(128, 128, 128, 0.158);

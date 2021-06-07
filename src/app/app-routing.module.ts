@@ -10,6 +10,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { DahsboardComponent } from "./dahsboard/dahsboard.component"
 import { DeletedProfileComponent } from './deleted-profile/deleted-profile.component';
 import { DeletedRecordsComponent } from './deleted-records/deleted-records.component';
+import { EditPaymentComponent } from './edit-payment/edit-payment.component';
 import { EditSlotComponent } from './edit-slot/edit-slot.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { EmailComponent } from './email/email.component';
@@ -99,6 +100,10 @@ const routes: Routes = [
     path: 'report', component: ReportComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'edit-payment', component: EditPaymentComponent,
+    canActivate: [AuthGuard]
+  },
   
   
 
@@ -128,5 +133,6 @@ export const routingComponents =
   CreateSlotComponent,
   VendorDetailsComponent,
   ReceiptComponent,
-  ReportComponent
+  ReportComponent,
+  EditPaymentComponent
 ]

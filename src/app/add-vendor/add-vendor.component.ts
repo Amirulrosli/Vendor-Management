@@ -44,15 +44,25 @@ export class AddVendorComponent implements OnInit {
   slotNumber: any = [];
   username: any;
   role: any;
+
+  //Step process
   stepTwo: Boolean = true;
   stepThree: Boolean = true;
+
+  //add child and spouse
   childArray: any = [];
   childDataArray: any = [];
+  spouseArray: any = [];
+  spouseDataArray: any = [];
+
+  //location retrieval, slot and price
   locationArray: any =[]
   locationField: any = "Select Location...";
   priceArray: any;
   profileList: any = [];
   slotData: any = []
+
+
   isAdmin;
   accountRole: any;
   viewOnly: any;
@@ -416,19 +426,19 @@ export class AddVendorComponent implements OnInit {
 
           console.log(spouseName)
 
-          if (spouseName !=="" || spouseName !== null){
-            var relative = {
-              rid: rid,
-              name: spouseName,
-              IC_Number: spouseIC_Number,
-              relationship: "spouse"
-            }
-            this.relativeService.createRelative(relative).subscribe(data=> {  //save spouse
-              console.log("spouse successfully created")
-            },error=> {
-              console.log(error)
-            })
+          if (this.spouseArray.length !==0){
+            for (let i = 0; i<this.spouseArray.length; i++){
+              this.spouseArray[i].rid = rid;
+
+              this.relativeService.createRelative(this.spouseArray[i]).subscribe(data=> {  //save spouse
+                console.log("spouse successfully created")
+              },error=> {
+                console.log(error)
+              })
+            }             
+            
           }
+         
 
          if (this.childArray.length !==0){
           for (let i = 0; i<this.childArray.length;i++){                           //Save Child array
@@ -555,6 +565,68 @@ export class AddVendorComponent implements OnInit {
       }
 
     })
+  }
+
+
+  
+  AddSpouse(){
+
+    const spouseName = this.registrationForm.value.spouseName;
+    const spIC = this.registrationForm.value.spIC;
+    const spouseIC_Number = this.registrationForm.value.spouseIC_Number;
+    const IC_Number = spIC+"-"+spouseIC_Number;
+
+    var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
+
+
+    console.log(spouseName)
+
+    if (spouseName == null){
+      Swal.fire("Cannot Add Spouse, Empty Field","Please Fill in the field to add spouse",'error')
+      return;
+    }
+
+    if(spouseName !== "" && spIC !=="" && spouseIC_Number !== ""){
+
+      if (exp.test(spouseIC_Number) && spouseIC_Number.length == 6){
+        
+        var spouse = {
+          rid: "",
+          name: spouseName,
+          IC_Number: IC_Number,
+          relationship: "spouse"
+        }
+  
+        this.relativeService.findByIC(IC_Number).subscribe(data=> {
+          this.spouseDataArray = data;
+  
+          if(this.spouseDataArray.length == 0){
+            this.spouseArray.push(spouse);
+            this.registrationForm.value.spouseName = "";
+            this.registrationForm.value.spIC = "";
+            this.registrationForm.value.spouseIC_Number = "";
+            this.registrationForm.controls['spouseName'].reset();
+            this.registrationForm.controls['spIC'].reset();
+            this.registrationForm.controls['spouseIC_Number'].reset();
+          } else {
+            console.log("Existed Child")
+            Swal.fire('Cannot Add Spouse '+spouse.name,'spouse is already existed in the database, Please Try Again','error')
+          }
+        })
+
+      } else {
+        Swal.fire("Incorrect Format","Please check your IC Number and try again",'error')
+      }
+
+    } else {
+      Swal.fire("Cannot Add Spouse, Empty Field","Please Fill in the field to add spouse",'error')
+    }
+
+  }
+
+
+  clearSpouse(i){
+    this.spouseArray.splice(i,1);
   }
 
 
