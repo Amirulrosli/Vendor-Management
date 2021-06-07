@@ -32,6 +32,7 @@ import { DelpaymentService } from '../servicesDeleted/payment.service';
 import { DelattachmentService } from '../servicesDeleted/Attachment.service';
 import { DelphotoService } from '../servicesDeleted/photo.service';
 import { DelrelativeService } from '../servicesDeleted/relative.service';
+import { EditPaymentComponent } from '../edit-payment/edit-payment.component';
 
 
 
@@ -134,6 +135,13 @@ export class VendorProfileComponent implements OnInit {
   newChildName:any;
   newChildICNumber:any;
   showEdit = false;
+  showEditSpouse = false;
+  numberSpouse: any
+  newSpouseName: any;
+  newSpouseICNumber: any;
+
+
+
   number: any;
   baseURL: any;
   profilePic: any;
@@ -247,7 +255,6 @@ export class VendorProfileComponent implements OnInit {
     this.baseURL = this.attachmentService.baseURL();
 
     this.fileUploadForm = this.formBuilder.group({
-      uploadedImage: [''],
       name: ['',Validators.required]
     })
 
@@ -256,6 +263,19 @@ export class VendorProfileComponent implements OnInit {
   goToReceipt(element){
     console.log(element)
     this.router.navigate(['/receipt/'+element.paymentID])
+  }
+
+  goToPaymentEdit(element){
+    this.dialog.open(EditPaymentComponent, {
+      width: "800px",
+        height: "90%",
+        panelClass:'custom-modalbox',
+        data:{
+          dataKey: element
+        }
+    }).afterClosed().subscribe(data=> {
+      this.refreshData();
+    })
   }
 
   transform(url: string) {
@@ -902,13 +922,6 @@ export class VendorProfileComponent implements OnInit {
   
             this.spouseArray.push(this.relativeArray[i])
   
-            this.spouseName = this.spouseArray[i].name;
-            this.spouseIC = this.spouseArray[i].IC_Number.substring(0,2);
-            this.spouseNumber = this.spouseArray[i].IC_Number.substring(3,9);
-            this.spouseRid = this.spouseArray[i].rid;
-            this.spouseRelationship = this.spouseArray[i].relationship;
-            this.spouseID = this.spouseArray[i].id;
-  
           } else {
   
             this.childArray.push(this.relativeArray[i])
@@ -981,13 +994,188 @@ export class VendorProfileComponent implements OnInit {
   }
 
 
-  onEditSpouse(){
+
+
+
+
+
+
+
+  //Spouse --------------------------------------------------------
+
+
+  onSpouse(){
     this.editSpouse = true;
   }
 
   cancelSpouse(){
     this.editSpouse = false;
+    this.spouseName = "";
+    this.spouseIC = "";
+    this.spouseNumber ="";
   }
+
+  onEditSpouse(data,i){
+    this.numberSpouse = i;
+    this.showEditSpouse = true;
+    this.newSpouseICNumber = data.IC_Number;
+    this.newSpouseName = data.name;
+  }
+
+  cancelSaveSpouse(){
+    this.showEditSpouse = false;
+    this.newSpouseName = "";
+    this.newSpouseICNumber = "";
+  }
+
+
+
+
+
+  
+  onDeleteSpouse(id){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'This process is irreversible. Deleting the Spouse details may cause data loss',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+
+    }).then((result) => {
+
+      if (result.value){
+
+        this.relativeService.delete(id).subscribe(result=> {
+
+          Swal.fire(
+            'Success',
+            'Successfully delete Spouse detail',
+            'success'
+          )
+
+          this.retrieveRelative()
+
+          return;
+
+
+        },error=> {
+          Swal.fire(
+            'Process Failed',
+            'Spouse is still in the database.',
+            'error'
+          )
+          return;
+        })
+
+
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Spouse is still in the database.',
+          'error'
+        )
+        return;
+      }
+    });
+  }
+
+
+  saveSpouse(data,i){
+
+    const name = this.newSpouseName;
+    const IC_Number = this.newSpouseICNumber;
+    const IC = this.newSpouseICNumber.substring(0,2);
+    var lengthNo = this.newSpouseICNumber.length;
+    console.log(lengthNo)
+    const Number = this.newSpouseICNumber.substring(3,lengthNo);
+    const relationship = "spouse";
+    const compareIC = data.IC_Number;
+    const compareID = data.id;
+    console.log(data.IC_Number)
+    console.log(Number)
+
+    var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
+
+    if (name !=="" && IC_Number !== ""){
+
+      if (exp.test(Number) && Number.length == 6){
+
+        var spouse= {
+      
+          rid: this.id,
+          name: name,
+          IC_Number: IC_Number,
+          relationship: relationship
+
+        }
+
+        this.relativeService.findByIC(IC_Number).subscribe(data=> {
+          this.editChildArray = data;
+
+
+          if (this.editChildArray == 0){
+
+            this.relativeService.update(compareID,spouse).subscribe(data=> {
+              Swal.fire('Success','successfully updated Spouse details','success')
+              this.retrieveRelative();
+              this.showEditSpouse = false;
+              this.newSpouseICNumber = "";
+              this.newSpouseName = ""
+              return;
+            }, error=> {
+
+              Swal.fire("Process Failed","Relative is still in the database","error")
+              return;
+            })
+          } else {
+            if (compareIC == this.editChildArray[0].IC_Number){
+
+              this.relativeService.update(compareID,spouse).subscribe(data=> {
+                Swal.fire('Success','successfully updated spouse details','success')
+                this.retrieveRelative();
+                this.showEditSpouse = false;
+                this.newSpouseICNumber = "";
+                this.newSpouseName = ""
+                return;
+              }, error=> {
+  
+                Swal.fire("Process Failed","Relative is still in the database","error")
+                return;
+              })
+
+            } else {
+
+              
+              Swal.fire("Duplicate error","Spouse details is already existed in the database, Please Try Again","error")
+              return;
+
+            }
+          }
+        })
+
+
+      } else {
+        Swal.fire('Please Try Again',"Incorrect IC Number format",'error')
+        return;
+      }
+
+
+    } else {
+
+      Swal.fire(
+        'PLease try again',
+        'Cannot leave the field empty',
+        'error'
+      )
+      return;
+    }
+  
+
+    
+
+  }
+
 
   submitSpouse(){
 
@@ -995,8 +1183,8 @@ export class VendorProfileComponent implements OnInit {
     const IC = this.spouseIC;
     const name = this.spouseName;
     const IC_Number = IC+"-"+Number;
-    const relationship = this.spouseRelationship;
-    const myrid = this.spouseRid;
+    const relationship = "spouse";
+    const myrid = this.id;
 
     console.log(myrid)
 
@@ -1019,45 +1207,26 @@ export class VendorProfileComponent implements OnInit {
 
           if(this.spouseDataArray.length == 0) {
            
-            this.relativeService.update(this.spouseID,spouse).subscribe(data=> {
+            this.relativeService.createRelative(spouse).subscribe(data=> {
              
-              Swal.fire("Spouse Updated","Successfully update spouse",'success')
+              Swal.fire("Spouse created","Successfully created spouse",'success')
               this.retrieveRelative();
               this.editSpouse = false;
+              this.spouseName = "";
+              this.spouseIC = "";
+              this.spouseNumber ="";
               return;
             
 
 
             },error=> {
-              Swal.fire('Please Try Again',"Cannot update spouse details",'error')
+              Swal.fire('Please Try Again',"Cannot create spouse details",'error')
              return;
             })
           } else{
 
-            console.log(this.spouseArray[0].IC_Number)
-            console.log(this.spouseDataArray[0].IC_Number)
-            var findIC_Number = this.spouseDataArray[0].IC_Number;
-            var retrieveIC_Number = this.spouseArray[0].IC_Number;
-
-            if (findIC_Number == retrieveIC_Number){
-            
-              this.relativeService.update(this.spouseID,spouse).subscribe(data=> {
-                
-                Swal.fire("Spouse Updated","Successfully update spouse",'success')
-                this.retrieveRelative();
-                this.editSpouse = false;
-                return;
-               
-                
-              },error=> {
-                Swal.fire('Please Try Again',"Cannot update spouse details",'error')
-               return;
-              })
-            } else {
               Swal.fire('Please Try Again',"IC Number already Existed in the Database",'error')
-             return;
-            }
-           
+              return;
           } 
         })
 
@@ -1074,6 +1243,17 @@ export class VendorProfileComponent implements OnInit {
 
 
   }
+
+
+
+
+
+
+
+
+
+
+  //child-----------------------------------------------------------------------
 
   showChild(){
     this.showAddChild = true;
@@ -1211,6 +1391,7 @@ export class VendorProfileComponent implements OnInit {
     this.newChildName = "";
     this.newChildICNumber = "";
   }
+
 
   saveChild(data,i){
 
