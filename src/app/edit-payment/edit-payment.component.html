@@ -1,6 +1,6 @@
 <mat-toolbar class="toolbar"> <!--Toolbar C-->
 
-    <mat-button class="toggle" ><mat-icon class="toggle">close</mat-icon></mat-button>
+    <mat-button class="toggle" (click)="cancel()" ><mat-icon class="toggle">close</mat-icon></mat-button>
     <span class="titleTxt">Edit Payment</span>   
     <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 
@@ -13,7 +13,7 @@
         <mat-label class="mat-label-form">Receipt No:</mat-label>
 
         <input placeholder="Enter Receipt No" [(ngModel)]="receiptNo" type="text"/>
-        <p style="color:#ff3535; margin-left: 10px;">*Receipt No. Cannot be edited</p>
+        <p style="color:#ff3535; margin-left: 10px;">*Changing Receipt No. is not recommended </p>
 
         <br>
        

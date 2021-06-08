@@ -8,6 +8,17 @@
         <mat-button *ngIf="close==false" class="toggle" (click)="closeNav()"><mat-icon class="toggle">close</mat-icon></mat-button>
         <mat-button *ngIf="close==true" class="back" (click)="back()"><mat-icon class="toggle">arrow_back</mat-icon></mat-button>
         <span class="titleTxt">Notification</span>
+
+        <div class="name-inline" (click)="retrieveID(accName)">
+          <p class="username">{{accName}}</p>
+          <p class="role">{{role}}</p>
+
+      </div>
+
+      <img *ngIf="photoArray.length==0" class="profile-photo" (click)="retrieveID(username)" src="assets/profile.jpg" alt="profilePIC">
+      <img *ngIf="photoArray.length!==0" class="profile-photo" [src]="profilePhoto" (click)="retrieveID(username)" alt="profilePhoto-real"/>
+      
+
         <mat-icon matBadge="{{notifyNo}}" matBadgeColor="warn" class="notification" (click)="openNotification()">notifications</mat-icon>
         <!-- <p class="no-number" style="color:white;" >{{notifyNo}}</p> -->
 

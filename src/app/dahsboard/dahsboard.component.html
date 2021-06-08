@@ -367,7 +367,7 @@
   
             <ng-container matColumnDef="email">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
               {{element.email}}
               
               </mat-cell>
@@ -379,7 +379,8 @@
                     <mat-cell *matCellDef="let row">
                      
             
-                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="goToReceipt(row)"><mat-icon>move_to_inbox</mat-icon></button>
+                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112); margin-left: 20px;" (click)="goToReceipt(row)"><mat-icon>move_to_inbox</mat-icon></button>
+                      <button mat-raised-button *ngIf="!viewOnly" style="background-color:rgb(104, 104, 104);margin-left:10px" (click)="goToEditPayment(row)">Edit</button>
                    
                     </mat-cell>
         

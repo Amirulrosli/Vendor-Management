@@ -11,6 +11,7 @@ import { accountService } from '../services/account.service';
 import { ThrowStmt } from '@angular/compiler';
 import { DelphotoService } from '../servicesDeleted/photo.service';
 import { photoService } from '../services/photo.service';
+import { SideProfileComponent } from '../side-profile/side-profile.component';
 
 
 @Component({
@@ -54,6 +55,8 @@ export class AllNotificationComponent implements OnInit {
   date: Date;
   // accountRid: string;
   listNotifyArray: any = [];
+  profileArray: any = [];
+  photoArray: any = []
 
   
   @ViewChild(MatSort) sort:MatSort;
@@ -65,6 +68,9 @@ export class AllNotificationComponent implements OnInit {
   role: string;
   staffNotif: any = [];
   accountRole: any;
+  profileID: any;
+  profilePhoto: any;
+  accName: any;
   
 
   constructor(private location: Location,
@@ -91,7 +97,8 @@ export class AllNotificationComponent implements OnInit {
     this.notifyNumber();
 
     this.rid = sessionStorage.getItem('rid')
-    this.role = sessionStorage.getItem('role')
+    this.role = sessionStorage.getItem('role');
+    this.accName = sessionStorage.getItem('username')
 
     // this.Account.findByRid(this.rid).subscribe(data=>{
     //   console.log(data)
@@ -148,14 +155,21 @@ export class AllNotificationComponent implements OnInit {
 
       //link accounts
       for (let i = 0; i < this.notificationList.length; i++) { 
-        // console.log(data[i].rid);
 
         this.accountRid = data[i].rid
+
+        var accountArray = []
         this.Account.findByRid(this.accountRid).subscribe(accounts=>{
-          this.username = accounts[0].username 
-          this.accountRole = accounts[0].role
-          this.notificationList[i].username = this.username;
-          this.notificationList[i].role = this.accountRole;
+          accountArray = accounts;
+
+
+          if (accountArray.length !==0){
+            this.username = accountArray[0].username 
+            this.accountRole = accountArray[0].role
+            this.notificationList[i].username = this.username;
+            this.notificationList[i].role = this.accountRole;
+          }
+      
 
         });
         
@@ -259,6 +273,66 @@ export class AllNotificationComponent implements OnInit {
     this.dateFilter = "";
     this.listData.filter = this.dateFilter.toLowerCase();
   }
+
+ 
+
+  // select(id){
+  //   this.list = this.retrieveData[id];
+  //   console.log(this.list)
+  // }
+
+//   onChange(deviceValue) {
+//     console.log(this.retrieveData)
+//     this.list = this.retrieveData[deviceValue-1];
+//     console.log(this.list)
+//     console.log(deviceValue);
+// }
+
+openSideProfile(id){
+    
+      console.log(id)
+
+      this.slidePanel.open(SideProfileComponent, {
+        slideFrom:'right',
+        panelClass: "edit-modalbox1",
+        data: {
+          dataKey: id,
+        }
+      }).afterDismissed().subscribe(data=> {
+        this.accName = sessionStorage.getItem("username");
+        this.role = sessionStorage.getItem("role")
+      })
+
+  }
+
+
+  retrieveID(username){
+    this.accName = sessionStorage.getItem("username");
+
+    this.Account.findByUsername(this.accName).subscribe(data=> {
+      this.profileArray = data;
+      console.log(this.profileArray)
+      const id = this.profileArray[0].id;
+      this.openSideProfile(this.profileArray[0]);
+  })
+
+}
+
+retrievePhoto(){
+  var accountRID = sessionStorage.getItem('rid');
+  this.photoService.findByRid(accountRID).subscribe(data=> {
+    this.photoArray = data;
+
+    if (this.photoArray.length !== 0){
+      var baseURL = this.photoService.baseURL();
+      this.profilePhoto = baseURL+"/"+this.photoArray[0].link;
+      this.profileID = this.photoArray[0].id;
+    }
+
+  },error=> {
+    console.log(error)
+  })
+}
 
 
 

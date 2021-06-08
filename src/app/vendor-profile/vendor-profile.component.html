@@ -180,7 +180,7 @@
                         <mat-cell *matCellDef="let element" >
 
                             <span><mat-icon (click)="goToReceipt(element)" style="font-size:30px;color: blueviolet; position: relative;top:3px; cursor: pointer">move_to_inbox</mat-icon></span>
-                            <span><button style=" position: relative;left: 30px; background-color: rgb(105, 105, 105);" mat-raised-button (click)="goToPaymentEdit(element)">Edit<mat-icon style="font-size:20px;margin-left: 5px;color: rgb(255, 255, 255);">edit</mat-icon></button></span>
+                            <span *ngIf="!viewOnly"><button style=" position: relative;left: 30px; background-color: blueviolet;" mat-raised-button (click)="goToPaymentEdit(element)">Edit</button></span>
                         </mat-cell>
                     </ng-container>
             

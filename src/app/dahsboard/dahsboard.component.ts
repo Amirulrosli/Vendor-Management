@@ -50,6 +50,7 @@ import { DelattachmentService } from '../servicesDeleted/Attachment.service';
 import { DelrelativeService } from '../servicesDeleted/relative.service';
 import { DelremarkService } from '../servicesDeleted/remark.service';
 import { environment } from 'src/environments/environment';
+import { EditPaymentComponent } from '../edit-payment/edit-payment.component';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -2181,6 +2182,21 @@ onChangeDate(){
 
   this.listData.filter = newDate.trim().toLowerCase();
 }
+
+
+goToEditPayment(element){
+  this.dialog.open(EditPaymentComponent, {
+    width: "800px",
+      height: "90%",
+      panelClass:'custom-modalbox',
+      data:{
+        dataKey: element
+      }
+  }).afterClosed().subscribe(data=> {
+    this.refreshData();
+  })
+}
+
 
 
 
