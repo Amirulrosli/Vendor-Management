@@ -2076,7 +2076,7 @@ async runBackup(){
   this.backupService.backup(name).subscribe(data=> {
     this.updateText+="\n"+"Done back up Attachment and ProfilePhoto data [100%]"
   },error=> {
-    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error');
+    Swal.fire('Cannot connect to the media database (Attachment)','Please make sure media server is connected to the same network and try again','error');
     return;
   })
 
