@@ -20,6 +20,7 @@ import { NotificationComponent } from '../notification/notification.component';
 import { Account } from '../services/account.model';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
+import { backupService } from '../services/backup.service';
 import { locationService } from '../services/location.service';
 import { loginStateService } from '../services/loginState.service';
 import { notificationService } from '../services/notification.service';
@@ -166,6 +167,7 @@ export class UsermanagementComponent implements OnInit {
     private relativeService: relativeService,
     private loginService: loginStateService,
     private remarkService: remarkService,
+    private backupService: backupService,
 
     //deleted database
 
@@ -2065,6 +2067,16 @@ async runBackup(){
     }
   },error=> {
    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error')
+    return;
+  })
+
+  var name = {
+    name:"Backup"
+  }
+  this.backupService.backup(name).subscribe(data=> {
+    this.updateText+="\n"+"Done back up Attachment and ProfilePhoto data [100%]"
+  },error=> {
+    Swal.fire('Cannot connect to the backup database','Please make sure backup server is connected to the same network and try again','error');
     return;
   })
 

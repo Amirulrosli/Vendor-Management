@@ -255,7 +255,8 @@ export class VendorProfileComponent implements OnInit {
     this.baseURL = this.attachmentService.baseURL();
 
     this.fileUploadForm = this.formBuilder.group({
-      name: ['',Validators.required]
+      name: ['',Validators.required],
+      uploadedImage: ['',Validators.required]
     })
 
   }

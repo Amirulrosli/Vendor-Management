@@ -454,7 +454,7 @@
     <br>
     <br>
     <p class="descTxt add" (click)="editAttachment()" style="margin-top: 20px;">Upload Image/File <mat-icon style="position:relative; top: 8px;">add_circle</mat-icon></p>
-    <p *ngIf="uploadFile == true" style="color: blueviolet;font-size: 14px; margin-left: 40px">* Supported Files (.jpg, .jpeg, .png, .gif, .pdf & .docx) </p>
+    <p *ngIf="uploadFile == true" style="color: blueviolet;font-size: 14px; margin-left: 40px">* Supported Files (.jpg, .jpeg, .png, .gif, .pdf) </p>
     <form *ngIf="uploadFile == true" [formGroup]="fileUploadForm" (ngSubmit)="upload()">
     <mat-label style="color:black; margin-left:40px;">File Name: </mat-label>
     <br>
