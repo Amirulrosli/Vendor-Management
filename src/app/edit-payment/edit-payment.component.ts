@@ -116,6 +116,9 @@ export class EditPaymentComponent implements OnInit {
   submit(){
 
     this.formStatus = true;
+    if (this.monthField < 1){           //if month is less than 1 , month jadikan 1 month
+      this.monthField = 1;
+    }
     this.priceField = this.dataList.slot_Price;
     var price = parseInt(this.priceField);        //calculate amount paid
     var total_Price = price * this.monthField;
@@ -128,9 +131,7 @@ export class EditPaymentComponent implements OnInit {
       return;
     } 
 
-    if (this.monthField < 1){           //if month is less than 1 , month jadikan 1 month
-      this.monthField = 1;
-    }
+
   
     //add one month to date
     var dueDate = this.addMonths(new Date (this.dateField),this.monthField);      //create due date depending on months

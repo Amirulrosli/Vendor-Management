@@ -544,6 +544,17 @@ compareData(dueDate){
 
   submit(){
 
+    if (!this.monthField){
+      Swal.fire("Empty Month Field","Please check and try again!",'error')
+      return;
+    }
+    
+    if (this.monthField < 1){           //if month is less than 1 , month jadikan 1 month
+      
+      this.monthField = 1;
+    }
+
+
 
     this.formStatus = true;
     this.priceField = this.dataList.slot_Price;
@@ -569,12 +580,10 @@ compareData(dueDate){
     }
 
 
+    console.log(this.monthField)
 
 
-
-    if (this.monthField < 1){           //if month is less than 1 , month jadikan 1 month
-      this.monthField = 1;
-    }
+ 
   
     //add one month to date
     var dueDate = this.addMonths(new Date (this.dateField),this.monthField);      //create due date depending on months

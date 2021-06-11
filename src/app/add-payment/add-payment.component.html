@@ -105,7 +105,7 @@
                 <mat-label class="mat-label-form">Price:</mat-label>
                 <mat-label class="mat-label-form" style="position:relative; left: 78%;">Pay For (month(s)):</mat-label>
                 <br>
-                <input [hidden]="dataList.length!==0" style="width:82%" placeholder="$" [(ngModel)]="priceField" value="{{dataList.slot_Price}}" type="number"/>
+                <input [hidden]="dataList.length!==0" style="width:82%" min="1" placeholder="$" [(ngModel)]="priceField" value="{{dataList.slot_Price}}" type="number"/>
 
 
                 <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;  width:82%; display: inline-block;">
