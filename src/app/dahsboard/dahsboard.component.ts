@@ -2492,7 +2492,7 @@ goToEditPayment(element){
 print(){
   var printwin = window.open("");
   printwin.document.write('<html><title>VMIS/Stat Report</title><link rel="stylesheet" href="assets/print.css"/><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;display=swap" rel="stylesheet"> </head><body>')
-  printwin.document.write('<img class="logo" src="assets/Jabatan-Bandaran-Logo.png" width="400px" alt="logo"/><h3 style="color:black; font-size: 18px; font-weight: bold;margin-left:20px;">Statistic Report</h3><br><br>')
+  printwin.document.write('<img class="logo" src="assets/Jabatan-Bandaran-Logo.png" width="400px" alt="logo"/><h3 style="color:black; font-size: 18px; font-weight: bold;margin-left:20px;">Statistical Report</h3><br><br>')
   printwin.document.write(document.getElementById("filter").innerHTML)
   printwin.document.write('<br><br>')
   printwin.document.write(document.getElementById("print").innerHTML)
