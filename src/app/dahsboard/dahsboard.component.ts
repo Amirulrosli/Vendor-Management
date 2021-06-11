@@ -32,7 +32,8 @@ import {
   ApexStroke,
   ApexGrid,
   ApexFill,
-  ApexTheme
+  ApexTheme,
+  ApexLegend
 } from "ng-apexcharts";
 import { accountService } from '../services/account.service';
 import { loginStateService } from '../services/loginState.service';
@@ -60,7 +61,7 @@ export type ChartOptions = {
   plotOptions: ApexPlotOptions;
   responsive: ApexResponsive[];
   theme: ApexTheme
-
+  legend: ApexLegend;
 
   xaxis: ApexXAxis;
   dataLabels: ApexDataLabels;
@@ -1053,28 +1054,57 @@ displayedLocationColumns: string[] = [
         },
         plotOptions: {
           radialBar: {
+            offsetY: 0,
+            startAngle: 0,
+            endAngle: 360,
+
             hollow: {
-              size: "70%"
+              margin: 5,
+              size: "70%",
+              background: "transparent",
+              image: undefined
             },
             dataLabels: {
               name: {
-                fontSize: "22px"
+                show:false
               },
               value: {
-                fontSize: "16px"
+                show:false
               },
-              total: {
-                show: true,
-                label: "Total",
-                formatter: function(w) {
-                  return ""+Allslot+" Slots";
-                }
-              }
             }
           }
         },
         colors: ["pink"],
-        labels: ["Slot Taken: "+takenSlot,"Slot Available: "+available]
+        labels: ["Slot Taken","Slot Available"],
+        legend: {
+          show: true,
+          floating: true,
+          fontSize: "16px",
+          position: "left",
+          offsetX: 80,
+          offsetY: 120,
+          labels: {
+            useSeriesColors: true
+          },
+          formatter: function(seriesName, opts) {
+            return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
+          },
+          itemMargin: {
+            horizontal: 3
+          }
+        },
+
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              legend: {
+                show: false
+              }
+            }
+          }
+        ]
+
 
       };
   
@@ -1120,8 +1150,13 @@ displayedLocationColumns: string[] = [
               width: 500,
               type: "donut",
               background: "white"
+              
             },
-            labels: ["Paid","Discontinued","Overdue"],
+
+            
+            
+          labels: ["Paid: "+paid,"Discontinued: "+discontinueCount,"Overdue: "+overdue],
+
             responsive: [
               {
                 breakpoint: 480,
@@ -2457,7 +2492,7 @@ goToEditPayment(element){
         dataKey: element
       }
   }).afterClosed().subscribe(data=> {
-    this.refreshData();
+    this.refreshPayment();
   })
 }
 

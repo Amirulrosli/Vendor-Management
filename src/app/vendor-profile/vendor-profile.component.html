@@ -34,7 +34,7 @@
             <mat-button *ngIf="close==true" class="toggle" (click)="sidenav.open()" (click)="openNav()"><mat-icon class="toggle">menu</mat-icon></mat-button>
             <span class="titleTxt"></span>
             <mat-icon *ngIf="!viewOnly" type="button" (click)="sendEmail()" class="send">send</mat-icon>
-            <mat-icon *ngIf="!viewOnly" type="button" class="print-1" (click)="goToPrint()">print</mat-icon>
+            <mat-icon type="button" class="print-1" (click)="goToPrint()">print</mat-icon>
 
             <div class="name-inline" (click)="retrieveID(profileName)">
                 <p class="username" style="color:white" >{{profileName}}</p>

@@ -1552,7 +1552,7 @@ upload(){
       this.uploadFile = false;
     }, er => {
       console.log(er);
-      Swal.fire("Upload Failed",'Please Try Again','error');
+      Swal.fire("Upload Failed",'Please Try Again / Unsupported File Format','error');
       return;
     });
   }
