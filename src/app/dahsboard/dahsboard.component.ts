@@ -1075,19 +1075,20 @@ displayedLocationColumns: string[] = [
           }
         },
         colors: ["pink"],
-        labels: ["Slot Taken","Slot Available"],
+        labels: ["Slot Taken: "+takenSlot,"Slot Available: "+available],
         legend: {
+          
           show: true,
           floating: true,
-          fontSize: "16px",
+          fontSize: "12.5px",
           position: "left",
-          offsetX: 80,
+          offsetX: 60,
           offsetY: 120,
           labels: {
             useSeriesColors: true
           },
           formatter: function(seriesName, opts) {
-            return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
+            return seriesName + "  [" + opts.w.globals.series[opts.seriesIndex]+"%"+"]";
           },
           itemMargin: {
             horizontal: 3
@@ -2277,16 +2278,7 @@ onChangeDate(){
 
   if (!this.dateFilter || !this.endFilter){
     Swal.fire('Info','Please Enter Start Date and End Date','info')
-
-    if (this.dateFilter){
-      var newDate = this.datePipe.transform(this.dateFilter,'dd/MM/YY')
-      this.listData.filter = newDate.trim().toLowerCase();
-      this.listDataPrint.filter = newDate.trim().toLowerCase();
-    } else {
-      var newDate = this.datePipe.transform(this.endFilter,'dd/MM/YY')
-      this.listData.filter = newDate.trim().toLowerCase();
-      this.listDataPrint.filter = newDate.trim().toLowerCase();
-    }
+    return;
 
   } else {
 

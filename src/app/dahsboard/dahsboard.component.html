@@ -84,7 +84,59 @@
     
       <mat-card class="search-card">
         <div id="filter">
+      
+
+  
+      <div id="paymentPrint">
+
         <mat-icon style="color:black; position: relative; top: 5px; margin-left: 20px;">search</mat-icon>
+        <mat-label style="color:black; margin-left: 5px;">Search For: </mat-label>
+        <span style="color: rgb(71, 71, 71); padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{searchForField}}</span>
+
+        <mat-icon *ngIf="showSlotField==true" style="color:black; position: relative; top: 5px; margin-left: 20px;">info</mat-icon>
+        <mat-label *ngIf="showSlotField==true" style="color:black;">Slot Availability: </mat-label>
+        <span *ngIf="showSlotField==true" style="color: rgb(71, 71, 71);padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{selectSlotField}}</span>
+        <br *ngIf="showSlotField==true">
+
+
+        <mat-icon *ngIf="showSlotField==true" style="color:black; position: relative; top: 5px; margin-left: 20px;">location_on</mat-icon>
+        <mat-label *ngIf="showSlotField==true" style="color:black;">Location: </mat-label>
+        <span *ngIf="showSlotField==true" style="color: rgb(71, 71, 71);margin-left:20px;padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{locationField}}</span>
+
+        <mat-icon *ngIf="showVendor == true" style="color:black; position: relative; top: 5px; margin-left: 17px;">filter_list</mat-icon>
+        <mat-label  *ngIf="showVendor == true"  style="color:black;">Status Filter: </mat-label>
+        <span  *ngIf="showVendor == true" style="color: rgb(71, 71, 71);margin-left: 20px;padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{selectField}}</span>
+
+        <mat-icon *ngIf="showSlotField==true " style="color:black; position: relative; top: 5px; margin-left: 17px;">filter_list</mat-icon>
+        <mat-label  *ngIf="showSlotField==true "  style="color:black;">Status Filter: </mat-label>
+        <span  *ngIf="showSlotField==true " style="color: rgb(71, 71, 71);margin-left: 20px;padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{selectField}}</span>
+
+        <mat-icon *ngIf="showRelative==true" style="color:black; position: relative; top: 5px; margin-left: 17px;">people</mat-icon>
+        <mat-label *ngIf="showRelative==true" style="color:black;">Relationship Filter: </mat-label>
+        <span *ngIf="showRelative==true" style="color: rgb(71, 71, 71);margin-left: 5px;padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{spouseField}}</span>
+
+        <mat-icon *ngIf="showPayment==true" style="color:black; position: relative; top: 5px; margin-left: 17px;">notifications</mat-icon>
+        <mat-label *ngIf="showPayment==true" style="color:black;">Notification Filter: </mat-label>
+        <span *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px;padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{notificationField}}</span>
+
+      <br>
+
+        <mat-icon *ngIf="showPayment==true" style="color:black; position: relative; top: 5px; margin-left: 17px;margin-top:10px;">date_range</mat-icon>
+        <mat-label class="start1" style="color:black; margin-left: 7px; margin-top:10px;" *ngIf="showPayment==true">Start Date: </mat-label>
+        <span *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;">{{dateFilter}}</span>
+
+
+        <mat-label *ngIf="showPayment==true" style="color:black; margin-left: 15px; margin-top:10px;">End Date: </mat-label>
+        <span *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;">{{endFilter}}</span>
+        <span *ngIf="showPayment==true"><mat-icon style="color: rgb(255, 0, 0); position:relative; top:8px;left: 10px;cursor:pointer;" (click)="refreshPayment()">close</mat-icon></span>
+
+
+      </div>
+
+
+      </div>
+
+      <mat-icon style="color:black; position: relative; top: 5px; margin-left: 20px;">search</mat-icon>
       <mat-label style="color:black; margin-left: 5px;">Search For: </mat-label>
       <select style="color: rgb(71, 71, 71)" [(ngModel)]="searchForField" placeholder="All" (change)="viewTable()" label="" class="selection" name="IC" placeholder="No.">
         <option value="Vendor">Vendor</option>
@@ -145,24 +197,6 @@
           <option value="NotDelivered">Not Delivered</option>
       </select>
       <br>
-
-  
-      <div id="paymentPrint">
-
-        <mat-icon *ngIf="showPayment==true" style="color:black; position: relative; top: 5px; margin-left: 17px;margin-top:10px;">date_range</mat-icon>
-        <mat-label class="start1" style="color:black; margin-left: 7px; margin-top:10px;" *ngIf="showPayment==true">Start Date: </mat-label>
-        <span *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;">{{dateFilter}}</span>
-
-
-        <mat-label *ngIf="showPayment==true" style="color:black; margin-left: 15px; margin-top:10px;">End Date: </mat-label>
-        <span *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;">{{endFilter}}</span>
-        <span *ngIf="showPayment==true"><mat-icon style="color: rgb(255, 0, 0); position:relative; top:8px;left: 10px;cursor:pointer;" (click)="refreshPayment()">close</mat-icon></span>
-
-
-      </div>
-
-
-      </div>
 
       <mat-icon *ngIf="showPayment==true" style="color:black; position: relative; top: 5px; margin-left: 17px;margin-top:10px;">date_range</mat-icon>
       <mat-label class="start1" style="color:black; margin-left: 7px; margin-top:10px;" *ngIf="showPayment==true">Start Date: </mat-label>
@@ -969,9 +1003,9 @@
 
             <div id="statprint-2">
               <mat-label style="color:black;margin-left:30px;">Start Date: </mat-label>
-              <span>{{dateFilter}}</span>
+              <span style="padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{dateFilter}}</span>
               <mat-label style="color:black;margin-left:40px;">End Date: </mat-label>
-              <span>{{endFilter}}</span>
+              <span style="padding: 0px 90px 5px 30px; border-bottom: 1px solid gray">{{endFilter}}</span>
 
               <div id="linechart-1" *ngIf="paymentArray1.length !== 0">
                 <apx-chart
