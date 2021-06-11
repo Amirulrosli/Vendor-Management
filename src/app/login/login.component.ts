@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 
     try{
       this.accountService.login(account).subscribe(resp=> {
-        console.log(resp)
+        //(resp)
 
         var account = resp;
 
@@ -53,10 +53,10 @@ export class LoginComponent implements OnInit {
 
           sessionStorage.setItem('rid',this.updateAccount.rid);
 
-          console.log(this.updateAccount)
+          //(this.updateAccount)
 
           this.accountService.update(this.updateAccount.id,this.updateAccount).subscribe(data=> {
-            console.log(data)
+            //(data)
 
             //state
             var loginState = {
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
             }
 
             this.loginState.update(this.updateAccount.id, loginState).subscribe(data => {
-              console.log(data)
+              //(data)
             })
 
           }, error=> {
@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
     } catch (error) {
       Swal.fire("Login Failed","Invalid Username or Password [2], Please check and try again",'error')
       this.showMessage = true;
-      console.log(error)
+      //(error)
       return;
     }
 

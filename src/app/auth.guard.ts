@@ -50,30 +50,30 @@ export class AuthGuard implements CanActivate {
       return new Promise ((resolve, rejects) =>{
         setTimeout(() =>{
         this.rid = sessionStorage.getItem("rid")
-        console.log(this.rid)
+        //(this.rid)
         this.login.findByRid(this.rid).subscribe(data=> {
           
           this.retrieveData = data
           this.rid = data.rid
-          console.log(data)
+          //(data)
           try {
 
             this.loginState = this.retrieveData[0].login_state
-            console.log(this.loginState)
+            //(this.loginState)
             if (this.loginState == true) {
               resolve(true);
             }
     
             //ani luan laju read this code.
             else {
-              console.log('User Logged Out');
+              //('User Logged Out');
                 this.router.navigate(['/login']);
                 rejects('logged out')
             }
 
           } catch (error) {
 
-            console.log('User Logged Out');
+            //('User Logged Out');
             this.router.navigate(['/login']);
             rejects('logged out')
             return;
@@ -85,7 +85,7 @@ export class AuthGuard implements CanActivate {
       
     
         },error=> {
-          console.log('User Logged Out');
+          //('User Logged Out');
           this.router.navigate(['/login']);
           rejects('logged out')
         });

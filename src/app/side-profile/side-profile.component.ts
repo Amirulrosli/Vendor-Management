@@ -54,7 +54,7 @@ export class SideProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data.dataKey.role)
+    //(this.data.dataKey.role)
     this.username = this.data.dataKey.username;
     this.role = this.data.dataKey.role;
     this.IC = this.data.dataKey.IC_Number;
@@ -114,7 +114,7 @@ logout(){
 
   this.loginState.findByRid(this.rid).subscribe(data =>{
     this.updateAccount = data[0] 
-    console.log(this.updateAccount.id)
+    //(this.updateAccount.id)
 
     var loginState = {
       id : this.updateAccount.id,
@@ -123,7 +123,7 @@ logout(){
     }
   
     this.loginState.update(this.updateAccount.id, loginState).subscribe(data => {
-      console.log(data)
+      //(data)
       sessionStorage.clear();
       Swal.fire({
         title: 'User Logged Out',
@@ -159,7 +159,7 @@ retrievePhoto(){
     }
 
   },error=> {
-    console.log(error)
+    //(error)
   })
 }
 

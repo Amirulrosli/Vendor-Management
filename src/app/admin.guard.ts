@@ -27,7 +27,7 @@ export class AdminGuard implements CanActivate {
         this.accountRole = sessionStorage.getItem("role")
         
         if (this.accountRole == "Administrator") {
-          console.log("accepted")
+          //("accepted")
           resolve(true)
         }
 
@@ -38,7 +38,7 @@ export class AdminGuard implements CanActivate {
         // }          
         
         else{
-          console.log("no access")
+          //("no access")
           this.router.navigate(['/dashboard']);
           rejects('no access')
         }

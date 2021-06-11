@@ -234,7 +234,7 @@
                           <th>Relationship</th>
                         </tr>
                         <tr *ngFor="let data of relativeArray; let i = index">
-                          <td style="color: black">{{i}}</td>
+                          <td style="color: black">{{i+1}}</td>
                           <td style="color: black">{{data.name}} <br>
                             <p  *ngIf="showEdit==true && number==i" style="color: gray; font-size: 13px;">Change To: </p>
                             <input *ngIf="showEdit==true && number==i" [(ngModel)]=newChildName type="text" class="edit-input" placeholder="Enter child Name..."/>

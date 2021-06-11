@@ -54,14 +54,14 @@ export class AppComponent implements OnInit {
   pushSubscription(){
     if (!this.swPush.isEnabled){
 
-      console.log('Notification is not enabled')
+      //('Notification is not enabled')
       return;
     }
 
     this.swPush.requestSubscription({
       serverPublicKey: this.publicKey
     }).then(sub => {
-      console.log(JSON.stringify(sub))
+      //(JSON.stringify(sub))
     }).catch(err=> {
       console.log(err)
     })
@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
   public notifyNumber(){
     this.notification.findByView().subscribe(data=> {
         this.notifyData = data;
-        console.log(this.notifyData)
+        //(this.notifyData)
         return this.notifyData.length;
     })
   }

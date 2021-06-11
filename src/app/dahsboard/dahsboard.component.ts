@@ -314,7 +314,7 @@ displayedLocationColumns: string[] = [
   }
 
   goToReceipt(element){
-    console.log(element)
+    (element)
     this.router.navigate(['/receipt/'+element.paymentID])
   }
 
@@ -322,7 +322,7 @@ displayedLocationColumns: string[] = [
     this.locationService.findAll().subscribe(data=> {
       this.locationArray = data;
     },error=> {
-      console.log(this.locationArray)
+      //(this.locationArray)
     })
   }
 
@@ -335,7 +335,7 @@ displayedLocationColumns: string[] = [
     this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
-      console.log(this.accountRole)
+      //(this.accountRole)
       this.isAdmin = true;
     } else{
       this.isAdmin = false;
@@ -391,13 +391,13 @@ displayedLocationColumns: string[] = [
 
         }
     },error=> {
-      console.log(error)
+      //(error)
     })
 
   }
 
   refreshOnline(){
-    console.log(this.loginStateArray)
+    //(this.loginStateArray)
     this.loginData = new MatTableDataSource(this.loginStateArray);
     this.loginData.sort = this.sort;
     this.loginData.paginator = this.paginator;
@@ -471,7 +471,7 @@ displayedLocationColumns: string[] = [
         this.notification.create(notify).subscribe(resp=> {
           
         },error=> {
-          console.log(error)
+          //(error)
         });
 
 
@@ -483,9 +483,9 @@ displayedLocationColumns: string[] = [
             profile[0].slot = null;
             profile[0].slot_Price = null;
             this.delProfileService.create(profile[0]).subscribe(data=> {
-              console.log(data)
+              //(data)
             },error=> {
-              console.log(error)
+              //(error)
             })
           }
 
@@ -501,22 +501,22 @@ displayedLocationColumns: string[] = [
           if (this.paymentRid.length > 0){
             for (let i = 0; i < this.paymentRid.length; i++){
               this.delPaymentService.create(this.paymentRid[i]).subscribe(data=> {
-                console.log(data)
+                //(data)
 
                 this.paymentService.delete(this.paymentRid[i].id).subscribe(data=> {
-                  console.log(data);
+                  //(data);
                 }, error=> {
-                  console.log(error)
+                  //(error)
                 })
 
               },error=> {
-                console.log(error)
+                //(error)
               })
              
             }
           }
         }, err=> {
-          console.log(err)
+          //(err)
         })
 
 
@@ -530,14 +530,14 @@ displayedLocationColumns: string[] = [
             this.slotRid[0].rid = null;      
             this.slotRid[0].taken = false;      
               this.slot.update(this.slotRid[0].id,this.slotRid[0]).subscribe(data=> {
-                console.log(data);
+                //(data);
               },error=> {
-                console.log(error)
+                //(error)
               })
             
           }
         },error=> {
-          console.log(error)
+          //(error)
         })
 
 
@@ -551,15 +551,15 @@ displayedLocationColumns: string[] = [
 
             for (let i = 0; i<relative.length; i++){
               this.delRelativeService.createRelative(relative[i]).subscribe(data=> {
-                console.log(data)
+                //(data)
                 this.relativeService.delete(relative[i].id).subscribe(data=> {
-                  console.log(data)
+                  //(data)
                 },error=> {
-                  console.log(error)
+                  //(error)
                 })
 
               },error=> {
-                console.log(error)
+                //(error)
               })
           
             }
@@ -576,17 +576,17 @@ displayedLocationColumns: string[] = [
           if (attachments.length !== 0){
             for (let i =0; i<attachments.length;i++){
               this.delAttachmentService.create(attachments[i]).subscribe(data=> {
-                console.log(data)
+                //(data)
 
                 this.attachmentService.delete(attachments[i].id).subscribe(data=> {
-                  console.log(data);
+                  //(data);
                 },error=> {
-                  console.log(error)
+                  //(error)
                 })
 
 
               },error=> {
-                console.log(error)
+                //(error)
               })
           
             }
@@ -603,17 +603,17 @@ displayedLocationColumns: string[] = [
           if (remark.length !== 0){
 
             this.delRemarkService.create(remark[0]).subscribe(data=> {
-              console.log(data)
+              //(data)
 
               this.remarkService.delete(remark[0].id).subscribe(data=> {
-                console.log(data)
+                //(data)
               }, error=> {
-                console.log(error)
+                //(error)
               })
 
 
             },error=> {
-              console.log(error)
+              //(error)
             })
           
           }
@@ -628,16 +628,16 @@ displayedLocationColumns: string[] = [
 
           if (photo.length !== 0){
             this.delPhotoService.create(photo[0]).subscribe(data=> {
-              console.log(data);
+              //(data);
 
               this.photoService.delete(photo[0].id).subscribe(data=> {
-                console.log(data)
+                //(data)
               }, error=> {
-                console.log(error)
+                //(error)
               })
 
             },error=> {
-              console.log(error)
+              //(error)
             })
         
           }
@@ -689,7 +689,7 @@ displayedLocationColumns: string[] = [
   onEdit(data){
 
     this.profiles.findOne(data.id).subscribe(resp=> {
-      console.log(resp)
+      //(resp)
 
       this.dialog.open(EditProfileComponent, {
         width: "800px",
@@ -710,7 +710,7 @@ displayedLocationColumns: string[] = [
         this.createPieChart();
       });
     }, error=> {
-      console.log(error)
+      //(error)
     });
 
     
@@ -858,7 +858,7 @@ displayedLocationColumns: string[] = [
 
       this.loopData();
 
-      console.log(this.list)
+      //(this.list)
 
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;
@@ -927,11 +927,11 @@ displayedLocationColumns: string[] = [
   
           //update latest payment
           this.profiles.update(this.list[i].id,this.list[i]).subscribe(array =>{
-            console.log(array);
+            //(array);
 
             this.list[i].latest_Payment_Date = payment;
           },error => {
-            console.log(error)
+            //(error)
           })
         }
     
@@ -1034,7 +1034,7 @@ displayedLocationColumns: string[] = [
       }
 
 
-      console.log(this.takenSlot)
+      //(this.takenSlot)
       var takenSlot = parseInt(this.takenSlot.length);
       var available = parseInt(this.availableSlot.length)
       var Allslot = parseInt(this.slotData.length);
@@ -1174,17 +1174,17 @@ displayedLocationColumns: string[] = [
           };
           
         },error=>{
-          console.log(error);
+          //(error);
           return;
         })
           
         },error=> {
-          console.log(error);
+          //(error);
           return;
         })
 
       },error=> {
-        console.log(error);
+        //(error);
         return;
       })
     
@@ -1217,7 +1217,7 @@ displayedLocationColumns: string[] = [
          
           if (this.delPaymentArray.length !== 0){
 
-            console.log(this.paymentArray)
+            //(this.paymentArray)
   
             for (let i =0; i<this.delPaymentArray.length; i++){
            
@@ -1235,7 +1235,7 @@ displayedLocationColumns: string[] = [
           requested = paymentLength-9
         }
 
-        console.log(this.paymentArray)
+        //(this.paymentArray)
 
         for (let i = paymentLength-1; i>=requested;i--){
        
@@ -1316,7 +1316,7 @@ displayedLocationColumns: string[] = [
           requested = paymentLength-9
         }
 
-        console.log(this.paymentArray)
+        //(this.paymentArray)
 
         for (let i = paymentLength-1; i>=requested;i--){
        
@@ -1331,8 +1331,8 @@ displayedLocationColumns: string[] = [
           totalPayment += parseInt(this.paymentArray[i].price);
         }
 
-        console.log(payment)
-        console.log(totalPayment)
+        //(payment)
+        //(totalPayment)
 
     
       this.linechartOptions = {
@@ -1407,7 +1407,7 @@ displayedLocationColumns: string[] = [
 
 
         }, error=> {
-          console.log(error)
+          //(error)
         })
   
       
@@ -1447,7 +1447,7 @@ displayedLocationColumns: string[] = [
 
     this.paymentService.findPaymentRange(this.dateFilter, this.endFilter).subscribe(data=> {
       this.paymentArray1 = data;
-      console.log(data)
+      //(data)
       
 
       if(this.paymentArray1.length !== 0){
@@ -1455,7 +1455,7 @@ displayedLocationColumns: string[] = [
         var paymentLength = this.paymentArray1.length;
         var requested = 0;
 
-        console.log(this.paymentArray1)
+        //(this.paymentArray1)
 
         for (let i = paymentLength-1; i>=requested;i--){
        
@@ -1542,7 +1542,7 @@ displayedLocationColumns: string[] = [
 
   openSideProfile(id){
     
-      console.log(id)
+      //(id)
 
 
       this.slidePanel.open(SideProfileComponent, {
@@ -1561,7 +1561,7 @@ displayedLocationColumns: string[] = [
   retrieveID(username){
     this.accountService.findByUsername(username).subscribe(data=> {
       this.profileArray = data;
-      console.log(this.profileArray)
+      //(this.profileArray)
       const id = this.profileArray[0].id;
       this.openSideProfile(this.profileArray[0]);
   })
@@ -1581,7 +1581,7 @@ retrievePhoto(){
     }
 
   },error=> {
-    console.log(error)
+    //(error)
   })
 }
 
@@ -1615,7 +1615,7 @@ viewTable(){
     this.refreshPayment();
 
   } else if (searchFor == "Relative"){
-    console.log("relative")
+    //("relative")
     this.showSlotField = false;
     this.showPayment = false;
     this.showRelative = true;
@@ -1831,7 +1831,7 @@ getRelative(){
 overdueSlotFilter(){
   var array = [];
   var filter = this.filteredArray;
-  console.log(this.filteredArray)
+  //(this.filteredArray)
   
   if (this.selectField == "All"){
 
@@ -1845,14 +1845,14 @@ overdueSlotFilter(){
 
 
   } else if (this.selectField == "Overdue"){
-    console.log("Overdue")
+    //("Overdue")
 
     
     if (filter.length !== 0){
 
       for (let i = 0; i< filter.length; i++){
         var condition = filter[i];
-        console.log(condition)
+        //(condition)
         if (filter[i].overdue == true){
           array.push(filter[i]);
           
@@ -1860,7 +1860,7 @@ overdueSlotFilter(){
   
       }
 
-      console.log(array)
+      //(array)
 
       this.listData = new MatTableDataSource(array);
       this.listData.sort = this.sort;
@@ -1875,12 +1875,12 @@ overdueSlotFilter(){
   
   } else if ("Paid") {
 
-    console.log("Paid")
+    //("Paid")
 
     if (filter.length !== 0){
 
       for (let i = 0; i< filter.length; i++){
-        console.log(filter[i].overdue)
+        //(filter[i].overdue)
         if (filter[i].overdue == false){
           array.push(filter[i]);
           
@@ -1888,7 +1888,7 @@ overdueSlotFilter(){
   
       }
 
-      console.log(array)
+      //(array)
 
       this.listData = new MatTableDataSource(array);
       this.listData.sort = this.sort;
@@ -1933,7 +1933,7 @@ slotAvailability(){
       }
       
       this.filteredArray = availArray;
-      console.log(availArray)
+      //(availArray)
 
       if (this.selectField !=="All"){
         this.overdueSlotFilter();
@@ -2033,7 +2033,7 @@ showTable(){
           }
 
           this.filteredArray = this.switchAllSlot;
-          console.log(this.filteredArray)
+          //(this.filteredArray)
 
           if (this.selectSlotField !== "All"){
             this.slotAvailability();
@@ -2288,7 +2288,7 @@ onChangeDate(){
     this.paymentService.findPaymentRange(this.dateFilter,this.endFilter).subscribe(data=> {
       this.rangeDataArray = data;
 
-      console.log(this.rangeDataArray)
+      //(this.rangeDataArray)
 
       if (this.rangeDataArray.length !== 0){
 
@@ -2300,7 +2300,7 @@ onChangeDate(){
 
               if (this.rangeDataArray[i].paymentID == this.paymentTableArray[k].paymentID){
                 // this.paymentTableArray.splice(i,0)
-                console.log("masuk dah")
+                //("masuk dah")
                 this.paymentNewArray.push(this.paymentTableArray[k])
               }
 

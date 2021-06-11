@@ -27,17 +27,17 @@ export class RoleGuard implements CanActivate {
           this.accountRole = sessionStorage.getItem("role")
           
           if (this.accountRole == "Administrator") {
-            console.log("accepted")
+            //("accepted")
             resolve(true)
           }
 
           if (this.accountRole == "Staff") {
-            console.log("accepted")
+            //("accepted")
             resolve(true)
           }
 
           if (this.accountRole == "View-only"){
-            console.log('view-only user. No Access')
+            //('view-only user. No Access')
             this.router.navigate(['/dashboard']);
             rejects('no access')
           }          

@@ -19,12 +19,12 @@ export class accountService {
     }
 
     createAccount(data): Observable<any> {
-        console.log(data)
+        //(data)
         return this.http.post(baseURL,data)
     }
 
     login(data): Observable<any> {
-        console.log(data)
+        //(data)
         return this.http.post(`${baseURL}/login`,data)
     }
 
@@ -45,7 +45,7 @@ export class accountService {
     }
 
     findByRid(rid): Observable<any> {
-        console.log(rid)
+        //(rid)
         return this.http.get(`${baseURL}/rid/${rid}`)
     }
 
