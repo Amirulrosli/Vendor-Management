@@ -53,5 +53,10 @@ export class paymentService {
         return this.http.get(`${baseURL}/deliver/deliver`)
     }
 
+    findPaymentRange(start,end): Observable<any> {
+        console.log(start+""+end)
+        return this.http.get(`${baseURL}/find/${start}/${end}`)
+    }
+
     
 }

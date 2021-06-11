@@ -76,12 +76,14 @@
 
       <p class="titleTxt">Dashboard</p>
       <p class="descTxt">Information management & Intelligence</p>
-      <button class="print-report" mat-button (click)="goToReport()"><mat-icon >print</mat-icon></button>
+      <button class="print-report" mat-button (click)="print()"><mat-icon >print</mat-icon></button>
+      <button class="all-report" mat-raised-button (click)="goToReport()">Generate Full Report</button>
  
     <!-- Filter // ---------------------->
 
     
       <mat-card class="search-card">
+        <div id="filter">
         <mat-icon style="color:black; position: relative; top: 5px; margin-left: 20px;">search</mat-icon>
       <mat-label style="color:black; margin-left: 5px;">Search For: </mat-label>
       <select style="color: rgb(71, 71, 71)" [(ngModel)]="searchForField" placeholder="All" (change)="viewTable()" label="" class="selection" name="IC" placeholder="No.">
@@ -144,20 +146,42 @@
       </select>
       <br>
 
-      <mat-icon *ngIf="showPayment==true" style="color:black; position: relative; top: 5px; margin-left: 17px;margin-top:10px;">date_range</mat-icon>
-        <mat-label *ngIf="showPayment==true" style="color:black; margin-left: 7px; margin-top:10px;">Date Filter: </mat-label>
-        <input *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;" type="date" [(ngModel)]="dateFilter" placeholder="Enter Date" (change)="onChangeDate()">
+  
+      <div id="paymentPrint">
+
+        <mat-icon *ngIf="showPayment==true" style="color:black; position: relative; top: 5px; margin-left: 17px;margin-top:10px;">date_range</mat-icon>
+        <mat-label class="start1" style="color:black; margin-left: 7px; margin-top:10px;" *ngIf="showPayment==true">Start Date: </mat-label>
+        <span *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;">{{dateFilter}}</span>
+
+
+        <mat-label *ngIf="showPayment==true" style="color:black; margin-left: 15px; margin-top:10px;">End Date: </mat-label>
+        <span *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;">{{endFilter}}</span>
         <span *ngIf="showPayment==true"><mat-icon style="color: rgb(255, 0, 0); position:relative; top:8px;left: 10px;cursor:pointer;" (click)="refreshPayment()">close</mat-icon></span>
 
 
+      </div>
 
 
-     
+      </div>
+
+      <mat-icon *ngIf="showPayment==true" style="color:black; position: relative; top: 5px; margin-left: 17px;margin-top:10px;">date_range</mat-icon>
+      <mat-label class="start1" style="color:black; margin-left: 7px; margin-top:10px;" *ngIf="showPayment==true">Start Date: </mat-label>
+      <input *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;" type="date" [(ngModel)]="dateFilter" placeholder="Enter Date" (change)="onChangeDate()">
+
+
+      <mat-label *ngIf="showPayment==true" style="color:black; margin-left: 15px; margin-top:10px;">End Date: </mat-label>
+      <input *ngIf="showPayment==true" style="color: rgb(71, 71, 71);margin-left: 5px; width:30%;height: 30px; margin-top:10px;" type="date" [(ngModel)]="endFilter" placeholder="Enter Date" (change)="onChangeDate()">
+      <span *ngIf="showPayment==true"><mat-icon style="color: rgb(255, 0, 0); position:relative; top:8px;left: 10px;cursor:pointer;" (click)="refreshPayment()">close</mat-icon></span>
+
 
       </mat-card>
 
 
+
+      <div class="notPrint">
+
       <button *ngIf="!viewOnly"  class="vendor-button" mat-raised-button (click)="addVendor()">Add Vendor</button>
+
 
 
       <div class ="mat-elevation-z8" style="margin-top: 10px;">
@@ -480,14 +504,17 @@
 
           </div>
 
+        </div>
+
           <br>
           <br>
+        <div id="statPrint">
 
           <div class="statistic-2">
           <mat-card class="stat-2">
             <div class="flex-container">
               <div class="inline">
-                <mat-icon style="color: rgb(180, 9, 9)">timelapse</mat-icon>
+                <mat-icon class="maticon" style="color: rgb(180, 9, 9)">timelapse</mat-icon>
                 <h3>Total Overdue</h3>
               </div>
               
@@ -497,7 +524,7 @@
           <mat-card class="stat-2">
             <div class="flex-container">
               <div class="inline">
-              <mat-icon style="color: rgb(9, 180, 86)">verified_user</mat-icon>
+              <mat-icon class="maticon" style="color: rgb(9, 180, 86)">verified_user</mat-icon>
               <h3>Total Paid</h3>
             </div>
               <p>{{paidLength}}</p>
@@ -506,7 +533,7 @@
           <mat-card class="stat-2">
             <div class="flex-container">
               <div class="inline">
-              <mat-icon style="color: rgb(0, 109, 143)">supervised_user_circle</mat-icon>
+              <mat-icon class="maticon" style="color: rgb(0, 109, 143)">supervised_user_circle</mat-icon>
               <h3>Total Vendor</h3>
             </div>
               <p>{{retrieveDataLength}}</p>
@@ -515,7 +542,7 @@
            <mat-card class="stat-2">
             <div  class="flex-container">
               <div class="inline">
-              <mat-icon style="color: rgb(180, 9, 166)"> location_on</mat-icon>
+              <mat-icon class="maticon" style="color: rgb(180, 9, 166)"> location_on</mat-icon>
               <h3>Total Slot</h3>
             </div>
               <p>{{slotLength}}</p>
@@ -568,12 +595,14 @@
 
         </div>
       </div>
+
+    </div>
         <br>
 
       <h1 class="titleTxt">Online Users</h1>
       <p class="descTxt">View people who are online</p>
 
-      <div class ="mat-elevation-z8" style="margin-top: 10px; width: 50%;">
+      <div class ="mat-elevation-z8" style="margin-top: 10px; width: 70%;">
         
         <mat-table [dataSource]="loginData" matSort>
           
@@ -620,6 +649,346 @@
           </div>
           <br>
           <br>
+          <br>
+
+          <!--Printing Area--------------------------------------------------------------------------------------------------------->
+          <div id="print">
+            
+          <div class ="mat-elevation-z8" style="margin-top: 10px;">
+        
+            <table id="childTable" mat-table [dataSource]="listDataPrint" matSort *ngIf="showVendor==true">
+                <ng-container  matColumnDef="IC_Number">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</td>
+                </ng-container>
+                <ng-container *ngIf="showSlotField==false" matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header >Email</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.email}}</td>
+                </ng-container>
+                <ng-container *ngIf="showSlotField==false" matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.phone}}</td>
+                </ng-container>
+                <ng-container *ngIf="showSlotField==false" matColumnDef="latest_Payment">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                      <span *ngIf="element.overdue==null">N/A</span>
+                      <span *ngIf="element.overdue!==null">{{element.latest_Payment_Date}}</span>
+                    </td>
+                </ng-container>
+                <ng-container *ngIf="showSlotField==false" matColumnDef="slot">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Slot No.</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">{{element.slot}}</td>
+                </ng-container>
+    
+                <ng-container matColumnDef="overdue">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                  <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+                    <span style="margin-right: 5px; color: red;" *ngIf="element.overdue==true">Overdue</span> <mat-icon style="color: red;" *ngIf="element.overdue==true">query_builder</mat-icon>
+                    <span style="margin-right: 5px; color: green;" *ngIf="element.overdue==false">Paid</span><mat-icon style="color: green;" *ngIf="element.overdue==false">done</mat-icon>
+                    <span style="margin-right: 5px; color: rgb(8, 0, 78);" *ngIf="element.overdue==null">N/A</span>
+                  </td>
+              </ng-container>
+        
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onEdit(row)"><mat-icon>create</mat-icon></button>
+                   
+                     
+                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="onDelete(row)"><mat-icon>delete</mat-icon></button>
+                      <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(110, 110, 110)" (click)="onEmail(row)"><mat-icon>contact_mail</mat-icon></button>
+                    </td>
+        
+                    
+                  </ng-container>
+        
+                  <ng-container matColumnDef="noData">
+                    <tr class="footer-1" mat-footer-cell *matFooterCellDef colspan="6">
+                      Vendor Records
+                    </tr>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+                  <tr mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></tr>
+                </table>
+              
+    
+    
+    
+                <!--Location Table--------------------------------------------------------------------------------------------->
+    
+    
+    
+    
+    
+                <table mat-table id="childTable" [dataSource]="listDataPrint" matSort *ngIf="showSlotField == true">
+              
+                  <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Vendor Name (Owner)</th>
+                      <td mat-cell class="matcell" *matCellDef="let element">
+                      <span  style="color:rgb(65, 65, 65)">{{element.name}}</span></td>
+                  </ng-container>
+      
+                  <ng-container  matColumnDef="location" >
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" >
+                      <mat-icon *ngIf="element.taken==false" style="color:rgb(39, 39, 39); margin-right: 5px;">location_on</mat-icon>
+                      <mat-icon *ngIf="element.taken==true" style="color:rgb(39, 39, 39); margin-right: 5px;">location_off</mat-icon>
+                      <span style="color: rgb(39, 39, 39);">{{element.location}}</span></td>
+                </ng-container>
+      
+                  <ng-container matColumnDef="slot_Number">
+                    <th mat-header-cell  *matHeaderCellDef mat-sort-header>Slot No.</th>
+                    <td mat-cell class="matcell" *matCellDef="let element"  >{{element.slot_Number}}</td>
+                </ng-container>
+      
+                  <ng-container matColumnDef="slot_Price">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Slot Price</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" >
+                   $ {{element.slot_Price}}
+                   
+                    </td>
+                </ng-container>
+    
+    
+    
+      
+    
+      
+                <ng-container matColumnDef="taken">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Availability</th>
+                  <td mat-cell class="matcell" *matCellDef="let element">
+                    <span style="margin-right: 5px; color: rgb(255, 133, 133)  ; margin-top: -10x;" *ngIf="element.taken==true">Taken <mat-icon style="position: relative;top:5px;">event_busy</mat-icon></span>
+                    <span style="margin-right: 5px; color: rgb(105, 7, 197); margin-top: -10px;" *ngIf="element.taken==false">Available <mat-icon  style="position: relative;top:5px;">event_available</mat-icon></span>
+                  </td>
+              </ng-container>
+      
+                  <ng-container matColumnDef="overdue">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                    <td mat-cell class="matcell" *matCellDef="let element">
+                      <span style="margin-right: 5px; color: red;" *ngIf="element.overdue==true">Overdue</span> <mat-icon style="color: red;" *ngIf="element.overdue==true">query_builder</mat-icon>
+                      <span style="margin-right: 5px; color: green;" *ngIf="element.overdue==false">Paid</span><mat-icon style="color: green;" *ngIf="element.overdue==false">done</mat-icon>
+                      <span style="margin-right: 5px; color: rgb(8, 0, 78);" *ngIf="element.overdue!==true && element.overdue!==false">N/A</span>
+                    </td>
+                </ng-container>
+    
+                  <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef></th>
+                      <td mat-cell *matCellDef="let row">
+                        <button *ngIf="!viewOnly && row.name" mat-icon-button style="color:rgb(112, 112, 112)" (click)="viewing(row.rid)"><mat-icon>launch</mat-icon></button>
+                      </td>
+          
+                      
+                    </ng-container>
+          
+                    <ng-container matColumnDef="noData">
+                      <tr class="footer-1" mat-footer-cell *matFooterCellDef colspan="6">
+                        Location Records
+                      </tr>
+                    </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedLocationColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedLocationColumns;" ></tr>
+                    <tr mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></tr>
+                  </table>
+  
+    
+    
+    
+    
+    
+    
+                  <!--Payment Table---------------------------------------------------------------------------------------------->
+    
+    
+                  <table mat-table  id="childTable" [dataSource]="listDataPrint" matSort *ngIf="showPayment == true" >
+    
+                    <ng-container matColumnDef="Receipt ID">
+                      <th *matHeaderCellDef mat-sort-header>Receipt ID</th>
+                      <td class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.paymentID}}</td>
+                  </ng-container>
+      
+                    
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                        <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="slot_Number">
+                      <th mat-header-cell  *matHeaderCellDef mat-sort-header>Slot No.</th>
+                      <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.slot_Number}}</td>
+                  </ng-container>
+        
+                    <ng-container matColumnDef="Price">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Paid Amount</th>
+                      <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >$ {{element.price}}
+                      </td>
+                  </ng-container>
+      
+                  <ng-container matColumnDef="payment_Date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Payment Date</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                    {{element.payment_Date}}
+                    
+                    </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="due_Date">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Due Date</th>
+                  <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                  {{element.due_Date}}
+                  
+                  </td>
+              </ng-container>
+    
+              <ng-container matColumnDef="send_Email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Notification</th>
+                <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+                <span style="color: blueviolet; position: relative;top: -5px;" *ngIf="element.send_Email==true">Sent <mat-icon  style="position: relative;top: 5px;">check</mat-icon> </span>
+                <span style="color: rgb(255, 100, 100);position: relative;top: -5px;" *ngIf="element.send_Email==false">Not Delivered <mat-icon style="position: relative;top: 5px;">refresh</mat-icon> </span>
+                
+                </td>
+            </ng-container>
+
+      
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                  <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
+                  {{element.email}}
+                  
+                  </td>
+              </ng-container>
+     
+      
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let row">
+                          <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112); margin-left: 20px;" (click)="goToReceipt(row)"><mat-icon>move_to_inbox</mat-icon></button>
+                       
+                        </td>
+            
+                        
+                      </ng-container>
+            
+                      <ng-container matColumnDef="noData">
+                        <tr class="footer-1" mat-footer-cell *matFooterCellDef colspan="6">
+                          Payment History
+                        </tr>
+                      </ng-container>
+      
+                      <tr mat-header-row *matHeaderRowDef="displayedPaymentsColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedPaymentsColumns;" ></tr>
+                      <tr mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></tr>
+                    </table> 
+    
+    
+                    <!--Relative----------------------------------------------------------------------------------------->
+    
+    
+                    <table mat-table  id="childTable" [dataSource]="listDataPrint" matSort *ngIf="showRelative == true" >
+                    
+                      <ng-container matColumnDef="name">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Relative Name</th>
+                          <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</td>
+                      </ng-container>
+          
+                      <ng-container matColumnDef="IC_Number">
+                        <th mat-header-cell  *matHeaderCellDef mat-sort-header>Relative IC No.</th>
+                        <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</td>
+                    </ng-container>
+          
+                      <ng-container matColumnDef="relationship">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Relationship</th>
+                        <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)"><mat-icon style="color:rgb(145, 80, 206)">supervisor_account</mat-icon>
+                          <span style="color:rgb(126, 60, 189); margin-left:3px;">{{element.relationship}}</span>
+                   
+                        </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="vendorName">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Related To (vendor):</th>
+                      <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                        <mat-icon style="color:rgb(102, 102, 102)">account_circle</mat-icon>
+                      <span style="color:rgb(88, 88, 88);margin-left:5px;">{{element.vendorName}}</span> 
+                      
+                      </td>
+                  </ng-container>
+      
+                  <ng-container matColumnDef="Updated_At">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Update</th>
+                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                      {{element.updatedAt}}
+                    
+                    </td>
+                </ng-container>
+       
+        
+                      <ng-container matColumnDef="actions">
+                          <th mat-header-cell *matHeaderCellDef></th>
+                          <td mat-cell *matCellDef="let row">
+                            <button *ngIf="!viewOnly" mat-icon-button style="color:rgb(112, 112, 112)" (click)="viewing(row.rid)"><mat-icon>launch</mat-icon></button>
+                         
+                          </td>
+              
+                          
+                        </ng-container>
+              
+                        <ng-container matColumnDef="noData">
+                          <tr class="footer-1" mat-footer-cell *matFooterCellDef colspan="6">
+                            Relative Records
+                          </tr>
+                        </ng-container>
+        
+                        <tr mat-header-row *matHeaderRowDef="displayedRelativeColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedRelativeColumns;" ></tr>
+                        <tr mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(retrieveDataLength==0)}"></tr>
+                      </table>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+              </div>
+            </div>
+              <br>
+              <br>
+
+            <div id="statprint-2">
+              <mat-label style="color:black;margin-left:30px;">Start Date: </mat-label>
+              <span>{{dateFilter}}</span>
+              <mat-label style="color:black;margin-left:40px;">End Date: </mat-label>
+              <span>{{endFilter}}</span>
+
+              <div id="linechart-1" *ngIf="paymentArray1.length !== 0">
+                <apx-chart
+                  [series]="linechartOptions1.series1"
+                  [chart]="linechartOptions1.chart"
+                  [xaxis]="linechartOptions1.xaxis"
+                  [dataLabels]="linechartOptions1.dataLabels"
+                  [grid]="linechartOptions1.grid"
+                  [stroke]="linechartOptions1.stroke"
+                  [title]="linechartOptions1.title"
+                  [color]="linechartOptions1.colors"
+                  [theme] = "linechartOptions1.theme"
+                ></apx-chart>
+              </div>
+            </div>
+
+           
+
+
           <p id="hide">{{before}} &copy; {{after}}</p>
           <br>
 

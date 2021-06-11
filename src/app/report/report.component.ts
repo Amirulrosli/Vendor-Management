@@ -1,5 +1,9 @@
 import { DatePipe, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexGrid, ApexNonAxisChartSeries, ApexPlotOptions, ApexResponsive, ApexStroke, ApexTheme, ApexTitleSubtitle, ApexXAxis, ChartComponent } from 'ng-apexcharts';
 import { accountService } from '../services/account.service';
 import { attachmentService } from '../services/Attachment.service';
 import { paymentService } from '../services/payment.service';
@@ -13,12 +17,43 @@ import { DelphotoService } from '../servicesDeleted/photo.service';
 import { DelprofileService } from '../servicesDeleted/profile.service';
 import { DelrelativeService } from '../servicesDeleted/relative.service';
 
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: string[];
+  colors: string [];
+  plotOptions: ApexPlotOptions;
+  responsive: ApexResponsive[];
+  theme: ApexTheme
+
+
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+  series1: ApexAxisChartSeries;
+  fill: ApexFill
+};
+
+
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
+
+
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+  @ViewChild("piechart") piechart: ChartComponent;
+  public piechartOptions: Partial<ChartOptions>;
+
+  @ViewChild("linechart") linechart: ChartComponent;
+  public linechartOptions: Partial<ChartOptions>;
+  
 
   profileArray: any = [];
   paymentArray: any = [];
@@ -38,6 +73,72 @@ export class ReportComponent implements OnInit {
   delrelativeArray: any = [];
   delattachmentArray: any =[];
   delprofilePic: any;
+
+
+
+  
+  @ViewChild(MatSort) sort:MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  listData: MatTableDataSource<any>;
+
+
+
+  displayedColumns: string[] = [
+  
+    'IC_Number',
+    'name',
+    'email',
+    'phone',
+    'latest_Payment',
+    'slot',
+    'overdue',
+    'actions'
+    
+  
+  ];
+
+  displayedLoginColumns: string [] = [
+    'profilePic',
+    'id',
+    'username',
+    'state',
+    'last_Login',
+   
+  ]
+displayedLocationColumns: string[] = [
+    "location",
+    "slot_Number",
+    "slot_Price",
+    "taken",
+    "name",
+    "overdue",
+    "actions",
+  ]
+
+  displayedPaymentsColumns: string[] = [
+    "Receipt ID",
+    "slot_Number",
+    'Price',
+    "payment_Date",
+    "due_Date",
+    "send_Email",
+    "name",
+    "email",
+    "actions"
+  ]
+
+  displayedRelativeColumns: string [] = [
+    "IC_Number",
+    "name",
+    "relationship",
+    "vendorName",
+    "Updated_At",
+    "actions"
+
+  ]
+
+
 
   constructor(
     private location: Location,
@@ -68,10 +169,6 @@ export class ReportComponent implements OnInit {
     this.getRelative();
     this.getSlot();
 
-    setTimeout(() =>{
-
-      this.printPage();
-    },400)
   }
 
   printPage(){

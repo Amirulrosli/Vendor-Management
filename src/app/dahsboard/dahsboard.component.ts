@@ -87,6 +87,12 @@ export class DahsboardComponent implements OnInit {
 
   @ViewChild("linechart") linechart: ChartComponent;
   public linechartOptions: Partial<ChartOptions>;
+
+  @ViewChild("linechart1") linechart1: ChartComponent;
+  public linechartOptions1: Partial<ChartOptions>;
+
+  totalPayment1: any;
+  paymentSeries1: any;
   
   close: any;
   opened = true
@@ -111,7 +117,7 @@ export class DahsboardComponent implements OnInit {
   searchForField: string = "Vendor";
   selectSlotField: string = "All";
   showSlotField = false;
-
+  paymentArray1:any=[]
 
 
 
@@ -151,6 +157,7 @@ export class DahsboardComponent implements OnInit {
   locationField = "All";
   locationArray: any = [];
   paymentTableArray: any = []
+  paymentNewArray: any = [];
   spouseArray: any = [];
   spouseField = "All";
 
@@ -159,6 +166,7 @@ export class DahsboardComponent implements OnInit {
   showVendor = true;
   notificationField = "All";
   dateFilter: any;
+  endFilter: any;
   filteredArray: any = [];
   discontinued: any = [];
   discontinuedlength: any;
@@ -168,6 +176,7 @@ export class DahsboardComponent implements OnInit {
   footer: any = "";
   before: any;
   after: any;
+  rangeDataArray: any;
 
 
 
@@ -176,6 +185,7 @@ export class DahsboardComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   listData: MatTableDataSource<any>;
+  listDataPrint: MatTableDataSource<any>;
   loginData: MatTableDataSource<any>;
 
 
@@ -294,6 +304,7 @@ displayedLocationColumns: string[] = [
     this.createChart();
     this.createPieChart();
     this.createLineChart();
+    this.createLineChart1()
     this.findOnlineUser();
     this.getLocation();
 
@@ -429,6 +440,7 @@ displayedLocationColumns: string[] = [
 
   applyFilter(){
     this.listData.filter = this.searchKey.trim().toLowerCase();
+    this.listDataPrint.filter = this.searchKey.trime().toLowerCase();
   }
 
   onDelete(data){
@@ -651,6 +663,7 @@ displayedLocationColumns: string[] = [
           this.createChart();
           this.createPieChart();
           this.createLineChart();
+          this.createLineChart1();
           
         },err=> {
           Swal.fire("Cannot Delete Profile","Please Check and Try Again!","error")
@@ -691,6 +704,7 @@ displayedLocationColumns: string[] = [
         this.retrieveSlot();
         this.paid();
         this.createLineChart();
+        this.createLineChart1();
         this.createChart();
         this.createPieChart();
       });
@@ -716,6 +730,7 @@ displayedLocationColumns: string[] = [
         this.retrieveSlot();
         this.paid();
         this.createLineChart();
+        this.createLineChart1();
         this.createChart();
         this.createPieChart();
     })
@@ -847,6 +862,10 @@ displayedLocationColumns: string[] = [
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.list);
+      this.listDataPrint.sort = this.sort;
+
       this.changeDetectorRefs.detectChanges();
 
     })
@@ -954,6 +973,10 @@ displayedLocationColumns: string[] = [
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.list);
+      this.listDataPrint.sort = this.sort;
+      
       this.changeDetectorRefs.detectChanges();
 
     })
@@ -970,6 +993,10 @@ displayedLocationColumns: string[] = [
       this.listData = new MatTableDataSource(this.list);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.list);
+      this.listDataPrint.sort = this.sort;
+
       this.changeDetectorRefs.detectChanges();
 
     })
@@ -1366,6 +1393,117 @@ displayedLocationColumns: string[] = [
 
   }
 
+
+
+
+  createLineChart1(){
+
+    var payment = [];
+    var dateArray = [];
+    var totalPayment1 = 0;
+    this.totalPayment1 = 0;
+    this.paymentSeries1 = [];
+
+
+    if (!this.dateFilter || !this.endFilter){
+      return;
+    }
+
+    this.paymentService.findPaymentRange(this.dateFilter, this.endFilter).subscribe(data=> {
+      this.paymentArray1 = data;
+      console.log(data)
+      
+
+      if(this.paymentArray1.length !== 0){
+         
+        var paymentLength = this.paymentArray1.length;
+        var requested = 0;
+
+        console.log(this.paymentArray1)
+
+        for (let i = paymentLength-1; i>=requested;i--){
+       
+          this.paymentSeries1.push(this.paymentArray1[i].price)
+
+          const newDate = new Date(this.paymentArray1[i].createdAt);
+          let latest_date = this.datePipe.transform(newDate,'dd/MM HH:mm')
+          dateArray.push(latest_date)
+        }
+
+        for(let i = 0; i< paymentLength; i++){
+          totalPayment1 += parseInt(this.paymentArray1[i].price);
+        }
+
+        totalPayment1 += this.totalPayment1;
+
+    
+      this.linechartOptions1 = {
+
+        theme: {
+          palette: 'palette8'
+        },
+     
+        series1: [{
+          name: "Payment ($):",
+          data: this.paymentSeries1,
+        },
+          
+        ],
+
+       
+      
+        chart: {
+          height: 430,
+          width: 800,
+          type: "line",
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: "straight"
+        },
+        title: {
+          text: "Income Trend By Selected Date",
+          align: "center",
+          
+        },
+        
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            opacity: 0.8
+          }
+        },
+        xaxis: {
+          categories: dateArray,
+          title: {
+            text: "Total Income: $" + totalPayment1,
+            style:{
+              color: "black",
+              fontFamily: "Sans-Serif",
+              fontSize: "17px"
+            }, 
+          }
+        }
+      };
+  
+      } 
+          
+      
+    })
+
+
+
+
+
+
+
+  }
+
   openSideProfile(id){
     
       console.log(id)
@@ -1493,6 +1631,9 @@ refreshLocation(){
         this.listData = new MatTableDataSource(this.switchAllSlot);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.switchAllSlot);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
 
 
@@ -1501,6 +1642,9 @@ refreshLocation(){
       this.listData = new MatTableDataSource(this.switchAllSlot);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.switchAllSlot);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
     }
 
@@ -1512,6 +1656,7 @@ refreshLocation(){
 refreshPayment() {
   this.searchKey = "";
   this.dateFilter = "";
+  this.endFilter = "";
   this.notificationField = "All";
 
   this.paymentService.findAll().subscribe(data=> {
@@ -1556,6 +1701,9 @@ refreshPayment() {
       this.listData = new MatTableDataSource(this.paymentTableArray);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.paymentTableArray);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
 
 
@@ -1563,6 +1711,8 @@ refreshPayment() {
       this.listData = new MatTableDataSource(this.paymentTableArray);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+      this.listDataPrint = new MatTableDataSource(this.paymentTableArray);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
       return;
     }
@@ -1619,6 +1769,9 @@ getRelative(){
       this.listData = new MatTableDataSource(this.spouseArray);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.spouseArray);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
 
 
@@ -1628,6 +1781,9 @@ getRelative(){
       this.listData = new MatTableDataSource(this.spouseArray);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.spouseArray);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
     }
 
@@ -1646,6 +1802,9 @@ overdueSlotFilter(){
     this.listData = new MatTableDataSource(this.filteredArray);
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+
+    this.listDataPrint = new MatTableDataSource(this.filteredArray);
+    this.listDataPrint.sort = this.sort;
     this.changeDetectorRefs.detectChanges();
 
 
@@ -1670,6 +1829,10 @@ overdueSlotFilter(){
       this.listData = new MatTableDataSource(array);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(array);
+      this.listDataPrint.sort = this.sort;
+
       this.changeDetectorRefs.detectChanges();
     }
     
@@ -1694,6 +1857,9 @@ overdueSlotFilter(){
       this.listData = new MatTableDataSource(array);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(array);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
     }
 
@@ -1711,6 +1877,9 @@ slotAvailability(){
     this.listData = new MatTableDataSource(this.switchAllSlot);
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+
+    this.listDataPrint = new MatTableDataSource(this.switchAllSlot);
+    this.listDataPrint.sort = this.sort;
     this.changeDetectorRefs.detectChanges();
 
 
@@ -1738,6 +1907,9 @@ slotAvailability(){
         this.listData = new MatTableDataSource(availArray);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(availArray);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
 
       }
@@ -1773,6 +1945,9 @@ slotAvailability(){
       this.listData = new MatTableDataSource(availArray);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(availArray);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
       }
     
@@ -1832,6 +2007,9 @@ showTable(){
           this.listData = new MatTableDataSource(this.switchAllSlot);
           this.listData.sort = this.sort;
           this.listData.paginator = this.paginator;
+
+          this.listDataPrint = new MatTableDataSource(this.switchAllSlot);
+          this.listDataPrint.sort = this.sort;
           this.changeDetectorRefs.detectChanges();
           }
   
@@ -1841,6 +2019,9 @@ showTable(){
         this.listData = new MatTableDataSource(this.switchAllSlot);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.switchAllSlot);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }
   
@@ -1898,6 +2079,9 @@ overdueFilter(){
 
 notificationFilter(){
 
+  this.dateFilter = "";
+  this.endFilter="";
+
 
   if (this.notificationField == "All"){
     this.refreshPayment();
@@ -1951,6 +2135,9 @@ notificationFilter(){
       this.listData = new MatTableDataSource(this.paymentTableArray);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.paymentTableArray);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
 
 
@@ -1958,6 +2145,9 @@ notificationFilter(){
       this.listData = new MatTableDataSource(this.paymentTableArray);
       this.listData.sort = this.sort;
       this.listData.paginator = this.paginator;
+
+      this.listDataPrint = new MatTableDataSource(this.paymentTableArray);
+      this.listDataPrint.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
       return;
     }
@@ -2018,6 +2208,9 @@ notificationFilter(){
         this.listData = new MatTableDataSource(this.paymentTableArray);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.paymentTableArray);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
   
   
@@ -2025,6 +2218,9 @@ notificationFilter(){
         this.listData = new MatTableDataSource(this.paymentTableArray);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.paymentTableArray);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         return;
       }
@@ -2035,6 +2231,68 @@ notificationFilter(){
 
   }
 
+}
+
+
+
+onChangeDate(){
+
+  this.paymentNewArray = [];
+
+
+  if (!this.dateFilter || !this.endFilter){
+    Swal.fire('Info','Please Enter Start Date and End Date','info')
+
+    if (this.dateFilter){
+      var newDate = this.datePipe.transform(this.dateFilter,'dd/MM/YY')
+      this.listData.filter = newDate.trim().toLowerCase();
+      this.listDataPrint.filter = newDate.trim().toLowerCase();
+    } else {
+      var newDate = this.datePipe.transform(this.endFilter,'dd/MM/YY')
+      this.listData.filter = newDate.trim().toLowerCase();
+      this.listDataPrint.filter = newDate.trim().toLowerCase();
+    }
+
+  } else {
+
+    this.createLineChart1();
+
+
+    this.paymentService.findPaymentRange(this.dateFilter,this.endFilter).subscribe(data=> {
+      this.rangeDataArray = data;
+
+      console.log(this.rangeDataArray)
+
+      if (this.rangeDataArray.length !== 0){
+
+       
+          
+          for (let i = 0;i<this.rangeDataArray.length;i++){
+
+            for (let k = 0; k<this.paymentTableArray.length;k++){
+
+              if (this.rangeDataArray[i].paymentID == this.paymentTableArray[k].paymentID){
+                // this.paymentTableArray.splice(i,0)
+                console.log("masuk dah")
+                this.paymentNewArray.push(this.paymentTableArray[k])
+              }
+
+            }
+          }
+
+
+          this.listData = new MatTableDataSource(this.paymentNewArray);
+          this.listData.sort = this.sort;
+          this.listData.paginator = this.paginator;
+  
+          this.listDataPrint = new MatTableDataSource(this.paymentNewArray);
+          this.listDataPrint.sort = this.sort;
+          this.changeDetectorRefs.detectChanges();
+        
+      }
+      
+    })
+  }
 }
 
 spouseFilter(){
@@ -2090,6 +2348,9 @@ spouseFilter(){
         this.listData = new MatTableDataSource(this.spouseArray);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.spouseArray);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
   
   
@@ -2099,6 +2360,9 @@ spouseFilter(){
         this.listData = new MatTableDataSource(this.spouseArray);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.spouseArray);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }
   
@@ -2156,7 +2420,12 @@ spouseFilter(){
         this.listData = new MatTableDataSource(this.spouseArray);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.spouseArray);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
+
+
   
   
        
@@ -2165,6 +2434,9 @@ spouseFilter(){
         this.listData = new MatTableDataSource(this.spouseArray);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
+
+        this.listDataPrint = new MatTableDataSource(this.spouseArray);
+        this.listDataPrint.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }
   
@@ -2174,14 +2446,6 @@ spouseFilter(){
   }
 }
 
-
-
-onChangeDate(){
-  var newDate = this.datePipe.transform(this.dateFilter,'dd/MM/YY')
-
-
-  this.listData.filter = newDate.trim().toLowerCase();
-}
 
 
 goToEditPayment(element){
@@ -2195,6 +2459,33 @@ goToEditPayment(element){
   }).afterClosed().subscribe(data=> {
     this.refreshData();
   })
+}
+
+
+print(){
+  var printwin = window.open("");
+  printwin.document.write('<html><title>VMIS/Stat Report</title><link rel="stylesheet" href="assets/print.css"/><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;display=swap" rel="stylesheet"> </head><body>')
+  printwin.document.write('<img class="logo" src="assets/Jabatan-Bandaran-Logo.png" width="400px" alt="logo"/><h3 style="color:black; font-size: 18px; font-weight: bold;margin-left:20px;">Statistic Report</h3><br><br>')
+  printwin.document.write(document.getElementById("filter").innerHTML)
+  printwin.document.write('<br><br>')
+  printwin.document.write(document.getElementById("print").innerHTML)
+  printwin.document.write('<br><br>')
+  printwin.document.write(document.getElementById('statPrint').innerHTML)
+  printwin.document.write('<br><br><br><br>')
+  if (this.dateFilter && this.endFilter){
+    printwin.document.write('<br><br><br>')
+    printwin.document.write(document.getElementById('statprint-2').innerHTML)
+    printwin.document.write('<br><br><br>')
+  }
+
+  printwin.document.write('</html>');
+
+
+
+  setTimeout(()=> {
+    printwin.print();
+  },500)
+ 
 }
 
 
