@@ -54,10 +54,21 @@
 
                 <mat-card class="search-card">
                     <form [formGroup]="registrationForm">
+
+                        <mat-label>Reference No:</mat-label>
+                        <br>
+                        <input #ref_No formControlName="ref_No" type="text" placeholder="Nombor Rujukan.."/>
+                        
+                        <div *ngFor="let error of errorMessages.ref_No">
+                            <ng-container *ngIf="registrationForm.controls['ref_No']?.hasError(error.type)">
+                              <small class="error-message">{{error.message}}</small>
+                            </ng-container>
+                        </div>
+                        <br>
         
                         <mat-label>Vendor Name:</mat-label>                    
                         <br>
-                        <input #name formControlName="name" type="text" placeholder="Enter Name.."/>
+                        <input #name formControlName="name" type="text" placeholder="Nama Penjaja.."/>
                         
                         <div *ngFor="let error of errorMessages.name">
                             <ng-container *ngIf="registrationForm.controls['name']?.hasError(error.type)">
@@ -74,7 +85,7 @@
         
                         <mat-label class="IC-Dash">-</mat-label>
         
-                        <input formControlName="IC_Number" style="width: 88%;" type="text" placeholder="Enter IC Number"/>
+                        <input formControlName="IC_Number" style="width: 88%;" type="text" placeholder="6 nombor terakhir untuk IC.."/>
                         
                         <div *ngFor="let error of errorMessages.IC_Number">
                             <ng-container *ngIf="registrationForm.controls['IC_Number']?.hasError(error.type)">
@@ -85,7 +96,7 @@
                         <mat-label>Email Address:</mat-label>
                         <br>
         
-                        <input formControlName="email" type="email" placeholder="Enter Email Address"/>
+                        <input formControlName="email" type="email" placeholder="Emel Penjaja..."/>
                         
                         <div *ngFor="let error of errorMessages.email">
                             <ng-container *ngIf="registrationForm.controls['email']?.hasError(error.type)">
@@ -107,7 +118,7 @@
                         <mat-label>Address:</mat-label>
                         <br>
         
-                        <textarea rows="12" formControlName="address" type="text" placeholder="Enter Postal Address"></textarea>
+                        <textarea rows="12" formControlName="address" type="text" placeholder="Alamat Persuratan....."></textarea>
                         
                         <div *ngFor="let error of errorMessages.address">
                             <ng-container *ngIf="registrationForm.controls['address']?.hasError(error.type)">
@@ -140,7 +151,7 @@
         
                         <mat-label>Spouse Name:</mat-label>                    
                         <br>
-                        <input #spouseName formControlName="spouseName" type="text" placeholder="Enter Spouse Name.."/>
+                        <input #spouseName formControlName="spouseName" type="text" placeholder="Nama Pasangan Jika Ada.."/>
                         
                         <div *ngFor="let error of errorMessages.spouseName">
                             <ng-container *ngIf="registrationForm.controls['spouseName']?.hasError(error.type)">
@@ -193,7 +204,7 @@
 
                         <mat-label>Child Name:</mat-label>                    
                         <br>
-                        <input #childName formControlName="childName" type="text" placeholder="Enter Child Name.."/>
+                        <input #childName formControlName="childName" type="text" placeholder="Nama Anak Jika Ada.."/>
                         
                         <div *ngFor="let error of errorMessages.childName">
                             <ng-container *ngIf="registrationForm.controls['childName']?.hasError(error.type)">

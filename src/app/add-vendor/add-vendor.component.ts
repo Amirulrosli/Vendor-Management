@@ -164,6 +164,10 @@ export class AddVendorComponent implements OnInit {
 
     contract: [
       {type: 'required', message: 'contract is required'}
+    ],
+
+    ref_No: [
+      {type: 'required', message: 'Reference No. is required'}
     ]
 
     
@@ -242,6 +246,7 @@ export class AddVendorComponent implements OnInit {
       childIC_Number:[''],
       location: ['',[Validators.required]],
       contract:['',[Validators.required]],
+      ref_No:['',[Validators.required]]
     })
 
     //, Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'
