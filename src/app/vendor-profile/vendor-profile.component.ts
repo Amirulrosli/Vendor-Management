@@ -615,9 +615,10 @@ export class VendorProfileComponent implements OnInit {
 
 
   retrieveProfile(){
-
+    console.log(this.id)
     this.profiles.findByRid(this.id).subscribe(array=> {
       this.retrieveData = array
+      console.log(this.retrieveData)
 
       if (this.retrieveData !== 0){
 

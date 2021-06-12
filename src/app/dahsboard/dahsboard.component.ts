@@ -683,6 +683,7 @@ displayedLocationColumns: string[] = [
   }
 
   viewing(id){
+    console.log(id)
     this.router.navigate(["vendor-profile/"+id])
   }
 

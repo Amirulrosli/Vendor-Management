@@ -586,6 +586,8 @@ onRestore(data){
         var profile = []
         this.delProfileService.findByRid(profileRid).subscribe(data=> {
           profile = data;
+
+          console.log(profile[0])
   
           if(profile.length !==0){
             profile[0].slot = null;

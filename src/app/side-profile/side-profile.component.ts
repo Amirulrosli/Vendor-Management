@@ -9,6 +9,7 @@ import { loginStateService } from '../services/loginState.service';
 import { photoService } from '../services/photo.service';
 import Swal from 'sweetalert2';
 import { MatSlidePanel } from 'ngx-mat-slide-panel';
+import { Account } from '../services/account.model';
 
 
 
