@@ -52,6 +52,7 @@ import { DelrelativeService } from '../servicesDeleted/relative.service';
 import { DelremarkService } from '../servicesDeleted/remark.service';
 import { environment } from 'src/environments/environment';
 import { EditPaymentComponent } from '../edit-payment/edit-payment.component';
+import { DelstatusService } from '../servicesDeleted/delStatus.service';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -272,7 +273,8 @@ displayedLocationColumns: string[] = [
     private delProfileService: DelprofileService,
     private delAttachmentService: DelattachmentService,
     private delRelativeService: DelrelativeService,
-    private delRemarkService: DelremarkService
+    private delRemarkService: DelremarkService,
+    private delStatusService: DelstatusService
   ) { 
 
     this.close = false;
@@ -444,20 +446,29 @@ displayedLocationColumns: string[] = [
     this.listDataPrint.filter = this.searchKey.trime().toLowerCase();
   }
 
-  onDelete(data){
+  async onDelete(data){
   
     var rid = sessionStorage.getItem('rid');
-    Swal.fire({
+    const  status = await Swal.fire({
       title: 'Are you sure?',
       text: 'This process is irreversible. Vendor Profile Will be mark as discontinued/deleted',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, go ahead.',
-      cancelButtonText: 'No, let me think'
+      cancelButtonText: 'No, let me think',
+      input: 'select',
+      inputOptions: {
+        'Deceased': 'Deceased',
+        'Blacklisted': 'Blacklisted',
+        'Discontinued': 'Discontinued',
+      },
+      inputPlaceholder: 'Reason for deletion'
 
     }).then((result) => {
 
       if (result.value) {
+        var chosenStat = result.value;
+
         const date = new Date();
         const notify = {
           rid: rid,
@@ -480,6 +491,26 @@ displayedLocationColumns: string[] = [
           profile = data;
 
           if(profile.length !==0){
+            var rid = profile[0].rid;
+            var overdue_Day = this.overdue;
+            var latest_Payment_Date = profile[0].latest_Payment_Date;
+            var next_Payment_Date = profile[0].latest_Due_Date;
+
+
+            var status = {
+              rid: rid,
+              status: chosenStat,
+              overdue_Day: overdue_Day,
+              latest_Payment_Date: latest_Payment_Date,
+              next_Payment_Date: next_Payment_Date
+            }
+
+            this.delStatusService.create(status).subscribe(data=> {
+              console.log(data)
+            },error=> {
+              console.log(error)
+            })
+
             profile[0].slot = null;
             profile[0].slot_Price = null;
             this.delProfileService.create(profile[0]).subscribe(data=> {
@@ -675,6 +706,12 @@ displayedLocationColumns: string[] = [
         Swal.fire(
           'Cancelled',
           'Vendor Profile is still in our database.',
+          'error'
+        )
+      } else if (!result.value){
+        Swal.fire(
+          'Cannot Delete',
+          'Vendor Profile is still in our database. Please select the reason for discontinuing!',
           'error'
         )
       }

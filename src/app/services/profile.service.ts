@@ -55,5 +55,9 @@ export class profileService {
     findAllPaid(): Observable<any> {
         return this.http.get(`${baseURL}/paid`)
     }
-    
+
+    findByReference(reference): Observable <any> {    
+        console.log(reference)
+        return this.http.get(`${baseURL}/ref/${reference}`)
+    } 
 }

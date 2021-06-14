@@ -17,6 +17,7 @@ import { profileService } from '../services/profile.service';
 import { relativeService } from '../services/relative.service';
 import { remarkService } from '../services/remark.service';
 import { DelattachmentService } from '../servicesDeleted/Attachment.service';
+import { DelstatusService } from '../servicesDeleted/delStatus.service';
 import { DelpaymentService } from '../servicesDeleted/payment.service';
 import { DelphotoService } from '../servicesDeleted/photo.service';
 import { DelprofileService } from '../servicesDeleted/profile.service';
@@ -102,7 +103,8 @@ export class DeletedRecordsComponent implements OnInit {
     private delPaymentService: DelpaymentService,
     private delProfileService: DelprofileService,
     private delRelativeService: DelrelativeService,
-    private delRemarkService: DelremarkService
+    private delRemarkService: DelremarkService,
+    private delStatusService: DelstatusService
 
   ) {
 
@@ -429,6 +431,28 @@ onDelete(data){
       })
 
 
+              //Deleting status------------------------------------------------
+
+        
+              var status = [];
+
+              this.delStatusService.findOne(data.rid).subscribe(data=> {
+                status = data;
+        
+                if (status.length !== 0){
+        
+                  this.delStatusService.delete(status[0].id).subscribe(data=> {
+                    console.log(data)
+                  },error=> {
+                    console.log(error)
+                  })
+                }
+        
+              },error=> {
+                console.log(error)
+              })
+
+
       //Deleting Payment Service -----------------------------------------------------------------------------
 
       var relative = [];
@@ -600,6 +624,27 @@ onRestore(data){
           }
   
         })
+
+        //Deleting status
+
+        
+      var status = [];
+
+      this.delStatusService.findOne(data.rid).subscribe(data=> {
+        status = data;
+
+        if (status.length !== 0){
+
+          this.delStatusService.delete(status[0].id).subscribe(data=> {
+            console.log(data)
+          },error=> {
+            console.log(error)
+          })
+        }
+
+      },error=> {
+        console.log(error)
+      })
   
   
         //Deleting Payment Service --------------------------------------------------------------------

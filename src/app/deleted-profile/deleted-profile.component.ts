@@ -18,6 +18,7 @@ import { profileService } from '../services/profile.service';
 import { relativeService } from '../services/relative.service';
 import { remarkService } from '../services/remark.service';
 import { DelattachmentService } from '../servicesDeleted/Attachment.service';
+import { DelstatusService } from '../servicesDeleted/delStatus.service';
 import { DelpaymentService } from '../servicesDeleted/payment.service';
 import { DelphotoService } from '../servicesDeleted/photo.service';
 import { DelprofileService } from '../servicesDeleted/profile.service';
@@ -137,7 +138,8 @@ export class DeletedProfileComponent implements OnInit {
     private delRemarksService: DelremarkService,
     private delProfileService: DelprofileService,
     private location: Location,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private delStatusService: DelstatusService
     
   ) { }
 
@@ -599,6 +601,25 @@ onDelete(data){
         console.log(err)
       })
 
+      //Status delete -----------------------------------------------------------------------
+
+      var status = [];
+
+      this.delStatusService.findOne(data.rid).subscribe(data=> {
+        status = data;
+
+        if (status.length !== 0){
+
+          this.delStatusService.delete(status[0].id).subscribe(data=> {
+            console.log(data)
+          },error=> {
+            console.log(error)
+          })
+        }
+
+      },error=> {
+        console.log(error)
+      })
 
       //Deleting Payment Service -----------------------------------------------------------------------------
 
@@ -757,6 +778,28 @@ onRestore(data){
           })
         }
 
+      })
+
+
+      //Deleting Status Service --------------------------------------------------------------------
+
+
+      var status = [];
+
+      this.delStatusService.findOne(data.rid).subscribe(data=> {
+        status = data;
+
+        if (status.length !== 0){
+
+          this.delStatusService.delete(status[0].id).subscribe(data=> {
+            console.log(data)
+          },error=> {
+            console.log(error)
+          })
+        }
+
+      },error=> {
+        console.log(error)
       })
 
 

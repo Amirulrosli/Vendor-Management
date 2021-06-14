@@ -386,6 +386,7 @@ export class AddVendorComponent implements OnInit {
       const slot_Price = this.registrationForm.value.slotprice;
       const slot = this.registrationForm.value.slot;
       const address = this.registrationForm.value.address;
+      const ref_No = this.registrationForm.value.ref_No;
 
       const spouseName = this.registrationForm.value.spouseName;
       const spIC = this.registrationForm.value.spIC;
@@ -396,138 +397,164 @@ export class AddVendorComponent implements OnInit {
       }
   
       const contract = this.registrationForm.value.contract;
+      var referenceArray = [];
 
-      this.profile.findByIC(IC_Number).subscribe(async data=> {
+      var reference = ref_No;
+  
+      this.profile.findByReference(reference).subscribe(data=> {
+
         console.log(data)
-        this.ICData = data;
+        referenceArray = data;
 
-        if (this.ICData.length == 0) {
+        if (referenceArray.length == 0){
 
-      
-        const date_Now = new Date();
-        let today = date_Now.getDate()+""+(date_Now.getMonth()+1)+""+date_Now.getFullYear();
-        console.log(this.slotArray)
-        
-
-          var profileModel = {
-            name: name,
-            email: email,
-            rent_Date: rent_Date,
-            phone: phone,
-            IC_Number: IC_Number,
-            slot_Price: slot_Price,
-            slot: slot,
-            address:address,
-            contract: contract
-          }
-    
-         this.profile.create(profileModel).subscribe(data=> { //Start save to database
-
-          this.profileList = data;
+          
+        this.profile.findByIC(IC_Number).subscribe(async data=> {
           console.log(data)
-          const rid = this.profileList.rid;
-          const taken = true;
-          var slotData = [];
-
-          console.log(spouseName)
-
-          if (this.spouseArray.length !==0){
-            for (let i = 0; i<this.spouseArray.length; i++){
-              this.spouseArray[i].rid = rid;
-
-              this.relativeService.createRelative(this.spouseArray[i]).subscribe(data=> {  //save spouse
-                console.log("spouse successfully created")
+          this.ICData = data;
+  
+          if (this.ICData.length == 0) {
+  
+        
+          const date_Now = new Date();
+          let today = date_Now.getDate()+""+(date_Now.getMonth()+1)+""+date_Now.getFullYear();
+          console.log(this.slotArray)
+          
+  
+            var profileModel = {
+              name: name,
+              ref_No: ref_No,
+              email: email,
+              rent_Date: rent_Date,
+              phone: phone,
+              IC_Number: IC_Number,
+              slot_Price: slot_Price,
+              slot: slot,
+              address:address,
+              contract: contract
+            }
+      
+           this.profile.create(profileModel).subscribe(data=> { //Start save to database
+  
+            this.profileList = data;
+            console.log(data)
+            const rid = this.profileList.rid;
+            const taken = true;
+            var slotData = [];
+  
+            console.log(spouseName)
+  
+            if (this.spouseArray.length !==0){
+              for (let i = 0; i<this.spouseArray.length; i++){
+                this.spouseArray[i].rid = rid;
+  
+                this.relativeService.createRelative(this.spouseArray[i]).subscribe(data=> {  //save spouse
+                  console.log("spouse successfully created")
+                },error=> {
+                  console.log(error)
+                })
+              }             
+              
+            }
+           
+  
+           if (this.childArray.length !==0){
+            for (let i = 0; i<this.childArray.length;i++){                           //Save Child array
+              this.childArray[i].rid = rid;
+  
+              this.relativeService.createRelative(this.childArray[i]).subscribe(data=> {
+                console.log("Child successfully created")
               },error=> {
                 console.log(error)
               })
-            }             
-            
-          }
-         
-
-         if (this.childArray.length !==0){
-          for (let i = 0; i<this.childArray.length;i++){                           //Save Child array
-            this.childArray[i].rid = rid;
-
-            this.relativeService.createRelative(this.childArray[i]).subscribe(data=> {
-              console.log("Child successfully created")
+            }
+           }
+  
+            this.Slot.findBySlot(slot).subscribe(data=> {                     //find slot
+              slotData = data;
+  
+              if (slotData.length == 0){
+                Swal.fire("Slot is not found","Please check and try again","error")
+                return;
+              }
+              var slotModel = {
+                rid: rid,
+                taken: taken,
+                slot_Price: slot_Price,
+                slot_Number: slot,
+  
+              }
+  
+              this.Slot.update(slotData[0].id,slotModel).subscribe(data=> {                //update Slot
+                console.log(data)
+              }, err=> {
+                console.log(err)
+                return;
+              })
+  
+            }, error=> {
+              console.log(error)
+              return;
+            })
+  
+            var accountRID = sessionStorage.getItem('rid');
+            var accountName = sessionStorage.getItem('username')
+  
+            const notify = {
+              rid: accountRID,
+              title: 'New Vendor Added Name: '+name, 
+              description: 'New vendor has been successfully added name '+name+'\n with IC Number: '+IC_Number+' by '+accountName,
+              category: 'New Vendor Added: '+name,
+              date: this.date,
+              view: false
+            };
+  
+            this.notification.create(notify).subscribe(data=> {                     //create notification
+              console.log("notification created")
             },error=> {
               console.log(error)
             })
-          }
-         }
-
-          this.Slot.findBySlot(slot).subscribe(data=> {                     //find slot
-            slotData = data;
-
-            if (slotData.length == 0){
-              Swal.fire("Slot is not found","Please check and try again","error")
-              return;
-            }
-            var slotModel = {
-              rid: rid,
-              taken: taken,
-              slot_Price: slot_Price,
-              slot_Number: slot,
-
-            }
-
-            this.Slot.update(slotData[0].id,slotModel).subscribe(data=> {                //update Slot
-              console.log(data)
-            }, err=> {
-              console.log(err)
-              return;
-            })
-
-          }, error=> {
+  
+            console.log(data)  
+            this.name="";
+            this.email="";
+            this.phone="";
+            this.IC_Number="";
+            this.rent_Date="";
+            this.forIC="";
+            this.slot="";
+            this.slotprice="";
+            this.registrationForm.reset();
+            this.childArray = [];
+            Swal.fire('Successfully created vendor','Data have been saved','success')
+          },
+          error=> {
             console.log(error)
+            Swal.fire('Please try again','Cannot Create vendor, please check your phone number and try again!','error')
             return;
           })
-
-          var accountRID = sessionStorage.getItem('rid');
-          var accountName = sessionStorage.getItem('username')
-
-          const notify = {
-            rid: accountRID,
-            title: 'New Vendor Added Name: '+name, 
-            description: 'New vendor has been successfully added name '+name+'\n with IC Number: '+IC_Number+' by '+accountName,
-            category: 'New Vendor Added: '+name,
-            date: this.date,
-            view: false
-          };
-
-          this.notification.create(notify).subscribe(data=> {                     //create notification
-            console.log("notification created")
-          },error=> {
-            console.log(error)
-          })
-
-          console.log(data)  
-          this.name="";
-          this.email="";
-          this.phone="";
-          this.IC_Number="";
-          this.rent_Date="";
-          this.forIC="";
-          this.slot="";
-          this.slotprice="";
-          this.registrationForm.reset();
-          this.childArray = [];
-          Swal.fire('Successfully created vendor','Data have been saved','success')
-        },
-        error=> {
-          console.log(error)
-          Swal.fire('Please try again','Cannot Create vendor, please check your phone number and try again!','error')
+          } else {
+            Swal.fire('Please try again!','IC Number is already existed','error')
+            return;
+          }
+        }, async err=> {  
+          Swal.fire('Please try again!','Cannot create vendor profile to the database','error')
           return;
-        })
+        }); 
+
         } else {
-          Swal.fire('Please try again!','IC Number is already existed','error')
+
+          Swal.fire('Please try again!','Cannot create vendor profile to the database due to duplicated file reference Number.','error')
           return;
+
         }
-      }, async err=> {  
-        Swal.fire('Please try again!','Cannot create vendor profile to the database','error')
+
+      },error=> {
+        console.log(error)
+        Swal.fire('Please try again!','Cannot create vendor profile to the database due to duplicated file reference Number.','error')
         return;
-      }); 
+      })
+
     }
    
   }
