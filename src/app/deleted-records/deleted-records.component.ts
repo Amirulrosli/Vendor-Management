@@ -78,6 +78,8 @@ export class DeletedRecordsComponent implements OnInit {
     
   
   ];
+  paymentDate: any;
+  paymentDueDate: void;
     
 
   constructor(
@@ -274,7 +276,7 @@ public notifyNumber(){
 
 
 goToDashboard(){
-  console.log("hantu")
+  // console.log("hantu")
   this.router.navigate(["/dashboard"]);
 }
 
@@ -616,6 +618,10 @@ onRestore(data){
           if(profile.length !==0){
             profile[0].slot = null;
             profile[0].slot_Price = null;
+            profile[0].latest_Due_Date = null;
+            profile[0].latest_Payment_Date = null;
+            profile[0].latest_Payment = null;
+            profile[0].overdue = null;
             this.profile.create(profile[0]).subscribe(data=> {
               console.log(data)
             },error=> {
@@ -651,15 +657,16 @@ onRestore(data){
   
         this.delPaymentService.findByRid(profileRid).subscribe(resp=> {
           this.paymentRid = resp;
+          console.log(resp)
         
   
           if (this.paymentRid.length > 0){
             for (let i = 0; i < this.paymentRid.length; i++){
               this.paymentService.create(this.paymentRid[i]).subscribe(data=> {
-              
   
                 this.delPaymentService.delete(this.paymentRid[i].id).subscribe(data=> {
-                
+                // console.log(data)
+
                 }, error=> {
                   console.log(error)
                 })

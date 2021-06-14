@@ -15,7 +15,7 @@
             <mat-label>Payment</mat-label>
         </div>
   
-        <div class="nav-icon" routerLink="/usermanagement">
+        <div *ngIf="isAdmin" class="nav-icon" routerLink="/usermanagement">
           
           <mat-icon  style="font-size: 30px">ballot</mat-icon>
           <mat-label style="text-align: center;">Admin IE</mat-label>

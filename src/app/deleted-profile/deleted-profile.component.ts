@@ -771,6 +771,10 @@ onRestore(data){
         if(profile.length !==0){
           profile[0].slot = null;
           profile[0].slot_Price = null;
+          profile[0].latest_Due_Date = null;
+          profile[0].latest_Payment_Date = null;
+          profile[0].latest_Payment = null;
+          profile[0].overdue = null;
           this.profileService.create(profile[0]).subscribe(data=> {
             console.log(data)
           },error=> {
