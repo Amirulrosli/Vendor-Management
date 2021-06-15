@@ -154,10 +154,12 @@ export class CreateSlotComponent implements OnInit {
             this.dialog.closeAll();
             return;
           })
+        } else {
+          Swal.fire('Slot is already available in the Database','Please check and try again!','error')
+          return;
         }
 
-        Swal.fire('Slot is already available in the Database','Please check and try again!','error')
-        return;
+
 
 
       },error=> {

@@ -582,10 +582,12 @@ export class UsermanagementComponent implements OnInit {
           Swal.fire('Unsucessful','Cannot add location, please check and try again','error')
           return;
         })
+      } else {
+        Swal.fire('Unsucessful','Existed Location! please check and try again','error')
+        return;
       }
 
-      Swal.fire('Unsucessful','Existed Location! please check and try again','error')
-      return;
+
       
     },error=> {
       Swal.fire('Unsucessful','Cannot add Location, please check and try again','error')
