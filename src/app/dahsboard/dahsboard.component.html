@@ -221,6 +221,11 @@
       <div class ="mat-elevation-z8" style="margin-top: 10px;">
         
         <mat-table [dataSource]="listData" matSort *ngIf="showVendor==true">
+
+          <ng-container  matColumnDef="ref_No">
+            <mat-header-cell *matHeaderCellDef mat-sort-header >Ref No.</mat-header-cell>
+            <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.ref_No}}</mat-cell>
+        </ng-container>
             <ng-container  matColumnDef="IC_Number">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</mat-header-cell>
                 <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</mat-cell>
@@ -228,10 +233,6 @@
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
                 <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</mat-cell>
-            </ng-container>
-            <ng-container *ngIf="showSlotField==false" matColumnDef="email">
-                <mat-header-cell *matHeaderCellDef mat-sort-header >Email</mat-header-cell>
-                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.email}}</mat-cell>
             </ng-container>
             <ng-container *ngIf="showSlotField==false" matColumnDef="phone">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</mat-header-cell>
@@ -423,13 +424,7 @@
             </mat-cell>
         </ng-container>
   
-            <ng-container matColumnDef="email">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
-              {{element.email}}
-              
-              </mat-cell>
-          </ng-container>
+
  
   
                 <ng-container matColumnDef="actions">
@@ -693,7 +688,15 @@
           <div class ="mat-elevation-z8" style="margin-top: 10px;">
         
             <table id="childTable" mat-table [dataSource]="listDataPrint" matSort *ngIf="showVendor==true">
-                <ng-container  matColumnDef="IC_Number">
+                
+              <ng-container  matColumnDef="ref_No">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header >Ref No.</th>
+                <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.ref_No}}</td>
+            </ng-container>
+
+              <ng-container  matColumnDef="IC_Number">
+
+
                     <th mat-header-cell *matHeaderCellDef mat-sort-header >IC No.</th>
                     <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.IC_Number}}</td>
                 </ng-container>
@@ -701,10 +704,7 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
                     <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.name}}</td>
                 </ng-container>
-                <ng-container *ngIf="showSlotField==false" matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header >Email</th>
-                    <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.email}}</td>
-                </ng-container>
+  
                 <ng-container *ngIf="showSlotField==false" matColumnDef="phone">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone Number</th>
                     <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.phone}}</td>
@@ -891,14 +891,7 @@
                 </td>
             </ng-container>
 
-      
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-                  <td mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)">
-                  {{element.email}}
-                  
-                  </td>
-              </ng-container>
+
      
       
                     <ng-container matColumnDef="actions">

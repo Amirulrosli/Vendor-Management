@@ -105,7 +105,12 @@ export class DeletedProfileComponent implements OnInit {
   price:any;
   paymentRid: any =[];
   profileData: any;
-
+  ref_No: any;
+  nextPayment: any;
+  lastPayment: any;
+  overdue: any;
+  last_Status: any;
+  deletion_Status: any;
   
 
 
@@ -153,6 +158,7 @@ export class DeletedProfileComponent implements OnInit {
     this.role = sessionStorage.getItem("role")
     
     this.notifyNumber();
+    this.retrieveStatus();
     this.identifyRole();
     this.retrievePhoto();
     this.getProfilePhoto();
@@ -230,11 +236,53 @@ export class DeletedProfileComponent implements OnInit {
     })
   }
 
+  retrieveStatus(){
+    var status=[];
+    this.delStatusService.findByRid(this.rid).subscribe(data=> {
+      status = data;
+
+      if (status.length !==0){
+
+        if (status[0].next_Payment_Date !== null){
+          var newDate = new Date (status[0].next_Payment_Date);
+          let newDate1 = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm')
+          this.nextPayment = newDate1;
+        } else {
+          this.nextPayment = "N/A"
+        }
+
+        if (status[0].last_Payment_Date !== null){
+          var newDate = new Date (status[0].last_Payment_Date);
+          let newDate1 = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm')
+          this.lastPayment = newDate1;
+        } else {
+          this.lastPayment = "N/A"
+        }
+        console.log(status[0])
+        this.overdue = status[0].overdue_Day;
+        console.log(this.overdue)
+
+        if (this.overdue >= 0){
+          this.last_Status = true
+        } else {
+          this.last_Status = false;
+        }
+
+        this.deletion_Status = status[0].status;
+
+
+   
+      }
+    })
+  }
+
   retrieveProfiles(){
     this.delProfileService.findByRid(this.rid).subscribe(data=> {
       this.profileList = data;
       if (this.profileList.length !==0){
+        
         this.profileData = this.profileList[0];
+        this.ref_No = this.profileList[0].ref_No;
         this.vendorname = this.profileList[0].name;
         this.email = this.profileList[0].email;
         this.phoneNo = this.profileList[0].phone;
@@ -605,7 +653,7 @@ onDelete(data){
 
       var status = [];
 
-      this.delStatusService.findOne(data.rid).subscribe(data=> {
+      this.delStatusService.findByRid(data.rid).subscribe(data=> {
         status = data;
 
         if (status.length !== 0){
@@ -790,7 +838,7 @@ onRestore(data){
 
       var status = [];
 
-      this.delStatusService.findOne(data.rid).subscribe(data=> {
+      this.delStatusService.findByRid(data.rid).subscribe(data=> {
         status = data;
 
         if (status.length !== 0){

@@ -21,7 +21,7 @@
           <mat-label style="text-align: center;">Admin IE</mat-label>
       </div>
   
-      <div class="nav-icon" routerLink="/deleted-records">
+      <div  class="nav-icon" routerLink="/deleted-records">
         <mat-icon class="active">file_copy</mat-icon>
         <mat-label class="active"  style="text-align: center;">Deleted Records</mat-label>
     </div>
@@ -54,7 +54,9 @@
         <mat-card class="search-card">
             <input [(ngModel)]="searchKey" type="text" placeholder="Search for IC, name, phone number, etc....." class="location-input"/>
             <button (click)="applyFilter()" class="location-button" mat-raised-button>Search <mat-icon>search</mat-icon></button>
-            <span (click)="retrieveProfile()" class="resetInfo-1">Reset</span>
+            <span (click)="clear()" class="resetInfo-1">Reset</span>
+            <br>
+            
             
         </mat-card>
 
@@ -73,6 +75,12 @@
 
                 </mat-cell>
             </ng-container>
+
+
+            <ng-container  matColumnDef="ref_No">
+              <mat-header-cell *matHeaderCellDef mat-sort-header >Ref No.</mat-header-cell>
+              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.ref_No}}</mat-cell>
+          </ng-container>
       
               <ng-container  matColumnDef="payment_Date">
                 <mat-header-cell *matHeaderCellDef mat-sort-header >Latest Payment Date</mat-header-cell>
@@ -100,6 +108,17 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header >Date Deleted</mat-header-cell>
                   <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >{{element.createdAt}}</mat-cell>
               </ng-container>
+              <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Reason:</mat-header-cell>
+                <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" ><span style="color: red;">{{element.status}}</span></mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="last_Status">
+              <mat-header-cell *matHeaderCellDef mat-sort-header >Last Status</mat-header-cell>
+              <mat-cell class="matcell" *matCellDef="let element" (click)="viewing(element.rid)" >
+                <span *ngIf="element.last_Status==true" style="color: rgb(0, 146, 24);">Paid</span>
+                <span *ngIf="element.last_Status==false" style="color: rgb(255, 0, 0);">Overdue</span>
+              </mat-cell>
+          </ng-container>
         
         
         

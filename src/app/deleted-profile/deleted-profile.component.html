@@ -27,7 +27,7 @@
             </div>
 
             <div class="user-data">
-                <h2>{{vendorname}} <span style="color:red"> (Deleted) </span></h2>
+                <h2>{{vendorname}} <span style="color:red"> ({{deletion_Status}}) </span></h2>
                 <p>{{email}}<br> 
                 </p>
                 <br>
@@ -39,6 +39,30 @@
             <button *ngIf="isAdmin" class="button-2" mat-raised-button (click)="onDelete(profileData)">Delete<mat-icon>delete</mat-icon></button>
           
 
+        </div>
+        <div class="card">
+            <div class="stat">
+                <h3>Last Status</h3>
+                <p style="color:green" *ngIf="last_Status==true">Paid</p>
+                <p style="color:red" *ngIf="last_Status==false">Overdue</p>
+
+            </div>
+            <div class="stat">
+                <h3>Overdue</h3>
+                <p *ngIf="overdue==null">0 day(s)</p>
+                <p *ngIf="overdue!==null" style="color: red;">{{overdue}} day(s)</p>
+                
+            </div>
+            <div class="stat">
+                <h3>Last Payment Date</h3>
+                <p>{{lastPayment}}</p>
+                
+            </div>
+            <div class="stat">
+                <h3>Next Payment Date</h3>
+                <p>{{nextPayment}}</p>
+                
+            </div>
         </div>
 
         <div class="back-2">
@@ -151,6 +175,12 @@
                 <h1 class="titleTxt-1">Personal Details</h1>
                 <p class="descTxt" style="font-weight:normal; font-size: 13px; color: rgb(173, 173, 173);margin-top:-10px;">Deleted Personal Details</p>
            
+                <br>
+
+                <mat-label class="text-profile">Reference Number:</mat-label>                    
+                <br>
+                <input class="input-profile" [(ngModel)]="ref_No" type="text" placeholder="Enter Name.." disabled/><span><mat-icon class="icon-profile">info</mat-icon></span>
+                
                 <br>
     
                 <mat-label class="text-profile">Account ID:</mat-label>                    

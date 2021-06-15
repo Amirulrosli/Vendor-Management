@@ -106,6 +106,11 @@ export class EditProfileComponent implements OnInit {
       { type: 'required', message: 'location is required' }
 
     ],
+    ref_No: [
+
+      { type: 'required', message: 'Reference Number is required' }
+
+    ],
     
   };
   
@@ -162,7 +167,8 @@ export class EditProfileComponent implements OnInit {
       slotprice:['',[Validators.required]],
       address:['',[Validators.required]],
       contract: ['',[Validators.required]],
-      location:['',[Validators.required]]
+      location:['',[Validators.required]],
+      ref_No:['',[Validators.required]]
     })
     const IC_No = this.data.dataKey.IC_Number;
     const forIC = IC_No.substring(0,2);
@@ -170,6 +176,7 @@ export class EditProfileComponent implements OnInit {
     this.username = this.data.dataKey.name;
 
     var editProfile= {
+      ref_No: this.data.dataKey.ref_No,
       name: this.data.dataKey.name,
       forIC: forIC,
       IC_Number: IC_Number,
@@ -356,12 +363,14 @@ export class EditProfileComponent implements OnInit {
       const slot = this.registrationForm.value.slot;
       const contract = this.registrationForm.value.contract;
       const location = this.registrationForm.value.location;
+      const ref_No = this.registrationForm.value.ref_No;
 
       this.date_Now = new Date();
       this.today = this.date_Now.getDate()+""+(this.date_Now.getMonth()+1)+""+this.date_Now.getFullYear();
       
 
       var profileModel = {
+        ref_No: ref_No,
         id: this.data.dataKey.id,
         rid: this.data.dataKey.rid,
         name: name,
@@ -378,6 +387,10 @@ export class EditProfileComponent implements OnInit {
         latest_Due_Date: this.data.dataKey.latest_Due_Date,
         overdue: this.data.dataKey.overdue,
       }
+
+      if (this.data.dataKey.ref_No == ref_No){ //if refNo is equal to datakey == just update
+
+             
 
       this.profile.update(profileModel.id,profileModel).subscribe(data=> {
 
@@ -465,6 +478,114 @@ export class EditProfileComponent implements OnInit {
           return;
         })
       })
+
+      } else { //if ref_No is not equal to datakey
+
+
+        var refArray = []
+        this.profile.findByReference(ref_No).subscribe(data=> {
+          refArray  = data;
+
+          if (refArray.length == 0){
+
+                 
+
+      this.profile.update(profileModel.id,profileModel).subscribe(data=> {
+
+
+        if (slot !== this.data.dataKey.slot){
+          console.log(this.data.dataKey.slot)
+
+          this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
+            this.oldSlotArray = data;
+
+            if (this.oldSlotArray.length !== 0){
+
+              var oldModel = {
+                id: this.oldSlotArray[0].id,
+                rid: null,
+                slot_Number: this.oldSlotArray[0].slot_Number,
+                location: this.oldSlotArray[0].location,
+                taken: false,
+              }
+  
+              this.Slot.update(oldModel.id,oldModel).subscribe(data=> {
+                console.log("update old done")
+              })
+              
+            }
+
+         
+          })
+        }
+
+
+
+        this.Slot.findBySlot(slot).subscribe(data=> {
+          this.slotCompare = data[0];
+
+          var slotModel ={
+            id: this.slotCompare.id,
+            rid: this.data.dataKey.rid,
+            slot_Number: slot,
+            location: location,
+            taken: true,
+          }
+
+          if (this.slotCompare.length !==0){
+
+
+            this.Slot.update(slotModel.id, slotModel).subscribe(data=> {
+              var date = new Date();
+              var accountRID = sessionStorage.getItem('rid');
+              const notify = {
+                rid: accountRID,
+                title: 'Profile Account Update for'+' '+this.data.dataKey.name, 
+                description: 'Vendor profile has been updated to '+profileModel.name+'\n with Account ID: '+profileModel.rid,
+                category: 'Updated vendor profile',
+                date: date,
+                view: false
+              };
+        
+              this.notification.create(notify).subscribe(resp=> {
+                console.log(resp)
+
+                this.registrationForm.reset();
+                Swal.fire('Success','Data have been saved','success')
+                this.dialog.closeAll();
+
+
+              },error=> {
+                console.log(error)
+              })
+
+            },error=> {
+              Swal.fire("Unsuccessful","Please Check and try again!",'error')
+              return;
+            })
+
+          } else {
+
+            Swal.fire("Unsuccessful","Please Check and try again!",'error')
+            return;
+
+          }
+
+        },error=> {
+          Swal.fire("Unsuccessful","Slot is not available",'error')
+          return;
+        })
+      })
+
+          } else {
+            Swal.fire("Cannot update profile","Duplicated reference number, please change and try again!","error")
+          }
+        },error=> {
+          console.log(error)
+        })
+
+      }
+
     }
    
   }

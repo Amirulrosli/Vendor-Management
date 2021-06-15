@@ -68,11 +68,13 @@ export class DeletedRecordsComponent implements OnInit {
   displayedColumns: string[] = [
     
     'link',
+    'ref_No',
     'IC_Number',
     'name',
-    'email',
     'phone',
     'payment_Date',
+    'status',
+    'last_Status',
     'DeletedAt',
     'action'
     
@@ -140,6 +142,7 @@ export class DeletedRecordsComponent implements OnInit {
 
   retrieveProfile(){
 
+
     this.delProfileService.findAll().subscribe(data=> {
       this.profileList = data;
 
@@ -147,10 +150,15 @@ export class DeletedRecordsComponent implements OnInit {
 
         for (let i = 0; i<this.profileList.length;i++){
 
+          if (this.profileList[i].latest_Payment_Date !== null){
+            var newDate = new Date(this.profileList[i].latest_Payment_Date)
+            let latestDate = this.datePipe.transform(newDate,'dd/MM/YY HH:mm')
+            this.profileList[i].latest_Payment_Date = latestDate;
+          } else {
+            this.profileList[i].latest_Payment_Date = "N/A"
+          }
 
-          var newDate = new Date(this.profileList[i].latest_Payment_Date)
-          let latestDate = this.datePipe.transform(newDate,'dd/MM/YY HH:mm')
-          this.profileList[i].latest_Payment_Date = latestDate;
+  
 
           var delDate = new Date (this.profileList[i].createdAt);
           let deleteDate = this.datePipe.transform(delDate,'dd/MM/YYYY HH:mm')
@@ -168,6 +176,20 @@ export class DeletedRecordsComponent implements OnInit {
               
             }
         
+          })
+          var status = [];
+          this.delStatusService.findByRid(this.profileList[i].rid).subscribe(data=> {
+            status = data;
+
+            if (status.length !==0){
+              this.profileList[i].status = status[0].status;
+
+              if (status[0].overdue_Day >= 0){
+                this.profileList[i].last_Status = true
+              } else {
+                this.profileList[i].last_Status = false
+              }
+            }
           })
         }
 
@@ -379,6 +401,7 @@ viewing(rid){
 onDelete(data){
 
   console.log(data)
+  var vendorID = data.rid;
   var rid = sessionStorage.getItem('rid');
   var accName = sessionStorage.getItem('username')
   
@@ -438,8 +461,9 @@ onDelete(data){
         
               var status = [];
 
-              this.delStatusService.findOne(data.rid).subscribe(data=> {
+              this.delStatusService.findByRid(vendorID).subscribe(data=> {
                 status = data;
+                console.log(status)
         
                 if (status.length !== 0){
         
@@ -566,7 +590,7 @@ onDelete(data){
 onRestore(data){
 
   console.log(data)
-  
+  var vendorID = data.rid
   var rid = sessionStorage.getItem('rid');
   var accName = sessionStorage.getItem('username')
 
@@ -636,7 +660,7 @@ onRestore(data){
         
       var status = [];
 
-      this.delStatusService.findOne(data.rid).subscribe(data=> {
+      this.delStatusService.findByRid(vendorID).subscribe(data=> {
         status = data;
 
         if (status.length !== 0){

@@ -1,5 +1,6 @@
 export class Profile {
- 
+    
+    ref_No: any;
     id:any;
     IC_Number: String
     rid: String

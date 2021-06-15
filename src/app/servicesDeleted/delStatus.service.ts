@@ -15,9 +15,6 @@ export class DelstatusService {
     findAll(): Observable<any> {
         return this.http.get(baseURL)
     }
-    findOne(rid): Observable <any> {
-        return this.http.get(`${baseURL}/${rid}`)
-    }
 
     create(data): Observable<any> {
         console.log(data)
@@ -36,9 +33,9 @@ export class DelstatusService {
         return this.http.delete(`${baseURL}/${id}`);
     }
 
-    // findByRid(rid): Observable<any> {
-    //     return this.http.get(`${baseURL}/rid/${rid}`)
-    // }
+    findByRid(rid): Observable<any> {
+        return this.http.get(`${baseURL}/rid/${rid}`)
+    }
 
     
 }

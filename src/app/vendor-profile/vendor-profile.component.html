@@ -207,6 +207,12 @@
             <button *ngIf="!viewOnly" class="edit-Button" mat-raised-button (click)="onEdit()">Edit Vendor Profile<span><mat-icon style="color: white; margin-left: 5px;font-size:13px">edit</mat-icon></span></button>
             <br>
 
+            <mat-label class="text-profile">Reference Number:</mat-label>                    
+            <br>
+            <input class="input-profile" [(ngModel)]="ref_No" type="text" placeholder="Enter reference.." disabled/><span><mat-icon class="icon-profile">account_box</mat-icon></span>
+            
+            <br>
+
             <mat-label class="text-profile">Account ID:</mat-label>                    
             <br>
             <input class="input-profile" [(ngModel)]="rid" type="text" placeholder="Enter Name.." disabled/><span><mat-icon class="icon-profile">account_box</mat-icon></span>

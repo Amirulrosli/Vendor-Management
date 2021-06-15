@@ -29,6 +29,17 @@
 
   <h1 class="titleTxt-1">Edit Personal Info</h1>
 
+  <mat-label>Reference Number:</mat-label>                    
+  <br>
+  <input class="input-2" #ref_No formControlName="ref_No" type="text" placeholder="Enter Reference.."/>
+  
+  <div *ngFor="let error of errorMessages.ref_No">
+      <ng-container *ngIf="registrationForm.controls['ref_No']?.hasError(error.type)">
+        <small class="error-message">{{error.message}}</small>
+      </ng-container>
+  </div>
+  <br>
+
     <mat-label>Vendor Name:</mat-label>                    
     <br>
     <input class="input-2" #name formControlName="name" type="text" placeholder="Enter Name.."/>

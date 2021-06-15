@@ -192,10 +192,10 @@ export class DahsboardComponent implements OnInit {
 
 
   displayedColumns: string[] = [
-  
+
+    'ref_No',
     'IC_Number',
     'name',
-    'email',
     'phone',
     'latest_Payment',
     'slot',
@@ -231,7 +231,6 @@ displayedLocationColumns: string[] = [
     "due_Date",
     "send_Email",
     "name",
-    "email",
     "actions"
   ]
 
@@ -501,7 +500,7 @@ displayedLocationColumns: string[] = [
               rid: rid,
               status: chosenStat,
               overdue_Day: overdue_Day,
-              latest_Payment_Date: latest_Payment_Date,
+              last_Payment_Date: latest_Payment_Date,
               next_Payment_Date: next_Payment_Date
             }
 

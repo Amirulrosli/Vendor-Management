@@ -131,6 +131,7 @@ export class VendorProfileComponent implements OnInit {
   picArray: any = []
   proPic: any;
   profileID:any;
+  ref_No: any;
   
 
   newChildName:any;
@@ -673,6 +674,7 @@ export class VendorProfileComponent implements OnInit {
         if (this.price == null){
           this.price = 0
         }
+        this.ref_No = this.retrieveData[0].ref_No;
         this.email = this.retrieveData[0].email
         this.vendorIC = this.retrieveData[0].IC_Number
         this.phoneNo = this.retrieveData[0].phone;
