@@ -34,6 +34,7 @@ export class VendorDetailsComponent implements OnInit {
   slotLocation: any;
   address: any;
   contract:any;
+  ref_No:any;
 
   profilePicture: any;
   rid:any;
@@ -95,7 +96,7 @@ export class VendorDetailsComponent implements OnInit {
       this.profileArray = data;
 
       if (this.profileArray.length !==0){
-
+        this.ref_No = this.profileArray[0].ref_No;
         this.name = this.profileArray[0].name;
         this.IC_Number = this.profileArray[0].IC_Number;
         this.email = this.profileArray[0].email;

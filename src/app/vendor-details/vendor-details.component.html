@@ -18,6 +18,11 @@
     <img *ngIf="!profilePicture" class="account-image" src="assets/profile-1.png" alt="profilePicture"/>
 
     <div class="head">
+
+      <mat-label>Reference Number:</mat-label>                    
+      <input [ngModel]="ref_No" type="text" placeholder="Enter Ref No.." disabled/>
+      <div class="line"></div>
+      <br>
   
       <mat-label>Account ID:</mat-label>                    
       <input [ngModel]="rid" type="text" placeholder="Enter Name.." disabled/>
