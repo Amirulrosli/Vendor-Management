@@ -423,7 +423,7 @@ displayedLocationColumns: string[] = [
         });
 
 
-        console.log(this.relativeArray)
+        //.log(this.relativeArray)
       }
     },error=> {
       console.log(error)
