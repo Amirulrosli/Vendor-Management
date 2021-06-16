@@ -30,7 +30,7 @@ export class EmailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data.dataKey)
+    //.log(this.data.dataKey)
 
     this.retrieveData();
   }
@@ -46,7 +46,7 @@ export class EmailComponent implements OnInit {
 
   sendEmail(){
 
-    console.log(this.title)
+    //.log(this.title)
 
 
     const email = this.email;
@@ -67,7 +67,7 @@ export class EmailComponent implements OnInit {
       slot_Number
     }
 
-    console.log(emailData)
+    //.log(emailData)
 
     this.emailService.create(emailData).subscribe(data=> {
 

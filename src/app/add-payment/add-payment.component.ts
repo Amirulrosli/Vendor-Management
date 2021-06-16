@@ -112,7 +112,7 @@ export class AddPaymentComponent implements OnInit {
         this.options.push(this.retrieveData[i].IC_Number)
       }
       
-      console.log(array)
+      //.log(array)
       
       
     });
@@ -129,7 +129,7 @@ export class AddPaymentComponent implements OnInit {
       this.accountRole = sessionStorage.getItem("role")
   
       if (this.accountRole == "Administrator") {
-        console.log(this.accountRole)
+        //.log(this.accountRole)
         this.isAdmin = true;
       } else{
         this.isAdmin = false;
@@ -176,7 +176,7 @@ export class AddPaymentComponent implements OnInit {
   
 
   goToDashboard(){
-    console.log("hantu")
+    //.log("hantu")
     this.router.navigate(["/dashboard"]);
   }
 
@@ -200,14 +200,14 @@ export class AddPaymentComponent implements OnInit {
 
 onChange(deviceValue) {
   this.profile.findOne(deviceValue).subscribe(array =>{
-    console.log(array)
+    //.log(array)
     this.list = array;
   })
 }
 
 set(){
 
-  console.log(this.myControl.value)
+  //.log(this.myControl.value)
   if (this.myControl.value == ""){
     this.ifSet = false;
     this.vendorField = "";
@@ -221,7 +221,7 @@ set(){
   this.profile.findByIC(this.myControl.value).subscribe(array =>{
  
     this.myList = array;
-    console.log(this.myList)
+    //.log(this.myList)
 
 
     if (this.myList.length == 0){
@@ -286,7 +286,7 @@ compareData(dueDate){
       
       this.userData = data;
 
-      console.log(this.userData)
+      //.log(this.userData)
 
 
       if (this.userData.length == 0){
@@ -316,8 +316,8 @@ compareData(dueDate){
           var day = date.getDate();
           var month = date.getMonth()+1;
           var year = date.getFullYear();
-          console.log("compare date:"+day+"/"+month+"/"+year)
-          console.log("field date:"+paymentDay+"/"+paymentMonth+"/"+paymentYear)
+          //.log("compare date:"+day+"/"+month+"/"+year)
+          //.log("field date:"+paymentDay+"/"+paymentMonth+"/"+paymentYear)
           
           console.log(newDate)
           if (newDate == undefined){
@@ -437,12 +437,12 @@ compareData(dueDate){
   
          //update latest payment
          this.profile.update(this.list.id,this.list).subscribe(array =>{
-          console.log("successfully update profile");
+          //.log("successfully update profile");
         })
         var payment = []
         this.payment.create(this.info).subscribe(array => {
           payment = array;
-          console.log(payment);
+          //.log(payment);
 
           Swal.fire({
             title: 'Do you want payment receipt? ',
@@ -458,7 +458,7 @@ compareData(dueDate){
             this.accountRid = sessionStorage.getItem('rid');
             var date = new Date();
 
-            console.log(this.list.rid)
+            //.log(this.list.rid)
 
             this.profile.findByRid(this.list.rid).subscribe(data =>{
               this.vendorProfile = data;
@@ -475,7 +475,7 @@ compareData(dueDate){
               };
 
               this.notification.create(notify).subscribe(data=> {                     //create notification
-                console.log("notification created")
+                //.log("notification created")
               },error=> {
                 console.log(error)
               })
@@ -526,7 +526,7 @@ compareData(dueDate){
 
     
         },error => {
-          console.log(error + "salah bui")
+          //.log(error + "salah bui")
         });
       }
     })
@@ -580,7 +580,7 @@ compareData(dueDate){
     }
 
 
-    console.log(this.monthField)
+    //.log(this.monthField)
 
 
  
@@ -702,7 +702,7 @@ compareData(dueDate){
 
 openSideProfile(id){
     
-      console.log(id)
+      //.log(id)
 
       this.slidePanel.open(SideProfileComponent, {
         slideFrom:'right',
@@ -721,7 +721,7 @@ openSideProfile(id){
   retrieveID(username){
     this.accountService.findByUsername(username).subscribe(data=> {
       this.profileArray = data;
-      console.log(this.profileArray)
+      //.log(this.profileArray)
       const id = this.profileArray[0].id;
       this.openSideProfile(this.profileArray[0]);
   })

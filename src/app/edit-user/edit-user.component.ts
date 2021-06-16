@@ -83,7 +83,7 @@ export class EditUserComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.data.dataKey)
+    //.log(this.data.dataKey)
 
 
     this.value = [
@@ -160,7 +160,7 @@ export class EditUserComponent implements OnInit {
     this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
-      console.log(this.accountRole)
+      //.log(this.accountRole)
       this.isAdmin = true;
     } else{
       this.isAdmin = false;
@@ -212,7 +212,7 @@ saveChanges(){
     const IC_Number = this.data.dataKey.IC_Number
     const id = this.data.dataKey.id;
     const newDate = new Date();
-    console.log(id)
+    //.log(id)
 
     var account = {
       username: username,
@@ -224,7 +224,7 @@ saveChanges(){
       last_Login: newDate,
     }
 
-    console.log(account)
+    //.log(account)
 
     this.accountService.findByUsername(username).subscribe(data=> {
       this.usernameArray = data;
@@ -278,7 +278,7 @@ saveChanges(){
         if (username == this.data.dataKey.username){
           
           this.accountService.update(id, account).subscribe(result=> {
-            console.log(result)
+            //.log(result)
             Swal.fire("Account Updated","Successfully update the user account","success")
             //notify
          
@@ -362,7 +362,7 @@ upload(){
   if (!this.fileUploadForm || this.fileUploadForm =="" || this.fileUploadForm == undefined){
     Swal.fire('Upload Failed','Please Try again','error')
   } else {
-    console.log(this.fileUploadForm)
+    //.log(this.fileUploadForm)
     var accountRID = sessionStorage.getItem('rid')
 
     if (this.profileID !== ""){
@@ -377,7 +377,7 @@ upload(){
 
 
     this.photoService.upload(formData).subscribe(response => {
-      console.log(response);
+      //.log(response);
       if (response.statusCode === 200) {
         this.fileInputLabel = undefined;
       }
@@ -424,7 +424,7 @@ deletePhoto(){
       
       if (this.profileID !== ""){
         this.photoService.delete(this.profileID).subscribe(data=> {
-          console.log(data)
+          //.log(data)
           Swal.fire("Success","Image has successfully Delete",'success')
           this.retrievePhoto()
           return;

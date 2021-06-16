@@ -70,12 +70,12 @@ export class EditPaymentComponent implements OnInit {
     var profileArray = [];
     this.dataList = this.data.dataKey;
     this.rid = this.data.dataKey.rid;
-    console.log(this.dataList)
+    //.log(this.dataList)
 
     this.profileService.findByRid(this.rid).subscribe(data=> {
       profileArray = data;
       this.profileDataArray = data;
-      console.log(data)
+      //.log(data)
 
       if (profileArray.length !== 0){
         this.dataList.name = profileArray[0].name;
@@ -104,7 +104,7 @@ export class EditPaymentComponent implements OnInit {
       console.log(error)
     })
 
-    console.log(this.dataList)
+    //.log(this.dataList)
   }
 
   cancel(){
@@ -159,8 +159,8 @@ export class EditPaymentComponent implements OnInit {
                 payment[0].due_Date = null;
 
                 this.paymentService.update(payment[0].id,payment[0]).subscribe(data=> {
-                  console.log(data);
-                  console.log(dueDate);
+                  //.log(data);
+                  //.log(dueDate);
               
                   var compare = this.compareData(dueDate);    
                 },error=> {
@@ -190,10 +190,10 @@ export class EditPaymentComponent implements OnInit {
           if (payment.length !== 0){
             payment[0].payment_Date = null;
             payment[0].due_Date = null;
-            console.log(payment)
+            //.log(payment)
 
             this.paymentService.update(payment[0].id,payment[0]).subscribe(data=> {
-              console.log(dueDate);
+              //.log(dueDate);
               
               var compare = this.compareData(dueDate); 
 
@@ -249,7 +249,7 @@ export class EditPaymentComponent implements OnInit {
         
         this.userData = data;
   
-        console.log(this.userData)
+        //.log(this.userData)
   
   
         if (this.userData.length == 0){
@@ -279,10 +279,10 @@ export class EditPaymentComponent implements OnInit {
             var day = date.getDate();
             var month = date.getMonth()+1;
             var year = date.getFullYear();
-            console.log("compare date:"+day+"/"+month+"/"+year)
-            console.log("field date:"+paymentDay+"/"+paymentMonth+"/"+paymentYear)
+            //.log("compare date:"+day+"/"+month+"/"+year)
+            //.log("field date:"+paymentDay+"/"+paymentMonth+"/"+paymentYear)
             
-            console.log(newDate)
+            //.log(newDate)
             if (newDate == undefined){
               newDate = this.dateField;
               newDay = paymentDay;
@@ -412,7 +412,7 @@ export class EditPaymentComponent implements OnInit {
           var payment = []
           this.paymentService.update(this.dataList.id,this.info).subscribe(array => {
             payment = array;
-            console.log(payment);
+            //.log(payment);
   
             Swal.fire({
               title: 'Successfully created payment, Do you want payment receipt? ',

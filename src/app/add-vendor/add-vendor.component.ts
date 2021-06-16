@@ -281,7 +281,7 @@ export class AddVendorComponent implements OnInit {
     this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
-      console.log(this.accountRole)
+      //.log(this.accountRole)
       this.isAdmin = true;
     } else{
       this.isAdmin = false;
@@ -298,7 +298,7 @@ export class AddVendorComponent implements OnInit {
   getLocation(){
     this.locationService.findAll().subscribe(data=> {
       this.locationArray = data;
-      console.log(this.locationArray)
+      //.log(this.locationArray)
 
       if(this.locationArray == 0){
         this.locationField = "No Location Found..."
@@ -328,7 +328,7 @@ export class AddVendorComponent implements OnInit {
 
       }
 
-      console.log(this.slotArray)
+      //.log(this.slotArray)
 
     }, error=> {
       console.log(error)
@@ -349,7 +349,7 @@ export class AddVendorComponent implements OnInit {
   }
 
   goToDashboard(){
-    console.log("hantu")
+    //.log("hantu")
     this.router.navigate(["/dashboard"]);
   }
 
@@ -403,14 +403,14 @@ export class AddVendorComponent implements OnInit {
   
       this.profile.findByReference(reference).subscribe(data=> {
 
-        console.log(data)
+        //.log(data)
         referenceArray = data;
 
         if (referenceArray.length == 0){
 
           
         this.profile.findByIC(IC_Number).subscribe(async data=> {
-          console.log(data)
+          //.log(data)
           this.ICData = data;
   
           if (this.ICData.length == 0) {
@@ -418,7 +418,7 @@ export class AddVendorComponent implements OnInit {
         
           const date_Now = new Date();
           let today = date_Now.getDate()+""+(date_Now.getMonth()+1)+""+date_Now.getFullYear();
-          console.log(this.slotArray)
+          //.log(this.slotArray)
           
   
             var profileModel = {
@@ -437,19 +437,19 @@ export class AddVendorComponent implements OnInit {
            this.profile.create(profileModel).subscribe(data=> { //Start save to database
   
             this.profileList = data;
-            console.log(data)
+            //.log(data)
             const rid = this.profileList.rid;
             const taken = true;
             var slotData = [];
   
-            console.log(spouseName)
+            //.log(spouseName)
   
             if (this.spouseArray.length !==0){
               for (let i = 0; i<this.spouseArray.length; i++){
                 this.spouseArray[i].rid = rid;
   
                 this.relativeService.createRelative(this.spouseArray[i]).subscribe(data=> {  //save spouse
-                  console.log("spouse successfully created")
+                  //.log("spouse successfully created")
                 },error=> {
                   console.log(error)
                 })
@@ -463,7 +463,7 @@ export class AddVendorComponent implements OnInit {
               this.childArray[i].rid = rid;
   
               this.relativeService.createRelative(this.childArray[i]).subscribe(data=> {
-                console.log("Child successfully created")
+                //.log("Child successfully created")
               },error=> {
                 console.log(error)
               })
@@ -486,7 +486,7 @@ export class AddVendorComponent implements OnInit {
               }
   
               this.Slot.update(slotData[0].id,slotModel).subscribe(data=> {                //update Slot
-                console.log(data)
+                //.log(data)
               }, err=> {
                 console.log(err)
                 return;
@@ -510,12 +510,12 @@ export class AddVendorComponent implements OnInit {
             };
   
             this.notification.create(notify).subscribe(data=> {                     //create notification
-              console.log("notification created")
+              //.log("notification created")
             },error=> {
               console.log(error)
             })
   
-            console.log(data)  
+            //.log(data)  
             this.name="";
             this.email="";
             this.phone="";
@@ -611,7 +611,7 @@ export class AddVendorComponent implements OnInit {
     var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
 
 
-    console.log(spouseName)
+    //.log(spouseName)
 
     if (spouseName == null){
       Swal.fire("Cannot Add Spouse, Empty Field","Please Fill in the field to add spouse",'error')
@@ -641,7 +641,7 @@ export class AddVendorComponent implements OnInit {
             this.registrationForm.controls['spIC'].reset();
             this.registrationForm.controls['spouseIC_Number'].reset();
           } else {
-            console.log("Existed Child")
+            //.log("Existed Child")
             Swal.fire('Cannot Add Spouse '+spouse.name,'spouse is already existed in the database, Please Try Again','error')
           }
         })
@@ -672,7 +672,7 @@ export class AddVendorComponent implements OnInit {
     var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
 
 
-    console.log(childName)
+    //.log(childName)
 
     if (childName == null){
       Swal.fire("Cannot Add Child, Empty Field","Please Fill in the field to add child",'error')
@@ -702,7 +702,7 @@ export class AddVendorComponent implements OnInit {
             this.registrationForm.controls['chIC'].reset();
             this.registrationForm.controls['childIC_Number'].reset();
           } else {
-            console.log("Existed Child")
+            //.log("Existed Child")
             Swal.fire('Cannot Add Child '+child.name,'child is already existed in the database, Please Try Again','error')
           }
         })
@@ -728,7 +728,7 @@ export class AddVendorComponent implements OnInit {
 
     const tabCount = tabGroup._tabs.length;
     tabGroup.selectedIndex = (tabGroup.selectedIndex+1) % tabCount;
-    console.log(tabGroup.selectedIndex)
+    //.log(tabGroup.selectedIndex)
 
     if(tabGroup.selectedIndex == 0){
       this.stepTwo = false;
@@ -753,7 +753,7 @@ export class AddVendorComponent implements OnInit {
 
   openSideProfile(id){
     
-    console.log(id)
+    //.log(id)
 
     this.slidePanel.open(SideProfileComponent, {
       slideFrom:'right',
@@ -772,7 +772,7 @@ export class AddVendorComponent implements OnInit {
 retrieveID(username){
   this.accountService.findByUsername(username).subscribe(data=> {
     this.profileArray = data;
-    console.log(this.profileArray)
+    //.log(this.profileArray)
     const id = this.profileArray[0].id;
     this.openSideProfile(this.profileArray[0]);
 })

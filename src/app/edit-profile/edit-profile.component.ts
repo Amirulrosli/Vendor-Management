@@ -152,7 +152,7 @@ export class EditProfileComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log(this.data.dataKey)
+    //.log(this.data.dataKey)
     
     
 
@@ -255,7 +255,7 @@ export class EditProfileComponent implements OnInit {
       this.registrationForm.controls['location'].setValue(location);
 
       this.slotField = this.slotDataArray.slot_Number;
-      console.log(this.slotField)
+      //.log(this.slotField)
       this.registrationForm.controls['slot'].setValue(this.slotField);
       this.registrationForm.controls['slotprice'].setValue(this.slotDataArray.slot_Price)
 
@@ -267,7 +267,7 @@ export class EditProfileComponent implements OnInit {
 
   getLocation(){
 
-    console.log(this.registrationForm.value.slot)
+    //.log(this.registrationForm.value.slot)
 
     this.locationField = this.registrationForm.value.location;
 
@@ -308,7 +308,7 @@ export class EditProfileComponent implements OnInit {
 
       for(let i = 0; i<this.slotData.length; i++){
 
-        console.log(this.slotData[i].taken)
+        //.log(this.slotData[i].taken)
 
         if (!this.slotData[i].taken){
           this.slotArray.push(this.slotData[i])
@@ -316,7 +316,7 @@ export class EditProfileComponent implements OnInit {
 
       }
 
-      console.log(this.slotArray)
+      //.log(this.slotArray)
 
     }, error=> {
       console.log(error)
@@ -396,7 +396,7 @@ export class EditProfileComponent implements OnInit {
 
 
         if (slot !== this.data.dataKey.slot){
-          console.log(this.data.dataKey.slot)
+          //.log(this.data.dataKey.slot)
 
           this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
             this.oldSlotArray = data;
@@ -450,7 +450,7 @@ export class EditProfileComponent implements OnInit {
               };
         
               this.notification.create(notify).subscribe(resp=> {
-                console.log(resp)
+                //.log(resp)
 
                 this.registrationForm.reset();
                 Swal.fire('Success','Data have been saved','success')
@@ -494,7 +494,7 @@ export class EditProfileComponent implements OnInit {
 
 
         if (slot !== this.data.dataKey.slot){
-          console.log(this.data.dataKey.slot)
+          //.log(this.data.dataKey.slot)
 
           this.Slot.findBySlot(this.data.dataKey.slot).subscribe(data=> {
             this.oldSlotArray = data;
@@ -548,7 +548,7 @@ export class EditProfileComponent implements OnInit {
               };
         
               this.notification.create(notify).subscribe(resp=> {
-                console.log(resp)
+                //.log(resp)
 
                 this.registrationForm.reset();
                 Swal.fire('Success','Data have been saved','success')
@@ -631,7 +631,7 @@ export class EditProfileComponent implements OnInit {
     if (!this.fileUploadForm || this.fileUploadForm =="" || this.fileUploadForm == undefined){
       Swal.fire('Upload Failed','Please Try again','error')
     } else {
-      console.log(this.fileUploadForm)
+      //.log(this.fileUploadForm)
       var accountRID = sessionStorage.getItem('rid')
 
       if (this.profileID !== ""){
@@ -646,7 +646,7 @@ export class EditProfileComponent implements OnInit {
 
   
       this.photoService.upload(formData).subscribe(response => {
-        console.log(response);
+        //.log(response);
         if (response.statusCode === 200) {
           this.fileInputLabel = undefined;
         }
@@ -693,7 +693,7 @@ export class EditProfileComponent implements OnInit {
         
         if (this.profileID !== ""){
           this.photoService.delete(this.profileID).subscribe(data=> {
-            console.log(data)
+            //.log(data)
             Swal.fire("Success","Image has successfully Delete",'success')
             this.retrievePhoto()
             return;

@@ -258,13 +258,13 @@ export class AllNotificationComponent implements OnInit {
   }
 
   onChange(data){
-    console.log(data)
+    //.log(data)
     const date = data;
     const year = date.substring(0,4);
     const month = date.substring(5,7);
     const day = date.substring(8,10);
     const fullDate = day+"-"+month+"-"+year;
-    console.log(fullDate) 
+    //.log(fullDate) 
     this.listData.filter = fullDate.trim().toLowerCase();
   }
 
@@ -290,7 +290,7 @@ export class AllNotificationComponent implements OnInit {
 
 openSideProfile(id){
     
-      console.log(id)
+      //.log(id)
 
       this.slidePanel.open(SideProfileComponent, {
         slideFrom:'right',
@@ -311,7 +311,7 @@ openSideProfile(id){
 
     this.Account.findByUsername(this.accName).subscribe(data=> {
       this.profileArray = data;
-      console.log(this.profileArray)
+      //.log(this.profileArray)
       const id = this.profileArray[0].id;
       this.openSideProfile(this.profileArray[0]);
   })

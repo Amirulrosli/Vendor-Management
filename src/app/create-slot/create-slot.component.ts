@@ -83,7 +83,7 @@ export class CreateSlotComponent implements OnInit {
       const slot_Price = this.slotForm.value.slot_Price;
       const taken = false;
 
-      console.log(location)
+      //.log(location)
 
       var slot = {
         slot_Number: slot_Number,
@@ -97,7 +97,7 @@ export class CreateSlotComponent implements OnInit {
       this.slotService.findBySlot(slot_Number).subscribe(data=> {
         slotArray = data;
 
-        console.log(slotArray)
+        //.log(slotArray)
 
         if (slotArray.length == 0){
           
@@ -117,7 +117,7 @@ export class CreateSlotComponent implements OnInit {
           };
 
           this.notification.create(notify).subscribe(data=> {                     //create notification
-            console.log("notification created")
+            //.log("notification created")
           },error=> {
             console.log(error)
           })
@@ -128,10 +128,10 @@ export class CreateSlotComponent implements OnInit {
 
             this.slotService.findByLocation(this.slotForm.value.location).subscribe(data=> {
               this.slotArray = data;
-              console.log(slotArray)
+              //.log(slotArray)
               this.locationService.findByLocation(this.slotForm.value.location).subscribe(data=> {
                 this.dataArray = data;
-                console.log(this.dataArray)
+                //.log(this.dataArray)
                 this.dataArray[0].total_Slot = this.slotArray.length;
                 this.locationService.update(this.dataArray[0].id, this.dataArray[0]).subscribe(resp=> {
                   console.log(resp)
@@ -149,7 +149,7 @@ export class CreateSlotComponent implements OnInit {
 
 
 
-            console.log(resp);
+            //.log(resp);
             Swal.fire('Slot Added','Successfully add slot to the database','success');
             this.dialog.closeAll();
             return;

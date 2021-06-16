@@ -53,7 +53,7 @@ export class ReceiptComponent implements OnInit {
   }
 
   printPage(){
-    console.log("printing")
+    //.log("printing")
     window.print();
   }
 

@@ -505,7 +505,7 @@ displayedLocationColumns: string[] = [
             }
 
             this.delStatusService.create(status).subscribe(data=> {
-              console.log(data)
+              //.log(data)
             },error=> {
               console.log(error)
             })
@@ -719,7 +719,7 @@ displayedLocationColumns: string[] = [
   }
 
   viewing(id){
-    console.log(id)
+    //.log(id)
     this.router.navigate(["vendor-profile/"+id])
   }
 

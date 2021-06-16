@@ -151,7 +151,7 @@ export class DeletedProfileComponent implements OnInit {
   ngOnInit(): void {
 
     this.rid = this.route.snapshot.paramMap.get('rid');
-    console.log(this.rid)
+    //.log(this.rid)
     this.showPayment = true;
 
     this.username = sessionStorage.getItem("username");
@@ -190,7 +190,7 @@ export class DeletedProfileComponent implements OnInit {
   getProfilePhoto(){
 
     this.delPhotoService.findByRid(this.rid).subscribe(data=> {
-      console.log(data)
+      //.log(data)
       this.proPicArray = data;
 
       if (this.proPicArray.length !== 0){
@@ -225,7 +225,7 @@ export class DeletedProfileComponent implements OnInit {
           }
         }
   
-        console.log(this.initialAttachment)
+        //.log(this.initialAttachment)
         this.attachmentDataArray = this.initialAttachment;
       } else {
         this.attachmentDataArray = [];
@@ -258,14 +258,14 @@ export class DeletedProfileComponent implements OnInit {
         } else {
           this.lastPayment = "N/A"
         }
-        console.log(status[0])
+        //.log(status[0])
         if (status[0].overdue_Day > 0){
           this.overdue = status[0].overdue_Day;
         } else {
           this.overdue = 0;
         }
         
-        console.log(this.overdue)
+        //.log(this.overdue)
 
         if (this.overdue <= 0){
           this.last_Status = true
@@ -361,7 +361,7 @@ export class DeletedProfileComponent implements OnInit {
   
 openSideProfile(id){
     
-  console.log(id)
+  //.log(id)
 
   this.slidePanel.open(SideProfileComponent, {
     slideFrom:'right',
@@ -396,7 +396,7 @@ clear(){
 retrieveID(username){
 this.accountService.findByUsername(username).subscribe(data=> {
   this.profileArray = data;
-  console.log(this.profileArray)
+  //.log(this.profileArray)
   const id = this.profileArray[0].id;
   this.openSideProfile(this.profileArray[0]);
 })
@@ -428,7 +428,7 @@ public notifyNumber(){
 
 
 goToDashboard(){
-  console.log("hantu")
+  //.log("hantu")
   this.router.navigate(["/dashboard"]);
 }
 
@@ -451,7 +451,7 @@ identifyRole(){
   this.accountRole = sessionStorage.getItem("role")
 
   if (this.accountRole == "Administrator") {
-    console.log(this.accountRole)
+    //.log(this.accountRole)
     this.isAdmin = true;
   } else{
     this.isAdmin = false;
@@ -600,7 +600,7 @@ openFile(data){
 
 onDelete(data){
 
-  console.log(data)
+  //.log(data)
   var rid = sessionStorage.getItem('rid');
   var accName = sessionStorage.getItem('username')
   
@@ -784,7 +784,7 @@ onDelete(data){
 
 onRestore(data){
 
-  console.log(data)
+  //.log(data)
   
   var rid = sessionStorage.getItem('rid');
   var accName = sessionStorage.getItem('username')
@@ -829,7 +829,7 @@ onRestore(data){
           profile[0].latest_Payment = null;
           profile[0].overdue = null;
           this.profileService.create(profile[0]).subscribe(data=> {
-            console.log(data)
+            //.log(data)
           },error=> {
             console.log(error)
           })
@@ -898,7 +898,7 @@ onRestore(data){
 
           for (let i = 0; i<relative.length; i++){
             this.relativeService.createRelative(relative[i]).subscribe(data=> {
-              console.log(data)
+              //.log(data)
               this.delRelativeService.delete(relative[i].id).subscribe(data=> {
                 console.log(data)
               },error=> {
@@ -950,7 +950,7 @@ onRestore(data){
         if (remark.length !== 0){
 
           this.remarkService.create(remark[0]).subscribe(data=> {
-            console.log(data)
+            //.log(data)
 
             this.delRemarksService.delete(remark[0].id).subscribe(data=> {
               console.log(data)
@@ -975,7 +975,7 @@ onRestore(data){
 
         if (photo.length !== 0){
           this.photoService.create(photo[0]).subscribe(data=> {
-            console.log(data);
+            //.log(data);
 
             this.delPhotoService.delete(photo[0].id).subscribe(data=> {
               console.log(data)

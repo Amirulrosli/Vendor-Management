@@ -187,7 +187,7 @@ submit(){
       role: role
     }
 
-    console.log(account)
+    //.log(account)
 
     this.accountService.findByUsername(username).subscribe(data=> {
       this.usernameArray = data;
@@ -200,7 +200,7 @@ submit(){
 
             this.accountService.createAccount(account).subscribe(result=> {
               Swal.fire("Account Added","Successfully added user account","success")
-              console.log(result)
+              //.log(result)
 
               this.accountService.findByid(result.id).subscribe(data =>{
               
@@ -223,7 +223,7 @@ submit(){
                 };
 
                 this.notification.create(notify).subscribe(resp=> {
-                  console.log(resp)
+                  //.log(resp)
                 },error=> {
                   console.log(error)
                 });
@@ -231,7 +231,7 @@ submit(){
 
               
                 this.loginStateService.create(loginState).subscribe(data => {
-                  console.log(data)
+                  //.log(data)
                 })
               })
 

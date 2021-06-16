@@ -265,7 +265,7 @@ export class VendorProfileComponent implements OnInit {
   }
 
   goToReceipt(element){
-    console.log(element)
+    //.log(element)
     this.router.navigate(['/receipt/'+element.paymentID])
   }
 
@@ -297,7 +297,7 @@ export class VendorProfileComponent implements OnInit {
     this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
-      console.log(this.accountRole)
+      //.log(this.accountRole)
       this.isAdmin = true;
       this.viewOnly = false;
     } 
@@ -315,7 +315,7 @@ export class VendorProfileComponent implements OnInit {
   }
 
   retrievePhoto(){
-    console.log(this.id)
+    //.log(this.id)
     this.photoService.findByRid(this.id).subscribe(data=> {
       this.photoArray = data;
 
@@ -444,7 +444,7 @@ export class VendorProfileComponent implements OnInit {
             }
 
             this.delStatusService.create(status).subscribe(data=> {
-              console.log(data)
+              //.log(data)
             },error=> {
               console.log(error)
             })
@@ -452,7 +452,7 @@ export class VendorProfileComponent implements OnInit {
             profile[0].slot = null;
             profile[0].slot_Price = null;
             this.delProfileService.create(profile[0]).subscribe(data=> {
-              console.log(data)
+              //.log(data)
             },error=> {
               console.log(error)
             })
@@ -500,7 +500,7 @@ export class VendorProfileComponent implements OnInit {
             this.slotRid[0].rid = null;      
             this.slotRid[0].taken = false;      
               this.slotService.update(this.slotRid[0].id,this.slotRid[0]).subscribe(data=> {
-                console.log(data);
+                //.log(data);
               },error=> {
                 console.log(error)
               })
@@ -521,7 +521,7 @@ export class VendorProfileComponent implements OnInit {
 
             for (let i = 0; i<relative.length; i++){
               this.delRelativeService.createRelative(relative[i]).subscribe(data=> {
-                console.log(data)
+                //.log(data)
                 this.relativeService.delete(relative[i].id).subscribe(data=> {
                   console.log(data)
                 },error=> {
@@ -546,7 +546,7 @@ export class VendorProfileComponent implements OnInit {
           if (attachments.length !== 0){
             for (let i =0; i<attachments.length;i++){
               this.delAttachmentService.create(attachments[i]).subscribe(data=> {
-                console.log(data)
+                //.log(data)
 
                 this.attachmentService.delete(attachments[i].id).subscribe(data=> {
                   console.log(data);
@@ -573,7 +573,7 @@ export class VendorProfileComponent implements OnInit {
           if (remark.length !== 0){
 
             this.delRemarkService.create(remark[0]).subscribe(data=> {
-              console.log(data)
+              //.log(data)
 
               this.remarkService.delete(remark[0].id).subscribe(data=> {
                 console.log(data)
@@ -598,7 +598,7 @@ export class VendorProfileComponent implements OnInit {
 
           if (photo.length !== 0){
             this.delPhotoService.create(photo[0]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
 
               this.photoService.delete(photo[0].id).subscribe(data=> {
                 console.log(data)
@@ -655,10 +655,10 @@ export class VendorProfileComponent implements OnInit {
 
 
   retrieveProfile(){
-    console.log(this.id)
+    //.log(this.id)
     this.profiles.findByRid(this.id).subscribe(array=> {
       this.retrieveData = array
-      console.log(this.retrieveData)
+      //.log(this.retrieveData)
 
       if (this.retrieveData !== 0){
 
@@ -705,14 +705,14 @@ export class VendorProfileComponent implements OnInit {
           var parsedNextDate = parseDate(this.nextPayment)
           var parsedToday = parseDate(this.today)
     
-          console.log("today: "+ parsedToday)
-          console.log("latest Payment Date: " + parsedNextDate)
+          //.log("today: "+ parsedToday)
+          //.log("latest Payment Date: " + parsedNextDate)
     
           var overdueTime = parsedToday.getTime() - parsedNextDate.getTime(); 
           this.overdueDays = overdueTime / (1000 * 3600 * 24);
           this.overdue = this.overdueDays
     
-          console.log(this.overdueDays)
+          //.log(this.overdueDays)
     
           var noOverdue = this.overdueDays - this.overdue
           this.finalOverdue = this.overdue
@@ -720,7 +720,7 @@ export class VendorProfileComponent implements OnInit {
     
           if(this.overdueDays < 0){
             this.finalOverdue = noOverdue;
-            console.log(this.finalOverdue);
+            //.log(this.finalOverdue);
           }
         } else {
           this.finalOverdue = 0;
@@ -746,7 +746,7 @@ export class VendorProfileComponent implements OnInit {
 
       this.slotService.findBySlot(slot).subscribe(data=> {
         this.slotArray = data;
-        console.log(this.slotArray)
+        //.log(this.slotArray)
         if (this.slotArray.length !== 0){
           this.location = this.slotArray[0].location;
         }
@@ -801,7 +801,7 @@ export class VendorProfileComponent implements OnInit {
   
 
   goToDashboard(){
-    console.log("hantu")
+    //.log("hantu")
     this.router.navigate(["/dashboard"]);
   }
 
@@ -870,7 +870,7 @@ export class VendorProfileComponent implements OnInit {
     const month = date.substring(5,7);
     const day = date.substring(8,10);
     const fullDate = day+"/"+month+"/"+year;
-    console.log(fullDate)
+    //.log(fullDate)
     this.paymentData.filter = fullDate.trim().toLowerCase();
   }
 
@@ -957,7 +957,7 @@ export class VendorProfileComponent implements OnInit {
 
     this.relativeService.findByrid(this.rid).subscribe(data=> {
       this.relativeArray = data;
-      console.log(this.relativeArray)
+      //.log(this.relativeArray)
       if (this.relativeArray.length !== 0){
 
         for (let i = 0; i<this.relativeArray.length; i++){
@@ -976,8 +976,8 @@ export class VendorProfileComponent implements OnInit {
 
       }
 
-      console.log(this.spouseArray)
-      console.log(this.childArray)
+      //.log(this.spouseArray)
+      //.log(this.childArray)
     }, error=> {
       console.log(error)
     })
@@ -1130,13 +1130,13 @@ export class VendorProfileComponent implements OnInit {
     const IC_Number = this.newSpouseICNumber;
     const IC = this.newSpouseICNumber.substring(0,2);
     var lengthNo = this.newSpouseICNumber.length;
-    console.log(lengthNo)
+    //.log(lengthNo)
     const Number = this.newSpouseICNumber.substring(3,lengthNo);
     const relationship = "spouse";
     const compareIC = data.IC_Number;
     const compareID = data.id;
-    console.log(data.IC_Number)
-    console.log(Number)
+    //.log(data.IC_Number)
+    //.log(Number)
 
     var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
 
@@ -1229,7 +1229,7 @@ export class VendorProfileComponent implements OnInit {
     const relationship = "spouse";
     const myrid = this.id;
 
-    console.log(myrid)
+    //.log(myrid)
 
     var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
 
@@ -1245,7 +1245,7 @@ export class VendorProfileComponent implements OnInit {
 
         this.relativeService.findByIC(IC_Number).subscribe(data=> {
           this.spouseDataArray = data;
-          console.log(this.spouseDataArray.length)
+          //.log(this.spouseDataArray.length)
           
 
           if(this.spouseDataArray.length == 0) {
@@ -1442,13 +1442,13 @@ export class VendorProfileComponent implements OnInit {
     const IC_Number = this.newChildICNumber;
     const IC = this.newChildICNumber.substring(0,2);
     var lengthNo = this.newChildICNumber.length;
-    console.log(lengthNo)
+    //.log(lengthNo)
     const Number = this.newChildICNumber.substring(3,lengthNo);
     const relationship = "child";
     const compareIC = data.IC_Number;
     const compareID = data.id;
-    console.log(data.IC_Number)
-    console.log(Number)
+    //.log(data.IC_Number)
+    //.log(Number)
 
     var exp = new RegExp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$");
 
@@ -1535,7 +1535,7 @@ export class VendorProfileComponent implements OnInit {
 
   openSideProfile(id){
     
-    console.log(id)
+    //.log(id)
 
     this.slidePanel.open(SideProfileComponent, {
       slideFrom:'right',
@@ -1552,7 +1552,7 @@ retrieveID(profileName){
   var localaccount = sessionStorage.getItem('username')
   this.accountService.findByUsername(localaccount).subscribe(data=> {
     this.profileArray = data;
-    console.log(this.profileArray)
+    //.log(this.profileArray)
     const id = this.profileArray[0].id;
     this.openSideProfile(this.profileArray[0]);
 })
@@ -1572,8 +1572,8 @@ upload(){
   if (!this.fileUploadForm.value.uploadedImage){
     Swal.fire('Upload Failed','Please Try again','error')
   } else {
-    console.log(this.fileUploadForm.value.uploadedImage)
-    console.log(this.fileUploadForm.value.name)
+    //.log(this.fileUploadForm.value.uploadedImage)
+    //.log(this.fileUploadForm.value.name)
     var accountRID = sessionStorage.getItem('rid')
     const formData = new FormData()
     formData.append('image',this.fileUploadForm.value.uploadedImage);
@@ -1583,7 +1583,7 @@ upload(){
     formData.append('name',this.fileUploadForm.value.name)
 
     this.attachmentService.uploadFile(formData).subscribe(response => {
-      console.log(response);
+      //.log(response);
       if (response.statusCode === 200) {
         this.fileInputLabel = undefined;
       }
@@ -1593,7 +1593,7 @@ upload(){
       this.retrieveAttachment();
       this.uploadFile = false;
     }, er => {
-      console.log(er);
+      //.log(er);
       Swal.fire("Upload Failed",'Please Try Again / Unsupported File Format','error');
       return;
     });
@@ -1617,7 +1617,7 @@ retrieveAttachment(){
         }
       }
 
-      console.log(this.initialAttachment)
+      //.log(this.initialAttachment)
       this.attachmentArray = this.initialAttachment;
     } else {
       this.attachmentArray = [];
@@ -1694,8 +1694,8 @@ retrieveRemarks(){
     if(this.RemarksArray.length !== 0){
       this.descriptionRemarks = this.RemarksArray[0].Description;
       this.description = this.RemarksArray[0].Description;
-      console.log(this.descriptionRemarks)
-      console.log(this.RemarksArray.length)
+      //.log(this.descriptionRemarks)
+      //.log(this.RemarksArray.length)
     } else {
       this.description = "";
       this.descriptionRemarks = "";
@@ -1720,7 +1720,7 @@ cancelRemarks(){
 submitRemarks(){
 
   const description = this.description;
-  console.log(this.description)
+  //.log(this.description)
   const account_rid = sessionStorage.getItem('rid');
   const rid = this.id;
 
@@ -1782,12 +1782,12 @@ retrieveProfilePic(){
   var accountRID = sessionStorage.getItem('rid');
   this.photoService.findByRid(accountRID).subscribe(data=> {
     this.picArray = data;
-    console.log(this.picArray)
+    //.log(this.picArray)
 
     if (this.picArray.length !== 0){
       var baseURL = this.photoService.baseURL();
       this.proPic = baseURL+"/"+this.picArray[0].link;
-      console.log(this.proPic)
+      //.log(this.proPic)
       this.profileID = this.picArray[0].id;
     }
 

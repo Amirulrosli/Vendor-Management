@@ -51,7 +51,7 @@ export class NotificationComponent implements OnInit {
     this.accountRole = sessionStorage.getItem("role")
 
     if (this.accountRole == "Administrator") {
-      console.log(this.accountRole)
+      //.log(this.accountRole)
       this.isAdmin = true;
     } else{
       this.isAdmin = false;
@@ -74,7 +74,7 @@ export class NotificationComponent implements OnInit {
     this.role = sessionStorage.getItem('role')
     this.notificationService.findByView().subscribe(data=> {
       this.viewNotification = data;
-      console.log(this.viewNotification)
+      //.log(this.viewNotification)
       if (this.viewNotification.length !== 0){
 
         for (let i = 0; i<this.viewNotification.length; i++){
@@ -88,7 +88,7 @@ export class NotificationComponent implements OnInit {
           }
         }
 
-        console.log(this.listData)
+        //.log(this.listData)
 
         if (this.role == "Staff" || this.role == "View-only"){
 
@@ -97,14 +97,14 @@ export class NotificationComponent implements OnInit {
             if (this.listData[i].rid == this.accountRid){
               this.listDataArray.push(this.listData[i])
             }
-            console.log(this.listDataArray)
+            //.log(this.listDataArray)
           }
 
 
 
         } else if (this.role == "Administrator"){
           this.listDataArray = this.listData;
-          console.log(this.listDataArray)
+          //.log(this.listDataArray)
         }
 
       }
@@ -117,13 +117,13 @@ export class NotificationComponent implements OnInit {
   }
 
   close(id){
-    console.log(id);
+    //.log(id);
     this.notificationService.findOne(id).subscribe(data=> {
       this.retrieveData = data;
       this.retrieveData.view = true;
 
       this.notificationService.update(id,this.retrieveData).subscribe(res=> {
-        console.log(res)
+        //.log(res)
         this.getNotification();
       }, error=> {
         console.log(error)

@@ -87,7 +87,7 @@ export class VendorDetailsComponent implements OnInit {
   }
 
   printPage(){
-    console.log("printing")
+    //.log("printing")
     window.print();
   }
 

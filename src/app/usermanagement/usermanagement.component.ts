@@ -333,7 +333,7 @@ export class UsermanagementComponent implements OnInit {
   }
 
   onDelete(data){
-    console.log(data.id)
+    //.log(data.id)
 
     Swal.fire({
       title: 'Are you sure?',
@@ -464,7 +464,7 @@ export class UsermanagementComponent implements OnInit {
 
 
   nav1(){
-    console.log("1")
+    //.log("1")
     this.buttonColor1 = "#ff3333";
     this.buttonColor2 = "#ffffff";
     this.buttonColor3 = "#ffffff";
@@ -480,7 +480,7 @@ export class UsermanagementComponent implements OnInit {
     this.getUser();
   }
   nav2(){
-    console.log("2")
+    //.log("2")
     this.buttonColor2 = "#ff3333";
     this.buttonColor1 = "#ffffff";
     this.buttonColor3 = "#ffffff";
@@ -496,7 +496,7 @@ export class UsermanagementComponent implements OnInit {
     this.getSlot();
   }
   nav3(){
-    console.log("3")
+    //.log("3")
     this.buttonColor3 = "#ff3333";
     this.buttonColor2 = "#ffffff";
     this.buttonColor1 = "#ffffff";
@@ -518,12 +518,12 @@ export class UsermanagementComponent implements OnInit {
   locationRefresh(){
     this.locationService.findAll().subscribe(data=> {
       this.locationArray = data;
-      console.log(this.locationArray)
+      //.log(this.locationArray)
 
       for (let i = 0; i<this.locationArray.length; i++){
 
         const newDate = new Date(this.locationArray[i].date_Updated);
-        console.log(newDate)
+        //.log(newDate)
 
         let latest_date = this.datePipe.transform(newDate,'dd/MM/YYYY HH:mm:ss')
 
@@ -549,13 +549,13 @@ export class UsermanagementComponent implements OnInit {
     this.locationService.findByLocation(this.locationName).subscribe(data=> {
       compare = data;
 
-      console.log(compare)
+      //.log(compare)
 
       if (compare.length == 0){
         //notify
         var accountRid = sessionStorage.getItem('rid');
         var date = new Date();
-        console.log(this.locationName)
+        //.log(this.locationName)
 
         const notify = {
           rid: accountRid,
@@ -600,7 +600,7 @@ export class UsermanagementComponent implements OnInit {
   deleteLocation(data){
       const id = data.id;
       const location = data.location;
-      console.log(id)
+      //.log(id)
   
       Swal.fire({
         title: 'Are you sure?',
@@ -632,7 +632,7 @@ export class UsermanagementComponent implements OnInit {
                       profileArray[0].slot_Price = null;
 
                       this.profileService.update(profileArray[0].id,profileArray[0]).subscribe(data=> {
-                        console.log(data)
+                        //.log(data)
                       })
                     })
 
@@ -751,7 +751,7 @@ export class UsermanagementComponent implements OnInit {
       this.locationService.findByLocation(this.newLocation).subscribe(data=> {
         compare = data;
   
-        console.log(compare)
+        //.log(compare)
   
         if (compare.length == 0){
           //notify
@@ -803,7 +803,7 @@ export class UsermanagementComponent implements OnInit {
 
     cancelLocation(){
       const date = new Date();
-      console.log(date)
+      //.log(date)
       this.showEdit = false;
       this.showEdit = false;
       this.number = "";
@@ -887,7 +887,7 @@ export class UsermanagementComponent implements OnInit {
       var taken = data.taken;
       var slotRid = data.rid;
 
-      console.log(data)
+      //.log(data)
       Swal.fire({
         title: 'Are you sure?',
         text: 'This process is irreversible. Deleting the location may cause data loss',
@@ -927,7 +927,7 @@ export class UsermanagementComponent implements OnInit {
             this.slotService.findByLocation(data.location).subscribe(data=> {
               this.slotArray = data;
          
-              console.log(location)
+              //.log(location)
                 this.locationService.findByLocation(location).subscribe(data=> {
                   this.dataArray = data;
     
@@ -946,7 +946,7 @@ export class UsermanagementComponent implements OnInit {
                                       profileArray[0].slot_Price = null;
 
                                       this.profileService.update(profileArray[0].id,profileArray[0]).subscribe(data=> {
-                                        console.log(data)
+                                        //.log(data)
                                       },error=> {
                                         console.log(error)
                                       })
@@ -1012,7 +1012,7 @@ export class UsermanagementComponent implements OnInit {
 
   openSideProfile(id){
     
-      console.log(id)
+      //.log(id)
 
       this.slidePanel.open(SideProfileComponent, {
         slideFrom:'right',
@@ -1035,7 +1035,7 @@ export class UsermanagementComponent implements OnInit {
   retrieveID(username){
     this.accountService.findByUsername(username).subscribe(data=> {
       this.profileArray = data;
-      console.log(this.profileArray)
+      //.log(this.profileArray)
       const id = this.profileArray[0].id;
       this.openSideProfile(this.profileArray[0]);
   })
@@ -1076,7 +1076,7 @@ async runBackup(){
 
         var url = backupURL+"/api/profiles";
         var IC = profileArray[i].IC_Number;
-        console.log(url)
+        //.log(url)
 
         
         this.http.get(`${url}/IC/${IC}`).subscribe(data=> {
@@ -1086,7 +1086,7 @@ async runBackup(){
 
             this.http.post(url,profileArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up Profile data: "+i
 
             })
@@ -1095,7 +1095,7 @@ async runBackup(){
 
             this.http.put(`${url}/update/${this.findProfile[0].id}`,profileArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update Profile data: "+i
             })
 
@@ -1133,7 +1133,7 @@ async runBackup(){
 
         var locationURL = backupURL+"/api/location";
         var location = locationArray[i].location;
-        console.log(locationURL+"   "+location)
+        //.log(locationURL+"   "+location)
        
 
         this.http.get(`${locationURL}/location/${location}`).subscribe(data=> {
@@ -1141,7 +1141,7 @@ async runBackup(){
 
           if (this.locationDataArray.length == 0){
             this.http.post(locationURL,locationArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up Location data: "+i
             })
           } else {
@@ -1149,7 +1149,7 @@ async runBackup(){
 
             this.http.put(`${locationURL}/id/${this.locationDataArray[0].id}`,locationArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update Location data: "+i
             })
 
@@ -1189,7 +1189,7 @@ async runBackup(){
 
         var paymentURL = backupURL+"/api/payments";
         var paymentID = paymentArray[i].paymentID;
-        console.log(paymentURL+"   "+paymentID)
+        //.log(paymentURL+"   "+paymentID)
        
 
         this.http.get(`${paymentURL}/payment/${paymentID}`).subscribe(data=> {
@@ -1197,7 +1197,7 @@ async runBackup(){
 
           if (this.paymentDataArray.length == 0){
             this.http.post(paymentURL,paymentArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up Payment data: "+i
             })
           } else {
@@ -1205,7 +1205,7 @@ async runBackup(){
 
             this.http.put(`${paymentURL}/${this.paymentDataArray[0].id}`,paymentArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update payment data: "+i
             })
 
@@ -1249,7 +1249,7 @@ async runBackup(){
 
         var slotURL = backupURL+"/api/slots";
         var slotNo = slotArray[i].slot_Number;
-        console.log(slotURL+"   "+slotNo)
+        //.log(slotURL+"   "+slotNo)
        
 
         this.http.get(`${slotURL}/slot/${slotNo}`).subscribe(data=> {
@@ -1257,7 +1257,7 @@ async runBackup(){
 
           if (this.slotDataArray.length == 0){
             this.http.post(slotURL,slotArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up slot data: "+i
             })
           } else {
@@ -1265,7 +1265,7 @@ async runBackup(){
 
             this.http.put(`${slotURL}/update/${this.slotDataArray[0].id}`,slotArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update slot data: "+i
             })
 
@@ -1309,7 +1309,7 @@ async runBackup(){
 
         var accountURL = backupURL+"/api/account";
         var accountRID = accountArray[i].rid;
-        console.log(accountURL+"   "+accountRID)
+        //.log(accountURL+"   "+accountRID)
        
 
         this.http.get(`${accountURL}/rid/${accountRID}`).subscribe(data=> {
@@ -1317,7 +1317,7 @@ async runBackup(){
 
           if (this.accountDataArray.length == 0){
             this.http.post(accountURL,accountArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up account data: "+i
             })
           } else {
@@ -1325,7 +1325,7 @@ async runBackup(){
 
             this.http.put(`${accountURL}/id/${this.accountDataArray[0].id}`,accountArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update account data: "+i
             })
 
@@ -1366,7 +1366,7 @@ async runBackup(){
 
         var attachmentURL = backupURL+"/api/attachment";
         var attachmentID = attachmentArray[i].id;
-        console.log(attachmentURL+"   "+attachmentID)
+        //.log(attachmentURL+"   "+attachmentID)
        
 
         this.http.get(`${attachmentURL}/id/${attachmentID}`).subscribe(data=> {
@@ -1374,15 +1374,15 @@ async runBackup(){
 
           if (this.attachmentDataArray.length == 0){
             this.http.post(attachmentURL,attachmentArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up attachment data: "+i
             })
           } else {
 
-            console.log(attachmentArray[i])
+            //.log(attachmentArray[i])
             this.http.put(`${attachmentURL}/update/${this.attachmentDataArray[0].id}`,attachmentArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update attachment data: "+i
             })
 
@@ -1423,7 +1423,7 @@ async runBackup(){
   
           var relativeURL = backupURL+"/api/relative";
           var relativeID = relativeArray[i].IC_Number
-          console.log(relativeURL+"   "+relativeID)
+          //.log(relativeURL+"   "+relativeID)
          
   
           this.http.get(`${relativeURL}/IC/${relativeID}`).subscribe(data=> {
@@ -1431,7 +1431,7 @@ async runBackup(){
   
             if (this.relativeDataArray.length == 0){
               this.http.post(relativeURL,relativeArray[i]).subscribe(data=> {
-                console.log(data);
+                //.log(data);
                 this.updateText += "\n"+"Successfully Back up relative data: "+i
               })
             } else {
@@ -1439,7 +1439,7 @@ async runBackup(){
   
               this.http.put(`${relativeURL}/${this.relativeDataArray[0].id}`,relativeArray[i]).subscribe(data=> {
            
-                console.log(data);
+                //.log(data);
                 this.updateText += "\n"+"Successfully update relative data: "+i
               })
   
@@ -1485,7 +1485,7 @@ async runBackup(){
   
           var loginURL = backupURL+"/api/loginState";
           var loginRID = loginArray[i].rid;
-          console.log(loginURL+"   "+loginRID)
+          //.log(loginURL+"   "+loginRID)
          
   
           this.http.get(`${loginURL}/rid/${loginRID}`).subscribe(data=> {
@@ -1493,7 +1493,7 @@ async runBackup(){
   
             if (this.loginStateDataArray.length == 0){
               this.http.post(loginURL,loginArray[i]).subscribe(data=> {
-                console.log(data);
+                //.log(data);
                 this.updateText += "\n"+"Successfully Back up login data: "+i
               })
             } else {
@@ -1501,7 +1501,7 @@ async runBackup(){
   
               this.http.put(`${loginURL}/update/${this.loginStateDataArray[0].id}`,loginArray[i]).subscribe(data=> {
            
-                console.log(data);
+                //.log(data);
                 this.updateText += "\n"+"Successfully update login state data: "+i
               })
   
@@ -1542,7 +1542,7 @@ async runBackup(){
       
               var photoURL = backupURL+"/api/photo";
               var photoRID = photoArray[i].rid;
-              console.log(photoURL+"   "+photoRID)
+              //.log(photoURL+"   "+photoRID)
              
       
               this.http.get(`${photoURL}/rid/${photoRID}`).subscribe(data=> {
@@ -1550,7 +1550,7 @@ async runBackup(){
       
                 if (this.photoDataArray.length == 0){
                   this.http.post(photoURL,photoArray[i]).subscribe(data=> {
-                    console.log(data);
+                    //.log(data);
                     this.updateText += "\n"+"Successfully Back up photo data: "+i
                   })
                 } else {
@@ -1558,7 +1558,7 @@ async runBackup(){
       
                   this.http.put(`${photoURL}/update/${this.photoDataArray[0].id}`,photoArray[i]).subscribe(data=> {
                
-                    console.log(data);
+                    //.log(data);
                     this.updateText += "\n"+"Successfully update photo data: "+i
                   })
       
@@ -1602,14 +1602,14 @@ async runBackup(){
       
               var notificationURL = backupURL+"/api/notifications";
               var notificationID = notificationArray[i].id;
-              console.log(notificationURL+"/"+notificationID)
+              //.log(notificationURL+"/"+notificationID)
       
               this.http.get(`${notificationURL}/find/${notificationID}`).subscribe(data=> {
                 this.noDataArray = data;
       
                 if (this.noDataArray == null || this.noDataArray.length == 0){
                   this.http.post(notificationURL,notificationArray[i]).subscribe(data=> {
-                    console.log(data);
+                    //.log(data);
                     this.updateText += "\n"+"Successfully Back up notification data: "+i
                   })
                 } else {
@@ -1617,7 +1617,7 @@ async runBackup(){
       
                   this.http.put(`${notificationURL}/update/${this.noDataArray.id}`,notificationArray[i]).subscribe(data=> {
                
-                    console.log(data);
+                    //.log(data);
                     this.updateText += "\n"+"Successfully update notification data: "+i
                   })
       
@@ -1662,7 +1662,7 @@ async runBackup(){
                var remarkURL = backupURL+"/api/remark";
                var remarkRID = remarkArray[i].rid;
 
-               console.log(remarkURL+"   "+remarkRID)
+               //.log(remarkURL+"   "+remarkRID)
               
        
                this.http.get(`${remarkURL}/rid/${remarkRID}`).subscribe(data=> {
@@ -1670,7 +1670,7 @@ async runBackup(){
        
                  if (this.remarkDataArray.length == 0){
                    this.http.post(remarkURL,remarkArray[i]).subscribe(data=> {
-                     console.log(data);
+                     //.log(data);
                      this.updateText += "\n"+"Successfully Back up remark data: "+i
                    })
                  } else {
@@ -1678,7 +1678,7 @@ async runBackup(){
        
                    this.http.put(`${remarkURL}/id/${this.remarkDataArray[0].id}`,remarkArray[i]).subscribe(data=> {
                 
-                     console.log(data);
+                     //.log(data);
                      this.updateText += "\n"+"Successfully update remark data: "+i
                    })
        
@@ -1725,7 +1725,7 @@ async runBackup(){
 
         var delattachmentURL = backupURL+"/api/delattachment";
         var delattachmentID = delattachmentArray[i].id;
-        console.log(delattachmentURL+"   "+delattachmentID)
+        //.log(delattachmentURL+"   "+delattachmentID)
        
 
         this.http.get(`${delattachmentURL}/id/${delattachmentID}`).subscribe(data=> {
@@ -1733,7 +1733,7 @@ async runBackup(){
 
           if (this.delattachmentDataArray.length == 0){
             this.http.post(delattachmentURL,delattachmentArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up deleted attachment data: "+i
             })
           } else {
@@ -1741,7 +1741,7 @@ async runBackup(){
 
             this.http.put(`${delattachmentURL}/update/${this.delattachmentDataArray[0].id}`,delattachmentArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update deleted attachment data: "+i
             })
 
@@ -1784,7 +1784,7 @@ async runBackup(){
 
         var delpaymentURL = backupURL+"/api/delpayments";
         var delpaymentID = delpaymentArray[i].paymentID;
-        console.log(delpaymentURL+"   "+delpaymentID)
+        //.log(delpaymentURL+"   "+delpaymentID)
        
 
         this.http.get(`${delpaymentURL}/payment/${delpaymentID}`).subscribe(data=> {
@@ -1792,7 +1792,7 @@ async runBackup(){
 
           if (this.delpaymentDataArray.length == 0){
             this.http.post(delpaymentURL,delpaymentArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up deleted Payment data: "+i
             })
           } else {
@@ -1800,7 +1800,7 @@ async runBackup(){
 
             this.http.put(`${delpaymentURL}/${this.delpaymentDataArray[0].id}`,delpaymentArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update deleted payment data: "+i
             })
 
@@ -1846,7 +1846,7 @@ async runBackup(){
 
         var delphotoURL = backupURL+"/api/delphoto";
         var delphotoRID = delphotoArray[i].rid;
-        console.log(delphotoURL+"   "+delphotoRID)
+        //.log(delphotoURL+"   "+delphotoRID)
        
 
         this.http.get(`${delphotoURL}/rid/${delphotoRID}`).subscribe(data=> {
@@ -1854,7 +1854,7 @@ async runBackup(){
 
           if (this.delphotoDataArray.length == 0){
             this.http.post(delphotoURL,delphotoArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up deleted photo data: "+i
             })
           } else {
@@ -1862,7 +1862,7 @@ async runBackup(){
 
             this.http.put(`${delphotoURL}/update/${this.delphotoDataArray[0].id}`,delphotoArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update deleted photo data: "+i
             })
 
@@ -1903,7 +1903,7 @@ async runBackup(){
 
         var delurl = backupURL+"/api/delprofiles";
         var delIC = delprofileArray[i].IC_Number;
-        console.log(delurl)
+        //.log(delurl)
 
         
         this.http.get(`${delurl}/IC/${delIC}`).subscribe(data=> {
@@ -1913,7 +1913,7 @@ async runBackup(){
 
             this.http.post(delurl,delprofileArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up deleted Profile data: "+i
             })
 
@@ -1921,7 +1921,7 @@ async runBackup(){
 
             this.http.put(`${delurl}/update/${this.delprofileDataArray[0].id}`,delprofileArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update deleted Profile data: "+i
             })
 
@@ -1967,15 +1967,15 @@ async runBackup(){
 
         var delrelativeURL = backupURL+"/api/delrelative";
         var delrelativeID = delrelativeArray[i].IC_Number;
-        console.log(delrelativeURL+"   "+delrelativeID)
+        //.log(delrelativeURL+"   "+delrelativeID)
        
 
         this.http.get(`${delrelativeURL}/IC/${delrelativeID}`).subscribe(data=> {
           this.delrelativeDataArray = data;
-          console.log(data)
+          //.log(data)
           if (this.delrelativeDataArray.length == 0){
             this.http.post(delrelativeURL,delrelativeArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up deleted relative data: "+i
             })
           } else {
@@ -1983,7 +1983,7 @@ async runBackup(){
 
             this.http.put(`${delrelativeURL}/update/${this.delrelativeDataArray[0].id}`,delrelativeArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update deleted relative data: "+i
             })
 
@@ -2028,7 +2028,7 @@ async runBackup(){
         var delremarkURL = backupURL+"/api/delremark";
         var delremarkRID = delremarkArray[i].rid;
 
-        console.log(delremarkURL+"   "+delremarkRID)
+        //.log(delremarkURL+"   "+delremarkRID)
        
 
         this.http.get(`${delremarkURL}/rid/${delremarkRID}`).subscribe(data=> {
@@ -2037,7 +2037,7 @@ async runBackup(){
           if (this.delremarkDataArray.length == 0){
             
             this.http.post(delremarkURL,delremarkArray[i]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully Back up deleted remark data: "+i
             })
 
@@ -2046,7 +2046,7 @@ async runBackup(){
 
             this.http.put(`${delremarkURL}/id/${this.delremarkDataArray[0].id}`,delremarkArray[i]).subscribe(data=> {
          
-              console.log(data);
+              //.log(data);
               this.updateText += "\n"+"Successfully update deleted remark data: "+i
             })
 

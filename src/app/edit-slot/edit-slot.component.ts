@@ -191,7 +191,7 @@ export class EditSlotComponent implements OnInit {
             this.profileArray[0].slot = slot_Number;
             this.profileArray[0].slot_Price = slot_Price;
 
-            console.log(this.profileArray)
+            //.log(this.profileArray)
 
             this.profileService.update(this.profileArray[0].id, this.profileArray[0]).subscribe(data=> {
 
@@ -296,12 +296,12 @@ export class EditSlotComponent implements OnInit {
         
       } else {
 
-        console.log(slot_Number)
+        //.log(slot_Number)
         
 
         this.slotService.findBySlot(slot_Number).subscribe(data=> {
           this.slotArray = data;
-          console.log(this.slotArray)
+          //.log(this.slotArray)
           
 
           if (this.slotArray.length !== 0){

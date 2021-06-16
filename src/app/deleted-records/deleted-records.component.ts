@@ -193,7 +193,7 @@ export class DeletedRecordsComponent implements OnInit {
           })
         }
 
-        console.log(this.profileList)
+        //.log(this.profileList)
 
         
         this.listData = new MatTableDataSource(this.profileList);
@@ -215,7 +215,7 @@ export class DeletedRecordsComponent implements OnInit {
   
 openSideProfile(id){
     
-  console.log(id)
+  //.log(id)
 
   this.slidePanel.open(SideProfileComponent, {
     slideFrom:'right',
@@ -234,7 +234,7 @@ openSideProfile(id){
 retrieveID(username){
 this.accountService.findByUsername(username).subscribe(data=> {
   this.profileArray = data;
-  console.log(this.profileArray)
+  //.log(this.profileArray)
   const id = this.profileArray[0].id;
   this.openSideProfile(this.profileArray[0]);
 })
@@ -321,7 +321,7 @@ identifyRole(){
   this.accountRole = sessionStorage.getItem("role")
 
   if (this.accountRole == "Administrator") {
-    console.log(this.accountRole)
+    //.log(this.accountRole)
     this.isAdmin = true;
   } else{
     this.isAdmin = false;
@@ -400,7 +400,7 @@ viewing(rid){
 
 onDelete(data){
 
-  console.log(data)
+  //.log(data)
   var vendorID = data.rid;
   var rid = sessionStorage.getItem('rid');
   var accName = sessionStorage.getItem('username')
@@ -463,7 +463,7 @@ onDelete(data){
 
               this.delStatusService.findByRid(vendorID).subscribe(data=> {
                 status = data;
-                console.log(status)
+                //.log(status)
         
                 if (status.length !== 0){
         
@@ -589,7 +589,7 @@ onDelete(data){
 
 onRestore(data){
 
-  console.log(data)
+  //.log(data)
   var vendorID = data.rid
   var rid = sessionStorage.getItem('rid');
   var accName = sessionStorage.getItem('username')
@@ -637,7 +637,7 @@ onRestore(data){
         this.delProfileService.findByRid(profileRid).subscribe(data=> {
           profile = data;
 
-          console.log(profile[0])
+          //.log(profile[0])
   
           if(profile.length !==0){
             profile[0].slot = null;
@@ -647,7 +647,7 @@ onRestore(data){
             profile[0].latest_Payment = null;
             profile[0].overdue = null;
             this.profile.create(profile[0]).subscribe(data=> {
-              console.log(data)
+              //.log(data)
             },error=> {
               console.log(error)
             })
@@ -681,7 +681,7 @@ onRestore(data){
   
         this.delPaymentService.findByRid(profileRid).subscribe(resp=> {
           this.paymentRid = resp;
-          console.log(resp)
+          //.log(resp)
         
   
           if (this.paymentRid.length > 0){
@@ -716,7 +716,7 @@ onRestore(data){
   
             for (let i = 0; i<relative.length; i++){
               this.relativeService.createRelative(relative[i]).subscribe(data=> {
-                console.log(data)
+                //.log(data)
                 this.delRelativeService.delete(relative[i].id).subscribe(data=> {
                   console.log(data)
                 },error=> {
@@ -741,7 +741,7 @@ onRestore(data){
           if (attachments.length !== 0){
             for (let i =0; i<attachments.length;i++){
               this.attachmentService.create(attachments[i]).subscribe(data=> {
-                console.log(data)
+                //.log(data)
   
                 this.delAttachmentServices.delete(attachments[i].id).subscribe(data=> {
                   console.log(data);
@@ -768,7 +768,7 @@ onRestore(data){
           if (remark.length !== 0){
   
             this.remarkService.create(remark[0]).subscribe(data=> {
-              console.log(data)
+              //.log(data)
   
               this.delRemarkService.delete(remark[0].id).subscribe(data=> {
                 console.log(data)
@@ -792,9 +792,9 @@ onRestore(data){
           photo = data;
   
           if (photo.length !== 0){
-            console.log(photo[0])
+            //.log(photo[0])
             this.photoService.create(photo[0]).subscribe(data=> {
-              console.log(data);
+              //.log(data);
   
               this.delPhotoService.delete(photo[0].id).subscribe(data=> {
                 console.log(data)
