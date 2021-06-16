@@ -439,7 +439,7 @@ export class VendorProfileComponent implements OnInit {
               rid: rid,
               status: chosenStat,
               overdue_Day: overdue_Day,
-              latest_Payment_Date: latest_Payment_Date,
+              last_Payment_Date: latest_Payment_Date,
               next_Payment_Date: next_Payment_Date
             }
 
