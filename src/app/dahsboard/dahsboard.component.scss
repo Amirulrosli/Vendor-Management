@@ -7,7 +7,8 @@ mat-sidenav{
 }
 
 mat-sidenav {
-    background-color: rgb(124, 57, 179);
+    // background-color: rgb(124, 57, 179);
+    background-color: rgb(51, 51, 51);
     width: 110px;
 }
 
@@ -52,15 +53,18 @@ mat-sidenav-content{
     }
 
     .apply-button{
-        background-color: blueviolet;
+        // background-color: blueviolet;
+        background-color: rgb(110, 106, 106);
     }
 
     .apply-button:hover{
-        background-color: rgb(75, 0, 145);
+        // background-color: rgb(75, 0, 145);
+        background-color: rgb(51, 51, 51);
     }
 
     .resetInfo-1:hover{
-        color: purple;
+        // color: purple;
+       color: rgb(51, 51, 51);
     }
 
 
@@ -72,7 +76,8 @@ mat-sidenav-content{
 
 mat-form-field.mat-form-field{
     width: 100%;
-    color: rgb(124, 57, 179);
+    // color: rgb(124, 57, 179);
+    color: rgb(51, 51, 51);
 
 
 
@@ -91,7 +96,8 @@ mat-form-field.mat-form-field{
 
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
-    color: rgb(124, 57, 179) !important;
+    // color: rgb(124, 57, 179) !important;
+    color: rgb(51, 51, 51);
   }
 
   input{
@@ -106,7 +112,8 @@ mat-form-field.mat-form-field{
 }
 
 .submitBtn{
-    background-color: rgb(105, 2, 173);
+    // background-color: rgb(105, 2, 173);
+    background-color: rgb(51, 51, 51);
     height: 40px;
   
 }
@@ -159,7 +166,9 @@ mat-form-field.mat-form-field{
 
 
  mat-header-cell{
-     color:rgb(95, 30, 148);
+    //  color:rgb(95, 30, 148);
+     
+     color: rgb(51, 51, 51);
      background-color: white;
  }
 
@@ -181,11 +190,14 @@ mat-form-field.mat-form-field{
  }
 
  mat-header-row{
-    color: purple;
-    background-color:  purple;
+    // color: purple;
+    color: rgb(51, 51, 51);
+    // background-color:  purple;
+    background-color: rgb(51, 51, 51);
  }
  mat-paginator{
-    background-color: rgb(124, 57, 179);
+    // background-color: rgb(124, 57, 179);
+    background-color: rgb(85, 85, 85);
     color: white;
     // margin-left: 60px;
     // margin-right: 60px;
@@ -408,7 +420,8 @@ mat-form-field.mat-form-field{
 }
 
 .vendor-button{
-    color: rgb(90, 38, 133);
+    // color: rgb(90, 38, 133);
+    color: rgb(83, 40, 0);
     background: white;
     position: absolute;
     right: 20px;
@@ -417,7 +430,8 @@ mat-form-field.mat-form-field{
 
 .toggle{
     
-    color:rgb(90, 38, 133);
+    // color:rgb(90, 38, 133);
+    color: rgb(83, 40, 0);
 }
 
 .image-1{
@@ -465,12 +479,14 @@ mat-form-field.mat-form-field{
     position:absolute;
     top: 80px;
     right: 20px;
-    background-color: blueviolet;
+    // background-color: blueviolet;
+    background-color: rgb(97, 80, 64);
     color: white;
 }
 
 .print-report{
-    color: blueviolet;
+    // color: blueviolet;
+    color: rgb(75, 75, 75);
     position:absolute;
     
     right: 200px;

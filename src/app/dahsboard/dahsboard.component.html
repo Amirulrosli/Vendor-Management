@@ -49,7 +49,7 @@
 
         <div class="search-bar-dashboard">
           <input class="searchbar-1" [(ngModel)]="searchKey" type="Text" placeholder="Search for IC Number, Name, etc.. "/>
-          <button (click)="applyFilter()" class="apply-button" style="background-color: blueviolet; color: white;height:40px;" mat-raised-button>Search<span><mat-icon class="submitBtn-1">search</mat-icon></span></button>
+          <button (click)="applyFilter()" class="apply-button" style="color: white;height:40px;" mat-raised-button>Search<span><mat-icon class="submitBtn-1">search</mat-icon></span></button>
           <span *ngIf="showVendor==true" (click)="refreshData()" class="resetInfo-1">Reset</span>
           <span *ngIf="showSlotField==true" (click)="refreshLocation()" class="resetInfo-1">Reset</span>
           <span *ngIf="showPayment==true" (click)="refreshPayment()" class="resetInfo-1">Reset</span>

@@ -1,5 +1,6 @@
 .toggle{
-    color:#a142ff !important;
+    // color:#a142ff !important;
+    color: black;
     cursor: pointer;
     font-size: 23px;
     background-color: white;
@@ -13,7 +14,8 @@
 
 .mat-toolbar{
 
-    background-color: blueviolet; 
+    // background-color: blueviolet; 
+    background-color: rgb(104, 104, 104); 
     border: none;
 
 }
@@ -22,7 +24,8 @@
 .divDesign{
  
     width: 100%;
-    background-color:blueviolet; 
+    // background-color:blueviolet; 
+    background-color: rgb(104, 104, 104); 
     // border-bottom-style: solid;
     // border-bottom-color: #580092;  
     height: 130px;
@@ -145,7 +148,7 @@
   }
   
   .paymentHistory:hover{
-    color: blueviolet;
+    color: rgb(121, 85, 64);
   }
 
   .history{
@@ -172,7 +175,7 @@
 
 
  mat-header-cell{
-     color:rgb(95, 30, 148);
+     color:rgb(68, 49, 38);
      background-color: white;
  }
 
@@ -194,11 +197,13 @@
  }
 
  mat-header-row{
-    color: purple;
-    background-color:  blueviolet;
+    color: rgb(31, 22, 31);
+    // background-color:  blueviolet;
+    background-color:rgb(100, 87, 80);
  }
  mat-paginator{
-    background-color: #a142ff;
+    // background-color: #a142ff;
+    background-color: rgb(105, 90, 82);
     color: white;
     // margin-left: 60px;
     // margin-right: 60px;
@@ -262,7 +267,8 @@
   }
   
   .submitBtn{
-    background-color: rgb(105, 2, 173);
+    // background-color: rgb(105, 2, 173);
+    background-color: rgb(121, 85, 64);
     height: 40px;
   
   }
@@ -498,7 +504,7 @@
 }
 
 .searchBtn{
-  background-color: blueviolet;
+  background-color: #535353;
   height: 40px;
   width: 80px;
 }
@@ -515,9 +521,11 @@
 
 .card{
   position:absolute;
-  right: 10px;
+  left: 30px;
+  top: 150px;
   background-color: rgb(255, 255, 255);
   display: flex;
+  box-shadow: 3px 3px 20px #88888860;
 }
 
 .stat{
@@ -529,8 +537,10 @@
     color: gray;
     font-size: 13px;
     text-align: center;
+    margin-top: -5px;
   }
-  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-top: 10px;
   padding-bottom: 3px;
 

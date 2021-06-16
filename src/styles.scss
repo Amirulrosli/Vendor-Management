@@ -61,7 +61,7 @@ mat-sidenav {
       position: absolute;
       right: 25px;
       cursor: pointer;
-      color: rgb(124, 57, 179);
+     color: rgb(12, 12, 12);
   }
 
   .profile-photo{
@@ -85,7 +85,8 @@ mat-sidenav {
         top: 10px;
         cursor: pointer;
         font-weight: bold;
-        color:rgb(124, 57, 179);
+        // color:rgb(124, 57, 179);
+        color: rgb(37, 18, 0);
         font-family: Tahoma, sans-serif;
   
     }

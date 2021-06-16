@@ -70,7 +70,7 @@
                         {{option}}
                     </mat-option>
                 </mat-autocomplete>
-                <button style="background-color: #6902AD;" mat-raised-button (click)="set()" [disabled]="ifSet">Set</button>
+                <button style="background-color: rgb(85, 64, 44);" mat-raised-button (click)="set()" [disabled]="ifSet">Set</button>
                 </form>
                 <br>
                 <br>
@@ -153,7 +153,7 @@
                 <br>
                 <input [(ngModel)]="slotField" [hidden]="dataList.length!==0" placeholder="Slot No." value="{{dataList.slot}}" type="text" disabled/>
                 <mat-list role="list" *ngIf="dataList.length !== 0" style="margin-bottom:10px;">
-                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(174, 0, 255, 0.238);" role="listitem">
+                    <mat-list-item style="color:black; box-shadow: 1px 5px rgba(119, 83, 35, 0.238);" role="listitem">
                         <mat-icon style="color:purple">gps_fixed</mat-icon>
                            <mat-label style="margin-left: 8px;"> {{dataList.slot}}</mat-label>
                     </mat-list-item>
@@ -169,7 +169,7 @@
             
                 <button mat-raised-button color="primary" class="submitBtn" (click)="submit()">Save Payment</button>
                 <br>
-                <button mat-raised-button (click)="cancel()">Cancel</button>
+                <button style="background-color: rgb(255, 47, 47);" mat-raised-button (click)="cancel()">Cancel</button>
                 <br>
                 <br>
             </div>

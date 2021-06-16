@@ -16,7 +16,7 @@ mat-card{
 }
 
 .container{
-    background-color: #f6ebff;
+    background-color: #e6e6e6;
     height: 100%;
     width: 100%;
     position: absolute;
@@ -48,13 +48,13 @@ input{
     width: 300px;
     height: 45px;
     border-radius: 30px;
-    background-color: #8d4dc2;
+    background-color: #5f5f5f;
     box-shadow: 5px 10px 18px #aa9dff;
 }
 
 
 .login{
-    color: #8d4dc2;
+    color: #494949;
     position: absolute;
     top: 20%;
     right: 18%;
@@ -89,7 +89,6 @@ input{
     }
 
     .login{
-        color: #8d4dc2;
         position: absolute;
         top: 20%;
         right: 5px;

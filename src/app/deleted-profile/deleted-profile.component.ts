@@ -67,7 +67,7 @@ export class DeletedProfileComponent implements OnInit {
   showAttachment = false;
   showSpouse = false;
 
-  buttonColor1 = '#b366ff';
+  buttonColor1 = '#888888';
   color1 = '#ffffff';
 
   buttonColor2 = '#ffffff';
@@ -259,10 +259,15 @@ export class DeletedProfileComponent implements OnInit {
           this.lastPayment = "N/A"
         }
         console.log(status[0])
-        this.overdue = status[0].overdue_Day;
+        if (status[0].overdue_Day > 0){
+          this.overdue = status[0].overdue_Day;
+        } else {
+          this.overdue = 0;
+        }
+        
         console.log(this.overdue)
 
-        if (this.overdue >= 0){
+        if (this.overdue <= 0){
           this.last_Status = true
         } else {
           this.last_Status = false;
@@ -473,7 +478,7 @@ goToPayment(){
   this.showRemarks = false;
   this.showSpouse = false;
   
-  this.buttonColor1 = '#b366ff';
+  this.buttonColor1 = '#888888';
   this.color1 = '#ffffff';
 
   this.buttonColor2 = '#ffffff';
@@ -497,7 +502,7 @@ goToFullProfile(){
   this.showRemarks = false;
   this.showSpouse = false;
 
-  this.buttonColor2 = '#b366ff';
+  this.buttonColor2 = '#888888';
   this.color2 = '#ffffff';
 
   this.buttonColor1 = '#ffffff';
@@ -522,7 +527,7 @@ goToSpouse(){
   this.showRemarks = false;
 
   
-  this.buttonColor3 = '#b366ff';
+  this.buttonColor3 = '#888888';
   this.color3 = '#ffffff';
 
   this.buttonColor1 = '#ffffff';
@@ -548,7 +553,7 @@ goToAttachment(){
   this.showRemarks = false;
   this.showSpouse = false;
   
-  this.buttonColor4 = '#b366ff';
+  this.buttonColor4 = '#888888';
   this.color4 = '#ffffff';
 
   this.buttonColor1 = '#ffffff';
@@ -572,7 +577,7 @@ goToRemarks(){
   this.showAttachment = false;
   this.showSpouse = false;
   
-  this.buttonColor5 = '#b366ff';
+  this.buttonColor5 = '#888888';
   this.color5 = '#ffffff';
 
   this.buttonColor1 = '#ffffff';

@@ -184,7 +184,7 @@ export class DeletedRecordsComponent implements OnInit {
             if (status.length !==0){
               this.profileList[i].status = status[0].status;
 
-              if (status[0].overdue_Day >= 0){
+              if (status[0].overdue_Day <= 0){
                 this.profileList[i].last_Status = true
               } else {
                 this.profileList[i].last_Status = false

@@ -1,5 +1,6 @@
 mat-sidenav {
-    background-color: rgb(124, 57, 179);
+    // background-color: rgb(124, 57, 179);
+    background-color: rgb(51, 51, 51);
     width: 110px;
 }
 mat-sidenav-content{
@@ -17,7 +18,7 @@ mat-sidenav-content{
 }
 
 .location-button{
-  background-color: blueviolet;
+  background-color: rgb(122, 122, 122);
   height: 40px;
 }
 
@@ -26,14 +27,14 @@ mat-sidenav-content{
   }
   
   .toggle{
-    color:rgb(90, 38, 133) !important;
+    color: rgb(51, 51, 51) !important;
     cursor: pointer;
 }
 
 .titleTxt{
     margin-left: 20px;
     margin-bottom: 5px;
-    color: rgb(90, 38, 133) !important;
+    color: rgb(51, 51, 51)!important;
   }
 
 
@@ -46,7 +47,7 @@ mat-sidenav-content{
 
 
  mat-header-cell{
-     color:rgb(95, 30, 148);
+     color: rgb(70, 60, 48);
      background-color: white;
  }
 
@@ -68,11 +69,12 @@ mat-sidenav-content{
  }
 
  mat-header-row{
-    color: purple;
-    background-color:  purple;
+    color: rgb(34, 34, 34);
+    // background-color:  purple;
+    background-color: rgb(136, 118, 94);
  }
  mat-paginator{
-    background-color: rgb(124, 57, 179);
+    background-color: rgb(85, 85, 85);
     color: white;
     // margin-left: 60px;
     // margin-right: 60px;
@@ -90,7 +92,7 @@ mat-sidenav-content{
 
 
  .editBtn{
-   background-color: blueviolet;
+   background-color: rgb(0, 0, 0);
  }
 
  .descTxt{
@@ -124,7 +126,7 @@ mat-sidenav-content{
 
 
 .resetInfo-1:hover{
-  color: purple;
+  color: rgb(255, 94, 94);
 }
 
 .profile-pic{

@@ -1,5 +1,6 @@
 mat-sidenav {
-    background-color: rgb(124, 57, 179);
+    // background-color: rgb(124, 57, 179);
+    background-color: rgb(51, 51, 51);
     width: 110px;
 }
 mat-sidenav-content{
@@ -97,7 +98,8 @@ mat-list{
     margin-right: auto;
     width: 300px;
     height: 40px;
-    background-color: rgb(105, 2, 173) ;
+    background-color: rgb(59, 59, 59) ;
+   
 }
 .submitBtn-1{
   display: block;
@@ -106,13 +108,15 @@ mat-list{
   margin-top: 20px;
   width: 300px;
   height: 40px;
-  background-color: rgb(211, 43, 226) ;
+  background-color: rgb(78, 78, 78) ;
+  // background-color: rgb(85, 64, 44);
 }
 
 .titleTxt{
   margin-left: 20px;
   margin-bottom: 5px;
-  color: rgb(90, 38, 133);
+  // color: rgb(90, 38, 133);
+  color: rgb(51, 51, 51);
 }
 
 .titleTxt-1{
@@ -155,6 +159,7 @@ mat-list{
 
 
   .toggle{
-    color:rgb(90, 38, 133);
+    // color:rgb(90, 38, 133);
+    color: rgb(51, 51, 51);
     cursor: pointer;
 }
