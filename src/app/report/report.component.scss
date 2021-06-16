@@ -1,11 +1,12 @@
 .mat-toolbar{
-    background-color: rgb(124, 57, 179);
+    background-color: rgb(129, 129, 129);
 }
 
 
 .titleTxt{
     margin-top:-5px;
     margin-left: 40px;
+    color: rgb(255, 255, 255);
 }
 
 .titleTxt-1{
@@ -14,7 +15,7 @@
     font-size: 20px;
 }
 .toggle{
-    color: white !important;
+    color: rgb(255, 255, 255) !important;
     cursor: pointer;
 }
 

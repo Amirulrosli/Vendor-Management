@@ -179,7 +179,7 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
                         <mat-cell *matCellDef="let element" >
 
-                            <span><mat-icon (click)="goToReceipt(element)" style="font-size:30px;color: blueviolet; position: relative;top:3px; cursor: pointer">move_to_inbox</mat-icon></span>
+                            <span><mat-icon (click)="goToReceipt(element)" style="font-size:30px;color: rgb(190, 121, 255); position: relative;top:3px; cursor: pointer">move_to_inbox</mat-icon></span>
                             <span *ngIf="!viewOnly"><button style=" position: relative;left: 30px; background-color: rgb(65, 65, 65);" mat-raised-button (click)="goToPaymentEdit(element)">Edit</button></span>
                         </mat-cell>
                     </ng-container>
