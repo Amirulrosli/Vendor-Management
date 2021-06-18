@@ -448,7 +448,7 @@
 
                 <div class="attach-container" *ngFor="let data of attachmentArray">
                 
-                    <mat-icon class="deleteImage" (click)=deleteAttachment(data)>delete</mat-icon>
+                    <mat-icon *ngIf="!viewOnly" class="deleteImage" (click)=deleteAttachment(data)>delete</mat-icon>
                     <mat-icon class="open" (click)="openFile(data.link)">open_with</mat-icon>
                     <img *ngIf="data.application==false" class="attachment-2" src="{{data.link}}" alt="image"/>
                     <embed *ngIf="data.application==true" class="attachment-2" [src]="transform(data.link)"/>
@@ -459,7 +459,7 @@
             </div>
     <br>
     <br>
-    <p class="descTxt add" (click)="editAttachment()" style="margin-top: 20px;">Upload Image/File <mat-icon style="position:relative; top: 8px;">add_circle</mat-icon></p>
+    <p *ngIf="!viewOnly" class="descTxt add" (click)="editAttachment()" style="margin-top: 20px;">Upload Image/File <mat-icon style="position:relative; top: 8px;">add_circle</mat-icon></p>
     <p *ngIf="uploadFile == true" style="color: blueviolet;font-size: 14px; margin-left: 40px">* Supported Files (.jpg, .jpeg, .png, .gif, .pdf) </p>
     <form *ngIf="uploadFile == true" [formGroup]="fileUploadForm" (ngSubmit)="upload()">
     <mat-label style="color:black; margin-left:40px;">File Name: </mat-label>
