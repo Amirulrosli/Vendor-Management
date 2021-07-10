@@ -27,7 +27,7 @@ import { SideProfileComponent } from '../side-profile/side-profile.component';
   ],
 })
 export class AllNotificationComponent implements OnInit {
-
+  isLoading = true;
   close = true
   opened: any;
   notificationList: any;
@@ -105,6 +105,8 @@ export class AllNotificationComponent implements OnInit {
     // })
 
     this.notification.findAll().subscribe(data=> {
+
+      this.isLoading = false;
       this.notificationList = data;
       this.notificationLength = this.notificationList.length;
 
@@ -176,6 +178,8 @@ export class AllNotificationComponent implements OnInit {
 
       }
       this.loopData();
+    },error=> {
+      this.isLoading = false;
     })
 
    

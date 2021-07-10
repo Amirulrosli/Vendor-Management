@@ -46,6 +46,7 @@ export class VendorProfileComponent implements OnInit {
 
 
   id;
+  isLoading = true;
   username: any;
   profileName:any;
   profileRole:any;
@@ -353,6 +354,7 @@ export class VendorProfileComponent implements OnInit {
     this.payment.findByRid(this.id).subscribe(data => {
       this.paymentHistory = data;
       this.paymentList = data;
+      this.isLoading = false;
 
 
       for (let i = 0; i<this.paymentList.length;i++){
@@ -377,6 +379,8 @@ export class VendorProfileComponent implements OnInit {
 
 
 
+    },error=> {
+      this.isLoading = false;
     });
 
     this.retrieveProfile();

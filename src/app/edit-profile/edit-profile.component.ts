@@ -160,7 +160,7 @@ export class EditProfileComponent implements OnInit {
       name: ['',[Validators.required,Validators.maxLength(100)]],
       forIC: ['',[Validators.required],],
       IC_Number:['',[Validators.required, Validators.pattern('^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-s./0-9]*$'), Validators.minLength(6), Validators.maxLength(6)]],
-      email: ['',[Validators.required,Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]],
+      email: ['',[Validators.pattern('^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$')]],
       phone:['',[Validators.required]],
       rent_Date: ['',[Validators.required]],
       slot:[''],
@@ -354,7 +354,13 @@ export class EditProfileComponent implements OnInit {
     } else {
 
       const name = this.registrationForm.value.name;
-      const email = this.registrationForm.value.email;
+      var email = this.registrationForm.value.email;
+
+      
+      if (!email){
+        email = "N/A";
+      }
+
       const rent_Date = this.data.dataKey.rent_Date;
       const phone = this.registrationForm.value.phone;
       const IC_Number = this.data.dataKey.IC_Number;

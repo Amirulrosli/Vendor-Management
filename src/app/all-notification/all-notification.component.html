@@ -108,5 +108,14 @@
           </div>
 
 
+          <div *ngIf="isLoading" 
+          style="display: flex; justify-content: center; align-items: center; background: rgba(255, 255, 255, 0)">
+           <mat-progress-spinner 
+            mode="indeterminate">
+           </mat-progress-spinner>
+        </div>
+
+
+
       </mat-sidenav-content>
     </mat-sidenav-container>

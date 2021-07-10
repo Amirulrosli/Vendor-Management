@@ -95,7 +95,7 @@ export class DahsboardComponent implements OnInit {
 
   totalPayment1: any;
   paymentSeries1: any;
-  
+  isLoading = true;
   close: any;
   opened = true
   retrieveData:any;
@@ -884,6 +884,7 @@ displayedLocationColumns: string[] = [
     this.profiles.findAll().subscribe(array=> {
       this.retrieveData = array
       this.retrieveDataLength = this.retrieveData.length;
+      this.isLoading = false;
    
       this.list = array.map(item=> {
        
@@ -1001,9 +1002,11 @@ displayedLocationColumns: string[] = [
   }
 
   retrieveOverdue(){
+    this.isLoading = true;
     this.profiles.findAllOverdue().subscribe(data=> {
       this.overDueData = data;
       this.list = this.overDueData;
+      this.isLoading = false;
 
 
       this.loopData();
@@ -1021,9 +1024,11 @@ displayedLocationColumns: string[] = [
   }
 
   retrievePaid(){
+    this.isLoading = true; //here
     this.profiles.findAllPaid().subscribe(data=> {
       this.paidData = data;
       this.list = this.paidData;
+      this.isLoading = false;
 
 
       this.loopData();
@@ -1670,10 +1675,12 @@ refreshLocation(){
   this.selectField = "All";
   this.selectSlotField = "All";
 
+  this.isLoading = true; //here
+
   this.slot.findAll().subscribe(data=> {
 
     this.switchAllSlot = data;
-
+    this.isLoading = false;
 
     if (this.switchAllSlot.length !== 0){
      
@@ -1721,6 +1728,8 @@ refreshLocation(){
       this.changeDetectorRefs.detectChanges();
     }
 
+  },error=> {
+    this.isLoading = false;
   })
 
 }
@@ -1732,8 +1741,12 @@ refreshPayment() {
   this.endFilter = "";
   this.notificationField = "All";
 
+  this.isLoading = true; //here
+
   this.paymentService.findAll().subscribe(data=> {
     this.paymentTableArray = data;
+
+    this.isLoading = false;
 
     if (this.paymentTableArray !== 0){
 
@@ -1789,6 +1802,8 @@ refreshPayment() {
       this.changeDetectorRefs.detectChanges();
       return;
     }
+  },error=> {
+    this.isLoading = false;
   })
 
 }
@@ -1797,10 +1812,12 @@ getRelative(){
   this.searchKey = "";
   this.spouseField ="All";
 
+  this.isLoading = true;
+
   this.relativeService.findAll().subscribe(data=> {
     this.spouseArray = data;
 
-
+    this.isLoading = false;
     if (this.spouseArray.length !== 0){
 
       for (let i = 0 ; i<this.spouseArray.length;i++){
@@ -1861,6 +1878,8 @@ getRelative(){
     }
 
 
+  },error=> {
+    this.isLoading=false;
   })
 
 }
@@ -2039,11 +2058,12 @@ showTable(){
     this.refreshLocation();
   } else {
 
+    this.isLoading = true;
 
     this.slot.findByLocation(this.locationField).subscribe(data=> {
 
       this.switchAllSlot = data;
-  
+      this.isLoading = false;
   
       if (this.switchAllSlot.length !== 0){
        
@@ -2066,6 +2086,8 @@ showTable(){
                 }
   
                 
+            },error=> {
+              this.isLoading = false;
             })
           }
 
@@ -2098,6 +2120,8 @@ showTable(){
         this.changeDetectorRefs.detectChanges();
       }
   
+    },error=> {
+      this.isLoading = false;
     })
 
   }

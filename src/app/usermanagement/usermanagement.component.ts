@@ -652,6 +652,9 @@ export class UsermanagementComponent implements OnInit {
 
 
                 }
+
+                this.nav2();
+                this.getSlot();
               }
             })
 
@@ -681,7 +684,7 @@ export class UsermanagementComponent implements OnInit {
               'success'
             )
             this.nav2();
-            
+            this.getSlot();
             
           },err=> {
             Swal.fire(

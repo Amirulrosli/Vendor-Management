@@ -27,6 +27,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations: [],
@@ -47,6 +48,7 @@ import {MatSliderModule} from '@angular/material/slider';
     MatListModule,
     MatSnackBarModule,
     MatExpansionModule,
+    MatProgressSpinnerModule,
     Material11.MatTableModule,
     Material12.MatIconModule,
     Material13.MatSortModule,
@@ -85,7 +87,8 @@ import {MatSliderModule} from '@angular/material/slider';
     MatTabsModule,
     MatBadgeModule,
     MatAutocompleteModule,
-    MatSliderModule
+    MatSliderModule,
+    MatProgressSpinnerModule,
    
 
 
