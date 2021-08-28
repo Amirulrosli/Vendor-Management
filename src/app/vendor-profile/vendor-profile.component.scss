@@ -73,13 +73,20 @@ mat-sidenav-content{
   }
 
   .divDesign{
-    height: 120px;
+  
     width: 100%;
-    background-image: linear-gradient(to bottom right, rgb(117, 39, 180),rgb(197, 136, 255)); 
+    background-image: linear-gradient(rgb(135, 49, 206),rgb(197, 136, 255)); 
     // border-bottom-style: solid;
     // border-bottom-color: #580092;  
-    height: 180px;
+    height: 130px;
   }
+
+  .mat-toolbar{
+    position: sticky !important;
+    background-image:linear-gradient(rgb(135, 49, 206),rgb(135, 49, 206)); 
+  }
+
+
 
   .banner{
     height: 100px;
@@ -158,7 +165,7 @@ mat-sidenav-content{
   background-color:  purple;
 }
 mat-paginator{
-  background-color: rgb(124, 57, 179);
+  background-color: rgb(166, 64, 250);
   color: white;
 
 }
