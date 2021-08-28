@@ -88,7 +88,7 @@ export class VendorProfileComponent implements OnInit {
   color3: any;
   color4: any;
   color5:any;
-  buttonColor1: any = '#888888';
+  buttonColor1: any = '#9000ff';
   buttonColor2:any;
   buttonColor3:any;
   buttonColor4:any;
@@ -891,7 +891,7 @@ export class VendorProfileComponent implements OnInit {
     this.showRemarks = false;
     this.showSpouse = false;
     
-    this.buttonColor1 = '#888888';
+    this.buttonColor1 = '#9000ff';
     this.color1 = '#ffffff';
 
     this.buttonColor2 = '#ffffff';
@@ -913,7 +913,7 @@ export class VendorProfileComponent implements OnInit {
     this.showRemarks = false;
     this.showSpouse = false;
 
-    this.buttonColor2 = '#888888';
+    this.buttonColor2 = '#9000ff';
     this.color2 = '#ffffff';
 
     this.buttonColor1 = '#ffffff';
@@ -938,7 +938,7 @@ export class VendorProfileComponent implements OnInit {
     this.showRemarks = false;
 
     
-    this.buttonColor3 = '#888888';
+    this.buttonColor3 = '#9000ff';
     this.color3 = '#ffffff';
 
     this.buttonColor1 = '#ffffff';
@@ -996,7 +996,7 @@ export class VendorProfileComponent implements OnInit {
     this.showRemarks = false;
     this.showSpouse = false;
     
-    this.buttonColor4 = '#888888';
+    this.buttonColor4 = '#9000ff';
     this.color4 = '#ffffff';
 
     this.buttonColor1 = '#ffffff';
@@ -1024,7 +1024,7 @@ export class VendorProfileComponent implements OnInit {
     this.showAttachment = false;
     this.showSpouse = false;
     
-    this.buttonColor5 = '#888888';
+    this.buttonColor5 = '#9000ff';
     this.color5 = '#ffffff';
 
     this.buttonColor1 = '#ffffff';

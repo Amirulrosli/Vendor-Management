@@ -48,13 +48,13 @@ input{
     width: 300px;
     height: 45px;
     border-radius: 30px;
-    background-color: #5f5f5f;
-    box-shadow: 5px 10px 18px #949494;
+    background-color: #8d4dc2;
+    box-shadow: 5px 10px 18px #aa9dff;
 }
 
 
 .login{
-    color: #494949;
+    color: #8d4dc2;
     position: absolute;
     top: 20%;
     right: 18%;
@@ -89,6 +89,7 @@ input{
     }
 
     .login{
+        color: #8d4dc2;
         position: absolute;
         top: 20%;
         right: 5px;
